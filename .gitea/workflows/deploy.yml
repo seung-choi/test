@@ -1,0 +1,46 @@
+name: Plug Golf MNG
+on:
+  push:
+    branches: [ "main", "ap-northeast-2", "ap-southeast-1" ]
+  pull_request:
+    branches: [ "main", "ap-northeast-2", "ap-southeast-1" ]
+
+jobs:
+  main-build:
+    if: gitea.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Archive
+        run: tar -czvf mng.tar.gz -C out .
+
+      - name: Push to AWS EC2
+        run: |
+          echo "${{ secrets.AWS_PEM }}" > aws.pem
+          chmod 400 aws.pem
+          scp -i aws.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r -v mng.tar.gz ec2-user@43.202.78.220:/home/ec2-user/plug-golf/
+
+      - name: Run
+        run: |
+          ssh -i aws.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ec2-user@43.202.78.220 << 'EOF'
+            tar -xzvf /home/ec2-user/plug-golf/mng.tar.gz -C /home/ec2-user/plug-golf/mng/html/
+            rm -rf /home/ec2-user/plug-golf/mng.tar.gz
+          EOF
+
+  ap-northeast-2-build:
+    if: gitea.ref == 'refs/heads/ap-northeast-2'
+    runs-on: ubuntu-latest
+
+  ap-southeast-1-build:
+    if: gitea.ref == 'refs/heads/ap-southeast-1'
+    runs-on: ubuntu-latest

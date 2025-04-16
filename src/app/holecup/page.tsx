@@ -1,0 +1,363 @@
+"use client";
+
+import styles from "@/styles/pages/holecup/holecup.module.scss";
+import {useEffect, useMemo, useRef, useState} from "react";
+import {useMutation, useQuery} from "@tanstack/react-query";
+import {getClub, postMapPin} from "@/api/main";
+import ClubType from "@/types/Club.type";
+import Menu from "@/components/Menu";
+import { useRecoilState } from "recoil";
+import { currentCourseState, currentHoleState } from "@/lib/recoil";
+
+export interface MapPinAPI {
+    holeId: number | null,
+    mapMode: string,
+    mapCd: string,
+    mapX: string,
+    mapY: string,
+    mapZ: string
+}
+
+const HoleCup = () => {
+    const pinColors = ["#FB3B3B", "#FBD23C", "#71BE34", "#42444E", "#2F65CA", "#F0F0F0"];
+    const [selectedPinColor, setSelectedPinColor] = useState<string>("#FF0000");
+    const [activeMenu, setActiveMenu] = useState<boolean>(false);
+    const [selectedGreenCd, setSelectedGreenCd] = useState<string | null>(null);
+    const [selectedPinGreenCd, setSelectedPinGreenCd] = useState<string | null>(null);
+    const [pointerGreenPos, setPointerGreenPos] = useState<{ x: number; y: number } | null>(null);
+    const [pointerOriginGreenPos, setPointerOriginGreenPos] = useState<{ x: number; y: number }>();
+    const [pointerOriginHolePinPos, setPointerOriginHolePinPos] = useState<{ x: number; y: number } | null>();
+    const [finalGreenImgSize, setFinalGreenImgSize] = useState<{ width: number; height: number } | null>();
+    const [finalGreenMap, setFinalGreeneMap] = useState<{ x: number; y: number } | null>();
+    const [scaleGreenImgSize, setScaleGreenImgSize] = useState<number>(0);
+    const [originGreenImgSize, setOriginGreenImgSize] = useState<number>(0);
+    const [toast, setToast] = useState<{
+        state: boolean,
+        mms : string
+    }>({
+        state : false,
+        mms: ""
+    });
+    const mapRef = useRef<HTMLDivElement | null>(null);
+
+    const [currentCourse, setCourseIdState] = useRecoilState(currentCourseState);
+    const [currentHole, setCurrentHoleState] = useRecoilState(currentHoleState);
+
+
+    const { data: clubData } = useQuery<ClubType>({
+        queryKey: ["clubData"],
+        queryFn: getClub,
+    });
+
+    const { mutate: postMapMutate } = useMutation({
+        mutationFn: postMapPin,
+        onSuccess: () => {
+            setToast({
+                state : true,
+                mms: "pin 설정을 완료하였습니다."
+            });
+            setTimeout(() => {
+                setToast({
+                    state: false,
+                    mms: ""
+                });
+            }, 3000);
+
+        },
+        onError: (error) => {
+            setToast({
+                state : true,
+                mms: "Error"
+            });
+        },
+    });
+
+    const handleMapClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (!mapRef.current || !finalGreenImgSize || !finalGreenMap) return;
+
+        // 랜더링된 Green 이미지상의 pin 좌표
+        const rect = mapRef.current.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        const clickY = e.clientY - rect.top;
+        setPointerGreenPos({ x: clickX, y: clickY });
+
+        // 원본 Green 이미지상의 pin 좌표
+        const { width, height } = mapRef.current.getBoundingClientRect();
+        const scaleX = finalGreenImgSize.width / width;
+        const scaleY = finalGreenImgSize.height / height;
+
+        setPointerOriginGreenPos({ x: clickX * scaleX, y: clickY * scaleY });
+
+        const originalGreenWH = originGreenImgSize;
+        const originalGreenX = finalGreenMap.x;
+        const originalGreenY = finalGreenMap.y;
+
+        const scaleWH = scaleGreenImgSize;
+        const finalWH = finalGreenImgSize.width;
+
+        const scaleRatio = scaleWH / originalGreenWH;
+
+        const offsetX = (finalWH - scaleWH) / 2;
+        const offsetY = (finalWH - scaleWH) / 2;
+
+        const mapClickToOriginal = (clickX : number, clickY : number) =>  {
+            const relativeX = (clickX - offsetX) / scaleRatio;
+            const relativeY = (clickY - offsetY) / scaleRatio;
+            const originalX = originalGreenX + relativeX;
+            const originalY = originalGreenY + relativeY;
+
+            return { originalX, originalY };
+        }
+
+        const mapped = mapClickToOriginal(clickX, clickY);
+
+        setPointerOriginHolePinPos({
+            x: mapped.originalX,
+            y: mapped.originalY,
+        });
+
+    };
+
+    const currentCourseData = useMemo(() => {
+        return clubData?.courseList.find(course => course.courseId === currentCourse.id);
+    }, [clubData, currentCourse]);
+
+    const currentHoleData = useMemo(() => {
+        if (!currentCourseData || !currentHole.id) return undefined;
+        return currentCourseData.holeList.find(hole => hole.holeId === currentHole.id);
+    }, [currentCourseData, currentHole]);
+
+    const greenImageList = useMemo(() => {
+        if (!currentHoleData?.mapList || !clubData?.clubMode) return [];
+        return currentHoleData.mapList.filter(
+            map => map.mapMode === clubData.clubMode && map.mapCd.startsWith("GREEN_") && map.mapType === "IMG"
+        );
+    }, [currentHoleData, selectedGreenCd]);
+
+    const pinGreenList = useMemo(() => {
+        if (!currentHoleData?.mapList || !clubData?.clubMode) return [];
+        return currentHoleData.mapList.filter(
+            map => map.mapMode === clubData.clubMode && map.mapCd.startsWith("PIN_GREEN_") && map.mapType === "DOM"
+        );
+    }, [currentHoleData, selectedGreenCd]);
+
+    const greenImage = useMemo(() => {
+        if (!currentHoleData?.mapList || !clubData?.clubMode) return null;
+        return currentHoleData.mapList.find(
+            map => map.mapMode === clubData.clubMode &&
+                map.mapCd === "GREENS" &&
+                map.mapType === "IMG"
+        );
+    }, [currentHoleData, clubData, selectedGreenCd]);
+
+    const selectedGreenImageUrl = useMemo(() => {
+        return greenImageList.find(img => img.mapCd === selectedGreenCd)?.mapUrl || "";
+    }, [greenImageList, selectedGreenCd]);
+
+    useEffect(() => {
+        if (!clubData) return;
+
+        const currentCourseData = clubData.courseList.find(course => course.courseId === currentCourse.id);
+
+        const defaultHole = currentCourseData?.holeList[0];
+        if (defaultHole) {
+            setCurrentHoleState({ id: defaultHole.holeId, no: 1 });
+        }
+    }, [clubData, currentCourse]);
+
+    useEffect(() => {
+        if (greenImageList.length > 0 && !selectedGreenCd) {
+            setSelectedGreenCd(greenImageList[0].mapCd);
+        }
+    }, [greenImageList, selectedGreenCd]);
+
+    useEffect(() => {
+        if (selectedGreenCd && pinGreenList.length > 0 && greenImageList.length > 0) {
+            const suffix = selectedGreenCd.replace("GREEN_", "");
+            const greenImageData = greenImageList.find(img => img.mapCd.endsWith(suffix));
+
+            let finalSize = null;
+            let finalMap = null;
+
+            if (greenImageData?.mapX) {
+                const [w, h] = greenImageData.mapX.split("x").map(Number);
+                finalSize = { width: w, height: h };
+                setFinalGreenImgSize(finalSize);
+            }
+
+            if (greenImageData?.mapY) {
+                const [x, y] = greenImageData.mapY.split("x").map(Number);
+                finalMap = { x, y };
+                setFinalGreeneMap(finalMap);
+            }
+
+            if (greenImageData?.mapZ) {
+                const [origin, scale] = greenImageData.mapZ.split("x").map(Number);
+                setScaleGreenImgSize(scale);
+                setOriginGreenImgSize(origin);
+            }
+
+            const matchedPin = pinGreenList.find(pin => pin.mapCd === `PIN_GREEN_${suffix}`);
+            setSelectedPinGreenCd(matchedPin?.mapCd || "");
+
+            if (
+                matchedPin?.mapX != null &&
+                matchedPin?.mapY != null &&
+                finalSize &&
+                mapRef.current
+            ) {
+                const { width: renderedWidth, height: renderedHeight } = mapRef.current.getBoundingClientRect();
+                const scaleX = renderedWidth / finalSize.width;
+                const scaleY = renderedHeight / finalSize.height;
+                console.log(scaleX, scaleY);
+
+                setPointerGreenPos({
+                    x: Number(matchedPin.mapX) * scaleX,
+                    y: Number(matchedPin.mapY) * scaleY,
+                });
+                setSelectedPinColor(matchedPin.mapZ || "");
+            }
+        }
+    }, [selectedGreenCd, currentHole, currentCourse]);
+
+    const handleSubmit = () => {
+        if (!pointerGreenPos || !finalGreenImgSize || !mapRef.current || !pointerOriginHolePinPos) return;
+
+        postMapMutate([
+            {
+                holeId: currentHole.id,
+                mapMode: clubData?.clubMode || "",
+                mapCd: "PIN_HOLE",
+                mapX: pointerOriginHolePinPos.x.toString(),
+                mapY: pointerOriginHolePinPos.y.toString(),
+                mapZ: selectedPinColor,
+            },
+            {
+                holeId: currentHole.id,
+                mapMode: clubData?.clubMode || "",
+                mapCd: selectedPinGreenCd || "",
+                mapX: pointerOriginGreenPos?.x.toString() || "",
+                mapY: pointerOriginGreenPos?.y.toString() || "",
+                mapZ: selectedPinColor,
+            },
+        ]);
+    };
+
+    return (
+        <div className="layout landscape">
+            <div className={styles.holecup}>
+                <div className={styles["holecup-content"]}>
+                    <ul className={styles["holecup-pin"]}>
+                        {pinColors.map(pinColor => (
+                            <li key={pinColor}>
+                                <button
+                                    type="button"
+                                    className={`${styles["holecup-pin-item"]} ${pinColor === selectedPinColor ? styles.active : ""}`}
+                                    onClick={() => setSelectedPinColor(pinColor)}
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="29" height="31" viewBox="0 0 29 31" fill="none">
+                                        <path d="M22.5 28.5C22.5 28.5058 22.4996 28.5578 22.4023 28.6611C22.3028 28.7669 22.1314 28.8929 21.8677 29.0284C21.3418 29.2987 20.548 29.5569 19.5255 29.7792C17.4887 30.222 14.6509 30.5 11.5 30.5C8.34905 30.5 5.51135 30.222 3.47449 29.7792C2.45198 29.5569 1.65823 29.2987 1.13229 29.0284C0.868647 28.8929 0.697231 28.7669 0.597717 28.6611C0.500441 28.5578 0.5 28.5058 0.5 28.5C0.5 28.4942 0.500441 28.4422 0.597717 28.3389C0.697231 28.2331 0.868647 28.1071 1.13229 27.9716C1.65823 27.7013 2.45198 27.4431 3.47449 27.2208C5.51135 26.778 8.34905 26.5 11.5 26.5C14.6509 26.5 17.4887 26.778 19.5255 27.2208C20.548 27.4431 21.3418 27.7013 21.8677 27.9716C22.1314 28.1071 22.3028 28.2331 22.4023 28.3389C22.4996 28.4422 22.5 28.4942 22.5 28.5Z" fill="#17462A" stroke="#191E1B"/>
+                                        <path d="M13 17L13 18.5165L14.3939 17.9191L26.2492 12.8383C27.8655 12.1456 27.8655 9.85437 26.2492 9.16171L14.3939 4.08085L13 3.48346L13 5L13 17Z" fill={pinColor} stroke="white" strokeWidth="2"/>
+                                        <path d="M8 3C8 1.34315 9.34315 0 11 0H12C13.6569 0 15 1.34315 15 3V28H8V3Z" fill="white"/>
+                                        <path d="M10 3.5C10 2.67157 10.6716 2 11.5 2C12.3284 2 13 2.67157 13 3.5V28H10V3.5Z" fill="#727272"/>
+                                        <path d="M10 9H13V14H10V9Z" fill="#383838"/>
+                                        <path d="M10 21H13V28H10V21Z" fill="#383838"/>
+                                    </svg>
+                                </button>
+                                <span className={styles.circle} style={{ backgroundColor: pinColor }}></span>
+                            </li>
+                        ))}
+                    </ul>
+
+                    <div className={styles["holecup-map"]} ref={mapRef} onClick={handleMapClick}>
+                        {selectedGreenImageUrl && <img alt="selected green" src={selectedGreenImageUrl} />}
+                        {pointerGreenPos &&
+                            <svg className={styles["pointer-pin"]} style={{ top: pointerGreenPos.y, left: pointerGreenPos.x }} xmlns="http://www.w3.org/2000/svg" width="29" height="31" viewBox="0 0 29 31" fill="none">
+                                <path d="M22.5 28.5C22.5 28.5058 22.4996 28.5578 22.4023 28.6611C22.3028 28.7669 22.1314 28.8929 21.8677 29.0284C21.3418 29.2987 20.548 29.5569 19.5255 29.7792C17.4887 30.222 14.6509 30.5 11.5 30.5C8.34905 30.5 5.51135 30.222 3.47449 29.7792C2.45198 29.5569 1.65823 29.2987 1.13229 29.0284C0.868647 28.8929 0.697231 28.7669 0.597717 28.6611C0.500441 28.5578 0.5 28.5058 0.5 28.5C0.5 28.4942 0.500441 28.4422 0.597717 28.3389C0.697231 28.2331 0.868647 28.1071 1.13229 27.9716C1.65823 27.7013 2.45198 27.4431 3.47449 27.2208C5.51135 26.778 8.34905 26.5 11.5 26.5C14.6509 26.5 17.4887 26.778 19.5255 27.2208C20.548 27.4431 21.3418 27.7013 21.8677 27.9716C22.1314 28.1071 22.3028 28.2331 22.4023 28.3389C22.4996 28.4422 22.5 28.4942 22.5 28.5Z" fill="#17462A" stroke="#191E1B"/>
+                                <path d="M13 17L13 18.5165L14.3939 17.9191L26.2492 12.8383C27.8655 12.1456 27.8655 9.85437 26.2492 9.16171L14.3939 4.08085L13 3.48346L13 5L13 17Z" fill={selectedPinColor} stroke="white" strokeWidth="2"/>
+                                <path d="M8 3C8 1.34315 9.34315 0 11 0H12C13.6569 0 15 1.34315 15 3V28H8V3Z" fill="white"/>
+                                <path d="M10 3.5C10 2.67157 10.6716 2 11.5 2C12.3284 2 13 2.67157 13 3.5V28H10V3.5Z" fill="#727272"/>
+                                <path d="M10 9H13V14H10V9Z" fill="#383838"/>
+                                <path d="M10 21H13V28H10V21Z" fill="#383838"/>
+                            </svg>
+                        }
+                        {toast.state &&
+                            <div className={styles["toast"]}>{toast.mms}</div>
+                        }
+                    </div>
+
+                    <div className={styles["holecup-green"]}>
+                        <div className={styles["holecup-green-box"]}>
+                            <div className={styles["img-wrap"]}><img alt="greens img" src={greenImage?.mapUrl || ""} /></div>
+                            <div className={styles["button-wrap"]}>
+                                {greenImageList.map(img => (
+                                    <button
+                                        key={img.mapCd}
+                                        type="button"
+                                        className={selectedGreenCd === img.mapCd ? styles.active : ""}
+                                        onClick={() => setSelectedGreenCd(img.mapCd)}
+                                    >
+                                        {img.mapCd}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                        <button type="button" className={styles["save-button"]} onClick={handleSubmit}>저장</button>
+                    </div>
+                </div>
+
+                <div className={styles["holecup-info"]}>
+                    <span className={styles.course}>{currentCourse.Nm}</span>
+                    <span className={styles.hole}>{currentHole?.no}H</span>
+                    <span className={styles.green}>Green1</span>
+                </div>
+
+                <div className={`${styles["holecup-menu-box"]} ${activeMenu ? styles.active : ""}`}>
+                    <button
+                        type="button"
+                        className={styles["hole-menu-arrow"]}
+                        onClick={() => setActiveMenu(!activeMenu)}
+                    ></button>
+
+                    <ul className={`${styles["course-list"]} scroll-hidden`}>
+                        {clubData?.courseList.map(course => (
+                            <li key={course.courseId}>
+                                <button
+                                    type="button"
+                                    className={`${styles["course-item"]} ${currentCourse.id === course.courseId ? styles.active : ""}`}
+                                    onClick={() => setCourseIdState({
+                                        id: course.courseId,
+                                        Nm: course.courseNm,
+                                    })}
+                                >
+                                    {course.courseNm}
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+
+                    <ul className={`${styles["hole-list"]} scroll-hidden`}>
+                        {currentCourseData?.holeList?.length ? (
+                            currentCourseData.holeList.map(hole => (
+                                <li key={hole.holeId}>
+                                    <button
+                                        type="button"
+                                        className={`${styles["hole-item"]} ${currentHole?.id === hole.holeId ? styles.active : ""}`}
+                                        onClick={() => setCurrentHoleState({ id: hole.holeId, no: hole.holeNo })}
+                                    >
+                                        {hole.holeNo}
+                                    </button>
+                                </li>
+                            ))
+                        ) : (
+                            <div className={styles["no-list"]}>코스 목록이 없습니다.</div>
+                        )}
+                    </ul>
+                </div>
+            </div>
+            <Menu courseList={clubData?.courseList || []} />
+        </div>
+    );
+};
+
+export default HoleCup;

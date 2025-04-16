@@ -1,0 +1,17 @@
+[
+  {
+    "caddyId": 1,
+    "caddyNm": "허캐디",
+    "caddyErp": "0001"
+  },
+  {
+    "caddyId": 2,
+    "caddyNm": "고캐디",
+    "caddyErp": "0002"
+  },
+  {
+    "caddyId": 3,
+    "caddyNm": "김캐디",
+    "caddyErp": "0003"
+  }
+]

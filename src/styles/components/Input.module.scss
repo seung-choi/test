@@ -1,0 +1,143 @@
+.input {
+  border:0;
+  border-bottom: 1px solid var(--MOBILE-admin-Grayscale3, #B4B4B4);
+  width: 100%;
+  padding: 0 8px;
+  box-sizing: border-box;
+  max-height: 40px;
+  color: var(--MOBILE-admin-Grayscale4, #666);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.32px;
+  line-height: 40px;
+  @at-root .error & {
+    border-color: 1px solid var(--MOBILE-admin-Pointred, #FF4B4B);
+    color: var(--MOBILE-admin-Pointred, #FF4B4B);
+  }
+
+  &.hasValue {
+    padding-right: 32px;
+  }
+
+  &.icon {
+    padding-right: 45px;
+  }
+
+  &::placeholder {
+    font-size: 16px;
+    font-weight: 300;
+  }
+
+  &:focus-visible {
+      outline: none;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  &:disabled {
+    background-color: #efefef;
+  }
+
+  &[type="password"] {
+    font-size: 28px;
+    line-height: 40px;
+    letter-spacing: -0.5px;
+
+    &::placeholder {
+      font-size: 16px;
+      font-weight: 300;
+      letter-spacing: -0.32px;
+    }
+  }
+
+  &-container {
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  &-wrap {
+    position: relative;
+  }
+
+  &-label {
+    display: block;
+    color: var(--MOBILE-admin-Grayscale4, #666);
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: -0.2px;
+  }
+
+  &-required {
+    &-point {
+      color: #ff3a28;
+      margin-left: 5px;
+    }
+  }
+
+  &-button {
+    display: block;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 50%;
+    left:15px;
+    transform: translateY(-50%);
+  }
+
+  &-text {
+    margin-top: 8px;
+    color: var(--MOBILE-admin-Grayscale4, #666);
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: -0.2px;
+
+    &.success {
+      color: #66bf3c;
+    }
+
+    &.fail {
+      color: #ff3a28;
+    }
+  }
+
+  &-clear-button {
+    position: absolute;
+    right: 7px;
+    top: 50%;
+    transform:  translateY(-50%);
+    width: 19px;
+    height: 19px;
+    background-color: var(--MOBILE-admin-Grayscale2, #EEE);
+    border-radius: 50%;
+    border: none;
+
+    @at-root .error & {
+      background-color: var(--MOBILE-admin-Redlight, #FFD9D9);;
+    }
+
+    &::before,
+    &::after
+    {
+      position: absolute;
+      right:8px;
+      top: 4px;
+      content: '';
+      height: 11px;
+      width:2px;
+      background-color: #fff;
+    }
+    &::before {
+      transform: rotate(45deg);
+    }
+    &::after {
+      transform: rotate(-45deg);
+    }
+  }
+}

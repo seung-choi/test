@@ -1,0 +1,282 @@
+
+:root {
+  /*font*/
+  --main-font-family: 'SUIT';
+  --main-font-color: rgb(68, 68, 68);
+  --main-font-size: 15px;
+
+  /*color*/
+  --mobile-admin-keypurple: rgba(47, 0, 119, 1);
+  --mobile-admin-pointpurple: rgba(102, 0, 255, 1);
+  --mobile-admin-purplemiddle: rgba(115, 104, 198, 1);
+  --mobile-admin-purplelight: rgba(234, 230, 255, 1);
+  --mobile-admin-purplegray: rgba(210, 204, 219, 1);
+  --mobile-admin-keywhite: rgba(255, 255, 255, 1);
+  --mobile-admin-keyblack: rgba(18, 18, 18, 1);
+  --mobile-admin-grayscale1: rgba(245, 245, 245, 1);
+  --mobile-admin-grayscale2: rgba(238, 238, 238, 1);
+  --mobile-admin-grayscale3: rgba(180, 180, 180, 1);
+  --mobile-admin-grayscale4: rgba(102, 102, 102, 1);
+  --mobile-admin-pointyellow: rgba(255, 238, 0, 1);
+  --mobile-admin-pointred: rgba(255, 75, 75, 1);
+  --mobile-admin-redmiddle: rgba(255, 117, 117, 1);
+  --mobile-admin-redlight: rgba(255, 217, 217, 1);
+  --mobile-admin-pointblue: rgba(117, 124, 255, 1);
+}
+
+html {
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  -webkit-text-size-adjust: none;
+  margin: 0;
+  padding: 0;
+  font-size: var(--main-font-size);
+  line-height: 100%;
+  letter-spacing: 0;
+  font-family: var(--main-font-family), 'dotum', serif;
+  color: var(--main-font-color);
+  font-weight: 400;
+}
+
+body * {
+  box-sizing: border-box;
+}
+
+
+/* inline */
+img {
+  display: inline-block;
+  border: 0 none;
+}
+
+cite,
+code,
+dfn,
+del,
+em,
+ins,
+label,
+q,
+span,
+strong {
+  display: inline-block;
+}
+
+cite,
+em,
+dfn {
+  font-style: normal;
+}
+
+sub {
+  vertical-align: bottom;
+}
+
+sup {
+  vertical-align: top;
+}
+
+/* block */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+address {
+  font-style: normal;
+}
+
+blockquote,
+p {
+  margin: 0;
+}
+
+pre {
+  margin: 0;
+}
+
+input,
+textarea,
+button,
+select,
+a {
+  -webkit-tap-highlight-color: transparent;
+  padding: 0;
+}
+
+button {
+  outline: none;
+  border: none;
+  background: none;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+  &:visited,
+  &:active {
+    color: black;
+  }
+}
+
+
+/* table */
+table {
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 0;
+  vertical-align: top;
+  text-align: left;
+  font-weight: normal;
+}
+
+/* list */
+dd,
+dl,
+ol,
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style-type: none;
+}
+
+/* form */
+form {
+  margin: 0;
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0 none;
+}
+
+legend {
+  display: none;
+}
+
+//오브젝트 숨기기
+.blind {
+  display: block;
+  position: absolute;
+  clip: rect(0 0 0 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+}
+
+/* float 해제 */
+.clear:after {
+  content: ".";
+  height: 0;
+  font-size: 0;
+  visibility: hidden;
+  display: block;
+  clear: both;
+}
+
+.clear {
+  display: inline-block;
+}
+
+* html .clear {
+  height: 0;
+}
+
+.clear-both {
+  clear: both;
+}
+
+.scroll-hidden {
+  overflow: scroll;
+  scrollbar-width: none;      /* Firefox */
+  -ms-overflow-style: none;   /* IE 10+ */
+}
+
+.scroll-hidden::-webkit-scrollbar {
+  display: none;              /* Chrome, Safari, Edge */
+}
+
+/* 스크롤바 전체 기본 꾸미기 */
+body ::-webkit-scrollbar {
+  width: 5px;  /* 세로축 스크롤바 폭 너비 */
+  height: 5px;  /* 가로축 스크롤바 폭 너비 */
+}
+
+body ::-webkit-scrollbar-thumb {
+  /* 스크롤바 막대 색상 */
+  background: rgba(123,123,123, 0.4);
+  /* 스크롤바 막대 테두리 설정  */
+
+  /* border: 5px solid #fff;  */
+  border-radius: 15px 15px 15px 15px;
+}
+
+::-webkit-scrollbar-thumb {
+
+  background-color: hsla(0, 0%, 42%, 0.49);
+  border-radius: 100px;
+
+}
+
+/* 스크롤바 트랙 꾸미기 */
+body ::-webkit-scrollbar-track {
+  background-color:transparent;
+}
+
+/*orientation 설정*/
+//세로 일때, 가로 view로 만들기
+.layout {
+  width: 100%;
+  height: 100%;
+  @media (orientation: portrait) {
+    &.landscape {
+      transform: rotate(90deg);
+      transform-origin: right top;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      width: 100vh !important;
+      height: 100vw !important;
+    }
+  }
+
+  //가로 일때, 세로 view로 만들기
+  @media (orientation: landscape) {
+    &.portrait {
+      transform: rotate(90deg);
+      transform-origin: right top;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      width: 100vh !important;
+      height: 100vw !important;
+    }
+  }
+}

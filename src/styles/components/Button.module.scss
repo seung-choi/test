@@ -1,0 +1,41 @@
+.button {
+  padding: 0 20px;
+  transition: all .3s;
+  color: var(--MOBILE-admin-Grayscale4, #666);
+  background: var(--MOBILE-admin-Grayscale2, #EEE);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: -0.36px;
+  border-radius: 8px;
+  line-height: 40px;
+  border:none;
+
+  &.primary {
+    background-color: var(--MOBILE-admin-Keypurple, #2F0077);
+    color: var(--MOBILE-admin-Keywhite, #FFF);
+    transition: background-color .2s;
+
+    &:disabled {
+      background-color: var(--MOBILE-admin-Purplegray, #D2CCDB);
+    }
+  }
+
+  &.block { //버튼 하나일 경우
+    display: block;
+    width: 100%;
+    border-radius:50px;
+    font-size: 20px;
+    line-height: 50px;
+  }
+
+  &.small {
+    padding: 7px 12px;
+    font-size: 14px;
+  }
+
+  &.large {
+    padding: 15px 25px;
+    font-size: 18px;
+  }
+}

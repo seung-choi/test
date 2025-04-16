@@ -1,0 +1,709 @@
+{
+  "clubId": "D1583705C7",
+  "clubType": "BACK",
+  "clubNm": "솔라고 컨트리클럽",
+  "clubAddr": "충남 태안군 태안읍 기업도시9길 176 ",
+  "clubTel": "041-670-8888",
+  "clubLat": 36.6973420929316,
+  "clubLon": 126.324128616943,
+  "clubLogo": "/D1583705C7/logo.png",
+  "clubImg": "/D1583705C7/img.jpeg",
+  "clubDt": "2025-01-16",
+  "clubQr": null,
+  "zoneCd": "KR",
+  "zoneNm": "SOUTH KOREA",
+  "zoneId": "Asia/Seoul",
+  "greenSpd": 2.1,
+  "courseList": [
+    {
+      "courseId": 1,
+      "courseNm": "Sol-In",
+      "courseCol": "#f9be00",
+      "courseCnt": 9,
+      "coursePar": 36,
+      "courseErp": null,
+      "holeList": [
+        {
+          "holeId": 1,
+          "holeNo": 1,
+          "holePar": 4,
+          "holeHdc": 0,
+          "holeAlt": 0,
+          "holePer": "N",
+          "holeAvg": 0,
+          "mapList" : [
+            {
+              "mapMode": "LANDSCAPE",
+              "mapType": "DOM",
+              "mapCd": "MARKER_CUP",
+              "mapX": "1448",
+              "mapY": "360",
+              "mapZ": null,
+              "mapUrl": null
+            },
+            {
+              "mapMode": "LANDSCAPE",
+              "mapType": "DOM",
+              "mapCd": "MARKER_BLACK_TEE",
+              "mapX": "432",
+              "mapY": "928",
+              "mapZ": null,
+              "mapUrl": null
+            },
+            {
+              "mapMode": "LANDSCAPE",
+              "mapType": "DOM",
+              "mapCd": "MARKER_BLUE_TEE",
+              "mapX": "540",
+              "mapY": "968",
+              "mapZ": null,
+              "mapUrl": null
+            }
+          ]
+        },
+        {
+          "holeId": 2,
+          "holeNo": 2,
+          "holePar": 5,
+          "holeHdc": 0,
+          "holeAlt": 0,
+          "holePer": "N",
+          "holeAvg": 0,
+          "mapList": [
+            {
+              "mapMode": "ORIENTATION",
+              "mapType": "GPS",
+              "mapCd": "POLYGON_ALTITUDE",
+              "mapX": "126.31592",
+              "mapY": "36.69791",
+              "mapZ": "2.708924055099487",
+              "mapUrl": null
+            },
+            {
+              "mapMode": "ORIENTATION",
+              "mapType": "GPS",
+              "mapCd": "POLYGON_ALTITUDE",
+              "mapX": "126.31608",
+              "mapY": "36.69791",
+              "mapZ": "3.044622182846069",
+              "mapUrl": null
+            },
+            {
+              "mapMode": "ORIENTATION",
+              "mapType": "GPS",
+              "mapCd": "POLYGON_ALTITUDE",
+              "mapX": "126.31592",
+              "mapY": "36.698",
+              "mapZ": "2.592027902603149",
+              "mapUrl": null
+            }
+          ]
+        },
+        {
+          "holeId": 3,
+          "holeNo": 3,
+          "holePar": 3,
+          "holeHdc": 0,
+          "holeAlt": 0,
+          "holePer": "N",
+          "holeAvg": 0,
+          "mapList": [{
+            "mapMode": "LANDSCAPE",
+            "mapType": "DOM",
+            "mapCd": "PIN_HOLE",
+            "mapX": "1277.7083333333333",
+            "mapY": "456.20833333333337",
+            "mapZ": "#42444E",
+            "mapUrl": null
+          },
+            {
+              "mapMode": "LANDSCAPE",
+              "mapType": "DOM",
+              "mapCd": "PIN_GREEN_1",
+              "mapX": "201.25",
+              "mapY": "216.25",
+              "mapZ": "#42444E",
+              "mapUrl": null
+            },
+            {
+              "mapMode": "PORTRAIT",
+              "mapType": "DOM",
+              "mapCd": "PIN_HOLE",
+              "mapX": "708.3333333333335",
+              "mapY": "696.6666666666666",
+              "mapZ": "#FB3B3B",
+              "mapUrl": null
+            }
+          ]
+        },
+        {
+          "holeId": 4,
+          "holeNo": 4,
+          "holePar": 4,
+          "holeHdc": 0,
+          "holeAlt": 0,
+          "holePer": "N",
+          "holeAvg": 0,
+          "mapList": [
+            {
+              "mapMode": "ORIENTATION",
+              "mapType": "GPS",
+              "mapCd": "POLYGON_ALTITUDE",
+              "mapX": "126.31528",
+              "mapY": "36.70015",
+              "mapZ": "3",
+              "mapUrl": null
+            },
+            {
+              "mapMode": "ORIENTATION",
+              "mapType": "GPS",
+              "mapCd": "POLYGON_ALTITUDE",
+              "mapX": "126.31544",
+              "mapY": "36.70015",
+              "mapZ": "2.897305488586426",
+              "mapUrl": null
+            },
+            {
+              "mapMode": "ORIENTATION",
+              "mapType": "GPS",
+              "mapCd": "POLYGON_ALTITUDE",
+              "mapX": "126.31528",
+              "mapY": "36.70024",
+              "mapZ": "3",
+              "mapUrl": null
+            }
+          ]
+        },
+        {
+          "holeId": 5,
+          "holeNo": 5,
+          "holePar": 4,
+          "holeHdc": 0,
+          "holeAlt": 0,
+          "holePer": "N",
+          "holeAvg": 0,
+          "mapList":[
+            {
+              "mapMode": "ORIENTATION",
+              "mapType": "GPS",
+              "mapCd": "POLYGON_ALTITUDE",
+              "mapX": "126.31508",
+              "mapY": "36.70034",
+              "mapZ": "3",
+              "mapUrl": null
+            },
+            {
+              "mapMode": "ORIENTATION",
+              "mapType": "GPS",
+              "mapCd": "POLYGON_ALTITUDE",
+              "mapX": "126.31508",
+              "mapY": "36.70043",
+              "mapZ": "3",
+              "mapUrl": null
+            },
+            {
+              "mapMode": "ORIENTATION",
+              "mapType": "GPS",
+              "mapCd": "POLYGON_ALTITUDE",
+              "mapX": "126.31525",
+              "mapY": "36.70043",
+              "mapZ": "3",
+              "mapUrl": null
+            }
+          ]
+        },
+        {
+          "holeId": 6,
+          "holeNo": 6,
+          "holePar": 4,
+          "holeHdc": 0,
+          "holeAlt": 0,
+          "holePer": "N",
+          "holeAvg": 0,
+          "mapList": [
+            {
+              "mapMode": "LANDSCAPE",
+              "mapType": "DOM",
+              "mapCd": "PIN_HOLE",
+              "mapX": "1460.269230769231",
+              "mapY": "349.46153846153845",
+              "mapZ": "#42444E",
+              "mapUrl": null
+            },
+            {
+              "mapMode": "LANDSCAPE",
+              "mapType": "DOM",
+              "mapCd": "PIN_GREEN_1",
+              "mapX": "203.75",
+              "mapY": "197.5",
+              "mapZ": "#42444E",
+              "mapUrl": null
+            },
+            {
+              "mapMode": "PORTRAIT",
+              "mapType": "DOM",
+              "mapCd": "PIN_HOLE",
+              "mapX": "891.2307692307693",
+              "mapY": "573.0512820512821",
+              "mapZ": "#FB3B3B",
+              "mapUrl": null
+            }
+          ]
+        },
+        {
+          "holeId": 7,
+          "holeNo": 7,
+          "holePar": 4,
+          "holeHdc": 0,
+          "holeAlt": 0,
+          "holePer": "N",
+          "holeAvg": 0,
+          "mapList": [{
+            "mapMode": "LANDSCAPE",
+            "mapType": "DOM",
+            "mapCd": "PIN_HOLE",
+            "mapX": "1603.3333333333335",
+            "mapY": "263.5",
+            "mapZ": "#42444E",
+            "mapUrl": null
+          },
+            {
+              "mapMode": "LANDSCAPE",
+              "mapType": "DOM",
+              "mapCd": "PIN_GREEN_1",
+              "mapX": "207.5",
+              "mapY": "138.75",
+              "mapZ": "#42444E",
+              "mapUrl": null
+            },
+            {
+              "mapMode": "PORTRAIT",
+              "mapType": "DOM",
+              "mapCd": "PIN_HOLE",
+              "mapX": "864.6666666666665",
+              "mapY": "428.88888888888886",
+              "mapZ": "#FB3B3B",
+              "mapUrl": null
+            }]
+        },
+        {
+          "holeId": 8,
+          "holeNo": 8,
+          "holePar": 3,
+          "holeHdc": 0,
+          "holeAlt": 0,
+          "holePer": "N",
+          "holeAvg": 0,
+          "mapList": [
+            {
+              "mapMode": "ORIENTATION",
+              "mapType": "GPS",
+              "mapCd": "POLYGON_ALTITUDE",
+              "mapX": "126.32028",
+              "mapY": "36.70211",
+              "mapZ": "2.436643600463867",
+              "mapUrl": null
+            },
+            {
+              "mapMode": "ORIENTATION",
+              "mapType": "GPS",
+              "mapCd": "POLYGON_ALTITUDE",
+              "mapX": "126.32045",
+              "mapY": "36.70211",
+              "mapZ": "2.18906307220459",
+              "mapUrl": null
+            },
+            {
+              "mapMode": "ORIENTATION",
+              "mapType": "GPS",
+              "mapCd": "POLYGON_ALTITUDE",
+              "mapX": "126.32061",
+              "mapY": "36.70211",
+              "mapZ": "1.956046223640442",
+              "mapUrl": null
+            }
+          ]
+        },
+        {
+          "holeId": 9,
+          "holeNo": 9,
+          "holePar": 5,
+          "holeHdc": 0,
+          "holeAlt": 0,
+          "holePer": "N",
+          "holeAvg": 0,
+          "mapList": [{
+            "mapMode": "ORIENTATION",
+            "mapType": "GPS",
+            "mapCd": "POLYGON_ALTITUDE",
+            "mapX": "126.32298",
+            "mapY": "36.69881",
+            "mapZ": "1.173717379570007",
+            "mapUrl": null
+          },
+            {
+              "mapMode": "ORIENTATION",
+              "mapType": "GPS",
+              "mapCd": "POLYGON_ALTITUDE",
+              "mapX": "126.32314",
+              "mapY": "36.69881",
+              "mapZ": "1.406734228134155",
+              "mapUrl": null
+            },
+            {
+              "mapMode": "ORIENTATION",
+              "mapType": "GPS",
+              "mapCd": "POLYGON_ALTITUDE",
+              "mapX": "126.32298",
+              "mapY": "36.6989",
+              "mapZ": "1.173717379570007",
+              "mapUrl": null
+            }]
+        }
+      ]
+    },
+    {
+      "courseId": 2,
+      "courseNm": "Sol-Out",
+      "courseCol": "#0089b5",
+      "courseCnt": 9,
+      "coursePar": 36,
+      "courseErp": null,
+      "holeList": [
+        {
+          "holeId": 10,
+          "holeNo": 1,
+          "holePar": 4,
+          "holeHdc": 0,
+          "holeAlt": 0,
+          "holePer": "N",
+          "holeAvg": 0,
+          "mapList": [
+            {
+              "mapMode": "LANDSCAPE",
+              "mapType": "DOM",
+              "mapCd": "PIN_HOLE",
+              "mapX": "1463.0000000000002",
+              "mapY": "288.5",
+              "mapZ": "#42444E",
+              "mapUrl": null
+            },
+            {
+              "mapMode": "LANDSCAPE",
+              "mapType": "DOM",
+              "mapCd": "PIN_GREEN_1",
+              "mapX": "157.5",
+              "mapY": "116.25",
+              "mapZ": "#42444E",
+              "mapUrl": null
+            },
+            {
+              "mapMode": "ORIENTATION",
+              "mapType": "GPS",
+              "mapCd": "POLYGON_ALTITUDE",
+              "mapX": "126.32268",
+              "mapY": "36.69768",
+              "mapZ": "1.965823292732239",
+              "mapUrl": null
+            }]
+        },
+        {
+          "holeId": 11,
+          "holeNo": 2,
+          "holePar": 5,
+          "holeHdc": 0,
+          "holeAlt": 0,
+          "holePer": "N",
+          "holeAvg": 0,
+          "mapList": [
+            {
+              "mapMode": "LANDSCAPE",
+              "mapType": "DOM",
+              "mapCd": "PIN_HOLE",
+              "mapX": "1557.59375",
+              "mapY": "265.125",
+              "mapZ": "#42444E",
+              "mapUrl": null
+            },
+            {
+              "mapMode": "LANDSCAPE",
+              "mapType": "DOM",
+              "mapCd": "PIN_GREEN_1",
+              "mapX": "233.75",
+              "mapY": "185",
+              "mapZ": "#42444E",
+              "mapUrl": null
+            },
+            {
+              "mapMode": "ORIENTATION",
+              "mapType": "GPS",
+              "mapCd": "POLYGON_ALTITUDE",
+              "mapX": "126.31584",
+              "mapY": "36.69713",
+              "mapZ": "1.844487071037292",
+              "mapUrl": null
+            }]
+        },
+        {
+          "holeId": 12,
+          "holeNo": 3,
+          "holePar": 4,
+          "holeHdc": 0,
+          "holeAlt": 0,
+          "holePer": "N",
+          "holeAvg": 0,
+          "mapList": [
+            {
+              "mapMode": "LANDSCAPE",
+              "mapType": "DOM",
+              "mapCd": "PIN_HOLE",
+              "mapX": "1508.3333333333333",
+              "mapY": "350",
+              "mapZ": "#42444E",
+              "mapUrl": null
+            },
+            {
+              "mapMode": "LANDSCAPE",
+              "mapType": "DOM",
+              "mapCd": "PIN_GREEN_1",
+              "mapX": "192.5",
+              "mapY": "262.5",
+              "mapZ": "#42444E",
+              "mapUrl": null
+            },
+            {
+              "mapMode": "ORIENTATION",
+              "mapType": "GPS",
+              "mapCd": "POLYGON_ALTITUDE",
+              "mapX": "126.31761",
+              "mapY": "36.69346",
+              "mapZ": "2.371235609054565",
+              "mapUrl": null
+            }]
+        },
+        {
+          "holeId": 13,
+          "holeNo": 4,
+          "holePar": 4,
+          "holeHdc": 0,
+          "holeAlt": 0,
+          "holePer": "N",
+          "holeAvg": 0,
+          "mapList": [
+            {
+              "mapMode": "LANDSCAPE",
+              "mapType": "DOM",
+              "mapCd": "PIN_HOLE",
+              "mapX": "1521.6666666666667",
+              "mapY": "301.5",
+              "mapZ": "#42444E",
+              "mapUrl": null
+            },
+            {
+              "mapMode": "LANDSCAPE",
+              "mapType": "DOM",
+              "mapCd": "PIN_GREEN_1",
+              "mapX": "212.5",
+              "mapY": "191.25",
+              "mapZ": "#42444E",
+              "mapUrl": null
+            },
+            {
+              "mapMode": "ORIENTATION",
+              "mapType": "GPS",
+              "mapCd": "POLYGON_ALTITUDE",
+              "mapX": "126.31881",
+              "mapY": "36.69377",
+              "mapZ": "1",
+              "mapUrl": null
+            }]
+        },
+        {
+          "holeId": 14,
+          "holeNo": 5,
+          "holePar": 3,
+          "holeHdc": 0,
+          "holeAlt": 0,
+          "holePer": "N",
+          "holeAvg": 0,
+          "mapList": [
+            {
+              "mapMode": "LANDSCAPE",
+              "mapType": "DOM",
+              "mapCd": "PIN_HOLE",
+              "mapX": "1333.5000000000002",
+              "mapY": "348.75",
+              "mapZ": "#42444E",
+              "mapUrl": null
+            },
+            {
+              "mapMode": "LANDSCAPE",
+              "mapType": "DOM",
+              "mapCd": "PIN_GREEN_1",
+              "mapX": "110",
+              "mapY": "195",
+              "mapZ": "#42444E",
+              "mapUrl": null
+            },
+            {
+              "mapMode": "ORIENTATION",
+              "mapType": "GPS",
+              "mapCd": "POLYGON_ALTITUDE",
+              "mapX": "126.3172",
+              "mapY": "36.69645",
+              "mapZ": "2.098061800003052",
+              "mapUrl": null
+            }]
+        },
+        {
+          "holeId": 15,
+          "holeNo": 6,
+          "holePar": 5,
+          "holeHdc": 0,
+          "holeAlt": 0,
+          "holePer": "N",
+          "holeAvg": 0,
+          "mapList": [
+            {
+              "mapMode": "LANDSCAPE",
+              "mapType": "DOM",
+              "mapCd": "PIN_HOLE",
+              "mapX": "1534.0000000000002",
+              "mapY": "322",
+              "mapZ": "#42444E",
+              "mapUrl": null
+            },
+            {
+              "mapMode": "LANDSCAPE",
+              "mapType": "DOM",
+              "mapCd": "PIN_GREEN_1",
+              "mapX": "135",
+              "mapY": "157.5",
+              "mapZ": "#42444E",
+              "mapUrl": null
+            },
+            {
+              "mapMode": "ORIENTATION",
+              "mapType": "GPS",
+              "mapCd": "POLYGON_ALTITUDE",
+              "mapX": "126.31918",
+              "mapY": "36.69409",
+              "mapZ": "1",
+              "mapUrl": null
+            }]
+        },
+        {
+          "holeId": 16,
+          "holeNo": 7,
+          "holePar": 3,
+          "holeHdc": 0,
+          "holeAlt": 0,
+          "holePer": "N",
+          "holeAvg": 0,
+          "mapList": [
+            {
+              "mapMode": "LANDSCAPE",
+              "mapType": "DOM",
+              "mapCd": "PIN_HOLE",
+              "mapX": "1267.625",
+              "mapY": "378.50000000000006",
+              "mapZ": "#42444E",
+              "mapUrl": null
+            },
+            {
+              "mapMode": "LANDSCAPE",
+              "mapType": "DOM",
+              "mapCd": "PIN_GREEN_1",
+              "mapX": "152.5",
+              "mapY": "170",
+              "mapZ": "#42444E",
+              "mapUrl": null
+            },
+            {
+              "mapMode": "ORIENTATION",
+              "mapType": "GPS",
+              "mapCd": "POLYGON_ALTITUDE",
+              "mapX": "126.31974",
+              "mapY": "36.6943",
+              "mapZ": "1.023820281028748",
+              "mapUrl": null
+            }]
+        },
+        {
+          "holeId": 17,
+          "holeNo": 8,
+          "holePar": 4,
+          "holeHdc": 0,
+          "holeAlt": 0,
+          "holePer": "N",
+          "holeAvg": 0,
+          "mapList": [
+            {
+              "mapMode": "LANDSCAPE",
+              "mapType": "DOM",
+              "mapCd": "PIN_HOLE",
+              "mapX": "1515.6666666666665",
+              "mapY": "386.83333333333337",
+              "mapZ": "#42444E",
+              "mapUrl": null
+            },
+            {
+              "mapMode": "LANDSCAPE",
+              "mapType": "DOM",
+              "mapCd": "PIN_GREEN_1",
+              "mapX": "182.5",
+              "mapY": "211.25",
+              "mapZ": "#42444E",
+              "mapUrl": null
+            },
+            {
+              "mapMode": "ORIENTATION",
+              "mapType": "GPS",
+              "mapCd": "POLYGON_ALTITUDE",
+              "mapX": "126.32137",
+              "mapY": "36.69668",
+              "mapZ": "0.8997489809989929",
+              "mapUrl": null
+            }]
+        },
+        {
+          "holeId": 18,
+          "holeNo": 9,
+          "holePar": 4,
+          "holeHdc": 0,
+          "holeAlt": 0,
+          "holePer": "N",
+          "holeAvg": 0,
+          "mapList": [
+            {
+              "mapMode": "LANDSCAPE",
+              "mapType": "DOM",
+              "mapCd": "PIN_HOLE",
+              "mapX": "1478.6666666666667",
+              "mapY": "452.3333333333333",
+              "mapZ": "#42444E",
+              "mapUrl": null
+            },
+            {
+              "mapMode": "LANDSCAPE",
+              "mapType": "DOM",
+              "mapCd": "PIN_GREEN_1",
+              "mapX": "212.5",
+              "mapY": "237.5",
+              "mapZ": "#42444E",
+              "mapUrl": null
+            },
+            {
+              "mapMode": "ORIENTATION",
+              "mapType": "GPS",
+              "mapCd": "POLYGON_ALTITUDE",
+              "mapX": "126.32176",
+              "mapY": "36.69698",
+              "mapZ": "1",
+              "mapUrl": null
+            }]
+        }
+      ]
+    }
+  ]
+}
