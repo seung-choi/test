@@ -64,7 +64,7 @@ const HoleCup = () => {
             }, 3000);
 
         },
-        onError: (error) => {
+        onError: () => {
             setToast({
                 state : true,
                 mms: "Error"
@@ -73,8 +73,7 @@ const HoleCup = () => {
     });
 
     const handleMapClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (!mapRef.current || !finalGreenImgSize || !finalGreenMap) return;
-
+        if (typeof window === "undefined" || !mapRef.current || !finalGreenImgSize || !finalGreenMap) return;
         // 랜더링된 Green 이미지상의 pin 좌표
         const rect = mapRef.current.getBoundingClientRect();
         const clickX = e.clientX - rect.left;

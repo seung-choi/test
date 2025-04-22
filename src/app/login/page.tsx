@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import {FormEvent, useEffect, useState} from "react";
 import styles from "@/styles/pages/login/login.module.scss";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/Button";
@@ -18,9 +18,9 @@ export interface LoginFormAPI {
 
 const Login = () => {
   const [loginForm, setLoginForm] = useState<LoginFormAPI>({
-    username: storage.local.get("remember")?.toString() || "",
+    username: "",
     password: "",
-    saveId: !!storage.local.get("remember"),
+    saveId: false,
   });
 
   const [error, setError] = useState<boolean>(false);
@@ -72,6 +72,17 @@ const Login = () => {
 
     loginMutate(data);
   };
+
+  useEffect(() => {
+    const remembered = storage.local.get("remember");
+    if (remembered) {
+      setLoginForm(prev => ({
+        ...prev,
+        username: remembered.toString(),
+        saveId: true,
+      }));
+    }
+  }, []);
 
   return (
     <div className="layout portrait">

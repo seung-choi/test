@@ -54,10 +54,9 @@ const Monitoring = () => {
   }, [clubData, bookingData]);
 
   const scrollToSection = (courseId: number) => {
+    if (typeof window === "undefined") return;
     const section = document.getElementById(`${courseId}`);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
+    section?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
