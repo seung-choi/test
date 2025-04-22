@@ -5,6 +5,7 @@ import BookingType from "@/types/Booking.type";
 import ClubType from "@/types/Club.type";
 import EvetSSE from "@/types/EventSSE.type";
 import {MapPinAPI} from "@/app/holecup/page";
+import {PassWordFormAPI} from "@/app/repassword/page";
 
 //GET
 export const getClub = async () => {
@@ -57,6 +58,16 @@ export const postMapPin = async (data: MapPinAPI[]) => {
   const res = await $axios({
     url: "map/pin",
     method: "post",
+    data: data,
+  });
+  return res.data;
+};
+
+//PATCH
+export const patchPassword = async (data: PassWordFormAPI) => {
+  const res = await $axios({
+    url: "/password",
+    method: "patch",
     data: data,
   });
   return res.data;

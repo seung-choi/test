@@ -33,7 +33,7 @@ const Login = () => {
       localStorage.removeItem("remember");
       if (loginForm.saveId) storage.local.set({ remember: loginForm.username });
       storage.session.set(res);
-      router.push("/monitoring");
+      res.initSt === "Y" ? router.push("/repassword") : router.push("/monitoring")
     },
     onError: () => {
       setError(true);

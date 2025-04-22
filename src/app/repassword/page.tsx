@@ -4,11 +4,28 @@ import { FormEvent, useState } from "react";
 import styles from "@/styles/pages/login/login.module.scss";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/Button";
+import storage from "@/utils/storage";
+import {useMutation} from "@tanstack/react-query";
+import {patchPassword} from "@/api/main";
+import {useRouter} from "next/navigation";
+
+export interface PassWordFormAPI {
+  newPwd: string;
+}
 
 const RePassword = () => {
+  const router = useRouter();
   const [passwordForm, setPasswordForm] = useState({
     password: "",
     password_recheck: "",
+  });
+  const [error, setError] = useState<boolean>(false);
+
+  const { mutate: passwordMutate } = useMutation({
+    mutationFn: patchPassword,
+    onSuccess: () => {
+      router.push("/monitoring");
+    },
   });
 
   const handleChange = ({ target }: { target: HTMLInputElement }) => {
@@ -26,7 +43,9 @@ const RePassword = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
+    passwordForm.password !== passwordForm.password_recheck ? setError(true) : passwordMutate({
+      newPwd: passwordForm.password
+    })
   };
 
   return (
@@ -39,19 +58,21 @@ const RePassword = () => {
         </h2>
 
         <div className={styles["login-top-wrap"]}>
+          {error &&
           <div className={styles["login-helper-text"]}>
             새 비밀번호가 일치하지 않습니다. 확인 후 다시 입력해주세요.
           </div>
+          }
           <div className={styles["input-id"]}>
             <Input
               type="text"
               label="ID"
               labelShow={true}
               id="id"
-              value={"id12345"}
+              value={`${storage.session.get("userNm")}`}
               readOnly={true}
             />
-            <span className={styles["input-id-value"]}>id12345</span>
+            <span className={styles["input-id-value"]}>{`${storage.session.get("userNm")}`}</span>
           </div>
           <Input
             type="password"
