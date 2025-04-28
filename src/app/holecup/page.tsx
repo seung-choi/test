@@ -20,17 +20,22 @@ export interface MapPinAPI {
 
 const HoleCup = () => {
     const pinColors = ["#FB3B3B", "#FBD23C", "#71BE34", "#42444E", "#2F65CA", "#F0F0F0"];
-    const [selectedPinColor, setSelectedPinColor] = useState<string>("#FF0000");
+    const [selectedPinColor, setSelectedPinColor] = useState<string>("");
+    const [pinLSColor, setPinLSColor] = useState<string>("");
+    const [pinPTColor, setPinPTColor] = useState<string>("");
     const [activeMenu, setActiveMenu] = useState<boolean>(false);
     const [selectedGreenCd, setSelectedGreenCd] = useState<string | null>(null);
     const [selectedPinGreenCd, setSelectedPinGreenCd] = useState<string | null>(null);
     const [pointerGreenPos, setPointerGreenPos] = useState<{ x: number; y: number } | null>(null);
-    const [pointerOriginGreenPos, setPointerOriginGreenPos] = useState<{ x: number; y: number }>();
-    const [pointerOriginHolePinPos, setPointerOriginHolePinPos] = useState<{ x: number; y: number } | null>();
+    const [pointerOriginLSGreenPos, setPointerOriginLSGreenPos] = useState<{ x: number; y: number }>();
+    const [pointerOriginLSHolePinPos, setPointerOriginLSHolePinPos] = useState<{ x: number; y: number } | null>();
+    const [pointerOriginPTGreenPos, setPointerOriginPTGreenPos] = useState<{ x: number; y: number }>();
+    const [pointerOriginPTHolePinPos, setPointerOriginPTHolePinPos] = useState<{ x: number; y: number } | null>();
     const [finalGreenImgSize, setFinalGreenImgSize] = useState<{ width: number; height: number } | null>();
     const [finalGreenMap, setFinalGreeneMap] = useState<{ x: number; y: number } | null>();
     const [scaleGreenImgSize, setScaleGreenImgSize] = useState<number>(0);
     const [originGreenImgSize, setOriginGreenImgSize] = useState<number>(0);
+    const [mapModeState, setMapModeState]  = useState<string>("LANDSCAPE");
     const [toast, setToast] = useState<{
         state: boolean,
         mms : string
@@ -85,7 +90,13 @@ const HoleCup = () => {
         const scaleX = finalGreenImgSize.width / width;
         const scaleY = finalGreenImgSize.height / height;
 
-        setPointerOriginGreenPos({ x: clickX * scaleX, y: clickY * scaleY });
+        if(mapModeState === "PORTRAIT") {
+            setPointerOriginPTGreenPos({ x: clickX * scaleX, y: clickY * scaleY });
+            setPinPTColor(selectedPinColor);
+        } else {
+            setPointerOriginLSGreenPos({ x: clickX * scaleX, y: clickY * scaleY });
+            setPinLSColor(selectedPinColor);
+        }
 
         const originalGreenWH = originGreenImgSize;
         const originalGreenX = finalGreenMap.x;
@@ -110,10 +121,18 @@ const HoleCup = () => {
 
         const mapped = mapClickToOriginal(clickX, clickY);
 
-        setPointerOriginHolePinPos({
-            x: mapped.originalX,
-            y: mapped.originalY,
-        });
+        if(mapModeState === "PORTRAIT") {
+            setPointerOriginPTHolePinPos({
+                x: mapped.originalX,
+                y: mapped.originalY,
+            });
+        } else {
+            setPointerOriginLSHolePinPos({
+                x: mapped.originalX,
+                y: mapped.originalY,
+            });
+        }
+
 
     };
 
@@ -126,32 +145,32 @@ const HoleCup = () => {
         return currentCourseData.holeList.find(hole => hole.holeId === currentHole.id);
     }, [currentCourseData, currentHole]);
 
-    const greenImageList = useMemo(() => {
+    const currentGreenImageList = useMemo(() => {
         if (!currentHoleData?.mapList || !clubData?.clubMode) return [];
         return currentHoleData.mapList.filter(
-            map => map.mapMode === clubData.clubMode && map.mapCd.startsWith("GREEN_") && map.mapType === "IMG"
+            map => map.mapMode === mapModeState && map.mapCd.startsWith("GREEN_") && map.mapType === "IMG"
         );
-    }, [currentHoleData, selectedGreenCd]);
+    }, [currentHoleData, selectedGreenCd, mapModeState]);
 
     const pinGreenList = useMemo(() => {
         if (!currentHoleData?.mapList || !clubData?.clubMode) return [];
         return currentHoleData.mapList.filter(
-            map => map.mapMode === clubData.clubMode && map.mapCd.startsWith("PIN_GREEN_") && map.mapType === "DOM"
+            map => map.mapMode === mapModeState && map.mapCd.startsWith("PIN_GREEN_") && map.mapType === "DOM"
         );
-    }, [currentHoleData, selectedGreenCd]);
+    }, [currentHoleData, selectedGreenCd, mapModeState]);
 
-    const greenImage = useMemo(() => {
+    const currentGreensImage = useMemo(() => {
         if (!currentHoleData?.mapList || !clubData?.clubMode) return null;
         return currentHoleData.mapList.find(
-            map => map.mapMode === clubData.clubMode &&
+            map => map.mapMode === mapModeState &&
                 map.mapCd === "GREENS" &&
                 map.mapType === "IMG"
         );
-    }, [currentHoleData, clubData, selectedGreenCd]);
+    }, [currentHoleData, clubData, selectedGreenCd, mapModeState]);
 
     const selectedGreenImageUrl = useMemo(() => {
-        return greenImageList.find(img => img.mapCd === selectedGreenCd)?.mapUrl || "";
-    }, [greenImageList, selectedGreenCd]);
+        return currentGreenImageList.find(img => img.mapCd === selectedGreenCd)?.mapUrl || "";
+    }, [currentGreenImageList, selectedGreenCd]);
 
     useEffect(() => {
         if (!clubData) return;
@@ -165,15 +184,15 @@ const HoleCup = () => {
     }, [clubData, currentCourse]);
 
     useEffect(() => {
-        if (greenImageList.length > 0 && !selectedGreenCd) {
-            setSelectedGreenCd(greenImageList[0].mapCd);
+        if (currentGreenImageList.length > 0 && !selectedGreenCd) {
+            setSelectedGreenCd(currentGreenImageList[0].mapCd);
         }
-    }, [greenImageList, selectedGreenCd]);
+    }, [currentGreenImageList, selectedGreenCd]);
 
     useEffect(() => {
-        if (selectedGreenCd && pinGreenList.length > 0 && greenImageList.length > 0) {
+        if (selectedGreenCd && pinGreenList.length > 0 && currentGreenImageList.length > 0) {
             const suffix = selectedGreenCd.replace("GREEN_", "");
-            const greenImageData = greenImageList.find(img => img.mapCd.endsWith(suffix));
+            const greenImageData = currentGreenImageList.find(img => img.mapCd.endsWith(suffix));
 
             let finalSize = null;
             let finalMap = null;
@@ -217,30 +236,63 @@ const HoleCup = () => {
                 setSelectedPinColor(matchedPin.mapZ || "");
             }
         }
-    }, [selectedGreenCd, currentHole, currentCourse]);
+    }, [selectedGreenCd, currentHole, currentCourse, mapModeState]);
 
     const handleSubmit = () => {
-        if (!pointerGreenPos || !finalGreenImgSize || !mapRef.current || !pointerOriginHolePinPos) return;
+        if (!pointerGreenPos || !finalGreenImgSize || !mapRef.current) return;
 
-        postMapMutate([
-            {
+        const payload: MapPinAPI[] = [];
+
+        if (pointerOriginLSHolePinPos) {
+            payload.push({
                 holeId: currentHole.id,
-                mapMode: clubData?.clubMode || "",
+                mapMode: "LANDSCAPE",
                 mapCd: "PIN_HOLE",
-                mapX: pointerOriginHolePinPos.x.toString(),
-                mapY: pointerOriginHolePinPos.y.toString(),
-                mapZ: selectedPinColor,
-            },
-            {
+                mapX: pointerOriginLSHolePinPos.x.toString(),
+                mapY: pointerOriginLSHolePinPos.y.toString(),
+                mapZ: pinLSColor,
+            });
+        }
+
+        if (pointerOriginLSGreenPos && selectedPinGreenCd) {
+            payload.push({
                 holeId: currentHole.id,
-                mapMode: clubData?.clubMode || "",
-                mapCd: selectedPinGreenCd || "",
-                mapX: pointerOriginGreenPos?.x.toString() || "",
-                mapY: pointerOriginGreenPos?.y.toString() || "",
-                mapZ: selectedPinColor,
-            },
-        ]);
+                mapMode: "LANDSCAPE",
+                mapCd: selectedPinGreenCd,
+                mapX: pointerOriginLSGreenPos.x.toString(),
+                mapY: pointerOriginLSGreenPos.y.toString(),
+                mapZ: pinLSColor,
+            });
+        }
+
+        if (pointerOriginPTHolePinPos) {
+            payload.push({
+                holeId: currentHole.id,
+                mapMode: "PORTRAIT",
+                mapCd: "PIN_HOLE",
+                mapX: pointerOriginPTHolePinPos.x.toString(),
+                mapY: pointerOriginPTHolePinPos.y.toString(),
+                mapZ: pinPTColor,
+            });
+        }
+
+        if (pointerOriginPTGreenPos && selectedPinGreenCd) {
+            payload.push({
+                holeId: currentHole.id,
+                mapMode: "PORTRAIT",
+                mapCd: selectedPinGreenCd,
+                mapX: pointerOriginPTGreenPos.x.toString(),
+                mapY: pointerOriginPTGreenPos.y.toString(),
+                mapZ: pinPTColor,
+            });
+        }
+
+        if (payload.length > 0) {
+            postMapMutate(payload);
+        }
     };
+
+    if(!clubData) return;
 
     return (
         <div className="layout landscape">
@@ -286,10 +338,18 @@ const HoleCup = () => {
                     </div>
 
                     <div className={styles["holecup-green"]}>
+                        <div className={styles["map-mode-toggle"]}>
+                            <button className={`${styles["landscape"]} ${mapModeState === "LANDSCAPE" ? styles["active"] : ""}`} onClick={() => setMapModeState("LANDSCAPE")}>
+                                <span className="blind">LANDSCAPE</span>
+                            </button>
+                            <button className={`${styles["portrait"]} ${mapModeState === "PORTRAIT" ? styles["active"] : ""}`} onClick={() => setMapModeState("PORTRAIT")}>
+                                <span className="blind">PORTRAIT</span>
+                            </button>
+                        </div>
                         <div className={styles["holecup-green-box"]}>
-                            <div className={styles["img-wrap"]}><img alt="greens img" src={greenImage?.mapUrl || ""} /></div>
+                            <div className={styles["img-wrap"]}><img alt="greens img" src={currentGreensImage?.mapUrl || ""} /></div>
                             <div className={styles["button-wrap"]}>
-                                {greenImageList.map(img => (
+                                {currentGreenImageList.map(img => (
                                     <button
                                         key={img.mapCd}
                                         type="button"

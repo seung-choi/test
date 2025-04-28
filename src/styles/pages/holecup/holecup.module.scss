@@ -62,6 +62,32 @@
       width: 220px;
       height: 100%;
       gap: 15px;
+      .map-mode-toggle {
+        display: flex;
+        align-items: center;
+        gap: 0 5px;
+        width: 120px;
+        padding: 6px 8px;
+        background-color: #fff;
+        box-shadow: 0 2px 9px 0 rgba(0, 0, 0, 0.40);
+        border-radius: 10px;
+        button {
+          width: 100%;
+          height: 36px;
+          outline: none;
+          border: none;
+          border-radius: 10px;
+          &.landscape {
+            background: #fff url("../../../../public/assets/image/icon-landscape.svg") no-repeat center / 30px auto;
+          }
+          &.portrait {
+            background: #fff url("../../../../public/assets/image/icon-portrait.svg") no-repeat center / 17px auto;
+          }
+          &.active {
+            background-color: #2F0077;
+          }
+        }
+      }
       &-box {
         width: 150px;
         padding: 8px 10px;
