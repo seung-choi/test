@@ -151,6 +151,9 @@
         &.active {
           background: #60F;
         }
+        &:disabled {
+          background-color: #D2CCDB;
+        }
       }
     }
   }

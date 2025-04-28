@@ -8,6 +8,7 @@ import ClubType from "@/types/Club.type";
 import Menu from "@/components/Menu";
 import { useRecoilState } from "recoil";
 import { currentCourseState, currentHoleState } from "@/lib/recoil";
+import { useQueryClient } from "@tanstack/react-query";
 
 export interface MapPinAPI {
     holeId: number | null,
@@ -19,6 +20,8 @@ export interface MapPinAPI {
 }
 
 const HoleCup = () => {
+    const queryClient = useQueryClient();
+
     const pinColors = ["#FB3B3B", "#FBD23C", "#71BE34", "#42444E", "#2F65CA", "#F0F0F0"];
     const [selectedPinColor, setSelectedPinColor] = useState<string>("");
     const [pinLSColor, setPinLSColor] = useState<string>("");
@@ -35,7 +38,8 @@ const HoleCup = () => {
     const [finalGreenMap, setFinalGreeneMap] = useState<{ x: number; y: number } | null>();
     const [scaleGreenImgSize, setScaleGreenImgSize] = useState<number>(0);
     const [originGreenImgSize, setOriginGreenImgSize] = useState<number>(0);
-    const [mapModeState, setMapModeState]  = useState<string>("LANDSCAPE");
+    const [mapModeState, setMapModeState] = useState<string>("LANDSCAPE");
+    const [holecupPinMove, setHolecupPinMove] = useState<boolean>(false);
     const [toast, setToast] = useState<{
         state: boolean,
         mms : string
@@ -57,6 +61,7 @@ const HoleCup = () => {
     const { mutate: postMapMutate } = useMutation({
         mutationFn: postMapPin,
         onSuccess: () => {
+            void queryClient.refetchQueries({ queryKey: ["clubData"] });
             setToast({
                 state : true,
                 mms: "pin 설정을 완료하였습니다."
@@ -79,6 +84,7 @@ const HoleCup = () => {
 
     const handleMapClick = (e: React.MouseEvent<HTMLDivElement>) => {
         if (typeof window === "undefined" || !mapRef.current || !finalGreenImgSize || !finalGreenMap) return;
+        setHolecupPinMove(true);
         // 랜더링된 Green 이미지상의 pin 좌표
         const rect = mapRef.current.getBoundingClientRect();
         const clickX = e.clientX - rect.left;
@@ -339,10 +345,16 @@ const HoleCup = () => {
 
                     <div className={styles["holecup-green"]}>
                         <div className={styles["map-mode-toggle"]}>
-                            <button className={`${styles["landscape"]} ${mapModeState === "LANDSCAPE" ? styles["active"] : ""}`} onClick={() => setMapModeState("LANDSCAPE")}>
+                            <button className={`${styles["landscape"]} ${mapModeState === "LANDSCAPE" ? styles["active"] : ""}`} onClick={() => {
+                                setMapModeState("LANDSCAPE");
+                                setHolecupPinMove(false);
+                            }}>
                                 <span className="blind">LANDSCAPE</span>
                             </button>
-                            <button className={`${styles["portrait"]} ${mapModeState === "PORTRAIT" ? styles["active"] : ""}`} onClick={() => setMapModeState("PORTRAIT")}>
+                            <button className={`${styles["portrait"]} ${mapModeState === "PORTRAIT" ? styles["active"] : ""}`} onClick={() => {
+                                setMapModeState("PORTRAIT");
+                                setHolecupPinMove(false);
+                            }}>
                                 <span className="blind">PORTRAIT</span>
                             </button>
                         </div>
@@ -361,7 +373,7 @@ const HoleCup = () => {
                                 ))}
                             </div>
                         </div>
-                        <button type="button" className={styles["save-button"]} onClick={handleSubmit}>저장</button>
+                        <button type="button" className={styles["save-button"]} onClick={handleSubmit} disabled={!holecupPinMove}>저장</button>
                     </div>
                 </div>
 
