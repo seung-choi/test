@@ -231,13 +231,21 @@ const Message = () => {
               placeholder="내용을 입력해주세요"
               value={selectedMsg.sendMsg}
               onChange={handleInputChange}
+              onClear={() => {
+                setSelectedMsg(
+                    {
+                      eventId: null,
+                      sendMsg: ""
+                    }
+                );
+              }}
             />
-            <Checkbox
-              id="checkbox"
-              label="자동 완성 문구 등록"
-              checked={checked}
-              onChange={handleCheckboxChange}
-            />
+            {/*<Checkbox*/}
+            {/*  id="checkbox"*/}
+            {/*  label="자동 완성 문구 등록"*/}
+            {/*  checked={checked}*/}
+            {/*  onChange={handleCheckboxChange}*/}
+            {/*/>*/}
             <div className={styles["select-wrap"]}>
               <div className={styles["select-list"]}>
                 {eventSSEData?.map((sse) => {

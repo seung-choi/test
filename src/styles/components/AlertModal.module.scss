@@ -39,7 +39,10 @@
   &-button-container {
     text-align: center;
     margin-top: 10px;
+    display: flex;
+    align-items: center;
     button {
+      width: 100%;
       &:not(:last-child) {
         margin-right: 10px;
       }

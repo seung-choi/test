@@ -59,6 +59,11 @@ const Monitoring = () => {
     section?.scrollIntoView({ behavior: "smooth" });
   };
 
+  if (!clubData || !bookingData) {
+    return null; // 또는 로딩 스피너 보여줘도 됨
+  }
+
+
   return (
     <div className="layout landscape">
       <h1 className="blind">실시간 관제</h1>
