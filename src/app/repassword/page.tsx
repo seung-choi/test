@@ -5,21 +5,24 @@ import styles from "@/styles/pages/login/login.module.scss";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/Button";
 import storage from "@/utils/storage";
-import {useMutation} from "@tanstack/react-query";
-import {patchPassword} from "@/api/main";
-import {useRouter} from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
+import { patchPassword } from "@/api/main";
+import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 export interface PassWordFormAPI {
   newPwd: string;
 }
 
 const RePassword = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   const [passwordForm, setPasswordForm] = useState({
     password: "",
     password_recheck: "",
   });
-  const [error, setError] = useState<boolean>(false);
+  const [passwordError, setPasswordError] = useState("");
+  const [passwordRecheckError, setPasswordRecheckError] = useState("");
 
   const { mutate: passwordMutate } = useMutation({
     mutationFn: patchPassword,
@@ -28,41 +31,74 @@ const RePassword = () => {
     },
   });
 
+  const validatePassword = (password: string) => {
+    const regex = /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+    return regex.test(password);
+  };
+
   const handleChange = ({ target }: { target: HTMLInputElement }) => {
-    let {
-      name,
-      value,
-    }: {
-      name: string;
-      value: string | boolean;
-      type: string;
-    } = target;
+    const { name, value } = target;
 
     setPasswordForm((prev) => ({ ...prev, [name]: value }));
+
+    if (name === "password") {
+      if (!validatePassword(value)) {
+        setPasswordError(t("rePassword.passwordPolicyMessage"));
+      } else {
+        setPasswordError("");
+      }
+      if (passwordForm.password_recheck && value !== passwordForm.password_recheck) {
+        setPasswordRecheckError(t("rePassword.errorMessage"));
+      } else {
+        setPasswordRecheckError("");
+      }
+    }
+
+    if (name === "password_recheck") {
+      if (passwordForm.password !== value) {
+        setPasswordRecheckError(t("rePassword.errorMessage"));
+      } else {
+        setPasswordRecheckError("");
+      }
+    }
+  };
+
+  const handleClear = (name: string) => {
+    setPasswordForm((prev) => ({ ...prev, [name]: "" }));
+    if (name === "password") setPasswordError("");
+    if (name === "password_recheck") setPasswordRecheckError("");
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    passwordForm.password !== passwordForm.password_recheck ? setError(true) : passwordMutate({
-      newPwd: passwordForm.password
-    })
+
+    if (!validatePassword(passwordForm.password)) {
+      setPasswordError(t("rePassword.passwordPolicyMessage"));
+      return;
+    }
+
+    if (passwordForm.password !== passwordForm.password_recheck) {
+      setPasswordRecheckError(t("rePassword.errorMessage"));
+      return;
+    }
+
+    passwordMutate({ newPwd: passwordForm.password });
   };
 
   return (
     <div className="layout portrait">
-      <h1 className={"blind"}>비밀번호 재설정</h1>
+      <h1 className="blind">{t("rePassword.title")}</h1>
       <form className={styles["login-container"]} onSubmit={handleSubmit}>
         <h2 className={styles["login-title"]}>
-          비밀번호를 <br />
-          재설정 해주세요
+          {t("rePassword.subtitle").split("\n").map((line, index) => (
+            <span key={index}>
+              {line}
+              <br />
+            </span>
+          ))}
         </h2>
 
         <div className={styles["login-top-wrap"]}>
-          {error &&
-          <div className={styles["login-helper-text"]}>
-            새 비밀번호가 일치하지 않습니다. 확인 후 다시 입력해주세요.
-          </div>
-          }
           <div className={styles["input-id"]}>
             <Input
               type="text"
@@ -74,14 +110,19 @@ const RePassword = () => {
             />
             <span className={styles["input-id-value"]}>{`${storage.session.get("userNm")}`}</span>
           </div>
+
           <Input
             type="password"
             label="PW"
             labelShow={true}
             id="password"
-            placeholder="새로운 비밀번호를 입력해주세요"
+            placeholder={t("rePassword.passwordPlaceholder")}
             onChange={handleChange}
             value={passwordForm.password}
+            error={!!passwordError}
+            textDescShow={passwordError ? "fail" : "null"}
+            textDesc={passwordError}
+            onClear={() => handleClear("password")}
           />
 
           <Input
@@ -89,15 +130,20 @@ const RePassword = () => {
             label="RePW"
             labelShow={false}
             id="password_recheck"
-            placeholder="비밀번호를 확인해주세요"
+            placeholder={t("rePassword.passwordRecheckPlaceholder")}
             onChange={handleChange}
             value={passwordForm.password_recheck}
+            error={!!passwordRecheckError}
+            textDescShow={passwordRecheckError ? "fail" : "null"}
+            textDesc={passwordRecheckError}
+            onClear={() => handleClear("password_recheck")}
           />
         </div>
+
         <div className={styles["login-bottom-wrap"]}>
           <Button
             type="submit"
-            label="비밀번호 재설정"
+            label={t("rePassword.submit")}
             block={true}
             primary={true}
             disabled={!passwordForm.password || !passwordForm.password_recheck}

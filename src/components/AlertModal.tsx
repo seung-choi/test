@@ -4,8 +4,10 @@ import styles from "@/styles/components/AlertModal.module.scss";
 import { useRouter } from "next/navigation";
 import useAlertModal from "@/hooks/useAlertModal";
 import { Button } from "@/components/Button";
+import { useTranslation } from "react-i18next";
 
 const AlertModal = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   const { alertModal, closeAlertModal } = useAlertModal();
 
@@ -32,12 +34,12 @@ const AlertModal = () => {
             <div className={styles["alert-popup-button-container"]}>
               <Button
                 type="button"
-                label={alertModal.cancleBtnLabel || "취소"}
+                label={alertModal.cancleBtnLabel || t("alertModal.cancel")}
                 onClick={handleClickCancle}
               />
               <Button
                 type="button"
-                label={alertModal.okBtnLabel || "확인"}
+                label={alertModal.okBtnLabel || t("alertModal.ok")}
                 primary={true}
                 onClick={handleClickOk}
               />

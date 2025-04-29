@@ -8,9 +8,10 @@ import {useMutation, useQuery} from "@tanstack/react-query";
 import {getBooking, getClub, getEventSSE, postSendHis} from "@/api/main";
 import useAlertModal from "@/hooks/useAlertModal";
 import {useRouter} from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 const Message = () => {
-
+  const { t } = useTranslation();
   const [step, setStep] = useState(1);
   const [selectedMsg, setSelectedMsg] = useState<{
     eventId: number | null;
@@ -115,10 +116,10 @@ const Message = () => {
     onSuccess: () => {
       setAlertModalState(() => ({
         isShow: true,
-        cancleBtnLabel: "계속 보내기",
+        cancleBtnLabel: t("message.keepSending"),
         cancleCallback: () => setStep(1),
         actionUrl: "/monitoring",
-        desc: "전송되었습니다.",
+        desc: t("message.sent"),
       }));
     },
     onError: () => {
@@ -170,16 +171,19 @@ const Message = () => {
       <div className={styles["message-container"]}>
         <div className={styles["head"]}>
           <button type="button" className={styles["head-arrow"]} onClick={handleArrow}>
-            <span className="blind">뒤로 가기</span>
+            <span className="blind">back</span>
           </button>
-          <h1 className={styles["head-title"]}>메세지 보내기</h1>
+          <h1 className={styles["head-title"]}>{t("message.title")}</h1>
         </div>
         {step === 1 &&
         <div className={styles["content"]}>
-          <strong className={styles["message-desc"]}>메세지를 보낼 대상을 <br/>
-            모두 선택해주세요</strong>
+          <strong className={styles["message-desc"]}>
+            {t("message.selectTargetDesc").split("\n").map((line, i) => (
+              <span key={i}>{line}<br /></span>
+            ))}
+          </strong>
            <div className={styles["select-wrap"]}>
-             <strong className={styles["select-title"]}>코스별</strong>
+             <strong className={styles["select-title"]}>{t("message.selectByCourse")}</strong>
              <div className={styles["select-list"]}>
                {clubData?.courseList ? clubData.courseList.map((course) => {
                  return (
@@ -194,11 +198,11 @@ const Message = () => {
                      <span className={styles["select-label"]}>{course.courseNm}</span>
                    </label>
                  )
-               }) :  <div className={styles["no-list"]}>카트 목록이 없습니다.</div>}
+               }) :  <div className={styles["no-list"]}>{t("message.noCart")}</div>}
              </div>
           </div>
           <div className={`${styles["select-wrap"]} ${styles["cart"]}`}>
-            <strong className={styles["title"]}>카트별</strong>
+            <strong className={styles["title"]}>{t("message.selectByCart")}</strong>
             <div className={styles["select-list"]}>
               {bookingData ? bookingData.map((booking) => {
                 return (
@@ -214,7 +218,7 @@ const Message = () => {
                     <span className={styles["select-label"]}>{booking.bookingNm}</span>
                   </label>
                 )
-              }) : <div className={styles["no-list"]}>카트 목록이 없습니다.</div> }
+              }) : <div className={styles["no-list"]}>{t("message.noCart")}</div> }
             </div>
           </div>
           <button type="button" className={styles["confirm-button"]} onClick={() => setStep(2)}>다음</button>
@@ -222,13 +226,13 @@ const Message = () => {
         }
         {step === 2 &&
           <div className={`${styles["content"]} ${styles["step2"]}`}>
-            <strong className={styles["message-desc"]}>내용을 입력해주세요</strong>
+            <strong className={styles["message-desc"]}>{t("message.inputDesc")}</strong>
             <Input
-              label="내용"
+              label="content"
               labelShow={false}
               id="sendMsg"
               name="sendMsg "
-              placeholder="내용을 입력해주세요"
+              placeholder={t("message.inputDesc")}
               value={selectedMsg.sendMsg}
               onChange={handleInputChange}
               onClear={() => {
@@ -242,7 +246,7 @@ const Message = () => {
             />
             {/*<Checkbox*/}
             {/*  id="checkbox"*/}
-            {/*  label="자동 완성 문구 등록"*/}
+            {/*  label={t("message.autocompleteText")}*/}
             {/*  checked={checked}*/}
             {/*  onChange={handleCheckboxChange}*/}
             {/*/>*/}
@@ -264,7 +268,7 @@ const Message = () => {
                 })}
               </div>
             </div>
-            <button type="button" className={styles["confirm-button"]}  onClick={handleSubmit}>전송</button>
+            <button type="button" className={styles["confirm-button"]}  onClick={handleSubmit}>{t("message.send")}</button>
           </div>
         }
       </div>

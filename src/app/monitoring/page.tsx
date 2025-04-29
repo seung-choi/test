@@ -7,9 +7,11 @@ import { useQuery } from "@tanstack/react-query";
 import { getBooking, getClub } from "@/api/main";
 import CourseType from "@/types/Course.type";
 import Menu from "@/components/Menu";
-import {useMemo, useState} from "react";
+import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const Monitoring = () => {
+  const { t } = useTranslation();
   const [activeMenu, setActiveMenu] = useState<number>(0);
 
   const { data: clubData } = useQuery({
@@ -60,13 +62,12 @@ const Monitoring = () => {
   };
 
   if (!clubData || !bookingData) {
-    return null; // 또는 로딩 스피너 보여줘도 됨
+    return null;
   }
-
 
   return (
     <div className="layout landscape">
-      <h1 className="blind">실시간 관제</h1>
+      <h1 className="blind">{t("monitoring.title")}</h1>
       <div className={styles["monitoring-container"]}>
         {clubData?.courseList.map((course: CourseType) => {
           return (
@@ -82,8 +83,8 @@ const Monitoring = () => {
                 ></span>
                 <h2 className={styles["course-name"]}>LAKE</h2>
                 <span className={styles["course-teams-state"]}>
-                  {bookingData?.filter((data) => data?.courseId === course?.courseId).length}팀
-                  경기중
+                  {bookingData?.filter((data) => data?.courseId === course?.courseId).length}
+                  {t("monitoring.teamsPlaying")}
                 </span>
               </div>
               <div className={styles["hole-list-wrap"]}>
@@ -174,7 +175,7 @@ const Monitoring = () => {
                   <button
                     type="button"
                     className={styles["course-name"]}
-                    style={ activeMenu === index ?  {border: `2px solid ${course.courseCol}`} : undefined}
+                    style={activeMenu === index ? { border: `2px solid ${course.courseCol}` } : undefined}
                     onClick={() => {
                       scrollToSection(course.courseId);
                       setActiveMenu(index);
@@ -192,7 +193,7 @@ const Monitoring = () => {
           </ul>
         </div>
         <Link href="/message" className={styles["message-button"]}>
-          <span className="blind">메세지 보내기</span>
+          <span className="blind">{t("monitoring.sendMessage")}</span>
         </Link>
         <div className={styles["menu-wrap"]}>
           <Menu courseList={clubData?.courseList || []} />

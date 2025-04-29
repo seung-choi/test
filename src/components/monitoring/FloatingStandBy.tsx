@@ -2,6 +2,7 @@
 
 import styles from "@/styles/components/monitoring/FloatingStandBy.module.scss";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface waitingCartListType {
   waitingCartList: {
@@ -19,6 +20,8 @@ interface waitingCartListType {
 }
 
 const FloatingStandBy = ({ waitingCartList }: waitingCartListType) => {
+  const { t } = useTranslation();
+
   const [open, setOpen] = useState(false);
   const [activeTab, setActiveTab] = useState(waitingCartList[0]?.courseId);
 
@@ -46,7 +49,7 @@ const FloatingStandBy = ({ waitingCartList }: waitingCartListType) => {
           <div className={styles["tab-content"]}>
             <div className={styles["standby"]}>
               <div className={styles["standby-title"]}>
-                전반 대기 <br />(
+                {t("monitoring.frontStandby")} <br />(
                 {waitingCartList.find((tab) => tab.courseId === activeTab)?.OPList.length || 0})
               </div>
               <div className={styles["standby-buggy"]}>
@@ -65,7 +68,7 @@ const FloatingStandBy = ({ waitingCartList }: waitingCartListType) => {
             </div>
             <div className={styles["standby"]}>
               <div className={styles["standby-title"]}>
-                후반 대기 <br />(
+                {t("monitoring.backStandby")}<br />(
                 {waitingCartList.find((tab) => tab.courseId === activeTab)?.IPList.length || 0})
               </div>
               <div className={styles["standby-buggy"]}>

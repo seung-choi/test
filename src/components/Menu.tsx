@@ -9,12 +9,14 @@ import useAlertModal from "@/hooks/useAlertModal";
 import { usePathname } from "next/navigation";
 import {currentCourseState} from "@/lib/recoil";
 import {useRecoilState} from "recoil";
+import { useTranslation } from "react-i18next";
 
 interface courseListProps {
   courseList: CourseType[];
 }
 
 const Menu = ({ courseList }: courseListProps) => {
+  const { t } = useTranslation();
   const router = useRouter();
   const [currentCourse, setHolecupPageState] = useRecoilState(currentCourseState);
 
@@ -27,8 +29,8 @@ const Menu = ({ courseList }: courseListProps) => {
   const handleLogout = () => {
     setAlertModalState(() => ({
       isShow: true,
-      desc: "로그아웃 하시겠습니까?",
-      okBtnLabel: "확인",
+      desc:  t("menu.logoutConfirm"),
+      okBtnLabel: t("alertModal.ok"),
       okCallback: () => {
         storage.session.clear();
         router.push("/login");
@@ -48,7 +50,7 @@ const Menu = ({ courseList }: courseListProps) => {
         <div className={styles["user-info"]}>
           <div>
             <span className={styles["user-team"]}>{`${storage.session.get("groupNm")}`}</span>
-            <p className={styles["user-name"]}>{`${storage.session.get("userNm")}`} 님</p>
+            <p className={styles["user-name"]}>{`${storage.session.get("userNm")}`} {t("menu.suffix")}</p>
           </div>
           <button type="button" className={styles["user-logout"]} onClick={handleLogout}>
             LOGOUT
@@ -57,7 +59,7 @@ const Menu = ({ courseList }: courseListProps) => {
         <div className={styles["menu-list-wrap"]}>
           <ul className={styles["menu-list"]}>
             <li className={`${styles["menu-item"]} ${styles["monitoring"]} ${path === "/monitoring" ? styles["active"] : ""}`}>
-              <button type="button" onClick={() => router.push("/monitoring")}>실시간 관제</button>
+              <button type="button" onClick={() => router.push("/monitoring")}>{t("monitoring.title")}</button>
             </li>
             {courseList?.map((course: CourseType) => {
               return (
@@ -69,7 +71,7 @@ const Menu = ({ courseList }: courseListProps) => {
                     });
                     router.push("/holecup");
                   }}>
-                    <span className={styles["sub-title"]}>홀컵핀</span>
+                    <span className={styles["sub-title"]}>{t("menu.holecupSubTitle")}</span>
                     <strong className={styles["title"]}>{course.courseNm}</strong>
                   </button>
                 </li>

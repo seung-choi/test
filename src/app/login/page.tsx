@@ -1,6 +1,6 @@
 "use client";
 
-import {FormEvent, useEffect, useState} from "react";
+import { FormEvent, useEffect, useState } from "react";
 import styles from "@/styles/pages/login/login.module.scss";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/Button";
@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { postLogin } from "@/api/main";
 import { useMutation } from "@tanstack/react-query";
 import storage from "@/utils/storage";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 export interface LoginFormAPI {
   username: string;
@@ -35,7 +35,7 @@ const Login = () => {
       localStorage.removeItem("remember");
       if (loginForm.saveId) storage.local.set({ remember: loginForm.username });
       storage.session.set(res);
-      res.initSt === "Y" ? router.push("/repassword") : router.push("/monitoring")
+      res.initSt === "Y" ? router.push("/repassword") : router.push("/monitoring");
     },
     onError: () => {
       setError(true);
@@ -69,7 +69,7 @@ const Login = () => {
     const data = {
       username: loginForm.username,
       password: loginForm.password,
-      saveId: loginForm.saveId, // 체크박스 상태 추가
+      saveId: loginForm.saveId,
     };
 
     loginMutate(data);
@@ -78,7 +78,7 @@ const Login = () => {
   useEffect(() => {
     const remembered = storage.local.get("remember");
     if (remembered) {
-      setLoginForm(prev => ({
+      setLoginForm((prev) => ({
         ...prev,
         username: remembered.toString(),
         saveId: true,
@@ -88,25 +88,27 @@ const Login = () => {
 
   return (
     <div className="layout portrait">
-      <h1 className={"blind"}>로그인</h1>
-      <span className="blind"> {t('welcome')}</span>
+      <h1 className="blind">{t("login.title")}</h1>
       <form className={styles["login-container"]} onSubmit={handleSubmit}>
         <h2 className={styles["login-title"]}>
-          아이디와 비밀번호를 <br />
-          입력해주세요
+          {t("login.subtitle").split("\n").map((line, index) => (
+            <span key={index}>
+              {line}
+            </span>
+          ))}
         </h2>
 
         <div className={styles["login-top-wrap"]}>
           {error && (
             <div className={styles["login-helper-text"]}>
-              아이디와 비밀번호를 확인하신 후 다시 입력해주세요.
+              {t("login.errorMessage")}
             </div>
           )}
           <Input
             label="ID"
             labelShow={true}
             id="username"
-            placeholder="아이디를 입력해주세요"
+            placeholder={t("login.idPlaceholder")}
             error={error}
             onChange={handleChange}
             onClear={() => setLoginForm((prev) => ({ ...prev, username: "" }))}
@@ -117,7 +119,7 @@ const Login = () => {
             labelShow={true}
             id="password"
             type="password"
-            placeholder="비밀번호를 입력해주세요"
+            placeholder={t("login.pwPlaceholder")}
             error={error}
             onChange={handleChange}
             onClear={() => setLoginForm((prev) => ({ ...prev, password: "" }))}
@@ -128,14 +130,14 @@ const Login = () => {
           <Checkbox
             id="saveId"
             size="medium"
-            label="아이디 저장"
+            label={t("login.saveId")}
             labelShow={true}
             checked={loginForm.saveId}
             onChange={handleChange}
           />
           <Button
             type="submit"
-            label="로그인"
+            label={t("login.submit")}
             block={true}
             primary={true}
             disabled={!loginForm.username || !loginForm.password}
