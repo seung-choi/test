@@ -37,6 +37,48 @@ jobs:
             rm -rf /home/ec2-user/plug-golf/mng.tar.gz
           EOF
 
+      - name: Notify Success to Teams
+        if: success()
+        run: |
+          curl -H 'Content-Type: application/json' -d "{
+            \"@type\": \"MessageCard\",
+            \"@context\": \"https://schema.org/extensions\",
+            \"summary\": \"[성공] Plug-Golf-MNG 배포\",
+            \"themeColor\": \"0076D7\",
+            \"title\": \"✅ 배포 -> 개발 환경(ec2-user@43.202.78.220)\",
+            \"sections\": [{
+              \"facts\": [
+                { \"name\": \"대상\", \"value\": \"Plug-Golf-MNG\" },
+                { \"name\": \"서버\", \"value\": \"$(hostname)\" },
+                { \"name\": \"시간\", \"value\": \"$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M:%S')\" },
+                { \"name\": \"내역\", \"value\": \"mng.tar.gz\" }
+              ],
+              \"markdown\": true
+            }]
+          }" "${{ secrets.TEAMS_WEBHOOK_URL }}"
+
+      - name: Notify Failure to Teams
+        if: failure()
+        run: |
+          ERROR_MSG=$(tail -n 10 /home/runner/_temp/_runner_command_failure_message || echo "Unknown error")
+
+          curl -H 'Content-Type: application/json' -d "{
+            \"@type\": \"MessageCard\",
+            \"@context\": \"https://schema.org/extensions\",
+            \"summary\": \"[실패] Plug-Golf-MNG 배포\",
+            \"themeColor\": \"FF0000\",
+            \"title\": \"❌ 배포 -> 개발 환경(ec2-user@43.202.78.220)\",
+            \"sections\": [{
+              \"facts\": [
+                { \"name\": \"대상\", \"value\": \"Plug-Golf-MNG\" },
+                { \"name\": \"서버\", \"value\": \"$(hostname)\" },
+                { \"name\": \"시간\", \"value\": \"$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M:%S')\" },
+                { \"name\": \"에러\", \"value\": \"${ERROR_MSG}\" }
+              ],
+              \"markdown\": true
+            }]
+          }" "${{ secrets.TEAMS_WEBHOOK_URL }}"
+
   ap-northeast-2-build:
     if: gitea.ref == 'refs/heads/ap-northeast-2'
     runs-on: ubuntu-latest
