@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { postLogin } from "@/api/main";
 import { useMutation } from "@tanstack/react-query";
 import storage from "@/utils/storage";
+import { useTranslation } from 'react-i18next';
 
 export interface LoginFormAPI {
   username: string;
@@ -17,6 +18,7 @@ export interface LoginFormAPI {
 }
 
 const Login = () => {
+  const { t } = useTranslation();
   const [loginForm, setLoginForm] = useState<LoginFormAPI>({
     username: "",
     password: "",
@@ -87,6 +89,7 @@ const Login = () => {
   return (
     <div className="layout portrait">
       <h1 className={"blind"}>로그인</h1>
+      <span className="blind"> {t('welcome')}</span>
       <form className={styles["login-container"]} onSubmit={handleSubmit}>
         <h2 className={styles["login-title"]}>
           아이디와 비밀번호를 <br />
