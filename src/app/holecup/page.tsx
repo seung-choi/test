@@ -298,6 +298,10 @@ const HoleCup = () => {
         }
     };
 
+    useEffect(() => {
+        setHolecupPinMove(false);
+    }, [selectedGreenCd, mapModeState,currentCourse, currentHole]);
+
     if(!clubData) return;
 
     return (
@@ -345,16 +349,10 @@ const HoleCup = () => {
 
                     <div className={styles["holecup-green"]}>
                         <div className={styles["map-mode-toggle"]}>
-                            <button className={`${styles["landscape"]} ${mapModeState === "LANDSCAPE" ? styles["active"] : ""}`} onClick={() => {
-                                setMapModeState("LANDSCAPE");
-                                setHolecupPinMove(false);
-                            }}>
+                            <button className={`${styles["landscape"]} ${mapModeState === "LANDSCAPE" ? styles["active"] : ""}`} onClick={() => setMapModeState("LANDSCAPE")}>
                                 <span className="blind">LANDSCAPE</span>
                             </button>
-                            <button className={`${styles["portrait"]} ${mapModeState === "PORTRAIT" ? styles["active"] : ""}`} onClick={() => {
-                                setMapModeState("PORTRAIT");
-                                setHolecupPinMove(false);
-                            }}>
+                            <button className={`${styles["portrait"]} ${mapModeState === "PORTRAIT" ? styles["active"] : ""}`} onClick={() => setMapModeState("PORTRAIT")}>
                                 <span className="blind">PORTRAIT</span>
                             </button>
                         </div>
