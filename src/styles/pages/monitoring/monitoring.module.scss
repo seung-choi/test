@@ -14,6 +14,7 @@
       border-radius: 50%;
       background: var(--MOBILE-admin-Keypurple, #2F0077) url("../../../../public/assets/image/icon-message.svg") no-repeat center / 24px;
       box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.30);
+      z-index: 2;
     }
 
     .course-section {
@@ -258,6 +259,7 @@
       border-radius: 42px;
       background: rgba(36, 0, 90, 0.30);
       box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.30);
+      z-index: 2;
       .course-list {
         display: flex;
         align-items: center;

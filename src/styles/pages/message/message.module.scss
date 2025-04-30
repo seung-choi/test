@@ -39,6 +39,11 @@
       letter-spacing: 0.4px;
     }
 
+    .select-content-inner {
+      height: calc(100% - 5.8rem - 7rem);
+      overflow: auto;
+    }
+
     .select-wrap {
       display: flex;
       flex-direction: column;

@@ -182,43 +182,45 @@ const Message = () => {
               <span key={i}>{line}<br /></span>
             ))}
           </strong>
-           <div className={styles["select-wrap"]}>
-             <strong className={styles["select-title"]}>{t("message.selectByCourse")}</strong>
-             <div className={styles["select-list"]}>
-               {clubData?.courseList ? clubData.courseList.map((course) => {
-                 return (
-                   <label key={course.courseId}>
-                     <input
-                         id={`${course.courseId}`}
-                         name="course"
-                         type="checkbox"
-                         className={styles["select-item"]}
-                         onChange={handleChangeCourse}
-                     />
-                     <span className={styles["select-label"]}>{course.courseNm}</span>
-                   </label>
-                 )
-               }) :  <div className={styles["no-list"]}>{t("message.noCart")}</div>}
-             </div>
-          </div>
-          <div className={`${styles["select-wrap"]} ${styles["cart"]}`}>
-            <strong className={styles["title"]}>{t("message.selectByCart")}</strong>
-            <div className={styles["select-list"]}>
-              {bookingData ? bookingData.map((booking) => {
-                return (
-                  <label key={booking.bookingId}>
-                    <input
-                        id={`${booking.bookingId}`}
-                        name="booking"
-                        type="checkbox"
-                        data-course-id={`${booking.courseId}`}
-                        className={styles["select-item"]}
-                        onChange={handleChangeBooking}
-                    />
-                    <span className={styles["select-label"]}>{booking.bookingNm}</span>
-                  </label>
-                )
-              }) : <div className={styles["no-list"]}>{t("message.noCart")}</div> }
+          <div className={styles["select-content-inner"]}>
+            <div className={styles["select-wrap"]}>
+               <strong className={styles["select-title"]}>{t("message.selectByCourse")}</strong>
+               <div className={styles["select-list"]}>
+                 {clubData?.courseList ? clubData.courseList.map((course) => {
+                   return (
+                     <label key={course.courseId}>
+                       <input
+                           id={`${course.courseId}`}
+                           name="course"
+                           type="checkbox"
+                           className={styles["select-item"]}
+                           onChange={handleChangeCourse}
+                       />
+                       <span className={styles["select-label"]}>{course.courseNm}</span>
+                     </label>
+                   )
+                 }) :  <div className={styles["no-list"]}>{t("message.noCart")}</div>}
+               </div>
+            </div>
+            <div className={`${styles["select-wrap"]} ${styles["cart"]}`}>
+              <strong className={styles["title"]}>{t("message.selectByCart")}</strong>
+              <div className={styles["select-list"]}>
+                {bookingData ? bookingData.map((booking) => {
+                  return (
+                    <label key={booking.bookingId}>
+                      <input
+                          id={`${booking.bookingId}`}
+                          name="booking"
+                          type="checkbox"
+                          data-course-id={`${booking.courseId}`}
+                          className={styles["select-item"]}
+                          onChange={handleChangeBooking}
+                      />
+                      <span className={styles["select-label"]}>{booking.bookingNm}</span>
+                    </label>
+                  )
+                }) : <div className={styles["no-list"]}>{t("message.noCart")}</div> }
+              </div>
             </div>
           </div>
           <button type="button" className={styles["confirm-button"]} onClick={() => setStep(2)}>다음</button>
