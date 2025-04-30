@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useMemo, useState } from "react";
 import styles from "@/styles/pages/login/login.module.scss";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/Button";
@@ -21,6 +21,7 @@ const RePassword = () => {
     password: "",
     password_recheck: "",
   });
+  const [error, setError] = useState<string>("");
   const [passwordError, setPasswordError] = useState("");
   const [passwordRecheckError, setPasswordRecheckError] = useState("");
 
@@ -29,12 +30,24 @@ const RePassword = () => {
     onSuccess: () => {
       router.push("/monitoring");
     },
+    onError: () => {
+      setError("Error");
+    },
   });
 
   const validatePassword = (password: string) => {
     const regex = /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
     return regex.test(password);
   };
+
+  const isSubmitDisabled = useMemo(() => {
+    return (
+      !passwordForm.password ||
+      !passwordForm.password_recheck ||
+      !validatePassword(passwordForm.password) ||
+      passwordForm.password !== passwordForm.password_recheck
+    );
+  }, [passwordForm]);
 
   const handleChange = ({ target }: { target: HTMLInputElement }) => {
     const { name, value } = target;
@@ -99,6 +112,11 @@ const RePassword = () => {
         </h2>
 
         <div className={styles["login-top-wrap"]}>
+          {error && (
+            <div className={styles["login-helper-text"]}>
+              {t("login.errorMessage")}
+            </div>
+          )}
           <div className={styles["input-id"]}>
             <Input
               type="text"
@@ -146,7 +164,7 @@ const RePassword = () => {
             label={t("rePassword.submit")}
             block={true}
             primary={true}
-            disabled={!passwordForm.password || !passwordForm.password_recheck}
+            disabled={isSubmitDisabled}
           />
         </div>
       </form>
