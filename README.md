@@ -40,6 +40,39 @@ http://43.202.78.220:7120/mng/v1
 - 컴포넌트명 : 파스칼케이스
   <br/>
 
+## 📝 폴더 구조
+📦src<br/>
+┣ 📂api<br/>
+┃ ┣ 📂core<br/>
+┃ ┃ ┗ 📜index.ts : axios 인스턴스를 만들고, 인스턴스를 내보냄<br/>
+┃ ┗ 📜main.ts : axios 인스턴스를 import해서, api를 호출하는 함수를 모아 놓은 파일<br/>
+┣ 📂assets<br/>
+┃ ┣ 📂icons : 아이콘 이미지 파일 모음<br/>
+┃ ┣ 📂images : 일반 이미지 파일 모음<br/>
+┃ ┗ 📜index.ts : 이미지 파일을 내보내는 역할<br/>
+┣ 📂coils : recoil 함수 관련<br/>
+┣ 📂components : 공통 컴포넌트 모음<br/>
+┣ 📂pageComponents : 각 페이지에 사용되는 컴포넌트 모음<br/>
+┣ 📂pages : nextjs pages 폴더<br/>
+┃ ┗ 📂api : 모든 페이지에 적용되는 api<br/>
+┣ 📂styles : 스타일 관련<br/>
+┃ ┣ 📂fonts : 프로젝트에 사용되는 폰트 파일 모음<br/>
+┃ ┣ 📜fonts.css : 폰트 정의 파일<br/>
+┃ ┗ 📜globals.scss : 글로벌 스타일 적용 파일<br/>
+┣ 📂themes : style 지정<br/>
+┃ ┣ 📜shared.styles.tsx : 주로 쓰이는 style 정의<br/>
+┃ ┣ 📜styles.ts : 디자인 시스템 스타일 정의<br/>
+┃ ┣ 📜theme.ts : 라이브러리 스타일 custom<br/>
+┣ 📂utils : 유틸 함수 모음<br/>
+┃ ┣ 📜cookie.ts : Cookie 관련 유틸 함수 모음<br/>
+┃ ┣ 📜getToken.ts : 토큰을 가져오는 함수 모음<br/>
+┃ ┣ 📜handleArrayState.ts : 배열 조작 유틸리티 함수<br/>
+┃ ┣ 📜helpers.ts : 공통으로 사용되는 기타 함수 모음<br/>
+┃ ┗ 📜reg.ts : 정규 표현식 함수 모음<br/>
+┣ 📜API_URL.ts : 운영 및 테스트 API URL 설정 파일<br/>
+┗ 📜middleware.ts : nextjs 미들웨어 설정 파일<br/>
+
+
 ## ⚒️ Installation
 **1. Clone the repository**
 ```bash
