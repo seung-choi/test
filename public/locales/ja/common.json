@@ -1,57 +1,57 @@
 {
   "login": {
-    "title": "로그인",
-    "subtitle": "아이디와 비밀번호를\n입력해주세요",
-    "errorMessage": "아이디와 비밀번호를 확인하신 후 다시 입력해주세요.",
-    "idPlaceholder": "아이디를 입력해주세요",
-    "pwPlaceholder": "비밀번호를 입력해주세요",
-    "saveId": "아이디 저장",
-    "submit": "로그인"
+    "title": "Log In",
+    "subtitle": "Please enter your \nID and PW",
+    "errorMessage": "Please check your ID and PW then try again.",
+    "idPlaceholder": "Please Enter ID",
+    "pwPlaceholder": "Please Enter Password",
+    "saveId": "Save ID",
+    "submit": "Log In"
   },
   "rePassword": {
-    "title": "비밀번호 재설정",
-    "subtitle": "비밀번호를 재설정 해주세요",
-    "errorMessage": "새 비밀번호가 일치하지 않습니다. 확인 후 다시 입력해주세요.",
-    "passwordPolicyMessage": "영문 소문자, 숫자, 특수문자를 포함하여 8자리 이상 입력해주세요.",
-    "passwordPlaceholder": "새로운 비밀번호를 입력해주세요",
-    "passwordRecheckPlaceholder": "비밀번호를 확인해주세요",
-    "submit": "비밀번호 재설정"
+    "title": "Reset Password",
+    "subtitle": "Please Reset Password",
+    "errorMessage": "Failed to match new PW. Please check and try again.",
+    "passwordPolicyMessage": "Please enter at least 8 characters including lowercase letters, numbers, and special characters.",
+    "passwordPlaceholder": "Please Enter New Password",
+    "passwordRecheckPlaceholder": "Please Check Password",
+    "submit": "Reset Password"
   },
   "monitoring": {
-    "title": "실시간 관제",
-    "teamsPlaying": "팀 경기중",
-    "sendMessage": "메세지 보내기",
-    "frontStandby": "전반 대기",
-    "backStandby": "후반 대기"
+    "title": "Live Monitoring",
+    "teamsPlaying": "Team Playing",
+    "sendMessage": "Send Messages",
+    "frontStandby": "1st Half Standby",
+    "backStandby": "2nd Half Standby"
   },
   "message": {
-    "title": "메세지 보내기",
-    "selectTargetDesc": "메세지를 보낼 대상을\n모두 선택해주세요",
-    "selectByCourse": "코스별",
-    "noCart": "카트 목록이 없습니다.",
-    "selectByCart": "카트별",
-    "next": "다음",
-    "inputDesc": "내용을 입력해주세요",
-    "autocompleteText": "자동 완성 문구 등록",
-    "send": "전송",
-    "sent": "전송되었습니다.",
-    "keepSending": "계속 보내기"
+    "title": "Send Messages",
+    "selectTargetDesc": "Please select all recipients\nfor the message",
+    "selectByCourse": "By Course",
+    "noCart": "No Carts Avaiable.",
+    "selectByCart": "By Cart",
+    "next": "Next",
+    "inputDesc": "Please Enter Content",
+    "autocompleteText": "Register Auto-Complete Text",
+    "send": "Send",
+    "sent": "Sent.",
+    "keepSending": "Keep Sending"
   },
   "holecup": {
-    "pinSuccess": "핀 설정을 완료하였습니다.",
-    "pinError": "오류가 발생했습니다.",
-    "save": "저장",
-    "noCourse": "코스 목록이 없습니다.",
-    "noImage": "등록된 이미지가 없습니다."
+    "pinSuccess": "PIN set up completed.",
+    "pinError": "Error Occurred.",
+    "save": "Save",
+    "noCourse": "No Course List Found.",
+    "noImage": "No Images Found."
   },
   "alertModal": {
-    "cancel": "취소",
-    "ok": "확인"
+    "cancel": "Cancel",
+    "ok": "Confirm"
   },
   "menu": {
-    "logout": "로그아웃",
-    "logoutConfirm": "로그아웃 하시겠습니까?",
-    "suffix": "님",
-    "holecupSubTitle": "홀컵핀"
+    "logout": "Log Out",
+    "logoutConfirm": "Would you like to Log Out?",
+    "suffix": "",
+    "holecupSubTitle": "Hole PIN"
   }
 }
