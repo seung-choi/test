@@ -49,7 +49,7 @@ const HoleCup = () => {
         state : false,
         mms: ""
     });
-    const mapRef = useRef<HTMLDivElement | null>(null);
+    const mapRef = useRef<HTMLImageElement | null>(null);
 
     const [currentCourse, setCourseIdState] = useRecoilState(currentCourseState);
     const [currentHole, setCurrentHoleState] = useRecoilState(currentHoleState);
@@ -348,8 +348,8 @@ const HoleCup = () => {
                         ))}
                     </ul>
 
-                    <div className={styles["holecup-map"]} ref={mapRef} onClick={handleMapClick}>
-                        {selectedGreenImageUrl ? <img alt="selected green" src={selectedGreenImageUrl} /> : <div className={styles["no-image"]}>{t("holecup.noImage")}</div>}
+                    <div className={styles["holecup-map"]}>
+                        {selectedGreenImageUrl ? <img alt="selected green" src={selectedGreenImageUrl} ref={mapRef} onClick={handleMapClick} /> : <div className={styles["no-image"]}>{t("holecup.noImage")}</div>}
                         {pointerGreenPos &&
                             <svg className={styles["pointer-pin"]} style={{ top: pointerGreenPos.y, left: pointerGreenPos.x }} xmlns="http://www.w3.org/2000/svg" width="29" height="31" viewBox="0 0 29 31" fill="none">
                                 <path d="M22.5 28.5C22.5 28.5058 22.4996 28.5578 22.4023 28.6611C22.3028 28.7669 22.1314 28.8929 21.8677 29.0284C21.3418 29.2987 20.548 29.5569 19.5255 29.7792C17.4887 30.222 14.6509 30.5 11.5 30.5C8.34905 30.5 5.51135 30.222 3.47449 29.7792C2.45198 29.5569 1.65823 29.2987 1.13229 29.0284C0.868647 28.8929 0.697231 28.7669 0.597717 28.6611C0.500441 28.5578 0.5 28.5058 0.5 28.5C0.5 28.4942 0.500441 28.4422 0.597717 28.3389C0.697231 28.2331 0.868647 28.1071 1.13229 27.9716C1.65823 27.7013 2.45198 27.4431 3.47449 27.2208C5.51135 26.778 8.34905 26.5 11.5 26.5C14.6509 26.5 17.4887 26.778 19.5255 27.2208C20.548 27.4431 21.3418 27.7013 21.8677 27.9716C22.1314 28.1071 22.3028 28.2331 22.4023 28.3389C22.4996 28.4422 22.5 28.4942 22.5 28.5Z" fill="#17462A" stroke="#191E1B"/>
