@@ -99,7 +99,7 @@ const RePassword = () => {
   };
 
   return (
-    <div className="layout portrait">
+    <>
       <h1 className="blind">{t("rePassword.title")}</h1>
       <form className={styles["login-container"]} onSubmit={handleSubmit}>
         <h2 className={styles["login-title"]}>
@@ -168,7 +168,7 @@ const RePassword = () => {
           />
         </div>
       </form>
-    </div>
+    </>
   );
 };
 

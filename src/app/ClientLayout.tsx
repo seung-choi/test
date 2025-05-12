@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { RecoilRoot } from "recoil";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AlertModal from "@/components/AlertModal";
@@ -11,15 +11,53 @@ import i18n from "@/lib/i18n";
 export const ClientLayout = ({ children }: { children: React.ReactNode }) => {
   const queryClient = new QueryClient();
   const router = useRouter();
+  const pathname = usePathname();
   const [i18nReady, setI18nReady] = useState(false);
+  const [orientationClass, setOrientationClass] = useState("portrait");
 
   useEffect(() => {
+    const isLandscapePage = pathname === "/monitoring/" || pathname === "/holecup/";
+
+    console.log("pathname", pathname);
     const handleOrientationChange = () => {
-      router.refresh(); // 새로고침 대신 Soft Refresh
+      const { orientation } = window.screen;
+      const isLandscape = orientation?.type?.includes("landscape") || window.innerWidth > window.innerHeight;
+
+      setOrientationClass((prev) => {
+        if (isLandscapePage) return isLandscape ? "landscape" : "rotate-landscape";
+        return isLandscape ? "rotate-portrait" : "portrait";
+      });
     };
 
+    handleOrientationChange();
     window.addEventListener("orientationchange", handleOrientationChange);
-    return () => window.removeEventListener("orientationchange", handleOrientationChange);
+    window.addEventListener("resize", handleOrientationChange);
+    return () => {
+      window.removeEventListener("orientationchange", handleOrientationChange);
+      window.removeEventListener("resize", handleOrientationChange);
+    };
+  }, [pathname]);
+
+  useEffect(() => {
+    const currentPath = window.location.pathname;
+    if (currentPath !== "/" && sessionStorage.length > 1) {
+      router.push(currentPath);
+    } else if (
+      sessionStorage.length < 1 &&
+      currentPath !== "/" &&
+      currentPath !== "/login" &&
+      currentPath !== "/repassword"
+    ) {
+      router.push("/login");
+    }
+
+    if (i18n.isInitialized) {
+      setI18nReady(true);
+    } else {
+      i18n.on('initialized', () => {
+        setI18nReady(true);
+      });
+    }
   }, [router]);
 
   useEffect(() => {
@@ -54,8 +92,10 @@ export const ClientLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
-        {children}
+        <div className={`layout ${orientationClass}`}>
+          {children}
         <AlertModal />
+        </div>
       </QueryClientProvider>
     </RecoilRoot>
   );

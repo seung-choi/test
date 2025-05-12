@@ -87,7 +87,7 @@ const Login = () => {
   }, []);
 
   return (
-    <div className="layout portrait">
+    <>
       <h1 className="blind">{t("login.title")}</h1>
       <form className={styles["login-container"]} onSubmit={handleSubmit}>
         <h2 className={styles["login-title"]}>
@@ -144,7 +144,7 @@ const Login = () => {
           />
         </div>
       </form>
-    </div>
+    </>
   );
 };
 

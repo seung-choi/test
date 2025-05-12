@@ -49,8 +49,6 @@ body {
   font-family: var(--main-font-family), 'dotum', serif;
   color: var(--main-font-color);
   font-weight: 400;
-  padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom);
 }
 
 body * {
@@ -257,28 +255,42 @@ body ::-webkit-scrollbar-track {
 .layout {
   width: 100%;
   height: 100%;
-  @media (orientation: portrait) {
-    &.landscape {
-      transform: rotate(90deg);
-      transform-origin: right top;
-      position: absolute;
-      top: calc(100% + env(safe-area-inset-top));
-      right: 0;
-      width: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
-      height: calc(100vw - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
-    }
-  }
+}
 
-  //가로 일때, 세로 view로 만들기
-  @media (orientation: landscape) {
-    &.portrait {
-      transform: rotate(90deg);
-      transform-origin: right top;
-      position: absolute;
-      top: calc(100% + env(safe-area-inset-top));
-      right: 0;
-      width: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
-      height: calc(100vw - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
-    }
-  }
+.layout.portrait {
+  transform: none;
+  width: 100vw;
+  height: 100vh;
+  padding-top: env(safe-area-inset-top);
+}
+
+.layout.rotate-portrait {
+  transform: rotate(-90deg) translateX(-100%);
+  transform-origin: left top;
+  width: 100vh;
+  height: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding-top: env(safe-area-inset-left);
+  overflow: hidden;
+}
+
+.layout.landscape {
+  transform: none;
+  width: 100vw;
+  height: 100vh;
+  padding-top: env(safe-area-inset-top);
+}
+
+.layout.rotate-landscape {
+  transform: rotate(90deg) translateY(-100%);
+  transform-origin: left top;
+  width: 100vh;
+  height: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding-left: env(safe-area-inset-top);
+  overflow: hidden;
 }

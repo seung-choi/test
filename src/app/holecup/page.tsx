@@ -323,7 +323,7 @@ const HoleCup = () => {
     if(!clubData) return;
 
     return (
-        <div className="layout landscape">
+        <>
             <div className={styles.holecup}>
                 <div className={styles["holecup-content"]}>
                     <ul className={styles["holecup-pin"]}>
@@ -443,7 +443,7 @@ const HoleCup = () => {
                 </div>
             </div>
             <Menu courseList={clubData?.courseList || []} />
-        </div>
+        </>
     );
 };
 

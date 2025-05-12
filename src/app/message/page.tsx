@@ -167,7 +167,7 @@ const Message = () => {
 
 
   return (
-    <div className="layout portrait">
+    <>
       <div className={styles["message-container"]}>
         <div className={styles["head"]}>
           <button type="button" className={styles["head-arrow"]} onClick={handleArrow}>
@@ -274,7 +274,7 @@ const Message = () => {
           </div>
         }
       </div>
-    </div>
+    </>
   );
 };
 

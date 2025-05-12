@@ -66,7 +66,7 @@ const Monitoring = () => {
   }
 
   return (
-    <div className="layout landscape">
+    <>
       <h1 className="blind">{t("monitoring.title")}</h1>
       <div className={styles["monitoring-container"]}>
         {clubData?.courseList.map((course: CourseType) => {
@@ -200,7 +200,7 @@ const Monitoring = () => {
           <FloatingStandBy waitingCartList={waitingCartList} />
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
