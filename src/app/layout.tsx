@@ -3,8 +3,8 @@ import "./globals.scss";
 import { ClientLayout } from "@/app/ClientLayout";
 
 export const metadata: Metadata = {
-  title: "[Mobile] admin",
-  description: "Mobile admin page",
+  title: "Plug-Golf",
+  description: "Plug-Golf admin page",
 };
 
 export default function RootLayout({

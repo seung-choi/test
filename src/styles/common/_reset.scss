@@ -264,10 +264,8 @@ body ::-webkit-scrollbar-track {
       position: absolute;
       top: 100%;
       right: 0;
-      width: 100vh !important;
+      width: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
       height: 100vw !important;
-      padding-left: env(safe-area-inset-top);
-      padding-right: env(safe-area-inset-bottom);
     }
   }
 
@@ -279,10 +277,8 @@ body ::-webkit-scrollbar-track {
       position: absolute;
       top: 100%;
       right: 0;
-      width: 100vh !important;
+      width: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
       height: 100vw !important;
-      padding-left: env(safe-area-inset-top);
-      padding-right: env(safe-area-inset-bottom);
     }
   }
 }
