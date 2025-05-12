@@ -266,8 +266,8 @@ body ::-webkit-scrollbar-track {
       right: 0;
       width: 100vh !important;
       height: 100vw !important;
-      padding-top: env(safe-area-inset-top);
-      padding-bottom: env(safe-area-inset-bottom);
+      padding-left: env(safe-area-inset-top);
+      padding-right: env(safe-area-inset-bottom);
     }
   }
 

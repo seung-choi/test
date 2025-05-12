@@ -84,13 +84,29 @@ const HoleCup = () => {
         },
     });
 
+    const getCorrectedClickCoords = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (!mapRef.current) return { x: 0, y: 0 };
+
+        const rect = mapRef.current.getBoundingClientRect();
+
+        // iOS Safari 등에서 rotate(90deg)인 상태의 client 좌표 보정
+        if (window.matchMedia("(orientation: portrait)").matches) {
+            const rotatedX = e.clientY - rect.top;
+            const rotatedY = rect.right - e.clientX;
+            return { x: rotatedX, y: rotatedY };
+        }
+
+        return {
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top,
+        };
+    };
+
     const handleMapClick = (e: React.MouseEvent<HTMLDivElement>) => {
         if (typeof window === "undefined" || !mapRef.current || !finalGreenImgSize || !finalGreenMap) return;
         setHolecupPinMove(true);
         // 랜더링된 Green 이미지상의 pin 좌표
-        const rect = mapRef.current.getBoundingClientRect();
-        const clickX = e.clientX - rect.left;
-        const clickY = e.clientY - rect.top;
+        const { x: clickX, y: clickY } = getCorrectedClickCoords(e);
         setPointerGreenPos({ x: clickX, y: clickY });
 
         // 원본 Green 이미지상의 pin 좌표
