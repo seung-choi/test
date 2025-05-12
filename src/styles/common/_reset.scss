@@ -262,7 +262,7 @@ body ::-webkit-scrollbar-track {
       transform: rotate(90deg);
       transform-origin: right top;
       position: absolute;
-      top: calc(100% - env(safe-area-inset-top));
+      top: calc(100% + env(safe-area-inset-top));
       right: 0;
       width: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
       height: calc(100vw - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
@@ -275,7 +275,7 @@ body ::-webkit-scrollbar-track {
       transform: rotate(90deg);
       transform-origin: right top;
       position: absolute;
-      top: calc(100% - env(safe-area-inset-top));
+      top: calc(100% + env(safe-area-inset-top));
       right: 0;
       width: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
       height: calc(100vw - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
