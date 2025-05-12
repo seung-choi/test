@@ -7,11 +7,14 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AlertModal from "@/components/AlertModal";
 import "@/lib/i18n";
 import i18n from "@/lib/i18n";
+import useAutoRefreshOnRotate from "@/hooks/useAutoRefreshOnRotate";
 
 export const ClientLayout = ({ children }: { children: React.ReactNode }) => {
   const queryClient = new QueryClient();
   const router = useRouter();
   const [i18nReady, setI18nReady] = useState(false);
+
+  useAutoRefreshOnRotate();
 
   useEffect(() => {
     const currentPath = window.location.pathname;
