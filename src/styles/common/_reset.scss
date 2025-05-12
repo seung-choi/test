@@ -49,6 +49,8 @@ body {
   font-family: var(--main-font-family), 'dotum', serif;
   color: var(--main-font-color);
   font-weight: 400;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 body * {
@@ -264,6 +266,8 @@ body ::-webkit-scrollbar-track {
       right: 0;
       width: 100vh !important;
       height: 100vw !important;
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
     }
   }
 
@@ -277,6 +281,8 @@ body ::-webkit-scrollbar-track {
       right: 0;
       width: 100vh !important;
       height: 100vw !important;
+      padding-left: env(safe-area-inset-top);
+      padding-right: env(safe-area-inset-bottom);
     }
   }
 }
