@@ -32,6 +32,7 @@ const HoleCup = () => {
     const [selectedGreenCd, setSelectedGreenCd] = useState<string | null>(null);
     const [selectedPinGreenCd, setSelectedPinGreenCd] = useState<string | null>(null);
     const [pointerGreenPos, setPointerGreenPos] = useState<{ x: number; y: number } | null>(null);
+    const [finalGreenPos, setFinalGreenPos] = useState<{ x: number; y: number } | null>(null);
     const [pointerOriginLSGreenPos, setPointerOriginLSGreenPos] = useState<{ x: number; y: number }>();
     const [pointerOriginLSHolePinPos, setPointerOriginLSHolePinPos] = useState<{ x: number; y: number } | null>();
     const [pointerOriginPTGreenPos, setPointerOriginPTGreenPos] = useState<{ x: number; y: number }>();
@@ -103,7 +104,7 @@ const HoleCup = () => {
     };
 
     const handleMapClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (typeof window === "undefined" || !mapRef.current || !finalGreenImgSize || !finalGreenMap) return;
+        if (typeof window === "undefined" || !mapRef.current || !finalGreenImgSize || !finalGreenMap || !finalGreenPos) return;
         setHolecupPinMove(true);
         // 랜더링된 Green 이미지상의 pin 좌표
         const { x: clickX, y: clickY } = getCorrectedClickCoords(e);
@@ -122,40 +123,37 @@ const HoleCup = () => {
             setPinLSColor(selectedPinColor);
         }
 
-        const originalGreenWH = originGreenImgSize;
-        const originalGreenX = finalGreenMap.x;
-        const originalGreenY = finalGreenMap.y;
-
-        const scaleWH = scaleGreenImgSize;
-        const finalWH = finalGreenImgSize.width;
-
-        const scaleRatio = scaleWH / originalGreenWH;
-
-        const offsetX = (finalWH - scaleWH) / 2;
-        const offsetY = (finalWH - scaleWH) / 2;
-
-        const mapClickToOriginal = (clickX : number, clickY : number) =>  {
-            const relativeX = (clickX - offsetX) / scaleRatio;
-            const relativeY = (clickY - offsetY) / scaleRatio;
-            const originalX = originalGreenX + relativeX;
-            const originalY = originalGreenY + relativeY;
-
-            return { originalX, originalY };
+        const movePos  = {
+            x: (clickX * scaleX) - finalGreenPos?.x,
+            y: (clickY * scaleY) - finalGreenPos?.y
         }
 
-        const mapped = mapClickToOriginal(clickX, clickY);
+        const scale = originGreenImgSize / scaleGreenImgSize;
+
+        const scalePos = {
+            x: movePos.x * scale,
+            y: movePos.y * scale,
+        }
 
         if(mapModeState === "PORTRAIT") {
-            setPointerOriginPTHolePinPos({
-                x: mapped.originalX,
-                y: mapped.originalY,
-            });
+            setPointerOriginPTHolePinPos(
+              {
+                  x: Number(currentInitialOriginHolePos?.x) + Number(scalePos.x),
+                  y: Number(currentInitialOriginHolePos?.y) + Number(scalePos.x)
+              }
+            )
         } else {
-            setPointerOriginLSHolePinPos({
-                x: mapped.originalX,
-                y: mapped.originalY,
-            });
+            setPointerOriginLSHolePinPos(
+              {
+                  x: Number(currentInitialOriginHolePos?.x) + Number(scalePos.x),
+                  y: Number(currentInitialOriginHolePos?.y) + Number(scalePos.x)
+              }
+            )
         }
+
+        //원본 그린 이미지의 홀핀 위치에서 이동된 홀핀 위치를 가져온다
+
+        //이동된 px의 비율을  originGreenImgSize에서 scaleGreenImgSize에서 줄어든 originGreenImgSize값의 비율만큼 x,y값을 구한다.
 
 
     };
@@ -168,6 +166,21 @@ const HoleCup = () => {
         if (!currentCourseData || !currentHole.id) return undefined;
         return currentCourseData.holeList.find(hole => hole.holeId === currentHole.id);
     }, [currentCourseData, currentHole]);
+
+    const currentInitialOriginHolePos = useMemo(() => {
+        if (!currentHoleData) return undefined;
+
+        const foundMap = currentHoleData?.mapList.find(
+          map => map.mapMode === mapModeState && map.mapCd === "PIN_HOLE" && map.mapType === "DOM"
+        );
+
+        if (!foundMap || !foundMap.mapY) return undefined;
+
+        return {
+            x: foundMap.mapX,
+            y: foundMap.mapY
+        };
+    }, [currentHoleData, mapModeState]);
 
     const currentGreenImageList = useMemo(() => {
         if (!currentHoleData?.mapList || !clubData?.clubMode) return [];
@@ -222,6 +235,7 @@ const HoleCup = () => {
             let finalMap = null;
 
             if (greenImageData?.mapX) {
+                // scale된 사이즈에서 finalSize만큼 채워넣음
                 const [w, h] = greenImageData.mapX.split("x").map(Number);
                 finalSize = { width: w, height: h };
                 setFinalGreenImgSize(finalSize);
@@ -235,8 +249,9 @@ const HoleCup = () => {
 
             if (greenImageData?.mapZ) {
                 const [origin, scale] = greenImageData.mapZ.split("x").map(Number);
-                setScaleGreenImgSize(scale);
+                // 원본 이미지 사이즈
                 setOriginGreenImgSize(origin);
+                setScaleGreenImgSize(scale);
             }
 
             const matchedPin = pinGreenList.find(pin => pin.mapCd === `PIN_GREEN_${suffix}`);
@@ -251,7 +266,11 @@ const HoleCup = () => {
                 const { width: renderedWidth, height: renderedHeight } = mapRef.current.getBoundingClientRect();
                 const scaleX = renderedWidth / finalSize.width;
                 const scaleY = renderedHeight / finalSize.height;
-                console.log(scaleX, scaleY);
+
+                setFinalGreenPos({
+                    x: Number(matchedPin.mapX),
+                    y: Number(matchedPin.mapY)
+                });
 
                 setPointerGreenPos({
                     x: Number(matchedPin.mapX) * scaleX,
@@ -261,6 +280,11 @@ const HoleCup = () => {
             }
         }
     }, [selectedGreenCd, currentHole, currentCourse, mapModeState]);
+
+
+    useEffect(() => {
+        setHolecupPinMove(false);
+    }, [selectedGreenCd, mapModeState,currentCourse, currentHole]);
 
     const handleSubmit = () => {
         if (!pointerGreenPos || !finalGreenImgSize || !mapRef.current) return;
@@ -315,10 +339,6 @@ const HoleCup = () => {
             postMapMutate(payload);
         }
     };
-
-    useEffect(() => {
-        setHolecupPinMove(false);
-    }, [selectedGreenCd, mapModeState,currentCourse, currentHole]);
 
     if(!clubData) return;
 
