@@ -268,8 +268,8 @@ body ::-webkit-scrollbar-track {
 .layout.rotate-portrait {
   transform: rotate(-90deg) translateX(-100%);
   transform-origin: left top;
-  min-width:100svh;
-  max-width:100lvh;
+  min-width:calc(100svh - env(safe-area-inset-top));
+  max-width:calc(100svh - env(safe-area-inset-top));
   height: 100vw;
   position: absolute;
   top: 0;
