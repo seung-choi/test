@@ -18,7 +18,6 @@ export const ClientLayout = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const isLandscapePage = pathname === "/monitoring/" || pathname === "/holecup/";
 
-    console.log("pathname", pathname);
     const handleOrientationChange = () => {
       const { orientation } = window.screen;
       const isLandscape = orientation?.type?.includes("landscape") || window.innerWidth > window.innerHeight;
