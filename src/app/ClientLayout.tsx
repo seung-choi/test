@@ -19,10 +19,11 @@ export const ClientLayout = ({ children }: { children: React.ReactNode }) => {
     const isLandscapePage = pathname === "/monitoring/" || pathname === "/holecup/";
 
     const handleOrientationChange = () => {
-      const { orientation } = window.screen;
-      const isLandscape = orientation?.type?.includes("landscape") || window.innerWidth > window.innerHeight;
+      const orientation = window.screen && window.screen.orientation;
+      const orientationType = orientation && orientation.type;
+      const isLandscape = (orientationType && orientationType.includes("landscape")) || window.innerWidth > window.innerHeight;
 
-      setOrientationClass((prev) => {
+      setOrientationClass(() => {
         if (isLandscapePage) return isLandscape ? "landscape" : "rotate-landscape";
         return isLandscape ? "rotate-portrait" : "portrait";
       });
