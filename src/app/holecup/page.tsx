@@ -139,23 +139,17 @@ const HoleCup = () => {
             setPointerOriginPTHolePinPos(
               {
                   x: Number(currentInitialOriginHolePos?.x) + Number(scalePos.x),
-                  y: Number(currentInitialOriginHolePos?.y) + Number(scalePos.x)
+                  y: Number(currentInitialOriginHolePos?.y) + Number(scalePos.y)
               }
             )
         } else {
             setPointerOriginLSHolePinPos(
               {
                   x: Number(currentInitialOriginHolePos?.x) + Number(scalePos.x),
-                  y: Number(currentInitialOriginHolePos?.y) + Number(scalePos.x)
+                  y: Number(currentInitialOriginHolePos?.y) + Number(scalePos.y)
               }
             )
         }
-
-        //원본 그린 이미지의 홀핀 위치에서 이동된 홀핀 위치를 가져온다
-
-        //이동된 px의 비율을  originGreenImgSize에서 scaleGreenImgSize에서 줄어든 originGreenImgSize값의 비율만큼 x,y값을 구한다.
-
-
     };
 
     const currentCourseData = useMemo(() => {
