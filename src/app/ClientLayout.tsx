@@ -60,28 +60,6 @@ export const ClientLayout = ({ children }: { children: React.ReactNode }) => {
     }
   }, [router]);
 
-  useEffect(() => {
-    const currentPath = window.location.pathname;
-    if (currentPath !== "/" && sessionStorage.length > 1) {
-      router.push(currentPath);
-    } else if (
-      sessionStorage.length < 1 &&
-      currentPath !== "/" &&
-      currentPath !== "/login" &&
-      currentPath !== "/repassword"
-    ) {
-      router.push("/login");
-    }
-
-    if (i18n.isInitialized) {
-      setI18nReady(true);
-    } else {
-      i18n.on('initialized', () => {
-        setI18nReady(true);
-      });
-    }
-  }, [router]);
-
   if (!i18nReady) {
     // 초기화 전에는 아무 것도 안 보여줌
     return null;
