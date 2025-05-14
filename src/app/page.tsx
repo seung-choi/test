@@ -16,7 +16,7 @@ export default function Splash() {
   }, [router]);
 
   return (
-    <div className="layout portrait">
+    <>
       <div className={styles["splash-container"]}>
         <div className={styles["splash-bg"]}></div>
         <div className={styles["splash-ribbon"]}>
@@ -30,6 +30,6 @@ export default function Splash() {
           <p>Golf</p>
         </h1>
       </div>
-    </div>
+    </>
   );
 }
