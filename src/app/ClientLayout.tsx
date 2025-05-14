@@ -19,67 +19,73 @@ export const ClientLayout = ({ children }: { children: React.ReactNode }) => {
     const isLandscapePage = pathname === "/monitoring/" || pathname === "/holecup/";
 
     const handleOrientationChange = () => {
-      // 더 안전한 방향 감지 로직 사용
-      const isLandscape = window.innerWidth > window.innerHeight;
+      const { orientation } = window.screen;
+      const isLandscape = orientation?.type?.includes("landscape") || window.innerWidth > window.innerHeight;
 
-      setOrientationClass(() => {
+      setOrientationClass((prev) => {
         if (isLandscapePage) return isLandscape ? "landscape" : "rotate-landscape";
         return isLandscape ? "rotate-portrait" : "portrait";
       });
     };
 
-    // 초기 방향 설정
     handleOrientationChange();
-
-    // 이벤트 리스너 등록
-    const events = ["orientationchange", "resize"];
-    events.forEach(event => window.addEventListener(event, handleOrientationChange));
-
-    // 클린업 함수
+    window.addEventListener("orientationchange", handleOrientationChange);
+    window.addEventListener("resize", handleOrientationChange);
     return () => {
-      events.forEach(event => window.removeEventListener(event, handleOrientationChange));
+      window.removeEventListener("orientationchange", handleOrientationChange);
+      window.removeEventListener("resize", handleOrientationChange);
     };
   }, [pathname]);
 
   useEffect(() => {
-    try {
-      const currentPath = window.location.pathname;
-      const hasSession = sessionStorage && sessionStorage.length > 1;
+    const currentPath = window.location.pathname;
+    if (currentPath !== "/" && sessionStorage.length > 1) {
+      router.push(currentPath);
+    } else if (
+      sessionStorage.length < 1 &&
+      currentPath !== "/" &&
+      currentPath !== "/login" &&
+      currentPath !== "/repassword"
+    ) {
+      router.push("/login");
+    }
 
-      if (currentPath !== "/" && hasSession) {
-        router.push(currentPath);
-      } else if (
-        !hasSession &&
-        currentPath !== "/" &&
-        currentPath !== "/login" &&
-        currentPath !== "/repassword"
-      ) {
-        router.push("/login");
-      }
-
-      const handleI18nInit = () => {
-        setI18nReady(true);
-      };
-
-      if (i18n.isInitialized) {
-        handleI18nInit();
-      } else {
-        i18n.on('initialized', handleI18nInit);
-      }
-
-      return () => {
-        i18n.off('initialized', handleI18nInit);
-      };
-    } catch (error) {
-      console.error('Error in initialization:', error);
-      // 기본적으로 초기화 완료로 처리하여 앱이 작동하도록 함
+    if (i18n.isInitialized) {
       setI18nReady(true);
+    } else {
+      i18n.on('initialized', () => {
+        setI18nReady(true);
+      });
     }
   }, [router]);
 
-  // 초기화 전 로딩 상태 표시
+  useEffect(() => {
+    const currentPath = window.location.pathname;
+    if (currentPath !== "/" && sessionStorage.length > 1) {
+      router.push(currentPath);
+    } else if (
+      sessionStorage.length < 1 &&
+      currentPath !== "/" &&
+      currentPath !== "/login" &&
+      currentPath !== "/repassword"
+    ) {
+      router.push("/login");
+    }
+
+    if (i18n.isInitialized) {
+      setI18nReady(true);
+    } else {
+      i18n.on('initialized', () => {
+        setI18nReady(true);
+      });
+    }
+  }, [router]);
+
   if (!i18nReady) {
-    return <div className="loading-container">Loading...</div>;
+    // 초기화 전에는 아무 것도 안 보여줌
+    return null;
+    // 또는 로딩 컴포넌트
+    // return <div>Loading...</div>;
   }
 
   return (
@@ -87,7 +93,7 @@ export const ClientLayout = ({ children }: { children: React.ReactNode }) => {
       <QueryClientProvider client={queryClient}>
         <div className={`layout ${orientationClass}`}>
           {children}
-          <AlertModal />
+        <AlertModal />
         </div>
       </QueryClientProvider>
     </RecoilRoot>
