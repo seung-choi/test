@@ -10,6 +10,7 @@
   border-radius: 8px;
   line-height: 40px;
   border:none;
+  white-space: nowrap;
 
   &.primary {
     background-color: var(--MOBILE-admin-Keypurple, #2F0077);

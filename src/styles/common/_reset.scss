@@ -300,3 +300,12 @@ body ::-webkit-scrollbar-track {
   padding-left: env(safe-area-inset-top);
   overflow: hidden;
 }
+
+.auto-font-size-content {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}

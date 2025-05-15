@@ -4,12 +4,16 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import en from '../../public/locales/en/common.json';
 import ko from '../../public/locales/ko/common.json';
+import ja from '../../public/locales/ja/common.json';
+import th from '../../public/locales/th/common.json';
 
 const detectLanguage = () => {
   if (typeof window !== 'undefined') {
     const lang = window.navigator.language;
     if (lang.startsWith('ko')) return 'ko';
     if (lang.startsWith('en')) return 'en';
+    if (lang.startsWith('ja')) return 'ja';
+    if (lang.startsWith('th')) return 'th';
     return 'en';
   }
   return 'en';
@@ -24,6 +28,8 @@ i18n
     resources: {
       en: { translation: en },
       ko: { translation: ko },
+      ja: { translation: ja },
+      th: { translation: th },
     },
     interpolation: {
       escapeValue: false,

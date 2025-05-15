@@ -10,6 +10,7 @@ import { usePathname } from "next/navigation";
 import {currentCourseState} from "@/lib/recoil";
 import {useRecoilState} from "recoil";
 import { useTranslation } from "react-i18next";
+import AutoFontSizeText from "@/components/AutoFontSizeText";
 
 interface courseListProps {
   courseList: CourseType[];
@@ -59,7 +60,9 @@ const Menu = ({ courseList }: courseListProps) => {
         <div className={styles["menu-list-wrap"]}>
           <ul className={styles["menu-list"]}>
             <li className={`${styles["menu-item"]} ${styles["monitoring"]} ${path === "/monitoring" ? styles["active"] : ""}`}>
-              <button type="button" onClick={() => router.push("/monitoring")}>{t("monitoring.title")}</button>
+              <button type="button" onClick={() => router.push("/monitoring")}>
+                <AutoFontSizeText text={t("monitoring.title")} maxFontSize={15} minFontSize={10} />
+              </button>
             </li>
             {courseList?.map((course: CourseType) => {
               return (
