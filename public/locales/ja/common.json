@@ -1,57 +1,57 @@
 {
   "login": {
-    "title": "Log In",
-    "subtitle": "Please enter your \nID and PW",
-    "errorMessage": "Please check your ID and PW then try again.",
-    "idPlaceholder": "Please Enter ID",
-    "pwPlaceholder": "Please Enter Password",
-    "saveId": "Save ID",
-    "submit": "Log In"
+    "title": "ログイン",
+    "subtitle": "IDとパスワードを\n入力してください",
+    "errorMessage": "IDとパスワードを確認して、もう一度お試しください。",
+    "idPlaceholder": "IDを入力してください",
+    "pwPlaceholder": "パスワードを入力してください",
+    "saveId": "IDを保存",
+    "submit": "ログイン"
   },
   "rePassword": {
-    "title": "Reset Password",
-    "subtitle": "Please Reset Password",
-    "errorMessage": "Failed to match new PW. Please check and try again.",
-    "passwordPolicyMessage": "Please enter at least 8 characters including lowercase letters, numbers, and special characters.",
-    "passwordPlaceholder": "Please Enter New Password",
-    "passwordRecheckPlaceholder": "Please Check Password",
-    "submit": "Reset Password"
+    "title": "パスワードのリセット",
+    "subtitle": "パスワードをリセットしてください",
+    "errorMessage": "新しいパスワードが一致しません。確認して再試行してください。",
+    "passwordPolicyMessage": "8文字以上で小文字、数字、記号を含めてください。",
+    "passwordPlaceholder": "新しいパスワードを入力",
+    "passwordRecheckPlaceholder": "パスワードを再確認",
+    "submit": "パスワードをリセット"
   },
   "monitoring": {
-    "title": "Live Monitoring",
-    "teamsPlaying": "Team Playing",
-    "sendMessage": "Send Messages",
-    "frontStandby": "1st Half Standby",
-    "backStandby": "2nd Half Standby"
+    "title": "ライブモニタリング",
+    "teamsPlaying": "プレイ中のチーム",
+    "sendMessage": "メッセージ送信",
+    "frontStandby": "前半待機",
+    "backStandby": "後半待機"
   },
   "message": {
-    "title": "Send Messages",
-    "selectTargetDesc": "Please select all recipients\nfor the message",
-    "selectByCourse": "By Course",
-    "noCart": "No Carts Avaiable.",
-    "selectByCart": "By Cart",
-    "next": "Next",
-    "inputDesc": "Please Enter Content",
-    "autocompleteText": "Register Auto-Complete Text",
-    "send": "Send",
-    "sent": "Sent.",
-    "keepSending": "Keep Sending"
+    "title": "メッセージ送信",
+    "selectTargetDesc": "メッセージを送る相手を\nすべて選択してください",
+    "selectByCourse": "コース別",
+    "noCart": "カートがありません",
+    "selectByCart": "カート別",
+    "next": "次へ",
+    "inputDesc": "内容を入力してください",
+    "autocompleteText": "自動入力文を登録",
+    "send": "送信",
+    "sent": "送信しました",
+    "keepSending": "継続して送信"
   },
   "holecup": {
-    "pinSuccess": "PIN set up completed.",
-    "pinError": "Error Occurred.",
-    "save": "Save",
-    "noCourse": "No Course List Found.",
-    "noImage": "No Images Found."
+    "pinSuccess": "PINの設定が完了しました",
+    "pinError": "エラーが発生しました",
+    "save": "保存",
+    "noCourse": "コース一覧が見つかりません",
+    "noImage": "画像が見つかりません"
   },
   "alertModal": {
-    "cancel": "Cancel",
-    "ok": "Confirm"
+    "cancel": "キャンセル",
+    "ok": "確認"
   },
   "menu": {
-    "logout": "Log Out",
-    "logoutConfirm": "Would you like to Log Out?",
+    "logout": "ログアウト",
+    "logoutConfirm": "ログアウトしますか？",
     "suffix": "",
-    "holecupSubTitle": "Hole PIN"
+    "holecupSubTitle": "ホールPIN"
   }
 }

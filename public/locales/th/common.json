@@ -1,57 +1,57 @@
 {
   "login": {
-    "title": "Log In",
-    "subtitle": "Please enter your \nID and PW",
-    "errorMessage": "Please check your ID and PW then try again.",
-    "idPlaceholder": "Please Enter ID",
-    "pwPlaceholder": "Please Enter Password",
-    "saveId": "Save ID",
-    "submit": "Log In"
+    "title": "เข้าสู่ระบบ",
+    "subtitle": "กรุณาใส่\nไอดีและรหัสผ่าน",
+    "errorMessage": "กรุณาตรวจสอบไอดีและรหัสผ่าน แล้วลองใหม่อีกครั้ง",
+    "idPlaceholder": "กรุณาใส่ไอดี",
+    "pwPlaceholder": "กรุณาใส่รหัสผ่าน",
+    "saveId": "บันทึกไอดี",
+    "submit": "เข้าสู่ระบบ"
   },
   "rePassword": {
-    "title": "Reset Password",
-    "subtitle": "Please Reset Password",
-    "errorMessage": "Failed to match new PW. Please check and try again.",
-    "passwordPolicyMessage": "Please enter at least 8 characters including lowercase letters, numbers, and special characters.",
-    "passwordPlaceholder": "Please Enter New Password",
-    "passwordRecheckPlaceholder": "Please Check Password",
-    "submit": "Reset Password"
+    "title": "รีเซ็ตรหัสผ่าน",
+    "subtitle": "กรุณารีเซ็ตรหัสผ่าน",
+    "errorMessage": "รหัสผ่านใหม่ไม่ตรงกัน กรุณาตรวจสอบและลองใหม่อีกครั้ง",
+    "passwordPolicyMessage": "กรุณาใส่อย่างน้อย 8 ตัวอักษร รวมทั้งตัวพิมพ์เล็ก ตัวเลข และอักขระพิเศษ",
+    "passwordPlaceholder": "กรุณาใส่รหัสผ่านใหม่",
+    "passwordRecheckPlaceholder": "กรุณายืนยันรหัสผ่าน",
+    "submit": "รีเซ็ตรหัสผ่าน"
   },
   "monitoring": {
-    "title": "Live Monitoring",
-    "teamsPlaying": "Team Playing",
-    "sendMessage": "Send Messages",
-    "frontStandby": "1st Half Standby",
-    "backStandby": "2nd Half Standby"
+    "title": "การติดตามสด",
+    "teamsPlaying": "ทีมที่กำลังเล่น",
+    "sendMessage": "ส่งข้อความ",
+    "frontStandby": "รอรอบแรก",
+    "backStandby": "รอรอบหลัง"
   },
   "message": {
-    "title": "Send Messages",
-    "selectTargetDesc": "Please select all recipients\nfor the message",
-    "selectByCourse": "By Course",
-    "noCart": "No Carts Avaiable.",
-    "selectByCart": "By Cart",
-    "next": "Next",
-    "inputDesc": "Please Enter Content",
-    "autocompleteText": "Register Auto-Complete Text",
-    "send": "Send",
-    "sent": "Sent.",
-    "keepSending": "Keep Sending"
+    "title": "ส่งข้อความ",
+    "selectTargetDesc": "กรุณาเลือกผู้รับทั้งหมด\nสำหรับข้อความ",
+    "selectByCourse": "ตามคอร์ส",
+    "noCart": "ไม่มีรถกอล์ฟ",
+    "selectByCart": "ตามรถกอล์ฟ",
+    "next": "ถัดไป",
+    "inputDesc": "กรุณาใส่เนื้อหา",
+    "autocompleteText": "บันทึกข้อความอัตโนมัติ",
+    "send": "ส่ง",
+    "sent": "ส่งแล้ว",
+    "keepSending": "ส่งต่อเนื่อง"
   },
   "holecup": {
-    "pinSuccess": "PIN set up completed.",
-    "pinError": "Error Occurred.",
-    "save": "Save",
-    "noCourse": "No Course List Found.",
-    "noImage": "No Images Found."
+    "pinSuccess": "ตั้งค่า PIN เรียบร้อยแล้ว",
+    "pinError": "เกิดข้อผิดพลาด",
+    "save": "บันทึก",
+    "noCourse": "ไม่พบรายการคอร์ส",
+    "noImage": "ไม่พบรูปภาพ"
   },
   "alertModal": {
-    "cancel": "Cancel",
-    "ok": "Confirm"
+    "cancel": "ยกเลิก",
+    "ok": "ยืนยัน"
   },
   "menu": {
-    "logout": "Log Out",
-    "logoutConfirm": "Would you like to Log Out?",
+    "logout": "ออกจากระบบ",
+    "logoutConfirm": "คุณต้องการออกจากระบบหรือไม่?",
     "suffix": "",
-    "holecupSubTitle": "Hole PIN"
+    "holecupSubTitle": "หลุม PIN"
   }
 }
