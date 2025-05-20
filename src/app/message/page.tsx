@@ -43,8 +43,15 @@ const Message = () => {
   });
 
   const handleArrow = () => {
-    step === 1 ? router.back() : setStep(1);
-  }
+    if (step === 1) {
+      setBookingList([]);
+      setSelectedMsg({ eventId: null, sendMsg: "" });
+      setChecked(false);
+      router.back();
+    } else {
+      setStep(1);
+    }
+  };
 
   const handleInputChange: ChangeEventHandler<HTMLInputElement> = e => {
     setSelectedMsg(
@@ -195,6 +202,7 @@ const Message = () => {
                            type="checkbox"
                            className={styles["select-item"]}
                            onChange={handleChangeCourse}
+                           checked={bookingData?.some(booking => booking.courseId === course.courseId && bookingList.includes(`${booking.bookingId}`))}
                        />
                        <span className={styles["select-label"]}>{course.courseNm}</span>
                      </label>
@@ -215,6 +223,7 @@ const Message = () => {
                           data-course-id={`${booking.courseId}`}
                           className={styles["select-item"]}
                           onChange={handleChangeBooking}
+                          checked={bookingList.includes(`${booking.bookingId}`)}
                       />
                       <span className={styles["select-label"]}>{booking.bookingNm}</span>
                     </label>
@@ -223,7 +232,7 @@ const Message = () => {
               </div>
             </div>
           </div>
-          <button type="button" className={styles["confirm-button"]} onClick={() => setStep(2)}>다음</button>
+          <button type="button" className={styles["confirm-button"]} onClick={() => setStep(2)} disabled={bookingList.length === 0 || bookingData?.length === 0}>{t("message.next")}</button>
         </div>
         }
         {step === 2 &&
@@ -263,6 +272,7 @@ const Message = () => {
                         type="radio"
                         className={styles["select-item"]}
                         onChange={() => handleChangeSSE(sse.eventId, sse.eventCont)}
+                        checked={selectedMsg.eventId === sse.eventId}
                     />
                     <span className={styles["select-label"]}>{sse.eventCont}</span>
                   </label>
@@ -270,7 +280,7 @@ const Message = () => {
                 })}
               </div>
             </div>
-            <button type="button" className={styles["confirm-button"]}  onClick={handleSubmit}>{t("message.send")}</button>
+            <button type="button" className={styles["confirm-button"]}  onClick={handleSubmit} disabled={selectedMsg.sendMsg === ""}>{t("message.send")}</button>
           </div>
         }
       </div>
