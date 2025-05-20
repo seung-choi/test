@@ -32,10 +32,14 @@ const Login = () => {
   const { mutate: loginMutate } = useMutation({
     mutationFn: postLogin,
     onSuccess: (res) => {
-      localStorage.removeItem("remember");
-      if (loginForm.saveId) storage.local.set({ remember: loginForm.username });
-      storage.session.set(res);
-      res.initSt === "Y" ? router.push("/repassword") : router.push("/monitoring");
+      if(res.groupType === "ADMIN") {
+        setError(true);
+      } else {
+        localStorage.removeItem("remember");
+        if (loginForm.saveId) storage.local.set({ remember: loginForm.username });
+        storage.session.set(res);
+        res.initSt === "Y" ? router.push("/repassword") : router.push("/monitoring");
+      }
     },
     onError: () => {
       setError(true);

@@ -76,25 +76,10 @@ $axios.interceptors.response.use(
     if (config) {
       tokens.access = tokens.refresh;
 
-      if (response?.data?.status === 401 && response?.data.code === "JWT_EXPIRED_TOKEN") {
-        try {
-          const promise = new Promise((resolve, reject) => {
-            setTimeout(async () => {
-              try {
-                const response = await $axios.patch("http://43.202.78.220:7110/auth/login");
-                resolve(response);
-              } catch (retryError) {
-                reject(retryError);
-              }
-            }, 3000);
-          });
-
-          return promise.then(() => {
-            return $axios(config);
-          });
-        } catch {
-          return Promise.reject();
-        }
+      if (response?.data?.status === 401 && response.data.code === "JWT_EXPIRED_TOKEN") {
+        window.sessionStorage.clear();
+        window.location.href = "/login";
+        return;
       }
     }
 
