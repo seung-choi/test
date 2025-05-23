@@ -116,10 +116,10 @@
                 height: 22px;
                 background: none;
                 border-left : 2px dotted #005FCF;
-                @at-root .up .line{
+                @at-root .down .line{
                   top: 14px;
                 }
-                @at-root .down .line {
+                @at-root .up .line {
                   bottom: 14px;
                 }
               }
@@ -134,11 +134,11 @@
               line-height: normal;
               letter-spacing: -0.2px;
               white-space: nowrap;
-              @at-root .up .buggy-name {
+              @at-root .down .buggy-name {
                 top: 34px;
               }
 
-              @at-root .down .buggy-name {
+              @at-root .up .buggy-name {
                 bottom: 34px;
               }
               & > span {
@@ -156,10 +156,10 @@
               display: flex;
               align-items: center;
               flex-wrap: wrap;
-              @at-root .up .tag-list {
+              @at-root .down .tag-list {
                 top: 49px;
               }
-              @at-root .down .tag-list {
+              @at-root .up .tag-list {
                 bottom: 49px;
               }
               li {

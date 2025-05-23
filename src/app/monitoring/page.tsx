@@ -22,6 +22,7 @@ const Monitoring = () => {
   const { data: bookingData } = useQuery({
     queryKey: ["bookingData"],
     queryFn: () => getBooking(),
+    refetchInterval: 1000,
   });
 
   const waitingCartList = useMemo(() => {
@@ -70,6 +71,8 @@ const Monitoring = () => {
       <h1 className="blind">{t("monitoring.title")}</h1>
       <div className={styles["monitoring-container"]}>
         {clubData?.courseList.map((course: CourseType) => {
+          let globalBuggyIndex = 0;
+
           return (
             <section
               className={styles["course-section"]}
@@ -112,16 +115,16 @@ const Monitoring = () => {
                         </div>
                         <div className={styles["hole-item-line"]}></div>
 
-                        {cartListByHoleId?.map((cart, index) => {
-                          const outCourse = clubData?.courseList.find(
-                            (course) => course.courseId === cart.outCourseId,
-                          );
+                        {cartListByHoleId?.map((cart) => {
+                          const outCourse = clubData?.courseList.find((c) => c.courseId === cart.outCourseId);
+                          const isEven = globalBuggyIndex % 2 === 0;
+                          globalBuggyIndex ++;
 
                           return (
                             <div
-                              className={`${styles[`hole-item-buggy`]} ${index % 2 === 0 ? styles["up"] : styles["down"]}`}
-                              style={{ left: `${cart.progress + "%"}` }}
                               key={`cartByHole-${cart.bookingId}`}
+                              className={`${styles["hole-item-buggy"]} ${isEven ? styles["up"] : styles["down"]}`}
+                              style={{ left: `${cart.progress}%` }}
                             >
                               <div className={styles[`line-wrap`]}>
                                 <span
