@@ -92,7 +92,7 @@ npm run dev
 
 **4. Open the project in your browser**
 
-- **main** : <http://localhost:3000>
+- **main** : <http://localhost:7010>
 
-  package.json scripts.dev에 "next dev -p 3000"값인지 확인.
+  package.json scripts.dev에 "next dev -p 7010"값인지 확인.
 
