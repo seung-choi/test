@@ -84,7 +84,7 @@ const Monitoring = () => {
                   className={styles["course-color"]}
                   style={{ backgroundColor: `${course.courseCol}` }}
                 ></span>
-                <h2 className={styles["course-name"]}>LAKE</h2>
+                <h2 className={styles["course-name"]}>{course.courseNm}</h2>
                 <span className={styles["course-teams-state"]}>
                   {bookingData?.filter((data) => data?.courseId === course?.courseId).length}
                   {t("monitoring.teamsPlaying")}
