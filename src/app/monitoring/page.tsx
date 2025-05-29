@@ -9,6 +9,7 @@ import CourseType from "@/types/Course.type";
 import Menu from "@/components/Menu";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import transformBookingData from "@/utils/transformBookingData";
 
 const Monitoring = () => {
   const { t } = useTranslation();
@@ -62,6 +63,11 @@ const Monitoring = () => {
     section?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const refinedBookingData = useMemo(() => {
+    if (!clubData || !bookingData) return [];
+    return transformBookingData(bookingData, clubData);
+  }, [bookingData, clubData]);
+
   if (!clubData || !bookingData) {
     return null;
   }
@@ -93,7 +99,7 @@ const Monitoring = () => {
               <div className={styles["hole-list-wrap"]}>
                 <ul className={styles["hole-list"]}>
                   {course.holeList.map((hole) => {
-                    const cartListByHoleId = bookingData
+                    const cartListByHoleId = refinedBookingData
                       ?.filter(
                         (gps) =>
                           gps.courseId === course.courseId &&
