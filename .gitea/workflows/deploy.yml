@@ -114,8 +114,8 @@ jobs:
           ECR_REGISTRY: ${{ steps.plug-golf.outputs.registry }}
           IMAGE_TAG: ${{ gitea.sha }}
         run: |
-          echo "🔁 Building plug-golf-mng from $context_dir"
-          docker build -t plug-golf-mng:$IMAGE_TAG $context_dir
+          echo "🔁 Building plug-golf-mng from ."
+          docker build -t plug-golf-mng:$IMAGE_TAG .
           docker tag plug-golf-mng:$IMAGE_TAG $ECR_REGISTRY/plug-golf-mng:$IMAGE_TAG
           docker tag plug-golf-mng:$IMAGE_TAG $ECR_REGISTRY/plug-golf-mng:latest
           docker push $ECR_REGISTRY/plug-golf-mng:$IMAGE_TAG
