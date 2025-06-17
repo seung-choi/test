@@ -123,10 +123,10 @@ const RePassword = () => {
               label="ID"
               labelShow={true}
               id="id"
-              value={`${storage.session.get("userNm")}`}
+              value={`${storage.session.get("userId")}`}
               readOnly={true}
             />
-            <span className={styles["input-id-value"]}>{`${storage.session.get("userNm")}`}</span>
+            <span className={styles["input-id-value"]}>{`${storage.session.get("userId")}`}</span>
           </div>
 
           <Input
