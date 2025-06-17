@@ -6,7 +6,7 @@ on:
     branches: [ "main", "ap-northeast-2", "ap-southeast-1" ]
 
 jobs:
-  main-build:
+  main:
     if: gitea.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
@@ -43,12 +43,11 @@ jobs:
           curl -H 'Content-Type: application/json' -d "{
             \"@type\": \"MessageCard\",
             \"@context\": \"https://schema.org/extensions\",
-            \"summary\": \"[성공] Plug-Golf-MNG 배포\",
+            \"summary\": \"[성공] Plug-Golf-MNG 개발 배포\",
             \"themeColor\": \"0076D7\",
-            \"title\": \"✅ 배포 -> 개발 환경(ec2-user@43.202.78.220)\",
+            \"title\": \"✅ 개발 환경 >> 배포\",
             \"sections\": [{
               \"facts\": [
-                { \"name\": \"대상\", \"value\": \"Plug-Golf-MNG\" },
                 { \"name\": \"서버\", \"value\": \"$(hostname)\" },
                 { \"name\": \"시간\", \"value\": \"$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M:%S')\" },
                 { \"name\": \"내역\", \"value\": \"mng.tar.gz\" }
@@ -65,12 +64,11 @@ jobs:
           curl -H 'Content-Type: application/json' -d "{
             \"@type\": \"MessageCard\",
             \"@context\": \"https://schema.org/extensions\",
-            \"summary\": \"[실패] Plug-Golf-MNG 배포\",
+            \"summary\": \"[실패] Plug-Golf-MNG 개발 배포\",
             \"themeColor\": \"FF0000\",
-            \"title\": \"❌ 배포 -> 개발 환경(ec2-user@43.202.78.220)\",
+            \"title\": \"❌ 개발 환경 >> 배포\",
             \"sections\": [{
               \"facts\": [
-                { \"name\": \"대상\", \"value\": \"Plug-Golf-MNG\" },
                 { \"name\": \"서버\", \"value\": \"$(hostname)\" },
                 { \"name\": \"시간\", \"value\": \"$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M:%S')\" },
                 { \"name\": \"에러\", \"value\": \"${ERROR_MSG}\" }
@@ -79,10 +77,90 @@ jobs:
             }]
           }" "${{ secrets.TEAMS_WEBHOOK_URL }}"
 
-  ap-northeast-2-build:
+  ap-northeast-2:
     if: gitea.ref == 'refs/heads/ap-northeast-2'
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20'
 
-  ap-southeast-1-build:
+      - name: Install
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Install AWS CLI
+        run: |
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Login to Amazon ECR
+        id: plug-golf
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build & Push Docker Images
+        env:
+          ECR_REGISTRY: ${{ steps.plug-golf.outputs.registry }}
+          IMAGE_TAG: ${{ gitea.sha }}
+        run: |
+          echo "🔁 Building plug-golf-mng from $context_dir"
+          docker build -t plug-golf-mng:$IMAGE_TAG $context_dir
+          docker tag plug-golf-mng:$IMAGE_TAG $ECR_REGISTRY/plug-golf-mng:$IMAGE_TAG
+          docker tag plug-golf-mng:$IMAGE_TAG $ECR_REGISTRY/plug-golf-mng:latest
+          docker push $ECR_REGISTRY/plug-golf-mng:$IMAGE_TAG
+          docker push $ECR_REGISTRY/plug-golf-mng:latest
+
+      - name: Notify Success to Teams
+        if: success()
+        run: |
+          curl -H 'Content-Type: application/json' -d "{
+            \"@type\": \"MessageCard\",
+            \"@context\": \"https://schema.org/extensions\",
+            \"summary\": \"[성공] Plug-Golf-MNG 운영 배포\",
+            \"themeColor\": \"0076D7\",
+            \"title\": \"✅ 운영 환경 >> 배포\",
+            \"sections\": [{
+              \"facts\": [
+                { \"name\": \"서버\", \"value\": \"$(hostname)\" },
+                { \"name\": \"시간\", \"value\": \"$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M:%S')\" },
+                { \"name\": \"내역\", \"value\": \"mng.tar.gz\" }
+              ],
+              \"markdown\": true
+            }]
+          }" "${{ secrets.TEAMS_WEBHOOK_URL }}"
+
+      - name: Notify Failure to Teams
+        if: failure()
+        run: |
+          ERROR_MSG=$(tail -n 10 /home/runner/_temp/_runner_command_failure_message || echo "Unknown error")
+
+          curl -H 'Content-Type: application/json' -d "{
+            \"@type\": \"MessageCard\",
+            \"@context\": \"https://schema.org/extensions\",
+            \"summary\": \"[실패] Plug-Golf-MNG 운영 배포\",
+            \"themeColor\": \"FF0000\",
+            \"title\": \"❌ 운영 환경 >> 배포\",
+            \"sections\": [{
+              \"facts\": [
+                { \"name\": \"서버\", \"value\": \"$(hostname)\" },
+                { \"name\": \"시간\", \"value\": \"$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M:%S')\" },
+                { \"name\": \"에러\", \"value\": \"${ERROR_MSG}\" }
+              ],
+              \"markdown\": true
+            }]
+          }" "${{ secrets.TEAMS_WEBHOOK_URL }}"
+
+  ap-southeast-1:
     if: gitea.ref == 'refs/heads/ap-southeast-1'
     runs-on: ubuntu-latest
