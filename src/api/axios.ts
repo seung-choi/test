@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios";
-import { API_URL } from "@/api/API_URL";
+import { getOriginURL } from "@/api/API_URL";
 
 interface ErrorResponse {
   status: number;
@@ -7,8 +7,10 @@ interface ErrorResponse {
   message: string;
 }
 
+const isClient = typeof window !== "undefined";
+
 const $axios = axios.create({
-  baseURL: API_URL,
+  baseURL: isClient ? getOriginURL("api") : "",
   timeout: 50000,
   headers: {
     "Content-Type": "application/json",

@@ -1,6 +1,6 @@
 import $axios from "@/api/axios";
 import { LoginFormAPI } from "@/app/login/page";
-import { GPS_URL } from "@/api/API_URL";
+import { getOriginURL } from "@/api/API_URL";
 import BookingType from "@/types/Booking.type";
 import ClubType from "@/types/Club.type";
 import EvetSSE from "@/types/EventSSE.type";
@@ -18,7 +18,7 @@ export const getClub = async () => {
 
 export const getBooking = async () => {
   const res = await $axios<BookingType[]>({
-    url: `${GPS_URL}booking`,
+    url: `${getOriginURL("gps")}booking`,
     method: "get",
   });
   return res.data;
@@ -35,7 +35,7 @@ export const getEventSSE = async () => {
 // POST
 export const postLogin = async (data: LoginFormAPI) => {
   const res = await $axios({
-    url: "http://43.202.78.220:7110/auth/login",
+    url: `${getOriginURL("api", "/auth/")}login`,
     method: "post",
     data: data,
   });
