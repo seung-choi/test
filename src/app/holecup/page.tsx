@@ -41,7 +41,7 @@ const HoleCup = () => {
     const [finalGreenMap, setFinalGreeneMap] = useState<{ x: number; y: number } | null>();
     const [scaleGreenImgSize, setScaleGreenImgSize] = useState<number>(0);
     const [originGreenImgSize, setOriginGreenImgSize] = useState<number>(0);
-    const [mapModeState, setMapModeState] = useState<string>("LANDSCAPE");
+    const [mapModeState, setMapModeState] = useState<string>("");
     const [holecupPinMove, setHolecupPinMove] = useState<boolean>(false);
     const [toast, setToast] = useState<{
         state: boolean,
@@ -224,6 +224,12 @@ const HoleCup = () => {
     useEffect(() => {
         setImageLoaded(false);
     }, [selectedGreenImageUrl]);
+
+    useEffect(() => {
+        if (clubData && mapModeState === "") {
+            setMapModeState(clubData.clubMode || "LANDSCAPE");
+        }
+    }, [clubData, mapModeState]);
 
     useEffect(() => {
         if (selectedGreenCd && pinGreenList.length > 0 && currentGreenImageList.length > 0 && imageLoaded) {
