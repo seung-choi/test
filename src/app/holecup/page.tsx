@@ -30,7 +30,6 @@ const HoleCup = () => {
     const [pinPTColor, setPinPTColor] = useState<string>("");
     const [activeMenu, setActiveMenu] = useState<boolean>(false);
     const [selectedGreenCd, setSelectedGreenCd] = useState<string | null>(null);
-    const [selectedPinGreenCd, setSelectedPinGreenCd] = useState<string | null>(null);
     const [pointerGreenPos, setPointerGreenPos] = useState<{ x: number; y: number } | null>(null);
     const [finalGreenPos, setFinalGreenPos] = useState<{ x: number; y: number } | null>(null);
     const [pointerOriginLSGreenPos, setPointerOriginLSGreenPos] = useState<{ x: number; y: number }>();
@@ -209,7 +208,9 @@ const HoleCup = () => {
 
         const currentCourseData = clubData.courseList.find(course => course.courseId === currentCourse.id);
 
-        const defaultHole = currentCourseData?.holeList[0];
+        if(currentCourseData?.holeList.length === 0 || null) return;
+
+        const defaultHole = currentCourseData?.holeList.find(hole => hole.holeNo === 1);
         if (defaultHole) {
             setCurrentHoleState({ id: defaultHole.holeId, no: 1 });
         }
@@ -278,9 +279,10 @@ const HoleCup = () => {
             }
 
             const matchedPin = pinGreenList.find(pin => pin.mapCd === `PIN_GREEN_${suffix}`);
-            setSelectedPinGreenCd(matchedPin?.mapCd || "");
 
-            if (
+            if(!matchedPin) {
+                setPointerGreenPos(null);
+            } else if (
                 matchedPin?.mapX != null &&
                 matchedPin?.mapY != null &&
                 finalSize &&
@@ -325,11 +327,11 @@ const HoleCup = () => {
             });
         }
 
-        if (pointerOriginLSGreenPos && selectedPinGreenCd) {
+        if (pointerOriginLSGreenPos) {
             payload.push({
                 holeId: currentHole.id,
                 mapMode: "LANDSCAPE",
-                mapCd: selectedPinGreenCd,
+                mapCd: `PIN_${selectedGreenCd}`,
                 mapX: pointerOriginLSGreenPos.x.toString(),
                 mapY: pointerOriginLSGreenPos.y.toString(),
                 mapZ: pinLSColor,
@@ -347,11 +349,11 @@ const HoleCup = () => {
             });
         }
 
-        if (pointerOriginPTGreenPos && selectedPinGreenCd) {
+        if (pointerOriginPTGreenPos) {
             payload.push({
                 holeId: currentHole.id,
                 mapMode: "PORTRAIT",
-                mapCd: selectedPinGreenCd,
+                mapCd: `PIN_${selectedGreenCd}`,
                 mapX: pointerOriginPTGreenPos.x.toString(),
                 mapY: pointerOriginPTGreenPos.y.toString(),
                 mapZ: pinPTColor,
