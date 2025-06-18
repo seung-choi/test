@@ -51,7 +51,7 @@ const Menu = ({ courseList }: courseListProps) => {
         <div className={styles["user-info"]}>
           <div>
             <span className={styles["user-team"]}>{`${storage.session.get("groupNm")}`}</span>
-            <p className={styles["user-name"]}>{`${storage.session.get("userId")}`} {t("menu.suffix")}</p>
+            <p className={styles["user-name"]}>{`${storage.session.get("userNm")}`} {t("menu.suffix")}</p>
           </div>
           <button type="button" className={styles["user-logout"]} onClick={handleLogout}>
             LOGOUT

@@ -123,6 +123,13 @@
             transform: translate(-50%, -50%);
             width: 100%;
           }
+          .no-image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            height: 100%;
+          }
         }
         .button-wrap {
           display: flex;

@@ -394,7 +394,13 @@ const HoleCup = () => {
                             </button>
                         </div>
                         <div className={styles["holecup-green-box"]}>
-                            <div className={styles["img-wrap"]}><img alt="greens img" src={currentGreensImage?.mapUrl || ""} /></div>
+                            <div className={styles["img-wrap"]}>
+                                {currentGreensImage?.mapUrl ?
+                                  <img alt="greens img" src={currentGreensImage?.mapUrl} />
+                                    :
+                                  <div className={styles["no-image"]}>{t("holecup.noImage")}</div>
+                                }
+                            </div>
                             <div className={styles["button-wrap"]}>
                                 {currentGreenImageList.map(img => (
                                     <button
