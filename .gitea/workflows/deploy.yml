@@ -43,9 +43,9 @@ jobs:
           curl -H 'Content-Type: application/json' -d "{
             \"@type\": \"MessageCard\",
             \"@context\": \"https://schema.org/extensions\",
-            \"summary\": \"[성공] Plug-Golf-MNG 개발 배포\",
+            \"summary\": \"✅[개발/성공] MNG.ZIP 배포\",
             \"themeColor\": \"0076D7\",
-            \"title\": \"✅ 개발 환경 >> 배포\",
+            \"title\": \"✅개발 환경 -> 43.202.78.220\",
             \"sections\": [{
               \"facts\": [
                 { \"name\": \"서버\", \"value\": \"$(hostname)\" },
@@ -64,9 +64,9 @@ jobs:
           curl -H 'Content-Type: application/json' -d "{
             \"@type\": \"MessageCard\",
             \"@context\": \"https://schema.org/extensions\",
-            \"summary\": \"[실패] Plug-Golf-MNG 개발 배포\",
+            \"summary\": \"❌[개발/실패] MNG.ZIP 배포\",
             \"themeColor\": \"FF0000\",
-            \"title\": \"❌ 개발 환경 >> 배포\",
+            \"title\": \"❌개발 환경 -> 43.202.78.220\",
             \"sections\": [{
               \"facts\": [
                 { \"name\": \"서버\", \"value\": \"$(hostname)\" },
@@ -127,9 +127,9 @@ jobs:
           curl -H 'Content-Type: application/json' -d "{
             \"@type\": \"MessageCard\",
             \"@context\": \"https://schema.org/extensions\",
-            \"summary\": \"[성공] Plug-Golf-MNG 운영 배포\",
+            \"summary\": \"✅[운영/성공] MNG.DOCKER 배포\",
             \"themeColor\": \"0076D7\",
-            \"title\": \"✅ 운영 환경 >> 배포\",
+            \"title\": \"✅운영 환경 -> plug-golf-mng:latest\",
             \"sections\": [{
               \"facts\": [
                 { \"name\": \"서버\", \"value\": \"$(hostname)\" },
@@ -148,9 +148,9 @@ jobs:
           curl -H 'Content-Type: application/json' -d "{
             \"@type\": \"MessageCard\",
             \"@context\": \"https://schema.org/extensions\",
-            \"summary\": \"[실패] Plug-Golf-MNG 운영 배포\",
+            \"summary\": \"❌[운영/실패] MNG.DOCKER 배포\",
             \"themeColor\": \"FF0000\",
-            \"title\": \"❌ 운영 환경 >> 배포\",
+            \"title\": \"❌운영 환경 -> plug-golf-mng:latest\",
             \"sections\": [{
               \"facts\": [
                 { \"name\": \"서버\", \"value\": \"$(hostname)\" },
