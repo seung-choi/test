@@ -247,6 +247,9 @@ const HoleCup = () => {
     }, [clubData, mapModeState]);
 
     useEffect(() => {
+        if(pinGreenList.length === 0) {
+            setPointerGreenPos(null);
+        }
         if (selectedGreenCd && pinGreenList.length > 0 && currentGreenImageList.length > 0 && imageLoaded) {
             const suffix = selectedGreenCd.replace("GREEN_", "");
             const greenImageData = currentGreenImageList.find(img => img.mapCd.endsWith(suffix));
