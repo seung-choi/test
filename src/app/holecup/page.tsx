@@ -209,7 +209,9 @@ const HoleCup = () => {
 
         const currentCourseData = clubData.courseList.find(course => course.courseId === currentCourse.id);
 
-        const defaultHole = currentCourseData?.holeList[0];
+        if(currentCourseData?.holeList.length === 0 || null) return;
+
+        const defaultHole = currentCourseData?.holeList.find(hole => hole.holeNo === 1);
         if (defaultHole) {
             setCurrentHoleState({ id: defaultHole.holeId, no: 1 });
         }
