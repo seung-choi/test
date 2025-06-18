@@ -227,7 +227,22 @@ const HoleCup = () => {
 
     useEffect(() => {
         if (clubData && mapModeState === "") {
-            setMapModeState(clubData.clubMode || "LANDSCAPE");
+            const targetCourse = clubData.courseList.find(course => course.courseId === currentCourse.id);
+
+            const hasLandscapeGreenImage =
+              targetCourse?.holeList?.[0]?.mapList?.some(
+                map =>
+                  map.mapMode === "LANDSCAPE" &&
+                  map.mapType === "IMG" &&
+                  map.mapCd.startsWith("GREEN_") &&
+                  !!map.mapUrl
+              );
+
+            if (hasLandscapeGreenImage) {
+                setMapModeState("LANDSCAPE");
+            } else {
+                setMapModeState("PORTRAIT");
+            }
         }
     }, [clubData, mapModeState]);
 
