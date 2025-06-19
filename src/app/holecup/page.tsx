@@ -63,7 +63,7 @@ const HoleCup = () => {
     const { mutate: postMapMutate } = useMutation({
         mutationFn: postMapPin,
         onSuccess: () => {
-            void queryClient.refetchQueries({ queryKey: ["clubData"] });
+            queryClient.invalidateQueries({ queryKey: ["clubData"] });
             setToast({
                 state : true,
                 mms: t("holecup.pinSuccess"),
