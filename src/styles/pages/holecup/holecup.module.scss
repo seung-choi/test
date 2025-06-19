@@ -6,7 +6,7 @@
     width: 100%;
     height: 100%;
     .holecup-pin {
-      width: 60px;
+      width: 70px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -42,7 +42,7 @@
     }
     .holecup-map {
       position: relative;
-      width: calc(100% - 60px - 220px);
+      width: calc(100% - 70px - 210px);
       height: 100%;
       & > img {
         width: auto;
@@ -74,7 +74,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      width: 220px;
+      width: 210px;
       height: 100%;
       gap: 15px;
       padding-bottom: 60px;
@@ -105,7 +105,7 @@
         }
       }
       &-box {
-        width: 150px;
+        width: 130px;
         padding: 8px 10px;
         border-radius: 15px;
         background: rgba(255, 255, 255, 0.70);
@@ -114,8 +114,8 @@
         .img-wrap {
           position: relative;
           overflow: hidden;
-          width: 130px;
-          height: 130px;
+          width: 110px;
+          height: 110px;
           margin-bottom: 8px;
           & > img {
             position: absolute;
@@ -186,13 +186,12 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 50px;
+    height: 60px;
     background: var(--MOBILE-admin-Keywhite, #FFF);
     box-shadow: 0 0 13px 0 rgba(0, 0, 0, 0.20);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 15px;
     .title-wrap {
       width: 150px;
       padding: 0 10px;
@@ -202,9 +201,9 @@
         justify-content: center;
         padding: 0 11px;
         width: 100%;
-        height: 24px;
-        line-height: 24px;
-        border-radius: 24px;
+        height: 30px;
+        line-height: 30px;
+        border-radius: 30px;
         color: var(--MOBILE-admin-Keypurple, #2F0077);
         text-align: center;
         font-size: 14px;
@@ -221,13 +220,15 @@
   &-menu-box {
     display: flex;
     align-items: center;
+    width: calc(100% - 150px);
     height: 100%;
     flex-direction: column;
     gap: 11px;
     .hole-list {
       display: flex;
       align-items: center;
-      gap: 17px;
+      justify-content: center;
+      gap: 12px;
       padding: 5px 6px;
       width: 100%;
       height: 100%;
@@ -241,13 +242,13 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 24px;
-        height: 24px;
+        width: 35px;
+        height: 35px;
         border-radius: 50%;
         background: var(--MOBILE-admin-Keywhite, #FFF);
         color: var(--MOBILE-admin-Keypurple, #2F0077);
         text-align: center;
-        font-size: 15px;
+        font-size: 20px;
         font-weight: 700;
         line-height: 1;
         letter-spacing: -0.24px;
