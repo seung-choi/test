@@ -6,7 +6,7 @@ import {useMutation, useQuery} from "@tanstack/react-query";
 import {getClub, postMapPin} from "@/api/main";
 import ClubType from "@/types/Club.type";
 import Menu from "@/components/Menu";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { currentCourseState, currentHoleState } from "@/lib/recoil";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
@@ -28,7 +28,6 @@ const HoleCup = () => {
     const [selectedPinColor, setSelectedPinColor] = useState<string>("");
     const [pinLSColor, setPinLSColor] = useState<string>("");
     const [pinPTColor, setPinPTColor] = useState<string>("");
-    const [activeMenu, setActiveMenu] = useState<boolean>(false);
     const [selectedGreenCd, setSelectedGreenCd] = useState<string | null>(null);
     const [pointerGreenPos, setPointerGreenPos] = useState<{ x: number; y: number } | null>(null);
     const [finalGreenPos, setFinalGreenPos] = useState<{ x: number; y: number } | null>(null);
@@ -52,7 +51,7 @@ const HoleCup = () => {
     const [imageLoaded, setImageLoaded] = useState<boolean>(false);
     const mapRef = useRef<HTMLImageElement | null>(null);
 
-    const [currentCourse, setCourseIdState] = useRecoilState(currentCourseState);
+    const currentCourse = useRecoilValue(currentCourseState);
     const [currentHole, setCurrentHoleState] = useRecoilState(currentHoleState);
 
 
@@ -445,52 +444,28 @@ const HoleCup = () => {
                 </div>
 
                 <div className={styles["holecup-info"]}>
-                    <span className={styles.course}>{currentCourse.Nm}</span>
-                    <span className={styles.hole}>{currentHole?.no}H</span>
-                    <span className={styles.green}>Green1</span>
-                </div>
-
-                <div className={`${styles["holecup-menu-box"]} ${activeMenu ? styles.active : ""}`}>
-                    <button
-                        type="button"
-                        className={styles["hole-menu-arrow"]}
-                        onClick={() => setActiveMenu(!activeMenu)}
-                    ></button>
-
-                    <ul className={`${styles["course-list"]} scroll-hidden`}>
-                        {clubData?.courseList.map(course => (
-                            <li key={course.courseId}>
-                                <button
-                                    type="button"
-                                    className={`${styles["course-item"]} ${currentCourse.id === course.courseId ? styles.active : ""}`}
-                                    onClick={() => setCourseIdState({
-                                        id: course.courseId,
-                                        Nm: course.courseNm,
-                                    })}
-                                >
-                                    {course.courseNm}
-                                </button>
-                            </li>
-                        ))}
-                    </ul>
-
-                    <ul className={`${styles["hole-list"]} scroll-hidden`}>
-                        {currentCourseData?.holeList?.length ? (
-                            currentCourseData.holeList.map(hole => (
+                    <div className={styles["title-wrap"]}>
+                        <h5 className={styles.course}>{currentCourse.Nm}</h5>
+                    </div>
+                    <div className={styles["holecup-menu-box"]}>
+                        <ul className={`${styles["hole-list"]} scroll-hidden`}>
+                            {currentCourseData?.holeList?.length ? (
+                              currentCourseData.holeList.map(hole => (
                                 <li key={hole.holeId}>
                                     <button
-                                        type="button"
-                                        className={`${styles["hole-item"]} ${currentHole?.id === hole.holeId ? styles.active : ""}`}
-                                        onClick={() => setCurrentHoleState({ id: hole.holeId, no: hole.holeNo })}
+                                      type="button"
+                                      className={`${styles["hole-item"]} ${currentHole?.id === hole.holeId ? styles.active : ""}`}
+                                      onClick={() => setCurrentHoleState({ id: hole.holeId, no: hole.holeNo })}
                                     >
                                         {hole.holeNo}
                                     </button>
                                 </li>
-                            ))
-                        ) : (
-                            <div className={styles["no-list"]}>{t("holecup.noCourse")}</div>
-                        )}
-                    </ul>
+                              ))
+                            ) : (
+                              <div className={styles["no-list"]}>{t("holecup.noCourse")}</div>
+                            )}
+                        </ul>
+                    </div>
                 </div>
             </div>
             <Menu courseList={clubData?.courseList || []} />
