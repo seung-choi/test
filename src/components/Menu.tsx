@@ -59,20 +59,21 @@ const Menu = ({ courseList }: courseListProps) => {
         </div>
         <div className={styles["menu-list-wrap"]}>
           <ul className={styles["menu-list"]}>
-            <li className={`${styles["menu-item"]} ${styles["monitoring"]} ${path === "/monitoring" ? styles["active"] : ""}`}>
+            <li className={`${styles["menu-item"]} ${styles["monitoring"]} ${path === "/monitoring/" ? styles["active"] : ""}`}>
               <button type="button" onClick={() => router.push("/monitoring")}>
                 <AutoFontSizeText text={t("monitoring.title")} maxFontSize={15} minFontSize={10} />
               </button>
             </li>
             {courseList?.map((course: CourseType) => {
               return (
-                <li className={`${styles["menu-item"]} ${path === "/holecup" && currentCourse.id === course.courseId ? styles["active"] : ""}`} key={course.courseId}>
+                <li className={`${styles["menu-item"]} ${path === "/holecup/" && currentCourse.id === course.courseId ? styles["active"] : ""}`} key={course.courseId}>
                   <button  type="button"  onClick={() => {
                     setHolecupPageState({
                       id: course?.courseId,
                       Nm: course?.courseNm,
                     });
                     router.push("/holecup");
+                    setOpen(!open);
                   }}>
                     <span className={styles["sub-title"]}>{t("menu.holecupSubTitle")}</span>
                     <strong className={styles["title"]}>{course.courseNm}</strong>
