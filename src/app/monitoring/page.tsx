@@ -26,11 +26,16 @@ const Monitoring = () => {
     refetchInterval: 1000,
   });
 
-  const waitingCartList = useMemo(() => {
+  const refinedBookingData = useMemo(() => {
     if (!clubData || !bookingData) return [];
+    return transformBookingData(bookingData, clubData);
+  }, [bookingData, clubData]);
+
+  const waitingCartList = useMemo(() => {
+    if (!clubData || !refinedBookingData) return [];
 
     return clubData.courseList.map((course) => {
-      const filteredBookings = bookingData.filter(
+      const filteredBookings = refinedBookingData.filter(
         (booking) => booking.courseId === course.courseId,
       );
 
@@ -55,18 +60,13 @@ const Monitoring = () => {
         IPList,
       };
     });
-  }, [clubData, bookingData]);
+  }, [clubData, refinedBookingData]);
 
   const scrollToSection = (courseId: number) => {
     if (typeof window === "undefined") return;
     const section = document.getElementById(`${courseId}`);
     section?.scrollIntoView({ behavior: "smooth" });
   };
-
-  const refinedBookingData = useMemo(() => {
-    if (!clubData || !bookingData) return [];
-    return transformBookingData(bookingData, clubData);
-  }, [bookingData, clubData]);
 
   if (!clubData || !bookingData) {
     return null;
