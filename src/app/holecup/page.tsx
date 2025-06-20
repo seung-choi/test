@@ -213,7 +213,7 @@ const HoleCup = () => {
         if (defaultHole) {
             setCurrentHoleState({ id: defaultHole.holeId, no: 1 });
         }
-    }, [currentCourse]);
+    }, [clubData, currentCourse]);
 
     useEffect(() => {
         if (currentGreenImageList.length > 0 && !selectedGreenCd) {
@@ -244,7 +244,7 @@ const HoleCup = () => {
                 setMapModeState("PORTRAIT");
             }
         }
-    }, [mapModeState]);
+    }, [clubData, mapModeState]);
 
     useEffect(() => {
         if(pinGreenList.length === 0) {
