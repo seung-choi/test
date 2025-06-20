@@ -29,7 +29,7 @@ const Login = () => {
 
   const router = useRouter();
 
-  const { mutate: loginMutate } = useMutation({
+  const { mutate: loginMutate, isPending  } = useMutation({
     mutationFn: postLogin,
     onSuccess: (res) => {
       if(res.groupType === "ADMIN") {
@@ -144,7 +144,7 @@ const Login = () => {
             label={t("login.submit")}
             block={true}
             primary={true}
-            disabled={!loginForm.username || !loginForm.password}
+            disabled={!loginForm.username || !loginForm.password || isPending}
           />
         </div>
       </form>
