@@ -6,7 +6,7 @@
     width: 100%;
     height: 100%;
     .holecup-pin {
-      width: 70px;
+      width: 60px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -42,7 +42,7 @@
     }
     .holecup-map {
       position: relative;
-      width: calc(100% - 70px - 210px);
+      width: calc(100% - 60px - 220px);
       height: 100%;
       & > img {
         width: auto;
@@ -74,7 +74,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      width: 210px;
+      width: 220px;
       height: 100%;
       gap: 15px;
       padding-bottom: 60px;
