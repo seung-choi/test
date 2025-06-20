@@ -43,14 +43,15 @@ jobs:
           curl -H 'Content-Type: application/json' -d "{
             \"@type\": \"MessageCard\",
             \"@context\": \"https://schema.org/extensions\",
-            \"summary\": \"✅[개발/성공] MNG.ZIP 배포\",
+            \"summary\": \"✅[개발/성공] MNG 배포\",
             \"themeColor\": \"0076D7\",
-            \"title\": \"✅개발 환경 -> 43.202.78.220\",
+            \"title\": \"✅[개발/성공] MNG 배포\",
             \"sections\": [{
               \"facts\": [
-                { \"name\": \"서버\", \"value\": \"$(hostname)\" },
+                { \"name\": \"대상\", \"value\": \"43.202.78.220\" },
+                { \"name\": \"네임\", \"value\": \"plug-golf-mng\" },
                 { \"name\": \"시간\", \"value\": \"$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M:%S')\" },
-                { \"name\": \"내역\", \"value\": \"mng.tar.gz\" }
+                { \"name\": \"배포\", \"value\": \"mng.zip\" }
               ],
               \"markdown\": true
             }]
@@ -64,13 +65,15 @@ jobs:
           curl -H 'Content-Type: application/json' -d "{
             \"@type\": \"MessageCard\",
             \"@context\": \"https://schema.org/extensions\",
-            \"summary\": \"❌[개발/실패] MNG.ZIP 배포\",
+            \"summary\": \"❌[개발/실패] MNG 배포\",
             \"themeColor\": \"FF0000\",
-            \"title\": \"❌개발 환경 -> 43.202.78.220\",
+            \"title\": \"❌[개발/실패] MNG 배포\",
             \"sections\": [{
               \"facts\": [
-                { \"name\": \"서버\", \"value\": \"$(hostname)\" },
+                { \"name\": \"대상\", \"value\": \"43.202.78.220\" },
+                { \"name\": \"네임\", \"value\": \"plug-golf-mng\" },
                 { \"name\": \"시간\", \"value\": \"$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M:%S')\" },
+                { \"name\": \"배포\", \"value\": \"mng.zip\" },
                 { \"name\": \"에러\", \"value\": \"${ERROR_MSG}\" }
               ],
               \"markdown\": true
@@ -121,26 +124,42 @@ jobs:
           docker push $ECR_REGISTRY/plug-golf-mng:$IMAGE_TAG
           docker push $ECR_REGISTRY/plug-golf-mng:latest
 
+      - name: Deploy to ECS Services
+        env:
+          AWS_REGION: ap-northeast-2
+        run: |
+          echo "🚀 Updating ECS service: plug-golf-mng-service"
+          aws ecs update-service \
+            --cluster plug-golf-cluster \
+            --service plug-golf-mng-service \
+            --force-new-deployment \
+            --region $AWS_REGION
+
       - name: Notify Success to Teams
+        env:
+          AWS_REGION: ap-northeast-2
         if: success()
         run: |
           curl -H 'Content-Type: application/json' -d "{
             \"@type\": \"MessageCard\",
             \"@context\": \"https://schema.org/extensions\",
-            \"summary\": \"✅[운영/성공] MNG.DOCKER 배포\",
+            \"summary\": \"✅[운영/성공] MNG 배포\",
             \"themeColor\": \"0076D7\",
-            \"title\": \"✅운영 환경 -> plug-golf-mng:latest\",
+            \"title\": \"✅[운영/성공] MNG 배포\",
             \"sections\": [{
               \"facts\": [
-                { \"name\": \"서버\", \"value\": \"$(hostname)\" },
+                { \"name\": \"대상\", \"value\": \"$AWS_REGION\" },
+                { \"name\": \"네임\", \"value\": \"plug-golf-mng\" },
                 { \"name\": \"시간\", \"value\": \"$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M:%S')\" },
-                { \"name\": \"내역\", \"value\": \"mng.tar.gz\" }
+                { \"name\": \"배포\", \"value\": \"plug-golf-mng:latest\" }
               ],
               \"markdown\": true
             }]
           }" "${{ secrets.TEAMS_WEBHOOK_URL }}"
 
       - name: Notify Failure to Teams
+        env:
+          AWS_REGION: ap-northeast-2
         if: failure()
         run: |
           ERROR_MSG=$(tail -n 10 /home/runner/_temp/_runner_command_failure_message || echo "Unknown error")
@@ -148,13 +167,15 @@ jobs:
           curl -H 'Content-Type: application/json' -d "{
             \"@type\": \"MessageCard\",
             \"@context\": \"https://schema.org/extensions\",
-            \"summary\": \"❌[운영/실패] MNG.DOCKER 배포\",
+            \"summary\": \"❌[운영/실패] MNG 배포\",
             \"themeColor\": \"FF0000\",
-            \"title\": \"❌운영 환경 -> plug-golf-mng:latest\",
+            \"title\": \"❌[운영/실패] MNG 배포\",
             \"sections\": [{
               \"facts\": [
-                { \"name\": \"서버\", \"value\": \"$(hostname)\" },
+                { \"name\": \"대상\", \"value\": \"$AWS_REGION\" },
+                { \"name\": \"네임\", \"value\": \"plug-golf-mng\" },
                 { \"name\": \"시간\", \"value\": \"$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M:%S')\" },
+                { \"name\": \"배포\", \"value\": \"plug-golf-mng:latest\" },
                 { \"name\": \"에러\", \"value\": \"${ERROR_MSG}\" }
               ],
               \"markdown\": true
