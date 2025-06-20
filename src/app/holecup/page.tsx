@@ -205,8 +205,6 @@ const HoleCup = () => {
     useEffect(() => {
         if (!clubData) return;
 
-        const currentCourseData = clubData.courseList.find(course => course.courseId === currentCourse.id);
-
         if(currentCourseData?.holeList.length === 0 || null) return;
 
         const defaultHole = currentCourseData?.holeList.find(hole => hole.holeNo === 1);
@@ -311,52 +309,54 @@ const HoleCup = () => {
     }, [selectedGreenCd, mapModeState,currentCourse, currentHole]);
 
     const handleSubmit = () => {
-        if (!pointerGreenPos || !finalGreenImgSize || !mapRef.current) return;
+        if (!pointerGreenPos || !finalGreenImgSize || !mapRef.current ||!mapModeState) return;
 
         const payload: MapPinAPI[] = [];
 
-        if (pointerOriginLSHolePinPos) {
-            payload.push({
-                holeId: currentHole.id,
-                mapMode: "LANDSCAPE",
-                mapCd: "PIN_HOLE",
-                mapX: pointerOriginLSHolePinPos.x.toString(),
-                mapY: pointerOriginLSHolePinPos.y.toString(),
-                mapZ: pinLSColor,
-            });
-        }
+        if(mapModeState === "LANDSCAPE") {
+            if (pointerOriginLSHolePinPos) {
+                payload.push({
+                    holeId: currentHole.id,
+                    mapMode: "LANDSCAPE",
+                    mapCd: "PIN_HOLE",
+                    mapX: pointerOriginLSHolePinPos.x.toString(),
+                    mapY: pointerOriginLSHolePinPos.y.toString(),
+                    mapZ: pinLSColor,
+                });
+            }
 
-        if (pointerOriginLSGreenPos) {
-            payload.push({
-                holeId: currentHole.id,
-                mapMode: "LANDSCAPE",
-                mapCd: `PIN_${selectedGreenCd}`,
-                mapX: pointerOriginLSGreenPos.x.toString(),
-                mapY: pointerOriginLSGreenPos.y.toString(),
-                mapZ: pinLSColor,
-            });
-        }
+            if (pointerOriginLSGreenPos) {
+                payload.push({
+                    holeId: currentHole.id,
+                    mapMode: "LANDSCAPE",
+                    mapCd: `PIN_${selectedGreenCd}`,
+                    mapX: pointerOriginLSGreenPos.x.toString(),
+                    mapY: pointerOriginLSGreenPos.y.toString(),
+                    mapZ: pinLSColor,
+                });
+            }
+        } else if (mapModeState === "PORTRAIT"){
+            if (pointerOriginPTHolePinPos) {
+                payload.push({
+                    holeId: currentHole.id,
+                    mapMode: "PORTRAIT",
+                    mapCd: "PIN_HOLE",
+                    mapX: pointerOriginPTHolePinPos.x.toString(),
+                    mapY: pointerOriginPTHolePinPos.y.toString(),
+                    mapZ: pinPTColor,
+                });
+            }
 
-        if (pointerOriginPTHolePinPos) {
-            payload.push({
-                holeId: currentHole.id,
-                mapMode: "PORTRAIT",
-                mapCd: "PIN_HOLE",
-                mapX: pointerOriginPTHolePinPos.x.toString(),
-                mapY: pointerOriginPTHolePinPos.y.toString(),
-                mapZ: pinPTColor,
-            });
-        }
-
-        if (pointerOriginPTGreenPos) {
-            payload.push({
-                holeId: currentHole.id,
-                mapMode: "PORTRAIT",
-                mapCd: `PIN_${selectedGreenCd}`,
-                mapX: pointerOriginPTGreenPos.x.toString(),
-                mapY: pointerOriginPTGreenPos.y.toString(),
-                mapZ: pinPTColor,
-            });
+            if (pointerOriginPTGreenPos) {
+                payload.push({
+                    holeId: currentHole.id,
+                    mapMode: "PORTRAIT",
+                    mapCd: `PIN_${selectedGreenCd}`,
+                    mapX: pointerOriginPTGreenPos.x.toString(),
+                    mapY: pointerOriginPTGreenPos.y.toString(),
+                    mapZ: pinPTColor,
+                });
+            }
         }
 
         if (payload.length > 0) {
