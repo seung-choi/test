@@ -26,7 +26,7 @@ jobs:
 
       - name: Push to AWS EC2
         run: |
-          echo "${{ secrets.AWS_PEM }}" > aws.pem
+          echo "${{ secrets.AWS_AP_NORTHEAST_2_PEM }}" > aws.pem
           chmod 400 aws.pem
           scp -i aws.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r -v mng.tar.gz ec2-user@43.202.78.220:/home/ec2-user/plug-golf/
 
