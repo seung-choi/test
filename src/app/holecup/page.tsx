@@ -26,6 +26,8 @@ const HoleCup = () => {
 
     const pinColors = ["#FB3B3B", "#FBD23C", "#71BE34", "#42444E", "#2F65CA", "#F0F0F0"];
     const [selectedPinColor, setSelectedPinColor] = useState<string>("");
+    const [pinLSColor, setPinLSColor] = useState<string>("");
+    const [pinPTColor, setPinPTColor] = useState<string>("");
     const [selectedGreenCd, setSelectedGreenCd] = useState<string | null>(null);
     const [pointerGreenPos, setPointerGreenPos] = useState<{ x: number; y: number } | null>(null);
     const [finalGreenPos, setFinalGreenPos] = useState<{ x: number; y: number } | null>(null);
@@ -38,7 +40,7 @@ const HoleCup = () => {
     const [scaleGreenImgSize, setScaleGreenImgSize] = useState<number>(0);
     const [originGreenImgSize, setOriginGreenImgSize] = useState<number>(0);
     const [mapModeState, setMapModeState] = useState<string>("");
-    const [pinChange, setPinChange] = useState<boolean>(false);
+    const [holecupPinMove, setHolecupPinMove] = useState<boolean>(false);
     const [toast, setToast] = useState<{
         state: boolean,
         mms : string
@@ -72,7 +74,6 @@ const HoleCup = () => {
                     mms: ""
                 });
             }, 3000);
-            setPinChange(false);
 
         },
         onError: () => {
@@ -103,7 +104,7 @@ const HoleCup = () => {
 
     const handleMapClick = (e: React.MouseEvent<HTMLDivElement>) => {
         if (typeof window === "undefined" || !mapRef.current || !finalGreenImgSize || !finalGreenMap || !finalGreenPos) return;
-        setPinChange(true);
+        setHolecupPinMove(true);
         // 랜더링된 Green 이미지상의 pin 좌표
         const { x: clickX, y: clickY } = getCorrectedClickCoords(e);
         setPointerGreenPos({ x: clickX, y: clickY });
@@ -115,8 +116,10 @@ const HoleCup = () => {
 
         if(mapModeState === "PORTRAIT") {
             setPointerOriginPTGreenPos({ x: clickX * scaleX, y: clickY * scaleY });
+            setPinPTColor(selectedPinColor);
         } else {
             setPointerOriginLSGreenPos({ x: clickX * scaleX, y: clickY * scaleY });
+            setPinLSColor(selectedPinColor);
         }
 
         const movePos  = {
@@ -302,7 +305,7 @@ const HoleCup = () => {
 
 
     useEffect(() => {
-        setPinChange(false);
+        setHolecupPinMove(false);
     }, [selectedGreenCd, mapModeState,currentCourse, currentHole]);
 
     const handleSubmit = () => {
@@ -318,7 +321,7 @@ const HoleCup = () => {
                     mapCd: "PIN_HOLE",
                     mapX: pointerOriginLSHolePinPos.x.toString(),
                     mapY: pointerOriginLSHolePinPos.y.toString(),
-                    mapZ: selectedPinColor,
+                    mapZ: pinLSColor,
                 });
             }
 
@@ -329,7 +332,7 @@ const HoleCup = () => {
                     mapCd: `PIN_${selectedGreenCd}`,
                     mapX: pointerOriginLSGreenPos.x.toString(),
                     mapY: pointerOriginLSGreenPos.y.toString(),
-                    mapZ: selectedPinColor,
+                    mapZ: pinLSColor,
                 });
             }
         } else if (mapModeState === "PORTRAIT"){
@@ -340,7 +343,7 @@ const HoleCup = () => {
                     mapCd: "PIN_HOLE",
                     mapX: pointerOriginPTHolePinPos.x.toString(),
                     mapY: pointerOriginPTHolePinPos.y.toString(),
-                    mapZ: selectedPinColor,
+                    mapZ: pinPTColor,
                 });
             }
 
@@ -351,7 +354,7 @@ const HoleCup = () => {
                     mapCd: `PIN_${selectedGreenCd}`,
                     mapX: pointerOriginPTGreenPos.x.toString(),
                     mapY: pointerOriginPTGreenPos.y.toString(),
-                    mapZ: selectedPinColor,
+                    mapZ: pinPTColor,
                 });
             }
         }
@@ -373,10 +376,7 @@ const HoleCup = () => {
                                 <button
                                     type="button"
                                     className={`${styles["holecup-pin-item"]} ${pinColor === selectedPinColor ? styles.active : ""}`}
-                                    onClick={() => {
-                                        setSelectedPinColor(pinColor);
-                                        setPinChange(true);
-                                    }}
+                                    onClick={() => setSelectedPinColor(pinColor)}
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" width="29" height="31" viewBox="0 0 29 31" fill="none">
                                         <path d="M22.5 28.5C22.5 28.5058 22.4996 28.5578 22.4023 28.6611C22.3028 28.7669 22.1314 28.8929 21.8677 29.0284C21.3418 29.2987 20.548 29.5569 19.5255 29.7792C17.4887 30.222 14.6509 30.5 11.5 30.5C8.34905 30.5 5.51135 30.222 3.47449 29.7792C2.45198 29.5569 1.65823 29.2987 1.13229 29.0284C0.868647 28.8929 0.697231 28.7669 0.597717 28.6611C0.500441 28.5578 0.5 28.5058 0.5 28.5C0.5 28.4942 0.500441 28.4422 0.597717 28.3389C0.697231 28.2331 0.868647 28.1071 1.13229 27.9716C1.65823 27.7013 2.45198 27.4431 3.47449 27.2208C5.51135 26.778 8.34905 26.5 11.5 26.5C14.6509 26.5 17.4887 26.778 19.5255 27.2208C20.548 27.4431 21.3418 27.7013 21.8677 27.9716C22.1314 28.1071 22.3028 28.2331 22.4023 28.3389C22.4996 28.4422 22.5 28.4942 22.5 28.5Z" fill="#17462A" stroke="#191E1B"/>
@@ -439,7 +439,7 @@ const HoleCup = () => {
                                 ))}
                             </div>
                         </div>
-                        <button type="button" className={styles["save-button"]} onClick={handleSubmit} disabled={!pinChange}>{t("holecup.save")}</button>
+                        <button type="button" className={styles["save-button"]} onClick={handleSubmit} disabled={!holecupPinMove}>{t("holecup.save")}</button>
                     </div>
                 </div>
 
