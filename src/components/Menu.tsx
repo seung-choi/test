@@ -7,8 +7,8 @@ import storage from "@/utils/storage";
 import { useRouter } from "next/navigation";
 import useAlertModal from "@/hooks/useAlertModal";
 import { usePathname } from "next/navigation";
-import {currentCourseState} from "@/lib/recoil";
-import {useRecoilState} from "recoil";
+import { currentCourseState, currentHoleState } from "@/lib/recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
 import AutoFontSizeText from "@/components/AutoFontSizeText";
 
@@ -20,8 +20,10 @@ const Menu = ({ courseList }: courseListProps) => {
   const { t } = useTranslation();
   const router = useRouter();
   const [currentCourse, setHolecupPageState] = useRecoilState(currentCourseState);
+  const setCurrentHoleState = useSetRecoilState(currentHoleState);
 
   const [open, setOpen] = useState(false);
+
   const { setAlertModalState } = useAlertModal();
   const path = usePathname();
 
@@ -73,6 +75,10 @@ const Menu = ({ courseList }: courseListProps) => {
                       Nm: course?.courseNm,
                     });
                     router.push("/holecup");
+                    setCurrentHoleState({
+                      id: null,
+                      no: null
+                    })
                     setOpen(!open);
                   }}>
                     <span className={styles["sub-title"]}>{t("menu.holecupSubTitle")}</span>

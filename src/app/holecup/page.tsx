@@ -205,7 +205,7 @@ const HoleCup = () => {
     useEffect(() => {
         if (!clubData) return;
 
-        if(currentCourseData?.holeList.length === 0 || null) return;
+        if (currentCourseData?.holeList.length === 0 || currentHole?.id) return;
 
         const defaultHole = currentCourseData?.holeList.find(hole => hole.holeNo === 1);
         if (defaultHole) {
