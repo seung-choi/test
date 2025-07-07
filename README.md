@@ -10,6 +10,7 @@ PLUG GOLF 고객사가 사용하는 모바일 버전 관리자 사이트
   <br/>
 
 ## ⚙️ 개발 환경
+### Next.js 14 + App router + SSG
 - `node 20`
 - `npm 10.9.2`
 - `react 18`
