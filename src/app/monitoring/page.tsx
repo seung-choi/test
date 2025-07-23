@@ -92,7 +92,7 @@ const Monitoring = () => {
                 ></span>
                 <h2 className={styles["course-name"]}>{course.courseNm}</h2>
                 <span className={styles["course-teams-state"]}>
-                  {bookingData?.filter((data) => data?.courseId === course?.courseId).length}
+                  {refinedBookingData?.filter((data) => data?.courseId === course?.courseId).length}
                   {t("monitoring.teamsPlaying")}
                 </span>
               </div>
@@ -129,7 +129,7 @@ const Monitoring = () => {
                           return (
                             <div
                               key={`cartByHole-${cart.bookingId}`}
-                              className={`${styles["hole-item-buggy"]} ${isEven ? styles["up"] : styles["down"]}`}
+                              className={`${styles["hole-item-buggy"]} ${isEven ? styles["up"] : styles["down"]}`} 
                               style={{ left: `${cart.progress}%` }}
                             >
                               <div className={styles[`line-wrap`]}>
