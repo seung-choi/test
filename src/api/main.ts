@@ -3,7 +3,7 @@ import { LoginFormAPI } from "@/app/login/page";
 import { getOriginURL } from "@/api/API_URL";
 import BookingType from "@/types/Booking.type";
 import ClubType from "@/types/Club.type";
-import EvetSSE from "@/types/EventSSE.type";
+import EventSSE from "@/types/EventSSE.type";
 import {MapPinAPI} from "@/app/holecup/page";
 import {PassWordFormAPI} from "@/app/repassword/page";
 
@@ -25,7 +25,7 @@ export const getBooking = async () => {
 };
 
 export const getEventSSE = async () => {
-  const res = await $axios<EvetSSE[]>({
+  const res = await $axios<EventSSE[]>({
     url: "event/SSE",
     method: "get",
   });
