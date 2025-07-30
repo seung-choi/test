@@ -92,7 +92,10 @@ const Monitoring = () => {
                 ></span>
                 <h2 className={styles["course-name"]}>{course.courseNm}</h2>
                 <span className={styles["course-teams-state"]}>
-                  {refinedBookingData?.filter((data) => data?.courseId === course?.courseId).length}
+                  {refinedBookingData?.filter((data) => 
+                    data?.courseId === course?.courseId && 
+                    (data?.status === "OP" || data?.status === "IP")
+                  ).length}
                   {t("monitoring.teamsPlaying")}
                 </span>
               </div>
