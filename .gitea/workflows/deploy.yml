@@ -15,6 +15,12 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Detect
+        id: changes
+        run: |
+          COMMENT=$(git log origin/main^..HEAD --pretty=format:"%s" | tr '\n' '; ')
+          echo "comment=$COMMENT" >> "$GITHUB_OUTPUT"
+
       - name: Install
         run: npm install
 
@@ -51,7 +57,7 @@ jobs:
                 { \"name\": \"대상\", \"value\": \"43.202.78.220\" },
                 { \"name\": \"네임\", \"value\": \"plug-golf-mng\" },
                 { \"name\": \"시간\", \"value\": \"$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M:%S')\" },
-                { \"name\": \"배포\", \"value\": \"mng.zip\" }
+                { \"name\": \"배포\", \"value\": \"${{ steps.changes.outputs.comment }}\" }
               ],
               \"markdown\": true
             }]
@@ -73,7 +79,7 @@ jobs:
                 { \"name\": \"대상\", \"value\": \"43.202.78.220\" },
                 { \"name\": \"네임\", \"value\": \"plug-golf-mng\" },
                 { \"name\": \"시간\", \"value\": \"$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M:%S')\" },
-                { \"name\": \"배포\", \"value\": \"mng.zip\" },
+                { \"name\": \"배포\", \"value\": \"${{ steps.changes.outputs.comment }}\" },
                 { \"name\": \"에러\", \"value\": \"${ERROR_MSG}\" }
               ],
               \"markdown\": true
@@ -88,6 +94,12 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '20'
+
+      - name: Detect
+        id: changes
+        run: |
+          COMMENT=$(git log origin/ap-northeast-2^..HEAD --pretty=format:"%s" | tr '\n' '; ')
+          echo "comment=$COMMENT" >> "$GITHUB_OUTPUT"
 
       - name: Install
         run: npm install
@@ -151,7 +163,7 @@ jobs:
                 { \"name\": \"대상\", \"value\": \"$AWS_REGION\" },
                 { \"name\": \"네임\", \"value\": \"plug-golf-mng\" },
                 { \"name\": \"시간\", \"value\": \"$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M:%S')\" },
-                { \"name\": \"배포\", \"value\": \"plug-golf-mng:latest\" }
+                { \"name\": \"배포\", \"value\": \"${{ steps.changes.outputs.comment }}\" }
               ],
               \"markdown\": true
             }]
@@ -175,7 +187,7 @@ jobs:
                 { \"name\": \"대상\", \"value\": \"$AWS_REGION\" },
                 { \"name\": \"네임\", \"value\": \"plug-golf-mng\" },
                 { \"name\": \"시간\", \"value\": \"$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M:%S')\" },
-                { \"name\": \"배포\", \"value\": \"plug-golf-mng:latest\" },
+                { \"name\": \"배포\", \"value\": \"${{ steps.changes.outputs.comment }}\" },
                 { \"name\": \"에러\", \"value\": \"${ERROR_MSG}\" }
               ],
               \"markdown\": true
@@ -190,6 +202,12 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '20'
+
+      - name: Detect
+        id: changes
+        run: |
+          COMMENT=$(git log origin/ap-southeast-1^..HEAD --pretty=format:"%s" | tr '\n' '; ')
+          echo "comment=$COMMENT" >> "$GITHUB_OUTPUT"
 
       - name: Install
         run: npm install
@@ -253,7 +271,7 @@ jobs:
                 { \"name\": \"대상\", \"value\": \"$AWS_REGION\" },
                 { \"name\": \"네임\", \"value\": \"plug-golf-mng\" },
                 { \"name\": \"시간\", \"value\": \"$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M:%S')\" },
-                { \"name\": \"배포\", \"value\": \"plug-golf-mng:latest\" }
+                { \"name\": \"배포\", \"value\": \"${{ steps.changes.outputs.comment }}\" }
               ],
               \"markdown\": true
             }]
@@ -277,7 +295,7 @@ jobs:
                 { \"name\": \"대상\", \"value\": \"$AWS_REGION\" },
                 { \"name\": \"네임\", \"value\": \"plug-golf-mng\" },
                 { \"name\": \"시간\", \"value\": \"$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M:%S')\" },
-                { \"name\": \"배포\", \"value\": \"plug-golf-mng:latest\" },
+                { \"name\": \"배포\", \"value\": \"${{ steps.changes.outputs.comment }}\" },
                 { \"name\": \"에러\", \"value\": \"${ERROR_MSG}\" }
               ],
               \"markdown\": true
