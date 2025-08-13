@@ -11,13 +11,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
       - uses: actions/setup-node@v3
         with:
           node-version: '20'
 
-      - name: Detect
+      - name: Detect Changed Modules
         id: changes
         run: |
+          git fetch origin main:refs/remotes/origin/main
           COMMENT=$(git log origin/main^..HEAD --pretty=format:"%s" | tr '\n' '; ')
           echo "comment=$COMMENT" >> "$GITHUB_OUTPUT"
 
@@ -91,13 +95,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
       - uses: actions/setup-node@v3
         with:
           node-version: '20'
 
-      - name: Detect
+      - name: Detect Changed Modules
         id: changes
         run: |
+          git fetch origin ap-northeast-2:refs/remotes/origin/ap-northeast-2
           COMMENT=$(git log origin/ap-northeast-2^..HEAD --pretty=format:"%s" | tr '\n' '; ')
           echo "comment=$COMMENT" >> "$GITHUB_OUTPUT"
 
@@ -199,13 +207,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
       - uses: actions/setup-node@v3
         with:
           node-version: '20'
 
-      - name: Detect
+      - name: Detect Changed Modules
         id: changes
         run: |
+          git fetch origin ap-southeast-1:refs/remotes/origin/ap-southeast-1
           COMMENT=$(git log origin/ap-southeast-1^..HEAD --pretty=format:"%s" | tr '\n' '; ')
           echo "comment=$COMMENT" >> "$GITHUB_OUTPUT"
 
