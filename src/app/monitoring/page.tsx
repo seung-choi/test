@@ -1,24 +1,30 @@
 "use client";
 
 import styles from "@/styles/pages/monitoring/monitoring.module.scss";
-import FloatingStandBy from "@/components/monitoring/FloatingStandBy";
-import Link from "next/link";
+import StandByPopup from "@/components/monitoring/StandByPopup";
 import { useQuery } from "@tanstack/react-query";
 import { getBooking, getClub } from "@/api/main";
 import CourseType from "@/types/Course.type";
-import Menu from "@/components/Menu";
+import MenuPopup from "@/components/MenuPopup";
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import transformBookingData from "@/utils/transformBookingData";
+import { useSetRecoilState } from "recoil";
+import { standByPopupState, menuPopupOpenState, holecupMenuPopupState } from "@/lib/recoil";
+import HolecupMenuPopup from "@/components/HolcupMenuPopup";
 
 const Monitoring = () => {
   const { t } = useTranslation();
   const [activeMenu, setActiveMenu] = useState<number>(0);
+  const setHolecupMenuPopupOpen = useSetRecoilState(holecupMenuPopupState);
+  const setStandByPopupOpen = useSetRecoilState(standByPopupState);
+  const setMenuPopupOpen = useSetRecoilState(menuPopupOpenState);
 
   const { data: clubData } = useQuery({
     queryKey: ["clubData"],
     queryFn: () => getClub(),
-  });
+  }); 
 
   const { data: bookingData } = useQuery({
     queryKey: ["bookingData"],
@@ -76,6 +82,43 @@ const Monitoring = () => {
     <>
       <h1 className="blind">{t("monitoring.title")}</h1>
       <div className={styles["monitoring-container"]}>
+        <div className={styles["monitoring-header"]}>
+          <div className={styles["course-list-wrap"]}>
+            <ul className={styles["course-list"]}>
+              {clubData?.courseList.map((course: CourseType, index: number) => {
+                return (
+                  <li key={course.courseId}>
+                    <button
+                      type="button"
+                      className={styles["course-name"]}
+                      style={activeMenu === index ? { border: `2px solid ${course.courseCol}` } : undefined}
+                      onClick={() => {
+                        scrollToSection(course.courseId);
+                        setActiveMenu(index);
+                      }}
+                    >
+                      <span
+                        className={styles["course-color"]}
+                        style={{ backgroundColor: course.courseCol }}
+                      ></span>
+                      {course.courseNm}
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+          <div className={styles["monitoring-etc-menu"]}>
+            <Link href="/message" className={`${styles["monitoring-etc-menu-button"]} ${styles["message-button"]}`}>
+              <img src="/assets/image/icon-message-dark.svg" alt="메세지" />
+              <span className={styles["text"]}>메세지</span>
+            </Link>
+            <Link href="/search"  className={`${styles["monitoring-etc-menu-button"]} ${styles["search-button"]}`}>
+              <img src="/assets/image/icon-search-dark.svg" alt="검색" />
+              <span className={styles["text"]}>검색</span>
+            </Link>
+          </div>
+        </div>
         {clubData?.courseList.map((course: CourseType) => {
           let globalBuggyIndex = 0;
 
@@ -98,6 +141,7 @@ const Monitoring = () => {
                   ).length}
                   {t("monitoring.teamsPlaying")}
                 </span>
+                <button type="button" className={styles["standby-button"]} onClick={() => setStandByPopupOpen(true)}>대기 인원</button>
               </div>
               <div className={styles["hole-list-wrap"]}>
                 <ul className={styles["hole-list"]}>
@@ -178,40 +222,15 @@ const Monitoring = () => {
             </section>
           );
         })}
-
-        <div className={styles["course-list-wrap"]}>
-          <ul className={styles["course-list"]}>
-            {clubData?.courseList.map((course: CourseType, index: number) => {
-              return (
-                <li key={course.courseId}>
-                  <button
-                    type="button"
-                    className={styles["course-name"]}
-                    style={activeMenu === index ? { border: `2px solid ${course.courseCol}` } : undefined}
-                    onClick={() => {
-                      scrollToSection(course.courseId);
-                      setActiveMenu(index);
-                    }}
-                  >
-                    <span
-                      className={styles["course-color"]}
-                      style={{ backgroundColor: course.courseCol }}
-                    ></span>
-                    {course.courseNm}
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-        <Link href="/message" className={styles["message-button"]}>
-          <span className="blind">{t("monitoring.sendMessage")}</span>
-        </Link>
-        <div className={styles["menu-wrap"]}>
-          <Menu courseList={clubData?.courseList || []} />
-          <FloatingStandBy waitingCartList={waitingCartList} />
+        <div className={styles["floating-menu-wrap"]}>
+           <button type="button" className={`${styles["floating-menu-button"]} ${styles["map-button"]}`}><span>관제</span></button>
+           <button type="button" className={`${styles["floating-menu-button"]} ${styles["holecup-button"]}`} onClick={() => setHolecupMenuPopupOpen(true)}><span>홀컵핀</span></button>
+           <button type="button" className={`${styles["floating-menu-button"]} ${styles["menu-button"]}`} onClick={() => setMenuPopupOpen(true)}><span>메뉴</span></button>
         </div>
       </div>
+      <MenuPopup />
+      <HolecupMenuPopup courseList={clubData?.courseList || []} />
+      <StandByPopup waitingCartList={waitingCartList} />
     </>
   );
 };

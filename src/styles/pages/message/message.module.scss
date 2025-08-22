@@ -41,7 +41,7 @@
     }
 
     .select-content-inner {
-      height: calc(100% - 5.8rem - 7rem);
+      height: calc(100% - 152px);
       overflow: auto;
     }
 
@@ -89,8 +89,9 @@
           }
 
           &:checked + span.select-label {
-            background: var(--MOBILE-admin-Purplelight, #EAE6FF);
-            color: var(--MOBILE-admin-Purplemiddle, #7368C6);
+            background: var(--Light-mode-blue1);
+            color: var(--Light-mode-keycolor);
+            font-weight: 700;
           }
         }
       }
@@ -140,14 +141,14 @@
       font-size: 20px;
       font-weight: 700;
       letter-spacing: -0.4px;
-      background: var(--MOBILE-admin-Keypurple, #2F0077);
+      background: var(--Light-mode-keycolor);
       border: none;
       &:focus-visible {
         outline: none;
       }
 
       &:disabled {
-        background: var(--MOBILE-admin-Purplegray, #D2CCDB);
+        background: var(--Light-mode-blue1);
       }
     }
     &.step2 {

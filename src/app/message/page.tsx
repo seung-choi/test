@@ -3,7 +3,7 @@
 import styles from "@/styles/pages/message/message.module.scss";
 import { ChangeEvent, ChangeEventHandler, useState } from "react";
 import { Input } from "@/components/Input";
-import { Checkbox } from "@/components/CheckBox";
+// import { Checkbox } from "@/components/CheckBox";
 import {useMutation, useQuery} from "@tanstack/react-query";
 import {getBooking, getClub, getEventSSE, postSendHis} from "@/api/main";
 import useAlertModal from "@/hooks/useAlertModal";

@@ -1,8 +1,10 @@
 "use client";
 
-import styles from "@/styles/components/monitoring/FloatingStandBy.module.scss";
+import styles from "@/styles/components/monitoring/StandByPopup.module.scss";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useRecoilState } from "recoil";
+import { standByPopupState } from "@/lib/recoil";
 
 interface waitingCartListType {
   waitingCartList: {
@@ -19,18 +21,18 @@ interface waitingCartListType {
   }[];
 }
 
-const FloatingStandBy = ({ waitingCartList }: waitingCartListType) => {
+const StandByPopup = ({ waitingCartList }: waitingCartListType) => {
   const { t } = useTranslation();
+  const [standByPopup, setStandByPopup] = useRecoilState(standByPopupState);
 
-  const [open, setOpen] = useState(false);
   const [activeTab, setActiveTab] = useState(waitingCartList[0]?.courseId);
 
   return (
-    <div className={`${styles["standby-container"]} ${open ? styles["open"] : ""}`}>
+    <div className={`${styles["standby-container"]} ${standByPopup ? styles["open"] : ""}`}>
       <div
         className={styles["dim"]}
         onClick={() => {
-          setOpen(!open);
+          setStandByPopup(false);
         }}
       ></div>
       <div className={styles["standby-inner"]}>
@@ -88,9 +90,9 @@ const FloatingStandBy = ({ waitingCartList }: waitingCartListType) => {
           </div>
         </div>
         <button
-          className={styles["floating-button"]}
+          className={styles["close-button"]}
           onClick={() => {
-            setOpen(!open);
+            setStandByPopup(false);
           }}
         >
           <span></span>
@@ -101,4 +103,4 @@ const FloatingStandBy = ({ waitingCartList }: waitingCartListType) => {
   );
 };
 
-export default FloatingStandBy;
+export default StandByPopup;

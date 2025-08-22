@@ -5,7 +5,6 @@ import {useEffect, useMemo, useRef, useState} from "react";
 import {useMutation, useQuery} from "@tanstack/react-query";
 import {getClub, postMapPin} from "@/api/main";
 import ClubType from "@/types/Club.type";
-import Menu from "@/components/Menu";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { currentCourseState, currentHoleState } from "@/lib/recoil";
 import { useQueryClient } from "@tanstack/react-query";
@@ -468,7 +467,6 @@ const HoleCup = () => {
                     </div>
                 </div>
             </div>
-            <Menu courseList={clubData?.courseList || []} />
         </>
     );
 };

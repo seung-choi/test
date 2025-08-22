@@ -1,6 +1,7 @@
 .standby {
   &-container {
     .dim {
+      z-index: 1000;
       position:fixed;
       top: 0;
       left: 0;
@@ -16,16 +17,16 @@
   }
   &-inner {
     position: fixed;
-    top: 0;
-    left: 100%;
+    top: calc(100% + 46px);
+    left: 40px;
     z-index: 1000;
-    width: calc(100% - 56px);
-    height: 100%;
+    width: calc(100% - 80px);
+    height: calc(100% - 80px);
     background: #fff;
-    border-radius: 10px 0 0 10px;
+    border-radius: 10px 10px 0 0;
     transition: all .2s;
     @at-root .open & {
-      left: calc(56px - env(safe-area-inset-top));
+      top: calc(env(safe-area-inset-top) + 80px);
       z-index: 1002;
     }
     .tab-wrapper {
@@ -37,11 +38,11 @@
         justify-content: flex-start;
         gap: 20px;
         width: 100%;
-        border-bottom: 0.25px solid var(--MOBILE-admin-Keypurple, #2F0077);
+        border-bottom: 0.25px solid var(--Light-mode-keycolor);
         margin-bottom: 9px;
         .tab {
           height: 19px;
-          color: var(--MOBILE-admin-Keypurple, #2F0077);
+          color: var(--Light-mode-keycolor);
           font-size: 12px;
           font-style: normal;
           font-weight: 400;
@@ -52,7 +53,7 @@
           &.active {
             position: relative;
             font-weight: 700;
-            border-bottom: 1.5px solid var(--MOBILE-admin-Keypurple, #2F0077);
+            border-bottom: 1.5px solid var(--Light-mode-keycolor);
           }
         }
       }
@@ -106,47 +107,36 @@
         }
       }
     }
-    .floating-button {
+    .close-button {
       position: absolute;
-      top: 74px;
-      left: -46px;
+      top: -44px;
+      right: 28px;
       width: 47px;
       height: 48px;
-      border-radius: 15px 0 0 15px;
-      background: var(--MOBILE-admin-Keypurple, #2F0077) url("../../../../public/assets/image/icon-cart.svg") no-repeat center / 24px;
+      border-radius: 15px 15px 0 0;
       border: none;
-      @at-root .open & {
-        background-color: #fff;
-      }
+      background-color: #fff;
       & > span{
-        display: none;
-        @at-root .open & {
-          display: block;
-          position: absolute;
-          left: 14px;
-          width: 18px;
-          height: 2px;
-          border-radius: 5px;
-          transition: all 0.3s;
-          -webkit-transition: all 0.3s;
-          -moz-transition: all 0.3s;
-          -ms-transition: all 0.3s;
-          -o-transition: all 0.3s;
-          background-color: var(--MOBILE-admin-Keypurple, #2F0077);;
-        }
+        display: block;
+        position: absolute;
+        left: 14px;
+        width: 18px;
+        height: 2px;
+        border-radius: 5px;
+        transition: all 0.3s;
+        -webkit-transition: all 0.3s;
+        -moz-transition: all 0.3s;
+        -ms-transition: all 0.3s;
+        -o-transition: all 0.3s;
+        background-color: var(--Light-mode-font_key);
         &:nth-of-type(1) {
           top: 18px;
-          @at-root .open & {
-            top: 23px;
+          top: 23px;
             transform: rotate(45deg);
-          }
         }
         &:nth-of-type(2) {
-          top: 28px;
-          @at-root .open & {
-            top: 23px;
-            transform: rotate(-45deg);
-          }
+          top: 23px;
+          transform: rotate(-45deg);
         }
       }
     }
