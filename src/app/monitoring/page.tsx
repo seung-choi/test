@@ -6,13 +6,15 @@ import { useQuery } from "@tanstack/react-query";
 import { getBooking, getClub } from "@/api/main";
 import CourseType from "@/types/Course.type";
 import MenuPopup from "@/components/MenuPopup";
+import SOSPopup from "@/components/monitoring/SOSPopup";
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import transformBookingData from "@/utils/transformBookingData";
-import { useSetRecoilState } from "recoil";
-import { standByPopupState, menuPopupOpenState, holecupMenuPopupState } from "@/lib/recoil";
+import { useSetRecoilState, useRecoilValue } from "recoil";
+import { standByPopupState, menuPopupOpenState, holecupMenuPopupState, sseSOSPopupOpenState } from "@/lib/recoil";
 import HolecupMenuPopup from "@/components/HolcupMenuPopup";
+import useSSE from "@/lib/useSSE";
 
 const Monitoring = () => {
   const { t } = useTranslation();
@@ -20,6 +22,7 @@ const Monitoring = () => {
   const setHolecupMenuPopupOpen = useSetRecoilState(holecupMenuPopupState);
   const setStandByPopupOpen = useSetRecoilState(standByPopupState);
   const setMenuPopupOpen = useSetRecoilState(menuPopupOpenState);
+  const sosPopupOpen = useRecoilValue(sseSOSPopupOpenState);
 
   const { data: clubData } = useQuery({
     queryKey: ["clubData"],
@@ -73,6 +76,8 @@ const Monitoring = () => {
     const section = document.getElementById(`${courseId}`);
     section?.scrollIntoView({ behavior: "smooth" });
   };
+
+  useSSE();
 
   if (!clubData || !bookingData) {
     return null;
@@ -231,6 +236,7 @@ const Monitoring = () => {
       <MenuPopup />
       <HolecupMenuPopup courseList={clubData?.courseList || []} />
       <StandByPopup waitingCartList={waitingCartList} />
+      {sosPopupOpen && <SOSPopup />}
     </>
   );
 };

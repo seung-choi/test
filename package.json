@@ -11,6 +11,8 @@
   "dependencies": {
     "@tanstack/react-query": "5.25.0",
     "axios": "1.7.9",
+    "event-source-polyfill": "^1.0.31",
+    "@types/event-source-polyfill": "^1.0.5",
     "i18next": "^25.0.2",
     "next": "14.2.24",
     "react": "^18",
