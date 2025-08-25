@@ -4,12 +4,12 @@
     height: 100%;
     position: relative;
     padding: 52px 25px;
-    background: var(--MOBILE-admin-Keywhite, #FFF);
+    background: var(--mode-Background);
   }
   
   &-title {
     padding: 0 9px;
-    color: var(--MOBILE-admin-Keyblack, #121212);
+    color: var(--mode-font_key);
     font-size: 24px;
     font-style: normal;
     font-weight: 700;
@@ -22,7 +22,7 @@
     top: 8px;
     left: 9px;
     padding-left: 18px;
-    color: var(--MOBILE-admin-Redmiddle, #FF7575);
+    color: var(--mode-pointred2);
     font-size: 12px;
     font-style: normal;
     font-weight: 400;
@@ -37,9 +37,9 @@
       display: inline-block;
       width: 12px;
       height: 12px;
-      background-color: var(--MOBILE-admin-Redmiddle, #FF7575);
+      background-color: var(--mode-pointred2);
       border-radius: 50%;
-      color: var(--MOBILE-admin-Keywhite, #FFF);
+      color: var(--mode-Background);
       text-align: center;
       font-size: 9px;
       font-style: normal;
@@ -65,13 +65,13 @@
         bottom: 5px;
         display: inline-block;
         padding: 0 10px;
-        color: var(--MOBILE-admin-Grayscale4, #666);
+        color: var(--mode-gray2);
         font-size: 20px;
         font-weight: 700;
         letter-spacing: -0.4px;
         border-radius: 3px;
         line-height: 31px;
-        background: var(--MOBILE-admin-Grayscale2, #EEE);
+        background: var(--mode-gray3);
       }
     }
   }

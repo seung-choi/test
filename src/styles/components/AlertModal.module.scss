@@ -17,9 +17,12 @@
     width: calc(100% - 60px);
     max-width: 300px;
     border-radius: 15px;
-    background: var(--MOBILE-admin-Keywhite, #FFF);
+    background: var(--mode-Background);
     padding: 10px;
     box-sizing: border-box;
+    [data-theme="dark"] & {
+      box-shadow: 0px 0px 10px 0px #FFFFFF;
+    }
   }
 
   &-desc {
@@ -27,7 +30,7 @@
     align-items: center;
     justify-content: center;
     min-height: 130px;
-    color: var(--MOBILE-admin-Keyblack, #121212);
+    color: var(--mode-font_key);
     text-align: center;
     font-size: 20px;
     font-style: normal;

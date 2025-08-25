@@ -2,7 +2,7 @@
   &-container {
     width: 100%;
     position: relative;
-    background: var(--Light-mode-Background);
+    background: var(--mode-Background);
     height: 100%;
     overflow: scroll;
     padding-top: 45px;
@@ -18,13 +18,13 @@
       width: 100%;
       height: 45px;
       padding: 0 10px;
-      background: var(--Light-mode-Background);
+      background: var(--mode-Background);
       .course-list-wrap {
         width: calc(100% - 22px - 130px);
         height: 28px;
-        border: 3px solid var(--blue-lightblue1);
+        border: 3px solid var(--mode-color1);
         border-radius: 28px;
-        background: var(--blue-lightblue1);
+        background: var(--mode-color1);
         box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.30);
         z-index: 2;
         overflow: hidden;
@@ -44,8 +44,9 @@
             padding: 0 10px;
             border: none;
             border-radius: 22px;
-            background-color: #fff;
+            background-color: var(--mode-Background);
             white-space: nowrap;
+            color: var(--mode-font_key);
             .course-color {
               width: 10px;
               height: 10px;
@@ -62,16 +63,23 @@
         width: 130px;
         height: 28px;
         border-radius: 28px;
-        background: var(--Light-mode-gray3);
-        border: 1px solid var(--Light-mode-gray1);
+        background: var(---mode-gray3);
+        border: 1px solid var(--mode-gray1);
         box-sizing: border-box;
+        [data-theme="dark"] & {
+          background: var(--mode-color1);
+          border-color: var(--mode-color1);
+        }
         &-button {
           display: flex;
           align-items: center;
           gap: 0 3px;
-          color: var(--Light-mode-font_key);
+          color: var(--mode-darkgray);
           font-size: 11px;
           font-weight: 800;
+          [data-theme="dark"] & {
+            color: var(--mode-font_key);
+          }
         }
       }
     }
@@ -80,7 +88,7 @@
       width: 100%;
       min-height: calc(100% - 42px - 18px - 18px);
       padding: 20px 32px;
-      background: var(--MOBILE-admin-Keywhite, #FFF);
+      background: var(--mode-Background);
       margin-bottom: 20px;
        .course-title {
         display: flex;

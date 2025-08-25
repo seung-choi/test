@@ -1,8 +1,8 @@
 .button {
   padding: 0 20px;
   transition: all .3s;
-  color: var(--MOBILE-admin-Grayscale4, #666);
-  background: var(--MOBILE-admin-Grayscale2, #EEE);
+  color: var(--mode-gray1);
+  background: var(--mode-gray3);
   font-size: 18px;
   font-style: normal;
   font-weight: 700;
@@ -11,14 +11,21 @@
   line-height: 40px;
   border:none;
   white-space: nowrap;
+  [data-theme="dark"] & {
+    color: var(--mode-gray1);
+    background: var(--mode-color1);
+  }
 
   &.primary {
-    background-color: var(--Light-mode-keycolor);
-    color: var(--MOBILE-admin-Keywhite, #FFF);
+    background-color: var(--mode-keycolor);
+    color: var(--mode-Background);
     transition: background-color .2s;
+    [data-theme="dark"] & {
+      color: var(--mode-font_key);
+    }
 
     &:disabled {
-      background-color: var(--MOBILE-admin-Purplegray, #D2CCDB);
+      background-color: var(--mode-color1);
     }
   }
 

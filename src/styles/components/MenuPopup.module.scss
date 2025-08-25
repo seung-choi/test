@@ -27,9 +27,13 @@
     z-index: 1000;
     width: 223px;
     height: 100%;
-    background: #fff;
+    background: var(--mode-Background);
     border-radius: 10px 0 0 10px;
     transition: all .3s;
+    box-shadow: 0px 0px 10px 0px #1212124D;
+    [data-theme="dark"] & {
+      box-shadow: 0px 0px 10px 0px #FFFFFF;
+    }
     @at-root .open & {
       right: 0;
     }
@@ -50,7 +54,7 @@
           display: block;
           width: calc(100% - 34px);
           height: 1px;
-          background: var(--MOBILE-admin-Grayscale3, #B4B4B4);
+          background: var(--mode-gray2);
         }
         & > div {
           max-width: calc(100% - 40px);
@@ -62,8 +66,8 @@
           width: 40px;
           height: 40px;
           border-radius: 50%;
-          background: var(--Light-mode-keycolor) url("../../../public/assets/image/icon-light-theme.svg") no-repeat center 5px / 19px;
-          color: var(--Light-mode-Background);
+          background: var(--mode-keycolor) url("../../../public/assets/image/icon-light-theme.svg") no-repeat center 5px / 19px;
+          color: var(--mode-Background);
           text-align: center;
           font-size: 5px;
           font-style: normal;
@@ -71,11 +75,14 @@
           line-height: 22px;
           letter-spacing: -0.1px;
           border: none;
+          [data-theme="dark"] & {
+            color: var(--mode-font_key);
+          }
         }
       }
       &-team {
         width: 100%;
-        color: var(--MOBILE-admin-Keyblack, #121212);
+        color: var(--mode-font_key);
         font-size: 12px;
         font-style: normal;
         font-weight: 300;
@@ -89,7 +96,7 @@
       &-name {
         width: 100%;
         margin-top: 3px;
-        color: var(--MOBILE-admin-Keyblack, #121212);
+        color: var(--mode-font_key);
         font-size: 18px;
         font-weight: 700;
         line-height: 22px;
@@ -127,8 +134,12 @@
       width: 47px;
       height: 48px;
       border-radius: 15px 0 0 15px;
-      background-color: #fff;
+      background-color: var(--mode-Background);
       border: none;
+      box-shadow: -5px 0px 5px -4px #1212124D;
+      [data-theme="dark"] & {
+        box-shadow: -5px 0px 5px -4px #FFFFFF;
+      }
       & > span{
         display: block;
         position: absolute;
@@ -136,7 +147,10 @@
         width: 18px;
         height: 2px;
         border-radius: 5px;
-        background-color: #3c4148;
+        background-color: var(--mode-gray1);
+        [data-theme="dark"] & {
+          background-color: var(--mode-font_key);
+        }
         &:nth-of-type(1) {
           top: 23px;
           transform: rotate(45deg);
@@ -175,9 +189,9 @@
       height: 53px;
       padding: 9px 25px 10px 12px;
       border-radius: 5px;
-      background-color: var(--MOBILE-admin-Keywhite, #FFF);
+      background-color: var(--mode-Background);
       box-shadow: 0 2px 6px 0 rgba(107, 89, 140, 0.25);
-      color: var(--Light-mode-gray1);
+      color: var(--mode-gray1);
       font-size: 15px;
       font-weight: 700;
       &::before,
@@ -189,8 +203,15 @@
         display:inline-block;
         width: 8px;
         height: 2px;
-        background-color: var(--Light-mode-gray2);
+        background-color: var(--mode-gray2);
         border-radius: 2px;
+      }
+      [data-theme="dark"] & {
+        background-color: var(--mode-color2);
+        &::before,
+        &::after {
+          background-color: var(--mode-font_key);
+        }
       }
       &::before {
         margin-top: 2px;
@@ -203,11 +224,18 @@
     }
     &.active {
       & > button {
-        background-color: var(--Light-mode-blue2);
-        color: var(--Light-mode-keycolor);
+        background-color: var(--mode-color2);
+        color: var(--mode-darkgray);
+        [data-theme="dark"] & {
+          background-color: var(--mode-color3);
+          color: var(--mode-font_key);
+        }
         &::before,
         &::after {
-          background-color: var(--Light-mode-keycolor);
+          background-color: var(--mode-darkgray);
+          [data-theme="dark"] & {
+            background-color: var(--mode-font_key);
+          }
         }
       }
     }

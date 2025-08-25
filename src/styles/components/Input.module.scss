@@ -5,11 +5,12 @@
   padding: 0 8px;
   box-sizing: border-box;
   max-height: 40px;
-  color: var(--mode-font_key);
+  color: var(--mode-gray1);
   font-size: 20px;
   font-weight: 700;
   letter-spacing: -0.32px;
   line-height: 40px;
+  background: none;
   @at-root .error & {
     border-color: 1px solid var(--mode-pointred);
     color: var(--mode-pointred);
@@ -35,10 +36,6 @@
 
   &:disabled {
     cursor: not-allowed;
-  }
-
-  &:disabled {
-    background-color: #efefef;
   }
 
   &[type="password"] {
@@ -133,7 +130,7 @@
       content: '';
       height: 11px;
       width:2px;
-      background-color: #fff;
+      background-color: var(--mode-Background);
     }
     &::before {
       transform: rotate(45deg);

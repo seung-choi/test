@@ -22,9 +22,10 @@
     z-index: 1000;
     width: calc(100% - 80px);
     height: calc(100% - 80px);
-    background: #fff;
+    background: var(--mode-Background);
     border-radius: 10px 10px 0 0;
     transition: all .2s;
+    box-shadow: 0px -5px 10px 0px #FFFFFF40;
     @at-root .open & {
       top: calc(env(safe-area-inset-top) + 80px);
       z-index: 1002;
@@ -38,11 +39,11 @@
         justify-content: flex-start;
         gap: 20px;
         width: 100%;
-        border-bottom: 0.25px solid var(--Light-mode-keycolor);
+        border-bottom: 0.25px solid var(--mode-font_key);
         margin-bottom: 9px;
         .tab {
           height: 19px;
-          color: var(--Light-mode-keycolor);
+          color: var(--mode-font_key);
           font-size: 12px;
           font-style: normal;
           font-weight: 400;
@@ -53,7 +54,7 @@
           &.active {
             position: relative;
             font-weight: 700;
-            border-bottom: 1.5px solid var(--Light-mode-keycolor);
+            border-bottom: 1.5px solid var(--mode-font_key);
           }
         }
       }
@@ -61,20 +62,20 @@
       .tab-content {
         width: 100%;
         height: calc(100% - 19px - 9px);
-        border-top: 0.25px dashed #9F8BBC;
+        border-top: 0.25px dashed var(--mode-gray2);
         .standby {
           display: flex;
           align-items: center;
           height: 50%;
-          border-bottom: 0.25px dashed #9F8BBC;
+          border-bottom: 0.25px dashed var(--mode-gray2);
           &-title {
             display: flex;
             align-items: center;
             justify-content: center;
             width: 70px;
             height: 100%;
-            background: var(--MOBILE-admin-Grayscale1, #F5F5F5);
-            color: var(--MOBILE-admin-Keyblack, #121212);
+            background: var(--mode-color3);
+            color: var(--mode-font_key);
             text-align: center;
             font-size: 14px;
             font-style: normal;
@@ -96,7 +97,7 @@
               gap: 5px 15px;
               flex-wrap: wrap;
               max-height: 100%;
-              color: var(--MOBILE-admin-Grayscale4, #666);
+              color: var(--mode-gray1);
               font-size: 18px;
               font-style: normal;
               font-weight: 400;
@@ -115,7 +116,7 @@
       height: 48px;
       border-radius: 15px 15px 0 0;
       border: none;
-      background-color: #fff;
+      background-color: var(--mode-Background);
       & > span{
         display: block;
         position: absolute;
@@ -128,7 +129,7 @@
         -moz-transition: all 0.3s;
         -ms-transition: all 0.3s;
         -o-transition: all 0.3s;
-        background-color: var(--Light-mode-font_key);
+        background-color: var(--mode-font_key);
         &:nth-of-type(1) {
           top: 18px;
           top: 23px;

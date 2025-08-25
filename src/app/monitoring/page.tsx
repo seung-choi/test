@@ -12,7 +12,7 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import transformBookingData from "@/utils/transformBookingData";
 import { useSetRecoilState, useRecoilValue } from "recoil";
-import { standByPopupState, menuPopupOpenState, holecupMenuPopupState, sseSOSPopupOpenState } from "@/lib/recoil";
+import { standByPopupState, menuPopupOpenState, holecupMenuPopupState, sseSOSPopupOpenState, themeModeState } from "@/lib/recoil";
 import HolecupMenuPopup from "@/components/HolcupMenuPopup";
 import useSSE from "@/lib/useSSE";
 
@@ -23,6 +23,7 @@ const Monitoring = () => {
   const setStandByPopupOpen = useSetRecoilState(standByPopupState);
   const setMenuPopupOpen = useSetRecoilState(menuPopupOpenState);
   const sosPopupOpen = useRecoilValue(sseSOSPopupOpenState);
+  const themeMode = useRecoilValue(themeModeState);
 
   const { data: clubData } = useQuery({
     queryKey: ["clubData"],
@@ -115,11 +116,11 @@ const Monitoring = () => {
           </div>
           <div className={styles["monitoring-etc-menu"]}>
             <Link href="/message" className={`${styles["monitoring-etc-menu-button"]} ${styles["message-button"]}`}>
-              <img src="/assets/image/icon-message-dark.svg" alt="메세지" />
+              <img src={themeMode === "dark" ? "/assets/image/icon-message-white.svg" : "/assets/image/icon-message-dark.svg"} alt="메세지" />
               <span className={styles["text"]}>메세지</span>
             </Link>
             <Link href="/search"  className={`${styles["monitoring-etc-menu-button"]} ${styles["search-button"]}`}>
-              <img src="/assets/image/icon-search-dark.svg" alt="검색" />
+              <img src={themeMode === "dark" ? "/assets/image/icon-search.svg" : "/assets/image/icon-search-dark.svg"} alt="검색" />
               <span className={styles["text"]}>검색</span>
             </Link>
           </div>
