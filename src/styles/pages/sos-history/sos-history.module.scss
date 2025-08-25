@@ -24,7 +24,7 @@
     &-title {
         font-size: 18px;
         font-weight: 700;
-        color: var(--mobile-admin-keyblack);
+        color: var(--MOBILE-admin-Keyblack);
     }
     &-list-wrap {
         height: calc(100% - 80px);
@@ -39,7 +39,7 @@
     }
     &-item {
         display: flex;
-        align-items: cneter;
+        align-items: center;
         width: 100%;
         &.header {
             position: sticky;
