@@ -2,16 +2,19 @@
 
 import React, { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { RecoilRoot } from "recoil";
+import { RecoilRoot, useRecoilValue } from "recoil";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AlertModal from "@/components/AlertModal";
 import "@/lib/i18n";
 import i18n from "@/lib/i18n";
+import { themeModeState } from "@/lib/recoil";
 
-export const ClientLayout = ({ children }: { children: React.ReactNode }) => {
+// Recoil 훅을 사용하는 실제 로직 컴포넌트
+const ClientLayoutContent = ({ children }: { children: React.ReactNode }) => {
   const queryClient = new QueryClient();
   const router = useRouter();
   const pathname = usePathname();
+  const themeMode = useRecoilValue(themeModeState);
   const [i18nReady, setI18nReady] = useState(false);
   const [orientationClass, setOrientationClass] = useState("portrait");
 
@@ -68,13 +71,20 @@ export const ClientLayout = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <RecoilRoot>
-      <QueryClientProvider client={queryClient}>
-        <div className={`layout ${orientationClass}`}>
-          {children}
+    <QueryClientProvider client={queryClient}>
+      <div className={`layout ${orientationClass}`} data-theme={themeMode}>
+        {children}
         <AlertModal />
-        </div>
-      </QueryClientProvider>
+      </div>
+    </QueryClientProvider>
+  );
+};
+
+// Recoil 훅을 사용하지 않는 래퍼 컴포넌트
+export const ClientLayout = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <RecoilRoot>
+      <ClientLayoutContent>{children}</ClientLayoutContent>
     </RecoilRoot>
   );
 };

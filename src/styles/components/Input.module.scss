@@ -14,6 +14,11 @@
     border-color: 1px solid var(--MOBILE-admin-Pointred, #FF4B4B);
     color: var(--MOBILE-admin-Pointred, #FF4B4B);
   }
+  [data-theme="dark"] & {
+    border-color: var(--gray-Grayscale3);
+    background: none;
+    color: var(--gray-Grayscale2);
+  }
 
   &.hasValue {
     padding-right: 32px;
@@ -26,6 +31,9 @@
   &::placeholder {
     font-size: 16px;
     font-weight: 300;
+    [data-theme="dark"] & {
+      color: var(--gray-Grayscale2);
+    }
   }
 
   &:focus-visible {
@@ -70,6 +78,9 @@
     font-weight: 700;
     line-height: normal;
     letter-spacing: -0.2px;
+    [data-theme="dark"] & {
+      color: var(--gray-Grayscale2);
+    }
   }
 
   &-required {
@@ -121,6 +132,9 @@
     @at-root .error & {
       background-color: var(--MOBILE-admin-Redlight, #FFD9D9);;
     }
+    [data-theme="dark"] & {
+      background-color: var(--gray-Grayscale3);
+    }
 
     &::before,
     &::after
@@ -132,6 +146,9 @@
       height: 11px;
       width:2px;
       background-color: #fff;
+      [data-theme="dark"] & {
+        background-color: var(--Adminkey-keydarkgray);
+      }
     }
     &::before {
       transform: rotate(45deg);

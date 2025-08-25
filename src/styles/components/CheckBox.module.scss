@@ -8,6 +8,14 @@
           &::before {
             background-color:  var(--MOBILE-admin-Pointpurple, #60F);
             position: relative;
+            [data-theme="dark"] & {
+              background-color: var(--Adminkey-keybluedark);
+            }
+          }
+          &::after {
+            [data-theme="dark"] & {
+              border-color: var(--gray-Grayscale3);
+            }
           }
         }
 
@@ -31,6 +39,9 @@
           background: var(--MOBILE-admin-Grayscale2, #EEE);
           margin: 0 7px 0 0;
           content: '';
+          [data-theme="dark"] & {
+            background: var(--gray-Grayscale3);
+          }
         }
         &::after {
           position: absolute;
@@ -44,6 +55,9 @@
           transform: rotate(45deg);
           z-index: 1;
           content: '';
+          [data-theme="dark"] & {
+            border-color: var(--Adminkey-keydarkgray);
+          }
         }
       }
     }
@@ -103,7 +117,9 @@
     font-style: normal;
     font-weight: 300;
     line-height: 19px;
-
+    [data-theme="dark"] & {
+      color: var(--gray-Grayscale2);
+    }
     @at-root input[type="checkbox"]:disabled ~ & {
       cursor: not-allowed;
       color: #c0c0c0;

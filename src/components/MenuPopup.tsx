@@ -1,12 +1,11 @@
 "use client";
 
 import styles from "@/styles/components/MenuPopup.module.scss";
-import CourseType from "@/types/Course.type";
 import storage from "@/utils/storage";
 import { useRouter } from "next/navigation";
 import useAlertModal from "@/hooks/useAlertModal";
 import { usePathname } from "next/navigation";
-import { holecupMenuPopupState, menuPopupOpenState } from "@/lib/recoil";
+import { holecupMenuPopupState, menuPopupOpenState, themeModeState } from "@/lib/recoil";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
 import AutoFontSizeText from "@/components/AutoFontSizeText";
@@ -16,11 +15,15 @@ const MenuPopup = () => {
   const router = useRouter();
   const [open, setOpen] = useRecoilState(menuPopupOpenState);
   const setHolecupMenuPopupOpen = useSetRecoilState(holecupMenuPopupState);
+  const [themeMode, setThemeMode] = useRecoilState(themeModeState);
 
   const { setAlertModalState } = useAlertModal();
   const path = usePathname();
 
-
+  // 테마 모드 토글 함수
+  const handleThemeToggle = () => {
+    setThemeMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+  };
 
   const handleLogout = () => {
     setAlertModalState(() => ({
@@ -49,8 +52,8 @@ const MenuPopup = () => {
             <p className={styles["user-name"]}>{`${storage.session.get("userNm")}`} {t("menu.suffix")}</p>
           </div>
           <div>
-            <button type="button" className={styles["theme-button"]}>
-               라이트 모드
+            <button type="button" className={styles["theme-button"]} onClick={handleThemeToggle}>
+              { themeMode === "light" ? "라이트 모드" : "다크 모드" }
             </button>
             <button type="button" className={styles["user-logout"]} onClick={handleLogout}>
               로그아웃

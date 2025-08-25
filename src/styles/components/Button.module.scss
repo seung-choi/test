@@ -19,6 +19,10 @@
 
     &:disabled {
       background-color: var(--MOBILE-admin-Purplegray, #D2CCDB);
+      [data-theme="dark"] & {
+        background-color: var(--Adminkey-keydarkgray);
+        border: 1px solid var(--gray-grayscale1);
+      }
     }
   }
 
