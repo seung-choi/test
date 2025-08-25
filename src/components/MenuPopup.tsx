@@ -77,12 +77,12 @@ const MenuPopup = () => {
                 <AutoFontSizeText text="홀컵핀" maxFontSize={15} minFontSize={10} />
               </button>
             </li>
-            <li className={`${styles["menu-item"]} ${styles["search"]} ${path === "/mapView/" ? styles["active"] : ""}`}>
+            <li className={`${styles["menu-item"]} ${styles["search"]} ${path === "/search/" ? styles["active"] : ""}`}>
               <button type="button" onClick={() => router.push("/search")}>
                 <AutoFontSizeText text="검색" maxFontSize={15} minFontSize={10} />
               </button>
             </li>
-            <li className={`${styles["menu-item"]} ${styles["sos-history"]} ${path === "/mapView/" ? styles["active"] : ""}`}>
+            <li className={`${styles["menu-item"]} ${styles["sos-history"]} ${path === "/sos-history/" ? styles["active"] : ""}`}>
               <button type="button" onClick={() => router.push("/sos-history")}>
                 <AutoFontSizeText text="오늘 긴급호출 목록" maxFontSize={15} minFontSize={10} />
               </button>

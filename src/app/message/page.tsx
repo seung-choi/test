@@ -1,12 +1,13 @@
 "use client";
 
 import styles from "@/styles/pages/message/message.module.scss";
-import { useState } from "react";
-import SendMessage from "@/components/SendMessage";
+import { useMemo, useState } from "react";
+import SendMessage from "@/components/monitoring/SendMessage";
 import {useQuery} from "@tanstack/react-query";
 import {getBooking, getClub} from "@/api/main";
 import {useRouter} from "next/navigation";
 import { useTranslation } from "react-i18next";
+import transformBookingData from "@/utils/transformBookingData";
 
 const Message = () => {
   const { t } = useTranslation();
@@ -25,7 +26,10 @@ const Message = () => {
     queryFn: () => getBooking(),
   });
 
-
+  const refinedBookingData = useMemo(() => {
+    if (!clubData || !bookingData) return [];
+    return transformBookingData(bookingData, clubData);
+  }, [bookingData, clubData]);
 
   const handleArrow = () => {
     if (step === 1) {
@@ -41,10 +45,10 @@ const Message = () => {
   const handleChangeCourse = ({ target }: { target: HTMLInputElement }) => {
     const { id: courseId, checked } = target;
 
-    // bookingData가 있는 경우에만 동작
-    if (!bookingData) return;
+    // refinedBookingData가 있는 경우에만 동작
+    if (!refinedBookingData) return;
 
-    const relatedBookings = bookingData.filter(
+    const relatedBookings = refinedBookingData.filter(
         (booking) => `${booking.courseId}` === courseId
     );
 
@@ -85,9 +89,9 @@ const Message = () => {
 
 
   const getGroupedByCourse = () => {
-    if (!bookingData) return [];
+    if (!refinedBookingData) return [];
 
-    const selectedBookings = bookingData
+    const selectedBookings = refinedBookingData
         .filter((booking) => bookingList.includes(`${booking.bookingId}`))
         .map(({ bookingId, courseId }) => ({ bookingId, courseId }));
 
@@ -135,7 +139,7 @@ const Message = () => {
                            type="checkbox"
                            className={styles["select-item"]}
                            onChange={handleChangeCourse}
-                           checked={bookingData?.some(booking => booking.courseId === course.courseId && bookingList.includes(`${booking.bookingId}`))}
+                           checked={refinedBookingData?.some(booking => booking.courseId === course.courseId && bookingList.includes(`${booking.bookingId}`))}
                        />
                        <span className={styles["select-label"]}>{course.courseNm}</span>
                      </label>
@@ -146,7 +150,7 @@ const Message = () => {
             <div className={`${styles["select-wrap"]} ${styles["cart"]}`}>
               <strong className={styles["title"]}>{t("message.selectByCart")}</strong>
               <div className={styles["select-list"]}>
-                {bookingData ? bookingData.map((booking) => {
+                {refinedBookingData ? refinedBookingData.map((booking) => {
                   return (
                     <label key={booking.bookingId}>
                       <input
@@ -165,15 +169,15 @@ const Message = () => {
               </div>
             </div>
           </div>
-          <button type="button" className={styles["confirm-button"]} onClick={() => setStep(2)} disabled={bookingList.length === 0 || bookingData?.length === 0}>{t("message.next")}</button>
+          <button type="button" className={styles["confirm-button"]} onClick={() => setStep(2)} disabled={bookingList.length === 0 || refinedBookingData?.length === 0}>{t("message.next")}</button>
         </div>
       </div>
       }
       {step === 2 && (
-        <SendMessage
-          groupedByCourse={getGroupedByCourse()}
-          onBack={() => setStep(1)}
-        />
+      <SendMessage
+        groupedByCourse={getGroupedByCourse()}
+        onBack={() => setStep(1)}
+      />
       )}
     </>
   );
