@@ -5,11 +5,6 @@
     position: relative;
     padding: 52px 25px;
     background: var(--MOBILE-admin-Keywhite, #FFF);
-
-    // Material-UI 방식으로 다크모드 스타일 적용
-    [data-theme="dark"] & {
-      background: var(--Adminkey-keydarknavy);
-    }
   }
   
   &-title {
@@ -20,9 +15,6 @@
     font-weight: 700;
     line-height: 35px; /* 145.833% */
     letter-spacing: 0.48px;
-    [data-theme="dark"] & {
-      color: var(--Adminkey-white);
-    }
   }
 
   &-helper-text {
