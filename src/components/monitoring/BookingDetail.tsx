@@ -7,9 +7,10 @@ import { calculateProgressTime } from "@/utils/calculateProgressTime";
 interface BookingDetailProps {
   booking: BookingType | null;
   onBack: () => void;
+  onSendMessage: () => void; // 메시지 보내기 버튼 클릭 시 호출될 함수 추가
 }
 
-const BookingDetail = ({booking, onBack} :BookingDetailProps ) => {
+const BookingDetail = ({booking, onBack, onSendMessage} :BookingDetailProps ) => {
   return (
     <div className={styles["booking-detail-container"]}>
       <div className={styles["head"]}>
@@ -73,7 +74,7 @@ const BookingDetail = ({booking, onBack} :BookingDetailProps ) => {
             </div>
           </div>
           <div className={styles["button-wrapper"]}>
-            <Button primary type="button" block label="메시지 보내기" onClick={() => {}} />
+            <Button primary type="button" block label="메시지 보내기" onClick={onSendMessage} />
           </div>
         </div>
       </div>
