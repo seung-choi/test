@@ -2,6 +2,7 @@ import $axios from "@/api/axios";
 import { LoginFormAPI } from "@/app/login/page";
 import { getOriginURL } from "@/api/API_URL";
 import BookingType from "@/types/Booking.type";
+import EventHisSOSType from "@/types/EventHisSOSType";
 import ClubType from "@/types/Club.type";
 import EventSSE from "@/types/EventSSE.type";
 import {MapPinAPI} from "@/app/holecup/page";
@@ -27,6 +28,14 @@ export const getBooking = async () => {
 export const getEventSSE = async () => {
   const res = await $axios<EventSSE[]>({
     url: "event/SSE",
+    method: "get",
+  });
+  return res.data;
+};
+
+export const getSOSHistory = async () => {
+  const res = await $axios<EventHisSOSType[]>({
+    url: "/event/his/SOS",
     method: "get",
   });
   return res.data;

@@ -1,7 +1,7 @@
 .sos-history {
     &-container {
         height: 100%;
-        background-color: var(#fff);
+        background-color: var(--mode-Background);
     }
     &-header {
         display: flex;
@@ -10,21 +10,36 @@
         gap: 0 3px;
         height: 80px;
         padding: 0 25px;
-        background-color: #fff;
+        background-color: var(--mode-Background);
         .sos-history-arrow-button {
+            position: relative;
             width: 42px;
             height: 40px;
-            background: url("../../../../public/assets/image/icon-prev.svg") no-repeat center / 32% auto;
             border: none;
             &:focus-visible {
                 outline: none;
+            }
+            &::before {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 13px;
+                height: 13px;
+                margin-left: -7px;
+                margin-top: -7px;
+                content: '';
+                display: block;
+                border-radius: 2px;
+                border-left : 4px solid var(--mode-gray1);
+                border-top : 4px solid var(--mode-gray1);
+                transform: rotate(-45deg);
             }
         }
     }
     &-title {
         font-size: 18px;
         font-weight: 700;
-        color: var(--MOBILE-admin-Keyblack);
+        color: var(--mode-font_key);
     }
     &-list-wrap {
         height: calc(100% - 80px);
@@ -33,9 +48,10 @@
     &-list {
         display: flex;
         flex-direction: column;
-        gap: 5px 0;
+        gap: 2px 0;
         overflow-y: auto;
         max-height: 100%;
+        height: 100%;
     }
     &-item {
         display: flex;
@@ -44,12 +60,26 @@
         &.header {
             position: sticky;
             top: 0;
-            background-color: var(--blue-lightblue1);
             span {
+                background-color: var(--mode-color1);
                 &:not(:last-of-type) {
                     border-right: 1px solid #fff;
                 }
+                [data-theme="dark"] & {
+                    background-color: var(--mode-color3);
+                    color: var(--mode-font_key);
+                    border-color: var(--mode-color2);
+                }
             }
+        }
+        &.no-list {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: var(--mode-font_key);
         }
         span {
             display: flex;
@@ -57,11 +87,15 @@
             justify-content: center;
             min-height: 37px;
             padding: 4px 10px;
-            color: var(--Adminkey-keydarkgray);
+            color: var(--mode-darkgray);
             font-weight: 700;
             font-size: 14px;
             text-align: center;
-            background-color: var(--Light-mode-gray3);
+            background-color: var(--mode-gray3);
+            [data-theme="dark"] & {
+                background-color: var(--mode-color2);
+                color: var(--mode-font_key);
+            }
         }
         &-time {
             width: 18%;

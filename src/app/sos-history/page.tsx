@@ -1,9 +1,16 @@
 "use client";
 import styles from "@/styles/pages/sos-history/sos-history.module.scss";
 import { useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { getSOSHistory } from "@/api/main";
 
 const SOSHistory = () => {
   const router = useRouter();
+
+  const { data: sosHistoryData } = useQuery({
+    queryKey: ["sosHistory"],
+    queryFn: () => getSOSHistory(),
+  }); 
 
   return (
     <>
@@ -24,48 +31,21 @@ const SOSHistory = () => {
                     <span className={styles["sos-history-item-location"]}>위치</span>
                     <span className={styles["sos-history-item-reason"]}>사유</span>
                 </li>
-                <li className={`${styles["sos-history-item"]} ${styles["body"]}`}>
-                    <span className={styles["sos-history-item-time"]}>호출 시간</span>
-                    <span className={styles["sos-history-item-caller"]}>호출자</span>
-                    <span className={styles["sos-history-item-teeoff"]}>티오프</span>
-                    <span className={styles["sos-history-item-location"]}>위치</span>
-                    <span className={styles["sos-history-item-reason"]}>사유</span>
+                {sosHistoryData && sosHistoryData.length > 0 ?
+                sosHistoryData.map((sos) => (
+                  <li className={`${styles["sos-history-item"]} ${styles["body"]}`} key={sos.eventNo}>
+                      <span className={styles["sos-history-item-time"]}>{sos.createdDt ? sos.createdDt.split(" ")[1] : ""}</span>
+                      <span className={styles["sos-history-item-caller"]}>{sos.bookingNm}</span>
+                      <span className={styles["sos-history-item-teeoff"]}>{sos.bookingTm}</span>
+                      <span className={styles["sos-history-item-location"]}>{sos.courseNm} H {sos.holeNo}</span>
+                      <span className={styles["sos-history-item-reason"]}>{sos.eventCont}</span>
+                  </li>
+                ))
+                :
+                <li className={`${styles["sos-history-item"]} ${styles["body"]} ${styles["no-list"]}`}>
+                  오늘 긴급 호출 목록이 없습니다.
                 </li>
-                <li className={`${styles["sos-history-item"]} ${styles["body"]}`}>
-                    <span className={styles["sos-history-item-time"]}>호출 시간</span>
-                    <span className={styles["sos-history-item-caller"]}>호출자</span>
-                    <span className={styles["sos-history-item-teeoff"]}>티오프</span>
-                    <span className={styles["sos-history-item-location"]}>위치</span>
-                    <span className={styles["sos-history-item-reason"]}>사유</span>
-                </li>
-                <li className={`${styles["sos-history-item"]} ${styles["body"]}`}>
-                    <span className={styles["sos-history-item-time"]}>호출 시간</span>
-                    <span className={styles["sos-history-item-caller"]}>호출자</span>
-                    <span className={styles["sos-history-item-teeoff"]}>티오프</span>
-                    <span className={styles["sos-history-item-location"]}>위치</span>
-                    <span className={styles["sos-history-item-reason"]}>사유</span>
-                </li>
-                <li className={`${styles["sos-history-item"]} ${styles["body"]}`}>
-                    <span className={styles["sos-history-item-time"]}>호출 시간</span>
-                    <span className={styles["sos-history-item-caller"]}>호출자</span>
-                    <span className={styles["sos-history-item-teeoff"]}>티오프</span>
-                    <span className={styles["sos-history-item-location"]}>위치</span>
-                    <span className={styles["sos-history-item-reason"]}>사유</span>
-                </li>
-                <li className={`${styles["sos-history-item"]} ${styles["body"]}`}>
-                    <span className={styles["sos-history-item-time"]}>호출 시간</span>
-                    <span className={styles["sos-history-item-caller"]}>호출자</span>
-                    <span className={styles["sos-history-item-teeoff"]}>티오프</span>
-                    <span className={styles["sos-history-item-location"]}>위치</span>
-                    <span className={styles["sos-history-item-reason"]}>사유</span>
-                </li>
-                <li className={`${styles["sos-history-item"]} ${styles["body"]}`}>
-                    <span className={styles["sos-history-item-time"]}>호출 시간</span>
-                    <span className={styles["sos-history-item-caller"]}>호출자</span>
-                    <span className={styles["sos-history-item-teeoff"]}>티오프</span>
-                    <span className={styles["sos-history-item-location"]}>위치</span>
-                    <span className={styles["sos-history-item-reason"]}>사유</span>
-                </li>
+                }
             </ul>
         </div>
       </div>

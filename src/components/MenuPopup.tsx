@@ -47,7 +47,7 @@ const MenuPopup = () => {
       ></div>
       <div className={styles["menu-inner"]}>
         <div className={styles["user-info"]}>
-          <div>
+          <div className={styles["user-info-left"]}>
             <span className={styles["user-team"]}>{`${storage.session.get("groupNm")}`}</span>
             <p className={styles["user-name"]}>{`${storage.session.get("userNm")}`} {t("menu.suffix")}</p>
           </div>

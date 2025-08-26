@@ -197,6 +197,10 @@
             font-weight: 700;
             line-height: normal;
             letter-spacing: -0.24px;
+            padding: 0 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             [data-theme="dark"] & {
               background: var(--mode-gray3);
               color: var(--mode-font_key);
@@ -232,7 +236,8 @@
           color: var(--mode-font_key);
         }
         &:disabled {
-          background-color: var(--mode-keycolor);
+          background-color: var(--mode-gray2);
+          color: var(--mode-gray3);
           [data-theme="dark"] & {
             background: var(--mode-color2);
             color: var(--mode-gray2);
