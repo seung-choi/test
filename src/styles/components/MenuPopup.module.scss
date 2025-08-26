@@ -194,6 +194,9 @@
       color: var(--mode-gray1);
       font-size: 15px;
       font-weight: 700;
+      [data-theme="dark"] & {
+        background-color: var(--mode-color2);
+      }
       &::before,
       &::after {
         position: absolute;
@@ -205,11 +208,7 @@
         height: 2px;
         background-color: var(--mode-gray2);
         border-radius: 2px;
-      }
-      [data-theme="dark"] & {
-        background-color: var(--mode-color2);
-        &::before,
-        &::after {
+        [data-theme="dark"] & {
           background-color: var(--mode-font_key);
         }
       }

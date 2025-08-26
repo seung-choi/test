@@ -5,10 +5,12 @@ import {useEffect, useMemo, useRef, useState} from "react";
 import {useMutation, useQuery} from "@tanstack/react-query";
 import {getClub, postMapPin} from "@/api/main";
 import ClubType from "@/types/Club.type";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { currentCourseState, currentHoleState } from "@/lib/recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { currentCourseState, currentHoleState, holecupMenuPopupState } from "@/lib/recoil";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
+import HolecupMenuPopup from "@/components/HolcupMenuPopup";
+import { useRouter } from "next/navigation";
 
 export interface MapPinAPI {
     holeId: number | null,
@@ -52,7 +54,9 @@ const HoleCup = () => {
 
     const currentCourse = useRecoilValue(currentCourseState);
     const [currentHole, setCurrentHoleState] = useRecoilState(currentHoleState);
+    const setHolecupMenuPopupOpen = useSetRecoilState(holecupMenuPopupState);
 
+    const router = useRouter();
 
     const { data: clubData } = useQuery<ClubType>({
         queryKey: ["clubData"],
@@ -369,6 +373,9 @@ const HoleCup = () => {
         <>
             <div className={styles.holecup}>
                 <div className={styles["holecup-content"]}>
+                    <button type="button" className={styles["arrow-button"]} onClick={() => router.push("/monitoring")}>
+                        <span className="blind">뒤로가기</span>
+                    </button>
                     <ul className={styles["holecup-pin"]}>
                         {pinColors.map(pinColor => (
                             <li key={pinColor}>
@@ -467,6 +474,10 @@ const HoleCup = () => {
                     </div>
                 </div>
             </div>
+            <button type="button" className={`${styles["floating-menu-button"]} ${styles["holecup-button"]}`} onClick={() => setHolecupMenuPopupOpen(true)}>
+                <span>홀컵핀</span>
+            </button>
+            <HolecupMenuPopup courseList={clubData?.courseList || []} />
         </>
     );
 };

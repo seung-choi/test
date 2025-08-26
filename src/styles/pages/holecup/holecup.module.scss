@@ -1,18 +1,44 @@
 .holecup {
   height: 100%;
   &-content {
+    position: relative;
     display: flex;
     align-items: center;
     width: 100%;
     height: 100%;
+    background: var(--mode-Background);
+    .arrow-button {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 60px;
+      height: 50px;
+      background: var(--mode-color1);
+      &::before {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 13px;
+        height: 13px;
+        margin-left: -7px;
+        margin-top: -7px;
+        content: '';
+        display: block;
+        border-radius: 2px;
+        border-left : 4px solid var(--mode-gray1);
+        border-top : 4px solid var(--mode-gray1);
+        transform: rotate(-45deg);
+      }
+    }
     .holecup-pin {
       width: 60px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      padding-bottom: 50px;
+      gap: 8px;
+      padding-top: 55px;
+      padding-bottom: 65px;
       li {
         position: relative;
       }
@@ -38,6 +64,10 @@
             right: 100%;
           }
         }
+        svg {
+          width: 23px;
+          height: auto;
+        }
       }
     }
     .holecup-map {
@@ -59,8 +89,8 @@
         justify-content: center;
         width: 100%;
         height: 100%;
-        background-color: #F5F5F5;
-        color: #666;
+        background-color: var(--mode-gray2);
+        color: var(--darkgray);
         text-align: center;
         font-size: 18px;
         font-style: normal;
@@ -84,9 +114,14 @@
         gap: 0 5px;
         width: 120px;
         padding: 6px 8px;
-        background-color: #fff;
+        background-color: var(--mode-color3);
         box-shadow: 0 2px 9px 0 rgba(0, 0, 0, 0.40);
         border-radius: 10px;
+        [data-theme="dark"] & {
+          background: var(--mode-gray3);
+          box-shadow: 0px 0px 5px 0px #FFFFFF;
+          backdrop-filter: blur(19px);
+        }
         button {
           width: 100%;
           height: 36px;
@@ -94,13 +129,22 @@
           border: none;
           border-radius: 10px;
           &.landscape {
-            background: #fff url("../../../../public/assets/image/icon-landscape.svg") no-repeat center / 30px auto;
+            background: var(--mode-color3) url("../../../../public/assets/image/icon-phone-landscape.svg") no-repeat center / 30px auto;
+            [data-theme="dark"] & {
+              background-color: var(--mode-gray3);
+            }
           }
           &.portrait {
-            background: #fff url("../../../../public/assets/image/icon-portrait.svg") no-repeat center / 17px auto;
+            background: var(--mode-color3) url("../../../../public/assets/image/icon-phone-portrait.svg") no-repeat center / 17px auto;
+            [data-theme="dark"] & {
+              background-color: var(--mode-gray3);
+            }
           }
           &.active {
-            background-color: #2F0077;
+            background-color: var(--mode-color1);
+            [data-theme="dark"] & {
+              background-color: var(--mode-color3);
+            }
           }
         }
       }
@@ -108,9 +152,12 @@
         width: 130px;
         padding: 8px 10px;
         border-radius: 15px;
-        background: rgba(255, 255, 255, 0.70);
+        background: var(--mode-Background);
         box-shadow: 0 2px 9px 0 rgba(0, 0, 0, 0.40);
         backdrop-filter: blur(9.5px);
+        [data-theme="dark"] & {
+          background: var(--mode-color2); 
+        }
         .img-wrap {
           position: relative;
           overflow: hidden;
@@ -142,15 +189,24 @@
             height: 21px;
             width: 100%;
             border-radius: 21px;
-            background: #A6A6A6;color: var(--MOBILE-admin-Keywhite, #FFF);
+            background: var(--mode-color1);
+            color: var(--mode-font_key);
             text-align: center;
             font-size: 12px;
             font-style: normal;
             font-weight: 700;
             line-height: normal;
             letter-spacing: -0.24px;
+            [data-theme="dark"] & {
+              background: var(--mode-gray3);
+              color: var(--mode-font_key);
+            }
             &.active {
-              background: #60F;
+              background: var(--mode-keycolor);
+              color: var(--mode-gray3);
+              [data-theme="dark"] & {
+                color: var(--mode-font_key);
+              }
             }
           }
         }
@@ -163,19 +219,24 @@
         width: 100%;
         max-width : 150px;
         border-radius: 36px;
-        background: var(--MOBILE-admin-Keypurple, #2F0077);
-        color: var(--MOBILE-admin-Keywhite, #FFF);
+        background: var(--mode-keycolor);
+        color: var(--mode-Background);
         text-align: center;
         font-size: 18px;
         font-style: normal;
         font-weight: 700;
-        line-height: normal;
+        line-height: normal; 
         letter-spacing: -0.36px;
-        &.active {
-          background: #60F;
+        [data-theme="dark"] & {
+          background: var(--mode-keycolor);
+          color: var(--mode-font_key);
         }
         &:disabled {
-          background-color: #D2CCDB;
+          background-color: var(--mode-keycolor);
+          [data-theme="dark"] & {
+            background: var(--mode-color2);
+            color: var(--mode-gray2);
+          }
         }
       }
     }
@@ -187,7 +248,8 @@
     left: 0;
     width: 100%;
     height: 60px;
-    background: var(--MOBILE-admin-Keywhite, #FFF);
+    max-height: 60px;
+    background: var(--mode-color1);
     box-shadow: 0 0 13px 0 rgba(0, 0, 0, 0.20);
     display: flex;
     align-items: center;
@@ -199,18 +261,16 @@
         display: block;
         align-items: center;
         justify-content: center;
-        padding: 0 11px;
         width: 100%;
         height: 30px;
         line-height: 30px;
         border-radius: 30px;
-        color: var(--MOBILE-admin-Keypurple, #2F0077);
+        color: var(--mode-gray1);
         text-align: center;
-        font-size: 14px;
+        font-size: 16px;
         font-style: normal;
-        font-weight: 500;
+        font-weight: 700;
         letter-spacing: -0.24px;
-        background: var(--MOBILE-admin-Purplelight, #EAE6FF);
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -245,32 +305,31 @@
         width: 35px;
         height: 35px;
         border-radius: 50%;
-        background: var(--MOBILE-admin-Keywhite, #FFF);
-        color: var(--MOBILE-admin-Keypurple, #2F0077);
+        background: var(--mode-Background);
+        color: var(--mode-darkgray);
+        border: 4px solid var(--mode-color1);
         text-align: center;
-        font-size: 20px;
+        font-size: 18px;
         font-weight: 700;
         line-height: 1;
         letter-spacing: -0.24px;
+        [data-theme="dark"] & {
+          color: var(--mode-darkgray);
+          background: var(--mode-font_key);
+          border-color: var(--mode-color1);
+        }
         &.active {
           position: relative;
           font-size: 20px;
           font-weight: 700;
-          color: var(--MOBILE-admin-Keywhite, #FFF);
-          background: none;
-          &::before {
-            content:'';
-            z-index: -1;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            display: block;
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            border: 3px solid var(--MOBILE-admin-Keywhite, #FFF);
-            background: var(--MOBILE-admin-Keypurple, #2F0077);
+          color: var(--mode-keycolor);
+          border-color: var(--mode-Background);
+          background: var(--mode-color1);
+          box-shadow: 0px 0px 6px 0px #00000066;
+          [data-theme="dark"] & {
+            background: var(--mode-keycolor);
+            color: var(--mode-font_key);
+            border-color: var(--mode-font_key);
           }
         }
       }
@@ -281,7 +340,7 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    color: var(--MOBILE-admin-Grayscale4, #666);
+    color: var(--mode-gray1);
     font-size: 12px;
     font-style: normal;
     font-weight: 300;
@@ -309,4 +368,23 @@
   font-weight: 500;
   line-height: normal;
   white-space: nowrap;
+}
+
+.floating-menu-button {
+    position: fixed;
+    top: 16px;
+    right: -2px;
+    z-index: 99;
+    width: 47px;
+    height: 48px;
+    padding-top: 28px;
+    border-radius: 15px 0 0 15px;
+    background: var(--mode-keycolor) url("../../../../public/assets/image/icon-holecup-white.svg") no-repeat center 10px / 20px auto;
+    color: var(--mode-Background);
+    font-size: 6px;
+    font-weight: 700;
+    text-align: center;
+    [data-theme="dark"] & {
+      color: var(--mode-font_key);
+    }
 }

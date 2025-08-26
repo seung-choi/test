@@ -23,13 +23,17 @@
   &-inner {
     position: fixed;
     top: 0;
-    right: -250px;
+    right: -270px;
     z-index: 1000;
-    width: 203px;
+    width: 223px;
     height: 100%;
-    background: #fff;
+    background: var(--mode-Background);
     border-radius: 10px 0 0 10px;
     transition: all .3s;
+    box-shadow: 0px 0px 10px 0px #1212124D;
+    [data-theme="dark"] & {
+      box-shadow: 0px 0px 10px 0px #FFFFFF;
+    }
     @at-root .open & {
       right: 0;
     }
@@ -41,7 +45,7 @@
       height: 47px;
       padding: 0 20px;
       font-size: 18px;
-      color: var(--Light-mode-font_key);
+      color: var(--mode-font_key);
     }
 
     .close-button {
@@ -52,8 +56,12 @@
       width: 47px;
       height: 48px;
       border-radius: 15px 0 0 15px;
-      background-color: #fff;
+      background-color: var(--mode-Background);
       border: none;
+      box-shadow: -5px 0px 5px -4px #1212124D;
+      [data-theme="dark"] & {
+        box-shadow: -5px 0px 5px -4px #FFFFFF;
+      }
       & > span{
         display: block;
         position: absolute;
@@ -61,7 +69,10 @@
         width: 18px;
         height: 2px;
         border-radius: 5px;
-        background-color: #3c4148;
+        background-color: var(--mode-gray1);
+        [data-theme="dark"] & {
+          background-color: var(--mode-font_key);
+        }
         &:nth-of-type(1) {
           top: 23px;
           transform: rotate(45deg);
@@ -100,8 +111,12 @@
       height: 53px;
       padding: 9px 25px 10px 12px;
       border-radius: 5px;
-      background-color: var(--MOBILE-admin-Keywhite, #FFF);
+      background-color: var(--mode-Background);
       box-shadow: 0 2px 6px 0 rgba(107, 89, 140, 0.25);
+      color: var(--mode-gray1);
+      [data-theme="dark"] & {
+        background-color: var(--mode-color2);
+      }
       &::before,
       &::after {
         position: absolute;
@@ -111,8 +126,12 @@
         display:inline-block;
         width: 8px;
         height: 2px;
-        background-color: var(--Light-mode-darkgray );
         border-radius: 2px;
+        background-color: var(--mode-gray2);
+        border-radius: 2px;
+        [data-theme="dark"] & {
+          background-color: var(--mode-font_key);
+        }
       }
       &::before {
         margin-top: 2px;
@@ -123,7 +142,7 @@
         transform: rotate(45deg);
       }
       .sub-title{
-        color: var(--Light-mode-darkgray);
+        color: var(--mode-darkgray);
         font-size: 8px;
         font-weight: 300;
         line-height: 10px;
@@ -136,10 +155,13 @@
           margin-left: 2px;
           background: url("../../../public/assets/image/icon-pin-dark.svg") no-repeat right center / 100% auto;
         }
+        [data-theme="dark"] & {
+          color: var(--mode-gray1);
+        }
       }
       .title{
         display:block;
-        color: var(--Light-mode-darkgray);
+        color: var(--mode-darkgray); 
         font-size: 15px;
         font-weight: 700;
         line-height: 19px;
@@ -147,15 +169,24 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        [data-theme="dark"] & {
+          color: var(--mode-gray1);
+        }
       }
     }
     &.active {
       & > button {
-        background-color: var(--Light-mode-blue2);
-        color: var(--Light-mode-keycolor);
+        background-color: var(--mode-color2);
+        [data-theme="dark"] & {
+          background-color: var(--mode-color3);
+        }
+        .sub-title,
+        .title {
+          color: var(--mode-font_key);
+        }
         &::before,
         &::after {
-          background-color: var(--Light-mode-keycolor);
+          background-color: var(--mode-darkgray);
         }
       }
     }
