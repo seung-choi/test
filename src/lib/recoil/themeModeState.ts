@@ -6,5 +6,5 @@ export type ThemeMode = "dark" | "light";
 // 테마 모드 상태 (기본값: light-mode)
 export const themeModeState = atom<ThemeMode>({
   key: "themeModeState",
-    default: "dark",
+    default: "light",
 });

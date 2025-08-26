@@ -9,12 +9,15 @@ import SendMessage from "@/components/monitoring/SendMessage";
 import { Input } from "@/components/Input";
 import transformBookingData from "@/utils/transformBookingData";
 import BookingDetail from "@/components/monitoring/BookingDetail";
+import BookingType from "@/types/Booking.type";
 
 const Search = () => {
   const [step, setStep] = useState(1);
   const router = useRouter();
   const [searchType, setSearchType] = useState<("caddy" | "player")>("caddy");
   const [searchName, setSearchName] = useState<string>("");
+  // 선택된 booking data를 저장할 state 추가
+  const [selectedBookingData, setSelectedBookingData] = useState<BookingType | null>(null);
 
   const { data: clubData } = useQuery({
     queryKey: ["clubData"],
@@ -30,6 +33,33 @@ const Search = () => {
     if (!clubData || !bookingData) return [];
     return transformBookingData(bookingData, clubData);
   }, [bookingData, clubData]);
+
+  // 검색 결과 필터링
+  const filteredData = useMemo(() => {
+    if (!searchName.trim()) return [];
+    
+    return refinedBookingData.filter((booking: BookingType) => {
+      if (searchType === "caddy") {
+        return (
+          booking.caddyNm &&
+          booking.caddyNm.trim() !== "" &&
+          booking.caddyNm.toLowerCase().includes(searchName.toLowerCase())
+        );
+      } else {
+        return (
+          booking.playerList &&
+          booking.playerList.length > 0 &&
+          booking.playerList.some((player) => 
+            player.playerNm && 
+            player.playerNm.toLowerCase().includes(searchName.toLowerCase())
+          )
+        );
+      }
+    });
+  }, [refinedBookingData, searchType, searchName]);
+
+  // 검색 결과가 있는지 확인
+  const hasSearchResults = filteredData.length > 0;
   
   return (
     <>
@@ -63,23 +93,56 @@ const Search = () => {
             onClear={() => setSearchName("")}
           />
         </div>
-        <div className={styles["search-result-inner"]}>
-          <span className={styles["search-result-desc"]}>중복된 검색 결과입니다. 찾으시는 항목을 선택해주세요.</span>
-          <ul className={styles["search-result-list"]}>
-            <li className={styles["search-result-item"]}>
-              <span className={styles["search-result-item-name"]}>김지원</span>
-              <span className={styles["search-result-item-teeOff"]}>11:56</span>
-              <span className={styles["search-result-item-location"]}>Lake 6H</span>
-              <button type="button" className={styles["search-result-item-detail-button"]} onClick={() => setStep(2)}>선택</button>
-            </li>
-          </ul>
-        </div>
+        
+        {/* 검색 결과가 있을 때만 표시 */}
+        {hasSearchResults && (
+          <div className={styles["search-result-inner"]}>
+            <span className={styles["search-result-desc"]}>중복된 검색 결과입니다. 찾으시는 항목을 선택해주세요.</span>
+            <ul className={styles["search-result-list"]}>
+              {filteredData.map((booking: BookingType) => {
+                // 캐디 검색인 경우 캐디명, 내장객 검색인 경우 첫 번째 플레이어명 표시
+                const displayName = searchType === "caddy" 
+                  ? booking.caddyNm 
+                  : booking.playerList?.[0]?.playerNm || "이름 없음";
+                
+                return (
+                  <li key={`${booking.bookingId}-${booking.holeId}`} className={styles["search-result-item"]}>
+                    <span className={styles["search-result-item-name"]}>{displayName}</span>
+                    <span className={styles["search-result-item-teeOff"]}>
+                      {booking.bookingTm}
+                    </span>
+                    <span className={styles["search-result-item-location"]}>
+                      {booking.courseNm} {booking.holeNo}H
+                    </span>
+                    <button 
+                      type="button" 
+                      className={styles["search-result-item-detail-button"]} 
+                      onClick={() => {
+                        setSelectedBookingData(booking); // 선택된 booking data 저장
+                        setStep(2); // step 2로 이동
+                      }}
+                    >
+                      선택
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        )}
+
+        {/* 검색어가 입력되었지만 결과가 없을 때 */}
+        {searchName.trim() && !hasSearchResults && (
+          <div className={styles["search-result-inner"]}>
+            <span className={styles["search-empty-result"]}>검색 결과가 없습니다.</span>
+          </div>
+        )}
       </div>
     </div>
     }
     {step === 2 && (
       <BookingDetail 
-        bookingData={null}
+        booking={selectedBookingData} // 선택된 booking data 전달
         onBack={() => setStep(1)}
       />
     )}

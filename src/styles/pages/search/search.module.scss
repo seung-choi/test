@@ -96,6 +96,13 @@
       [data-theme="dark"] & {
         background: var(--mode-color2);
       }
+      .search-empty-result {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        color: var(--mode-gray1);
+      }
       .search-result-desc {
         color: var(--mode-gray1);
         font-size: 11px;

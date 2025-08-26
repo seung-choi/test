@@ -38,12 +38,14 @@ type BookingType = {
   status: "OW" | "OP" | "IW" | "IP" | "C";
   /* 진행률: 퍼센트(시작점 기준) */
   progress: number;
-  /* 후반 시작: HH:mm(시:분) */
+  /* 전반 시작: HH:mm(시:분) */
   outStartTm: string | null;
-  /* 후반 시작: HH:mm(시:분) */
+  /* 전반 종료: HH:mm(시:분) */
   outEndTm: string | null;
   /* 후반 시작: HH:mm(시:분) */
   inStartTm: string | null;
+  /* 후반 종료: HH:mm(시:분) */
+  inEndTm: string | null;
 
   tags: string[];
 
