@@ -18,9 +18,9 @@
     height: 260px;
     max-height: calc(100% - 80px);
     border-radius: 15px;
-    border: 1px solid var(--Light-mode-error);
-    background: var(--MOBILE-admin-Keywhite, #FFF);
-    box-shadow: 0px 0px 20px 0px var(--Light-mode-error);
+    border: 1px solid var(--mode-error);
+    background: var(--mode-Background);
+    box-shadow: 0px 0px 20px 0px var(--mode-error);
     box-sizing: border-box;
     animation: blink-shadow 1.3s ease-in-out infinite;
   }
@@ -30,7 +30,7 @@
     justify-content: center;
     height: 60px;
     text-align: center;
-    color: var(--Light-mode-error);
+    color: var(--mode-error);
     font-size: 20px;
     font-weight: 700;
 }
@@ -51,11 +51,11 @@
         flex-direction: column;
         gap: 5px 0;
         width: calc((100% - 10px) / 2);
-        border-bottom: 1px solid var(--Light-mode-gray2);
+        border-bottom: 1px solid var(--mode-gray2);
         dt {
             font-weight: 500;
             font-size: 10px;
-            color: var(--Light-mode-gray1);
+            color: var(--mode-gray1);
         }
         dd {
             display: flex;
@@ -64,7 +64,7 @@
             padding: 5px 0;
             font-weight: 700;
             font-size: 18px;
-            color: var(--Light-mode-font_key);
+            color: var(--mode-font_key);
         }
     }
     &-button-container {
@@ -78,6 +78,6 @@
 
 // 깜빡이는 효과를 위한 keyframes 애니메이션
 @keyframes blink-shadow {
-    0%, 100% { box-shadow: 0px 0px 20px 0px var(--Light-mode-error); }
+    0%, 100% { box-shadow: 0px 0px 20px 0px var(--mode-error); }
     50% { box-shadow: 0px 0px 20px 0px rgba(220, 0, 0, 0); }
 }
