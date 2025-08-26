@@ -1,5 +1,6 @@
 .booking-detail-container {
   height: 100%;
+  background-color: var(--mode-Background);
   .head {
     &-arrow {
       position: fixed;
@@ -7,10 +8,24 @@
       left: 12px;
       width: 42px;
       height: 40px;
-      background: url("../../../../public/assets/image/icon-prev.svg") no-repeat center / 32% auto;
       border: none;
       &:focus-visible {
         outline: none;
+      }
+      &::before {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 13px;
+        height: 13px;
+        margin-left: -7px;
+        margin-top: -7px;
+        content: '';
+        display: block;
+        border-radius: 2px;
+        border-left : 4px solid var(--mode-gray1);
+        border-top : 4px solid var(--mode-gray1);
+        transform: rotate(-45deg);
       }
     }
 
@@ -24,6 +39,9 @@
       font-size: 18px;
       font-weight: 700;
       line-height: 1;
+      [data-theme="dark"] & {
+        color: var(--mode-gray1);
+      }
     } 
   }
   .content {

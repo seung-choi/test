@@ -229,7 +229,7 @@ const Monitoring = () => {
           );
         })}
         <div className={styles["floating-menu-wrap"]}>
-           <button type="button" className={`${styles["floating-menu-button"]} ${styles["map-button"]}`}><span>관제</span></button>
+           {/* <button type="button" className={`${styles["floating-menu-button"]} ${styles["map-button"]}`}><span>관제</span></button> */}
            <button type="button" className={`${styles["floating-menu-button"]} ${styles["holecup-button"]}`} onClick={() => setHolecupMenuPopupOpen(true)}><span>홀컵핀</span></button>
            <button type="button" className={`${styles["floating-menu-button"]} ${styles["menu-button"]}`} onClick={() => setMenuPopupOpen(true)}><span>메뉴</span></button>
         </div>
