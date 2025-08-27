@@ -20,6 +20,9 @@
     background-color: var(--mode-color1);
     font-size: 11px;
     color: var(--mode-key-color);
+    [data-theme="dark"] & {
+      color: var(--mode-font_key);
+    }
   }
   &-content {
     display: flex;
@@ -43,11 +46,17 @@
         font-weight: 700;
         font-size: 11px;
         color: var(--mode-darkgray);
+        [data-theme="dark"] & {
+          color: var(--mode-font_key);
+        }
       }
       &-time {
         font-weight: 500;
         font-size: 11px;
         color: var(--mode-darkgray);
+        [data-theme="dark"] & {
+          color: var(--mode-font_key);
+        }
       }
     }
     .standby-all-count {

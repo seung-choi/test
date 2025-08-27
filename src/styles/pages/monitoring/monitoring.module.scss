@@ -7,7 +7,7 @@
     overflow: scroll;
     padding: 45px 10px 13px;
     .monitoring-header {
-      z-index: 5;
+      z-index: 33;
       position: fixed;
       top: 0; 
       left: 0;
@@ -116,6 +116,9 @@
             font-weight: 800;
             line-height: normal;
             letter-spacing: -0.4px;
+            [data-theme="dark"] & {
+              color: var(--mode-font_key);
+            }
           }
           .course-teams-state {
             color: var(--MOBILE-admin-Grayscale4, #666);
@@ -125,6 +128,9 @@
             line-height: normal;
             letter-spacing: -0.36px;
             word-break: break-all;
+            [data-theme="dark"] & {
+              color: var(--mode-font_key);
+            }
           }
         }
         .course-standby-info-wrap {
@@ -174,7 +180,7 @@
           }
           &-name {
             position: absolute;
-            bottom: -20px;
+            bottom: -24px;
             left: 50%;
             transform: translateX(-50%);
             margin-bottom: 3px;
@@ -189,6 +195,9 @@
               font-size: 12px;
               color: var(--mode-darkgray);
               line-height: 1;
+              [data-theme="dark"] & {
+                color: var(--mode-font_key);
+              }
             }
           }
           &-line {
@@ -197,79 +206,78 @@
             border-radius: 5px;
             background: var(--MOBILE-admin-Grayscale2, #EEE);
           }
-          &-buggy {
+          .buggy-wrapper {
+            z-index: 1;
             position: absolute;
-            bottom: 0;
-            margin-bottom: -4px;
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            transform: translateX(-6px);
-            .line-wrap {
-              position: relative;
-              .cir1 {
-                position: relative;
-                width: 8px;
-                height: 8px;
-                border: 2px solid #fff;
-                border-radius: 50%;
-                .in-cir1 {
-                  position: absolute;
-                  top: 50%;
-                  left: 50%;
-                  transform: translate(-50%, -50%);
-                  width: 12px;
-                  height: 12px;
-                  border-radius: 50%;
-                  background: #005FCF;
-                  opacity: 0.3;
-                  z-index: -1;
-                }
-              }
-              .line {
-                position: absolute;
-                left:50%;
-                bottom: 14px;
-                transform: translateX(-50%);
-                width: 2px;
-                height: 22px;
-                background: none;
-                border-left : 2px dotted #005FCF;
-              }
-            }
-            .buggy-name {
+            bottom: -6px;
+            transform: translateX(-50%);
+            .dottedLine {
               position: absolute;
-              left: 2px;
-              bottom: 34px;
-              color: var(--MOBILE-admin-Grayscale4, #666);
-              font-size: 10px;
-              font-style: normal;
-              font-weight: 500;
-              line-height: normal;
-              letter-spacing: -0.2px;
+              left: 50%;
+              bottom: calc(100% + 2px);
+              width: 2px;
+              transform: translateX(-50%);
+              background-image: linear-gradient(to bottom, #888 20%, transparent 20%, transparent 40%, #888 40%, #888 60%, transparent 60%, transparent 80%, #888 80%);
+              background-size: 2px 8px;
+              background-repeat: repeat-y;
+              z-index: 1;
+            }
+            .bookingNm {
+              position: absolute;
+              left: 50%;
+              transform: translateX(-50%);
+              font-weight: 800;
+              font-size: 11px;
+              color: var(--mode-gray1);
               white-space: nowrap;
-              & > span {
-                width: 4px;
-                height: 4px;
-                border-radius: 50%;
-                margin-right: 4px;
-                margin-bottom: 1px;
-              }
             }
-            .tag-list {
+            .tagGroup {
               position: absolute;
-              left: 10px;
-              bottom: 49px;
-              width: 66px;
+              left: 50%;
+              top: 50%;
+              transform: translate(-50%, -50%);
+              width: 19px;
+              height: 19px;
+              border-radius: 5px;
+              border: 2px solid var(--mode-error);
+              background-color: rgba(230, 43, 43, 0.5)
+            }
+            .tagSelf {
+              z-index: 2;
+              position: absolute;
+              left: 50%;
+              top: 50%;
+              transform: translate(-50%, -50%);
+              width: 10px;
+              height: auto;
+            }
+            .buggy {
+              position: relative;
+              width: 16px;
+              height: 16px;
+              border-radius: 50%;
+              border: 4px solid;
+              background-color: #fff;
+              box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.25);
+              box-sizing: border-box;
+              cursor: pointer;
+            }
+            .tagList {
+              position: absolute;
+              left: 50%;
+              transform: translateX(-50%);
               display: flex;
               align-items: center;
-              flex-wrap: wrap;
+              gap: 1px;
+              padding: 0;
               li {
                 width: 12px;
                 height: 12px;
-                background-repeat: no-repeat;
+                border-radius: 5px;
                 background-position: center;
+                background-repeat: no-repeat;
                 background-size: contain;
+                overflow: hidden;
                 &.level1 {
                   width: 15px;
                   height: 15px;
@@ -345,7 +353,7 @@
     .floating-menu-wrap {
       position: fixed;
       bottom: calc(env(safe-area-inset-bottom) + 20px);
-      right: calc(env(safe-area-inset-right) + 13px);
+      right: calc(env(safe-area-inset-right) + 12px);
       z-index: 5;
       display: flex;
       align-items: center;
@@ -361,29 +369,38 @@
         width: 36px;
         height: 36px;
         border-radius: 50%;
-        box-shadow: 0 2px 7px 0 #0000004D;
+        box-shadow: 0px 0px 5px 0px #1212124D;
+        [data-theme="dark"] & {
+          box-shadow: 0px 0px 5px 0px #FFF;
+        }
         span {
           font-size: 6px;
           white-space: nowrap;
-          color: var(--Light-mode-keycolor);
+          color: var(--mode-darkgray);
           font-weight: 500;
+          [data-theme="dark"] & {
+            color: var(--mode-font_key);
+          }
         }
         &.map-button {
-           background: var(--Light-mode-keycolor) url("../../../../public/assets/image/icon-cart-whtie.svg") no-repeat center 7px / auto 15px;
+           background: var(--mode-keycolor) url("../../../../public/assets/image/icon-cart-whtie.svg") no-repeat center 7px / auto 15px;
            span {
-            color: var(--Light-mode-Background);
-          } 
+            color: var(--mode-Background);
+            [data-theme="dark"] & {
+              color: var(--mode-font_key);
+            }
+          }
         }
         &.holecup-button {
-          background: var(--Light-mode-gray3) url("../../../../public/assets/image/icon-holecup-dark.svg") no-repeat center 7px / auto 15px;
-          span {
-            color: var(--Light-mode-darkgray);
+          background: var(--mode-gray3) url("../../../../public/assets/image/icon-holecup-dark.svg") no-repeat center 7px / auto 15px;
+          [data-theme="dark"] & {
+            background-image: url("../../../../public/assets/image/icon-holecup-white.svg");
           }
         }
         &.menu-button {
-          background: var(--Light-mode-gray3) url("../../../../public/assets/image/icon-menu-dark.svg") no-repeat center 7px / auto 15px;
-          span {
-            color: var(--Light-mode-darkgray);
+          background: var(--mode-gray3) url("../../../../public/assets/image/icon-menu-dark.svg") no-repeat center 7px / auto 13px;
+          [data-theme="dark"] & {
+            background-image: url(../../../../public/assets/image/icon-menu-white.svg);
           }
         }
       }
