@@ -22,7 +22,6 @@ const RePassword = () => {
     password_recheck: "",
   });
   const [error, setError] = useState<string>("");
-  const [passwordError, setPasswordError] = useState("");
   const [passwordRecheckError, setPasswordRecheckError] = useState("");
 
   const { mutate: passwordMutate } = useMutation({
@@ -35,32 +34,24 @@ const RePassword = () => {
     },
   });
 
-  const validatePassword = (password: string) => {
-    const regex = /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
-    return regex.test(password);
-  };
-
   const isSubmitDisabled = useMemo(() => {
     return (
       !passwordForm.password ||
       !passwordForm.password_recheck ||
-      !validatePassword(passwordForm.password) ||
       passwordForm.password !== passwordForm.password_recheck
     );
   }, [passwordForm]);
 
   const handleChange = ({ target }: { target: HTMLInputElement }) => {
     const { name, value } = target;
+    
+    // 공백 제거
+    const trimmedValue = value.replace(/\s/g, "");
 
-    setPasswordForm((prev) => ({ ...prev, [name]: value }));
+    setPasswordForm((prev) => ({ ...prev, [name]: trimmedValue }));
 
     if (name === "password") {
-      if (!validatePassword(value)) {
-        setPasswordError(t("rePassword.passwordPolicyMessage"));
-      } else {
-        setPasswordError("");
-      }
-      if (passwordForm.password_recheck && value !== passwordForm.password_recheck) {
+      if (passwordForm.password_recheck && trimmedValue !== passwordForm.password_recheck) {
         setPasswordRecheckError(t("rePassword.errorMessage"));
       } else {
         setPasswordRecheckError("");
@@ -68,7 +59,7 @@ const RePassword = () => {
     }
 
     if (name === "password_recheck") {
-      if (passwordForm.password !== value) {
+      if (passwordForm.password !== trimmedValue) {
         setPasswordRecheckError(t("rePassword.errorMessage"));
       } else {
         setPasswordRecheckError("");
@@ -78,17 +69,11 @@ const RePassword = () => {
 
   const handleClear = (name: string) => {
     setPasswordForm((prev) => ({ ...prev, [name]: "" }));
-    if (name === "password") setPasswordError("");
     if (name === "password_recheck") setPasswordRecheckError("");
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if (!validatePassword(passwordForm.password)) {
-      setPasswordError(t("rePassword.passwordPolicyMessage"));
-      return;
-    }
 
     if (passwordForm.password !== passwordForm.password_recheck) {
       setPasswordRecheckError(t("rePassword.errorMessage"));
@@ -137,9 +122,6 @@ const RePassword = () => {
             placeholder={t("rePassword.passwordPlaceholder")}
             onChange={handleChange}
             value={passwordForm.password}
-            error={!!passwordError}
-            textDescShow={passwordError ? "fail" : "null"}
-            textDesc={passwordError}
             onClear={() => handleClear("password")}
           />
 

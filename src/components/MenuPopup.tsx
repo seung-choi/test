@@ -67,11 +67,11 @@ const MenuPopup = () => {
                 <AutoFontSizeText text={t("monitoring.title")} maxFontSize={15} minFontSize={10} />
               </button>
             </li>
-            <li className={`${styles["menu-item"]} ${styles["map-view"]} ${path === "/mapView/" ? styles["active"] : ""}`}>
+            {/* <li className={`${styles["menu-item"]} ${styles["map-view"]} ${path === "/mapView/" ? styles["active"] : ""}`}>
               <button type="button" onClick={() => router.push("/map-view")}>
                 <AutoFontSizeText text="지도 관제" maxFontSize={15} minFontSize={10} />
               </button>
-            </li>
+            </li> */}
             <li className={`${styles["menu-item"]} ${styles["holecup"]} ${path === "/mapView/" ? styles["active"] : ""}`}>
               <button type="button" onClick={() => setHolecupMenuPopupOpen(true)}>
                 <AutoFontSizeText text="홀컵핀" maxFontSize={15} minFontSize={10} />
