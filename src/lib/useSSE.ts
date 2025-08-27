@@ -5,7 +5,7 @@ import { EventSourcePolyfill } from "event-source-polyfill";
 import { useSetRecoilState } from "recoil";
 import { getOriginURL } from "@/api/API_URL";
 import { usePathname } from "next/navigation";
-import { ssePinState, sseSOSState, sseSOSPopupOpenState } from "@/lib/recoil";
+import { ssePinState, sseSOSState, sseSOSPopupListState } from "@/lib/recoil";
 import { SSEPinData, SSESOSData } from "@/types/sseType";
 
 // 숫자로만 구성된 10자리 세션 ID 생성 함수
@@ -57,7 +57,7 @@ const useSSE = () => {
   const eventSourseRef = useRef<EventSourcePolyfill | null>(null);
   const setPin = useSetRecoilState(ssePinState);
   const setSOS = useSetRecoilState(sseSOSState);
-  const setSOSPopupOpen = useSetRecoilState(sseSOSPopupOpenState);
+  const setSOSPopupList = useSetRecoilState(sseSOSPopupListState);
 
   useEffect(() => {
     let destroyed = false;
@@ -102,8 +102,21 @@ const useSSE = () => {
         const data = event.data ? JSON.parse(event.data) : null;
         console.log("SOS data", data);
         if (data) {
-          setSOS(data as SSESOSData)
-          setSOSPopupOpen(true);
+          const sosData = data as SSESOSData;
+          setSOS(sosData);
+          
+          // 새로운 SOS 팝업 아이템 생성
+          const newPopupItem = {
+            id: `${sosData.eventNo}_${Date.now()}`, // eventNo + timestamp로 고유 ID 생성
+            data: sosData,
+            position: {
+              marginTop: Math.floor(Math.random() * 14) + 2, // 2px ~ 15px 사이의 랜덤 값
+              marginLeft: Math.floor(Math.random() * 14) + 2, // 2px ~ 15px 사이의 랜덤 값
+            },
+          };
+          
+          // 기존 팝업 목록에 새로운 팝업 추가
+          setSOSPopupList((prevList) => [...prevList, newPopupItem]);
         };
       });
 
