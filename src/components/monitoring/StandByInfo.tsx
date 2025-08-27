@@ -1,7 +1,7 @@
 import styles from "@/styles/components/monitoring/StandByInfo.module.scss";
 import BookingType from "@/types/Booking.type";
 
-const StandByInfo = ({ type, standbyList }: { type: "OW" | "IP", standbyList: BookingType[] }) => {
+const StandByInfo = ({ type, standbyList }: { type: "OW" | "IW", standbyList: BookingType[] }) => {
   return (
     <div className={styles["standby-info-container"]}>
       <h4 className={styles["standby-info-title"]}>
@@ -17,7 +17,7 @@ const StandByInfo = ({ type, standbyList }: { type: "OW" | "IP", standbyList: Bo
             {standbyList[0]?.bookingTm}
           </span>
         </div>
-        <em className={styles["standby-all-count"]}>{standbyList.length > 0 ? standbyList.length - 1 : 0}팀</em>
+        <em className={styles["standby-all-count"]}>{standbyList.length || 0}팀</em>
       </div>
     </div>
   ) 

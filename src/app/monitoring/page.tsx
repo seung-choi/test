@@ -176,7 +176,7 @@ const Monitoring = () => {
                 </div>
                 <div className={styles["course-standby-info-wrap"]}>
                   <StandByInfo type="OW" standbyList={courseBookings.filter((booking) => booking.status === "OW")}/>
-                  <StandByInfo type="IP" standbyList={courseBookings.filter((booking) => booking.status === "IP")}/>
+                  <StandByInfo type="IW" standbyList={courseBookings.filter((booking) => booking.status === "IW")}/>
                   <button type="button" className={styles["standby-button"]} onClick={() => setStandByPopupOpen({ isOpen: true, selectedCourseId: course.courseId })}>
                     <span className="blind">대기 인원 보기</span>
                   </button>
