@@ -7,6 +7,7 @@ import { getBooking, getClub } from "@/api/main";
 import CourseType from "@/types/Course.type";
 import MenuPopup from "@/components/MenuPopup";
 import SOSPopup from "@/components/monitoring/SOSPopup";
+import StandByInfo from "@/components/monitoring/StandByInfo";
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
@@ -15,6 +16,28 @@ import { useSetRecoilState, useRecoilValue } from "recoil";
 import { standByPopupState, menuPopupOpenState, holecupMenuPopupState, sseSOSPopupListState, themeModeState } from "@/lib/recoil";
 import HolecupMenuPopup from "@/components/HolcupMenuPopup";
 import useSSE from "@/lib/useSSE";
+import BookingType from "@/types/Booking.type";
+
+  // 태그 순서 정의
+  const tagOrder = [
+    "FIRSTTEAMF1",
+    "FIRSTTEAMF2",
+    "FIRSTTEAMF3",
+    "LASTTEAMF1",
+    "LASTTEAMF2",
+    "LASTTEAMF3",
+    "VIP",
+    "TOWPERSONS",
+    "THREEPERSONS",
+    "FIVEPERSONS",
+    "EDUCATION",
+    "COMP",
+    "GREENCHECK",
+    "ADD9HOLES",
+    "MARSHAL",
+    "TOPDRESSING",
+    "TIMEDELAY",
+  ];
 
 const Monitoring = () => {
   const { t } = useTranslation();
@@ -41,7 +64,7 @@ const Monitoring = () => {
     return transformBookingData(bookingData, clubData);
   }, [bookingData, clubData]);
 
-  const waitingCartList = useMemo(() => {
+  const standbyCartList = useMemo(() => {
     if (!clubData || !refinedBookingData) return [];
 
     return clubData.courseList.map((course) => {
@@ -126,28 +149,38 @@ const Monitoring = () => {
           </div>
         </div>
         {clubData?.courseList.map((course: CourseType) => {
-          let globalBuggyIndex = 0;
+
+          const courseBookings = refinedBookingData?.filter((booking: BookingType) => booking.courseId === course.courseId) || [];
 
           return (
             <section
               className={styles["course-section"]}
               key={course.courseId}
               id={`${course.courseId}`}
+              style={{ border: `2px solid ${course.courseCol}` }}
             >
-              <div className={styles["course-title"]}>
-                <span
-                  className={styles["course-color"]}
-                  style={{ backgroundColor: `${course.courseCol}` }}
-                ></span>
-                <h2 className={styles["course-name"]}>{course.courseNm}</h2>
-                <span className={styles["course-teams-state"]}>
-                  {refinedBookingData?.filter((data) => 
-                    data?.courseId === course?.courseId && 
-                    (data?.status === "OP" || data?.status === "IP")
-                  ).length}
-                  {t("monitoring.teamsPlaying")}
-                </span>
-                <button type="button" className={styles["standby-button"]} onClick={() => setStandByPopupOpen(true)}>대기 인원</button>
+              <div className={styles["course-section-header"]}>
+                <div className={styles["course-section-title"]}>
+                  <span
+                    className={styles["course-color"]}
+                    style={{ backgroundColor: `${course.courseCol}` }}
+                  ></span>
+                  <h2 className={styles["course-name"]}>{course.courseNm}</h2>
+                  <span className={styles["course-teams-state"]}>
+                    {refinedBookingData?.filter((data) => 
+                      data?.courseId === course?.courseId && 
+                      (data?.status === "OP" || data?.status === "IP")
+                    ).length}
+                    {t("monitoring.teamsPlaying")}
+                  </span>
+                </div>
+                <div className={styles["course-standby-info-wrap"]}>
+                  <StandByInfo type="OW" standbyList={courseBookings.filter((booking) => booking.status === "OW")}/>
+                  <StandByInfo type="IP" standbyList={courseBookings.filter((booking) => booking.status === "IP")}/>
+                  <button type="button" className={styles["standby-button"]} onClick={() => setStandByPopupOpen({ isOpen: true, selectedCourseId: course.courseId })}>
+                    <span className="blind">대기 인원 보기</span>
+                  </button>
+                </div>
               </div>
               <div className={styles["hole-list-wrap"]}>
                 <ul className={styles["hole-list"]}>
@@ -170,19 +203,17 @@ const Monitoring = () => {
                         }}
                       >
                         <div className={styles["hole-item-name"]}>
-                          {hole.holeNo}H {hole.holePar}P
+                          <strong>{hole.holeNo}H</strong> {hole.holePar}P
                         </div>
                         <div className={styles["hole-item-line"]}></div>
 
                         {cartListByHoleId?.map((cart) => {
                           const outCourse = clubData?.courseList.find((c) => c.courseId === cart.outCourseId);
-                          const isEven = globalBuggyIndex % 2 === 0;
-                          globalBuggyIndex ++;
 
                           return (
                             <div
                               key={`cartByHole-${cart.bookingId}`}
-                              className={`${styles["hole-item-buggy"]} ${isEven ? styles["up"] : styles["down"]}`} 
+                              className={styles["hole-item-buggy"]} 
                               style={{ left: `${cart.progress}%` }}
                             >
                               <div className={styles[`line-wrap`]}>
@@ -206,15 +237,31 @@ const Monitoring = () => {
                                 ></span>
                                 {cart.bookingNm}
                               </strong>
-                              {cart?.tags.length > 0 && (
+                              {cart.tags?.filter((tag) => tag !== "GROUP" && tag !== "SELF").length > 0 && (
                                 <ul className={styles["tag-list"]}>
-                                  {cart?.tags.map((cart, index) => {
-                                    return (
-                                      <li key={index} className={styles[`${cart}`]}>
-                                        <span className="blind">{cart}</span>
-                                      </li>
-                                    );
-                                  })}
+                                  {cart.tags
+                                    ?.filter((tag) => tagOrder.includes(tag))
+                                    .sort((a, b) => tagOrder.indexOf(a) - tagOrder.indexOf(b))
+                                    .map((tag, index) => {
+                                      const level1Tags = [
+                                        "FIRSTTEAMF1",
+                                        "FIRSTTEAMF2",
+                                        "FIRSTTEAMF3",
+                                        "LASTTEAMF1",
+                                        "LASTTEAMF2",
+                                        "LASTTEAMF3",
+                                        "VIP",
+                                      ];
+                                      const shouldApplyLevel1 = level1Tags.includes(tag);
+                                      return (
+                                        <li
+                                          key={index}
+                                          className={`${styles[`${tag}`]} ${shouldApplyLevel1 ? styles.level1 : ""}`}
+                                        >
+                                          <span className="blind">{tag}</span>
+                                        </li>
+                                      );
+                                    })}
                                 </ul>
                               )}
                             </div>
@@ -236,7 +283,7 @@ const Monitoring = () => {
       </div>
       <MenuPopup />
       <HolecupMenuPopup courseList={clubData?.courseList || []} />
-      <StandByPopup waitingCartList={waitingCartList} />
+      <StandByPopup standbyCartList={standbyCartList} />
       {sosPopupList.length > 0 && <SOSPopup />}
     </>
   );

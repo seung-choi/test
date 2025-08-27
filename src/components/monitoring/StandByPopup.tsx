@@ -1,13 +1,13 @@
 "use client";
 
 import styles from "@/styles/components/monitoring/StandByPopup.module.scss";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState } from "recoil";
 import { standByPopupState } from "@/lib/recoil";
 
-interface waitingCartListType {
-  waitingCartList: {
+interface standbyCartListType {
+  standbyCartList: {
     courseId: number;
     courseNm: string;
     OPList: {
@@ -21,24 +21,45 @@ interface waitingCartListType {
   }[];
 }
 
-const StandByPopup = ({ waitingCartList }: waitingCartListType) => {
+const StandByPopup = ({ standbyCartList }: standbyCartListType) => {
   const { t } = useTranslation();
   const [standByPopup, setStandByPopup] = useRecoilState(standByPopupState);
 
-  const [activeTab, setActiveTab] = useState(waitingCartList[0]?.courseId);
+  // 선택된 코스 ID를 초기 activeTab으로 설정
+  const [activeTab, setActiveTab] = useState<number | null>(null);
+
+  // standByPopupState가 변경될 때 activeTab 업데이트
+  useEffect(() => {
+    if (standByPopup.selectedCourseId && standbyCartList.some(course => course.courseId === standByPopup.selectedCourseId)) {
+      setActiveTab(standByPopup.selectedCourseId);
+    } else if (standbyCartList.length > 0) {
+      // 선택된 코스가 없거나 유효하지 않은 경우 첫 번째 코스 선택
+      setActiveTab(standbyCartList[0]?.courseId || null);
+    }
+  }, [standByPopup.selectedCourseId, standbyCartList]);
+
+  const closePopup = () => {
+    setStandByPopup({
+      isOpen: false,
+      selectedCourseId: null,
+    });
+  };
+
+  // activeTab이 설정되지 않은 경우 렌더링하지 않음
+  if (!activeTab) {
+    return null;
+  }
 
   return (
-    <div className={`${styles["standby-container"]} ${standByPopup ? styles["open"] : ""}`}>
+    <div className={`${styles["standby-container"]} ${standByPopup.isOpen ? styles["open"] : ""}`}>
       <div
         className={styles["dim"]}
-        onClick={() => {
-          setStandByPopup(false);
-        }}
+        onClick={closePopup}
       ></div>
       <div className={styles["standby-inner"]}>
         <div className={styles["tab-wrapper"]}>
           <ul className={styles["tabs"]}>
-            {waitingCartList.map((tab) => (
+            {standbyCartList.map((tab) => (
               <li
                 key={tab.courseId}
                 className={`${styles["tab"]} ${activeTab === tab.courseId ? styles["active"] : ""}`}
@@ -52,11 +73,11 @@ const StandByPopup = ({ waitingCartList }: waitingCartListType) => {
             <div className={styles["standby"]}>
               <div className={styles["standby-title"]}>
                 {t("monitoring.frontStandby")} <br />(
-                {waitingCartList.find((tab) => tab.courseId === activeTab)?.OPList.length || 0})
+                {standbyCartList.find((tab) => tab.courseId === activeTab)?.OPList.length || 0})
               </div>
               <div className={styles["standby-buggy"]}>
                 <ul className={styles["standby-buggy-list"]}>
-                  {waitingCartList
+                  {standbyCartList
                     .find((tab) => tab.courseId === activeTab)
                     ?.OPList.map((item) => {
                       return (
@@ -71,11 +92,11 @@ const StandByPopup = ({ waitingCartList }: waitingCartListType) => {
             <div className={styles["standby"]}>
               <div className={styles["standby-title"]}>
                 {t("monitoring.backStandby")}<br />(
-                {waitingCartList.find((tab) => tab.courseId === activeTab)?.IPList.length || 0})
+                {standbyCartList.find((tab) => tab.courseId === activeTab)?.IPList.length || 0})
               </div>
               <div className={styles["standby-buggy"]}>
                 <ul className={styles["standby-buggy-list"]}>
-                  {waitingCartList
+                  {standbyCartList
                     .find((tab) => tab.courseId === activeTab)
                     ?.IPList.map((item) => {
                       return (
@@ -91,9 +112,7 @@ const StandByPopup = ({ waitingCartList }: waitingCartListType) => {
         </div>
         <button
           className={styles["close-button"]}
-          onClick={() => {
-            setStandByPopup(false);
-          }}
+          onClick={closePopup}
         >
           <span></span>
           <span></span>

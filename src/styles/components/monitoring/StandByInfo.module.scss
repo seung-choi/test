@@ -1,0 +1,67 @@
+.standby-info {
+  &-container {
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    background-color: var(--mode-color2);
+    min-width: 170px;
+  }
+  &-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 53px;
+    height: 25px;
+    padding: 0 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: var(--mode-color1);
+    font-size: 11px;
+    color: var(--mode-key-color);
+  }
+  &-content {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+    width: calc(100% - 53px);
+    height: 25px;
+    padding: 0 5px;
+    background-color: var(--mode-color2);
+    .standby-first-booking {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 3px;
+      &-name {
+        max-width: 50px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-weight: 700;
+        font-size: 11px;
+        color: var(--mode-darkgray);
+      }
+      &-time {
+        font-weight: 500;
+        font-size: 11px;
+        color: var(--mode-darkgray);
+      }
+    }
+    .standby-all-count {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 18px;
+      padding: 0 10px;
+      border-radius: 5px;
+      background-color: var(--mode-Background);
+      font-weight: 700;
+      font-size: 11px;
+      color: var(--mode-font_key);
+      white-space: nowrap;
+    }
+  }
+}

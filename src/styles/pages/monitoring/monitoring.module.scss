@@ -5,7 +5,7 @@
     background: var(--mode-Background);
     height: 100%;
     overflow: scroll;
-    padding-top: 45px;
+    padding: 45px 10px 13px;
     .monitoring-header {
       z-index: 5;
       position: fixed;
@@ -85,60 +85,111 @@
     }
 
     .course-section {
+      position: relative;
       width: 100%;
-      min-height: calc(100% - 42px - 18px - 18px);
-      padding: 20px 32px;
+      height: calc((100% - 5px - 13px) /2);
+      min-height: 148px;
+      margin-bottom: 5px;
       background: var(--mode-Background);
-      margin-bottom: 20px;
-       .course-title {
+      border-radius: 8px;
+      .course-section-header {
         display: flex;
         align-items: center;
-        gap: 7px;
-        .course-color {
-          width: 14px;
-          height: 14px;
-          border-radius: 50%;
+        justify-content: space-between;
+        height: 33px;
+        padding: 0 14px 0 10px;
+        background-color: var(--mode-color3);
+        border-radius: 8px 8px 0 0;
+        .course-section-title {
+          display: flex;
+          align-items: center;
+          gap: 7px;
+          .course-color {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+          }
+          .course-name {
+            color: var(--MOBILE-admin-Grayscale4, #666);
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 800;
+            line-height: normal;
+            letter-spacing: -0.4px;
+          }
+          .course-teams-state {
+            color: var(--MOBILE-admin-Grayscale4, #666);
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            letter-spacing: -0.36px;
+            word-break: break-all;
+          }
         }
-        .course-name {
-          color: var(--MOBILE-admin-Grayscale4, #666);
-          font-size: 20px;
-          font-style: normal;
-          font-weight: 800;
-          line-height: normal;
-          letter-spacing: -0.4px;
-        }
-        .course-teams-state {
-          color: var(--MOBILE-admin-Grayscale4, #666);
-          font-size: 18px;
-          font-style: normal;
-          font-weight: 300;
-          line-height: normal;
-          letter-spacing: -0.36px;
+        .course-standby-info-wrap {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          .standby-button {
+            position: relative;
+            width: 22px;
+            height: 22px;
+            border-radius: 5px;
+            background-color: var(--mode-Background);
+            box-shadow: 0 0 5px 0 #666666;
+            &::before {
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              content: '';
+              display: block;
+              width: 7px;
+              height: 7px;
+              margin-top: -7px;
+              border-left: 2px solid var(--mode-font_key);
+              border-bottom: 2px solid var(--mode-font_key);
+              transform: translateX(-50%) rotate(-45deg);
+            }
+          }
         }
       }
     }
 
     .hole-list-wrap {
-      padding: 98px 0 106px;
+      position: relative;
+      height: calc(100% - 33px);
       .hole-list {
+        position: absolute;
+        bottom: 29px;
         display: flex;
         align-items: center;
         flex-wrap: wrap;
         width: 100%;
+        padding: 0 20px;
         .hole-item {
           position: relative;
           &:not(:last-of-type) {
             margin-right: 10px;
           }
           &-name {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
             margin-bottom: 3px;
-            color: #D4D4D4;
+            color: var(--mode-gray2);
             text-align: center;
             font-size: 10px;
-            font-style: normal;
             font-weight: 900;
-            line-height: normal;
             letter-spacing: -0.2px;
+            line-height: 1;
+            white-space: nowrap;
+            strong {
+              font-size: 12px;
+              color: var(--mode-darkgray);
+              line-height: 1;
+            }
           }
           &-line {
             width: 100%;
@@ -178,22 +229,18 @@
               .line {
                 position: absolute;
                 left:50%;
+                bottom: 14px;
                 transform: translateX(-50%);
                 width: 2px;
                 height: 22px;
                 background: none;
                 border-left : 2px dotted #005FCF;
-                @at-root .down .line{
-                  top: 14px;
-                }
-                @at-root .up .line {
-                  bottom: 14px;
-                }
               }
             }
             .buggy-name {
               position: absolute;
               left: 2px;
+              bottom: 34px;
               color: var(--MOBILE-admin-Grayscale4, #666);
               font-size: 10px;
               font-style: normal;
@@ -201,13 +248,6 @@
               line-height: normal;
               letter-spacing: -0.2px;
               white-space: nowrap;
-              @at-root .down .buggy-name {
-                top: 34px;
-              }
-
-              @at-root .up .buggy-name {
-                bottom: 34px;
-              }
               & > span {
                 width: 4px;
                 height: 4px;
@@ -219,84 +259,71 @@
             .tag-list {
               position: absolute;
               left: 10px;
+              bottom: 49px;
               width: 66px;
               display: flex;
               align-items: center;
               flex-wrap: wrap;
-              @at-root .down .tag-list {
-                top: 49px;
-              }
-              @at-root .up .tag-list {
-                bottom: 49px;
-              }
               li {
-                width: 15px;
-                height: 15px;
+                width: 12px;
+                height: 12px;
                 background-repeat: no-repeat;
                 background-position: center;
                 background-size: contain;
-                &.marshall {
-                  background-image: url("../../../../public/assets/image/tag/icon1.svg");
+                &.level1 {
+                  width: 15px;
+                  height: 15px;
                 }
-
-                &.two-players {
-                  background-image: url("../../../../public/assets/image/tag/icon2.svg");
+                &.FIRSTTEAMF1 {
+                  background-image: url("../../../../public/assets/image/tag/tag_first_team_f1.svg");
                 }
-
-                &.three-players {
-                  background-image: url("../../../../public/assets/image/tag/icon3.svg");
+                &.FIRSTTEAMF2 {
+                  background-image: url("../../../../public/assets/image/tag/tag_first_team_f2.svg");
                 }
-
-                &.vip {
-                  background-image: url("../../../../public/assets/image/tag/icon4.svg");
+                &.FIRSTTEAMF3 { 
+                  background-image: url("../../../../public/assets/image/tag/tag_first_team_f3.svg");
                 }
-
-                &.training {
-                  background-image: url("../../../../public/assets/image/tag/icon5.svg");
+                &.LASTTEAMF1 {
+                  background-image: url("../../../../public/assets/image/tag/tag_last_team_l1.svg");
                 }
-
-                &.group {
-                  background-image: url("../../../../public/assets/image/tag/icon6.svg");
+                &.LASTTEAMF2 {    
+                  background-image: url("../../../../public/assets/image/tag/tag_last_team_l2.svg");
                 }
-
-                &.team-first-last {
-                  background-image: url("../../../../public/assets/image/tag/icon7.svg");
+                &.LASTTEAMF3 {
+                  background-image: url("../../../../public/assets/image/tag/tag_last_team_l3.svg");
                 }
-
-                &.team-first-first {
-                  background-image: url("../../../../public/assets/image/tag/icon8.svg");
+                &.VIP {     
+                  background-image: url("../../../../public/assets/image/tag/tag_vip.svg");
                 }
-
-                &.tag9 {
-                  background-image: url("../../../../public/assets/image/tag/icon9.svg");
+                &.TOWPERSONS {
+                  background-image: url("../../../../public/assets/image/tag/tag_two_persons.svg");
                 }
-
-                &.add-hole {
-                  background-image: url("../../../../public/assets/image/tag/icon10.svg");
+                &.THREEPERSONS {  
+                  background-image: url("../../../../public/assets/image/tag/tag_three_persons.svg");
                 }
-
-                &.tag11 {
-                  background-image: url("../../../../public/assets/image/tag/icon11.svg");
+                &.FIVEPERSONS {
+                  background-image: url("../../../../public/assets/image/tag/tag_five_persons.svg");
                 }
-
-                &.green-check {
-                  background-image: url("../../../../public/assets/image/tag/icon12.svg");
+                &.EDUCATION {   
+                  background-image: url("../../../../public/assets/image/tag/tag_education.svg");
                 }
-
-                &.tag13 {
-                  background-image: url("../../../../public/assets/image/tag/icon13.svg");
+                &.COMP {
+                  background-image: url("../../../../public/assets/image/tag/tag_comp.svg");
                 }
-
-                &.tag14 {
-                  background-image: url("../../../../public/assets/image/tag/icon14.svg");
+                &.GREENCHECK {
+                  background-image: url("../../../../public/assets/image/tag/tag_green_check.svg");
                 }
-
-                &.team-second-first {
-                  background-image: url("../../../../public/assets/image/tag/icon15.svg");
+                &.TOPDRESSING {
+                  background-image: url("../../../../public/assets/image/tag/tag_topdressing.svg");
                 }
-
-                &.team-second-last {
-                  background-image: url("../../../../public/assets/image/tag/icon16.svg");
+                &.ADD9HOLES {
+                  background-image: url("../../../../public/assets/image/tag/tag_add_9_holes.svg");
+                }
+                &.MARSHAL {
+                  background-image: url("../../../../public/assets/image/tag/tag_marshal.svg");
+                }
+                &.TIMEDELAY {
+                  background-image: url("../../../../public/assets/image/tag/tag_delay.svg");
                 }
               }
             }
@@ -334,7 +361,7 @@
         width: 36px;
         height: 36px;
         border-radius: 50%;
-        box-shadow: 0px 2px 7px 0px #0000004D;
+        box-shadow: 0 2px 7px 0 #0000004D;
         span {
           font-size: 6px;
           white-space: nowrap;
