@@ -19,7 +19,7 @@ const ClientLayoutContent = ({ children }: { children: React.ReactNode }) => {
   const [orientationClass, setOrientationClass] = useState("portrait");
 
   useEffect(() => {
-    const isLandscapePage = pathname === "/monitoring/" || pathname === "/holecup/" || pathname === "/sos-history/";
+    const isLandscapePage = pathname === "/monitoring/" || pathname === "/holecup/" || pathname === "/sos-history/" || pathname === '/map-monitoring/';
 
     const handleOrientationChange = () => {
       const orientation = window.screen && window.screen.orientation;
