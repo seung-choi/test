@@ -32,6 +32,7 @@ const MenuPopup = () => {
       okBtnLabel: t("alertModal.ok"),
       okCallback: () => {
         storage.session.clear();
+        setOpen(false);
         router.push("/login");
       },
     }));
@@ -63,27 +64,43 @@ const MenuPopup = () => {
         <div className={styles["menu-list-wrap"]}>
           <ul className={styles["menu-list"]}>
             <li className={`${styles["menu-item"]} ${styles["monitoring"]} ${path === "/monitoring/" ? styles["active"] : ""}`}>
-              <button type="button" onClick={() => router.push("/monitoring")}>
+              <button type="button" onClick={() => {  
+                router.push("/monitoring");
+                setOpen(false);
+              }}
+              >
                 <AutoFontSizeText text={t("monitoring.title")} maxFontSize={15} minFontSize={10} />
               </button>
             </li>
             {/* <li className={`${styles["menu-item"]} ${styles["map-view"]} ${path === "/mapView/" ? styles["active"] : ""}`}>
-              <button type="button" onClick={() => router.push("/map-view")}>
+              <button type="button" onClick={() => {
+                router.push("/map-view");
+                setOpen(false);
+              }}>
                 <AutoFontSizeText text="지도 관제" maxFontSize={15} minFontSize={10} />
               </button>
             </li> */}
             <li className={`${styles["menu-item"]} ${styles["holecup"]} ${path === "/mapView/" ? styles["active"] : ""}`}>
-              <button type="button" onClick={() => setHolecupMenuPopupOpen(true)}>
+              <button type="button" onClick={() => {
+                setHolecupMenuPopupOpen(true);
+                setOpen(false);
+              }}>
                 <AutoFontSizeText text="홀컵핀" maxFontSize={15} minFontSize={10} />
               </button>
             </li>
             <li className={`${styles["menu-item"]} ${styles["search"]} ${path === "/search/" ? styles["active"] : ""}`}>
-              <button type="button" onClick={() => router.push("/search")}>
+              <button type="button" onClick={() => {
+                router.push("/search");
+                setOpen(false);
+              }}>
                 <AutoFontSizeText text="검색" maxFontSize={15} minFontSize={10} />
               </button>
             </li>
             <li className={`${styles["menu-item"]} ${styles["sos-history"]} ${path === "/sos-history/" ? styles["active"] : ""}`}>
-              <button type="button" onClick={() => router.push("/sos-history")}>
+              <button type="button" onClick={() => {
+                router.push("/sos-history");
+                setOpen(false);
+              }}>
                 <AutoFontSizeText text="오늘 긴급호출 목록" maxFontSize={15} minFontSize={10} />
               </button>
             </li>
