@@ -150,7 +150,7 @@ const Message = () => {
             <div className={`${styles["select-wrap"]} ${styles["cart"]}`}>
               <strong className={styles["title"]}>{t("message.selectByCart")}</strong>
               <div className={styles["select-list"]}>
-                {refinedBookingData ? refinedBookingData.map((booking) => {
+                {refinedBookingData?.length > 0 ? refinedBookingData.map((booking) => {
                   return (
                     <label key={booking.bookingId}>
                       <input

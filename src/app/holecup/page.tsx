@@ -304,7 +304,7 @@ const HoleCup = () => {
                 setSelectedPinColor(matchedPin.mapZ || "");
             }
         }
-    }, [selectedGreenCd, currentHole, currentCourse, mapModeState, imageLoaded]);
+    }, [selectedGreenCd, currentHole, currentCourse, mapModeState, imageLoaded, clubData]);
 
 
     useEffect(() => {
