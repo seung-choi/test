@@ -177,6 +177,11 @@
             justify-content: center;
             font-size: 12px;
             height: 100%;
+            text-align: center;
+            word-break: keep-all;
+            [data-theme="dark"] & {
+              color: var(--mode-font_key);
+            }
           }
         }
         .button-wrap {
