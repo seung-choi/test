@@ -19,12 +19,18 @@ const ClientLayoutContent = ({ children }: { children: React.ReactNode }) => {
   const [orientationClass, setOrientationClass] = useState("portrait");
 
   useEffect(() => {
-    const isLandscapePage = pathname === "/monitoring/" || pathname === "/holecup/" || pathname === "/sos-history/" || pathname === '/map-monitoring/';
+    const isLandscapePage =
+      pathname === "/monitoring/" ||
+      pathname === "/holecup/" ||
+      pathname === "/sos-history/" ||
+      pathname === "/map-monitoring/";
 
     const handleOrientationChange = () => {
       const orientation = window.screen && window.screen.orientation;
       const orientationType = orientation && orientation.type;
-      const isLandscape = (orientationType && orientationType.includes("landscape")) || window.innerWidth > window.innerHeight;
+      const isLandscape =
+        (orientationType && orientationType.includes("landscape")) ||
+        window.innerWidth > window.innerHeight;
 
       setOrientationClass(() => {
         if (isLandscapePage) return isLandscape ? "landscape" : "rotate-landscape";
@@ -48,8 +54,8 @@ const ClientLayoutContent = ({ children }: { children: React.ReactNode }) => {
     } else if (
       sessionStorage.length < 1 &&
       currentPath !== "/" &&
-      currentPath !== "/login" &&
-      currentPath !== "/repassword"
+      !currentPath.startsWith("/login") &&
+      !currentPath.startsWith("/repassword")
     ) {
       router.push("/login");
     }
@@ -57,7 +63,7 @@ const ClientLayoutContent = ({ children }: { children: React.ReactNode }) => {
     if (i18n.isInitialized) {
       setI18nReady(true);
     } else {
-      i18n.on('initialized', () => {
+      i18n.on("initialized", () => {
         setI18nReady(true);
       });
     }
