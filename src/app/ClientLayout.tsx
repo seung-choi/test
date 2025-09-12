@@ -48,14 +48,12 @@ const ClientLayoutContent = ({ children }: { children: React.ReactNode }) => {
   }, [pathname]);
 
   useEffect(() => {
-    const currentPath = window.location.pathname;
-    if (currentPath !== "/" && sessionStorage.length > 1) {
-      router.push(currentPath);
+    if (pathname !== "/" && sessionStorage.length > 1) {
+      router.push(pathname);
     } else if (
       sessionStorage.length < 1 &&
-      currentPath !== "/" &&
-      !currentPath.startsWith("/login") &&
-      !currentPath.startsWith("/repassword")
+      pathname !== "/" &&
+      !pathname.startsWith("/repassword")
     ) {
       router.push("/login");
     }
@@ -67,7 +65,7 @@ const ClientLayoutContent = ({ children }: { children: React.ReactNode }) => {
         setI18nReady(true);
       });
     }
-  }, [router]);
+  }, []);
 
   if (!i18nReady) {
     // 초기화 전에는 아무 것도 안 보여줌
