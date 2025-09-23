@@ -3,8 +3,8 @@ import "./globals.scss";
 import { ClientLayout } from "@/app/ClientLayout";
 
 export const metadata: Metadata = {
-  title: "Plug-Golf",
-  description: "Plug-Golf admin page",
+  title: "Vgolf",
+  description: "Vgolf admin page",
 };
 
 export default function RootLayout({
@@ -12,7 +12,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  
   return (
     <html lang="en" suppressHydrationWarning>
       <body>

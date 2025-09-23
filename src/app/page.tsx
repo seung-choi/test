@@ -7,13 +7,13 @@ import { useEffect } from "react";
 export default function Splash() {
   const router = useRouter();
 
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     router.push("/login"); // 로그인 화면으로 이동
-  //   }, 2000); // 2초 후에 실행
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      router.push("/login"); // 로그인 화면으로 이동
+    }, 2000); // 2초 후에 실행
 
-  //   return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 정리
-  // }, [router]);
+    return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 정리
+  }, [router]);
 
   return (
     <>
@@ -26,7 +26,7 @@ export default function Splash() {
         {/* </div> */}
         {/* <div className={styles["splash-ball"]}></div> */}
         {/* <h1 className={styles["splash-txt"]}> */}
-        {/* <p>PLUG</p> */}
+        {/* <p>V</p> */}
         {/* <p>Golf</p> */}
         {/* </h1> */}
         <img
