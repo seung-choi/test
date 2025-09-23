@@ -1,9 +1,9 @@
-name: Plug Golf MNG
+name: VGolf MNG
 on:
   push:
-    branches: [ "main", "ap-northeast-2", "ap-southeast-1" ]
+    branches: ["main", "ap-northeast-2", "ap-southeast-1"]
   pull_request:
-    branches: [ "main", "ap-northeast-2", "ap-southeast-1" ]
+    branches: ["main", "ap-northeast-2", "ap-southeast-1"]
 
 jobs:
   main:
@@ -16,7 +16,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Detect Changed Modules
         id: changes
@@ -100,7 +100,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Detect Changed Modules
         id: changes
@@ -212,7 +212,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Detect Changed Modules
         id: changes
