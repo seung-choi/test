@@ -78,7 +78,7 @@ $axios.interceptors.response.use(
     if (config) {
       tokens.access = tokens.refresh;
 
-      if (response?.data?.status === 401 && response.data.code === "JWT_EXPIRED_TOKEN") {
+      if (response?.data?.status === 401 || response?.data.code === "JWT_EXPIRED_TOKEN") {
         window.sessionStorage.clear();
         console.log("401 error");
         window.location.href = "/login/";
