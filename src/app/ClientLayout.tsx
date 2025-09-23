@@ -8,6 +8,7 @@ import AlertModal from "@/components/AlertModal";
 import "@/lib/i18n";
 import i18n from "@/lib/i18n";
 import { themeModeState } from "@/lib/recoil";
+import storage from "@/utils/storage";
 
 // Recoil 훅을 사용하는 실제 로직 컴포넌트
 const ClientLayoutContent = ({ children }: { children: React.ReactNode }) => {
@@ -61,16 +62,17 @@ const ClientLayoutContent = ({ children }: { children: React.ReactNode }) => {
   // 경로 변경 및 인증 체크
   useEffect(() => {
     const currentPath = pathname;
+    const localStorageLength = storage.local.lengthExcept(["remember"]);
 
-    if (currentPath !== "/" && sessionStorage.length > 1) {
+    if (currentPath !== "/" && localStorageLength > 1) {
       router.push(currentPath);
     } else if (
-      sessionStorage.length < 1 &&
+      localStorageLength < 1 &&
       currentPath !== "/" &&
       !currentPath.startsWith("/login") &&
       !currentPath.startsWith("/repassword")
     ) {
-      console.log("ClinenLayout seseeon err");
+      console.log("ClientLayout session err");
       router.push("/login/");
     }
   }, [pathname, router]);

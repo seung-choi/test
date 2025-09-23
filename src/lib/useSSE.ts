@@ -7,6 +7,7 @@ import { getOriginURL } from "@/api/API_URL";
 import { usePathname } from "next/navigation";
 import { ssePinState, sseSOSState, sseSOSPopupListState } from "@/lib/recoil";
 import { SSEPinData, SSESOSData } from "@/types/sseType";
+import storage from "@/utils/storage";
 
 // 숫자로만 구성된 10자리 세션 ID 생성 함수
 const generateNumericSessionId = (): string => {
@@ -19,34 +20,34 @@ const generateNumericSessionId = (): string => {
 
 const tokens = {
   get access() {
-    return window.sessionStorage.getItem("accessToken") ?? "";
+    return (storage.local.get("accessToken") as string) ?? "";
   },
   set access(token: string) {
-    window.sessionStorage.setItem("accessToken", token);
+    storage.local.set({ accessToken: token });
   },
   get refresh() {
-    return window.sessionStorage.getItem("refreshToken") ?? "";
+    return (storage.local.get("refreshToken") as string) ?? "";
   },
   set refresh(token: string) {
-    window.sessionStorage.setItem("refreshToken", token);
+    storage.local.set({ refreshToken: token });
   },
 };
 
 const eventStore = {
   get id() {
-    return window.sessionStorage.getItem("eventId") ?? "";
+    return (storage.local.get("eventId") as string) ?? "";
   },
   set id(id: string) {
-    window.sessionStorage.setItem("eventId", id);
+    storage.local.set({ eventId: id });
   },
 };
 
 const sessionManager = {
   get sessionId() {
-    let sessionId = window.sessionStorage.getItem("sseSessionId");
+    let sessionId = storage.local.get("sseSessionId") as string;
     if (!sessionId) {
       sessionId = generateNumericSessionId();
-      window.sessionStorage.setItem("sseSessionId", sessionId);
+      storage.local.set({ sseSessionId: sessionId });
     }
     return sessionId;
   },
@@ -104,7 +105,7 @@ const useSSE = () => {
         if (data) {
           const sosData = data as SSESOSData;
           setSOS(sosData);
-          
+
           // 새로운 SOS 팝업 아이템 생성
           const newPopupItem = {
             id: `${sosData.eventNo}_${Date.now()}`, // eventNo + timestamp로 고유 ID 생성
@@ -114,10 +115,10 @@ const useSSE = () => {
               marginLeft: Math.floor(Math.random() * 14) + 2, // 2px ~ 15px 사이의 랜덤 값
             },
           };
-          
+
           // 기존 팝업 목록에 새로운 팝업 추가
           setSOSPopupList((prevList) => [...prevList, newPopupItem]);
-        };
+        }
       });
 
       eventSource.addEventListener("SUBSCRIBED", () => {
@@ -130,8 +131,9 @@ const useSSE = () => {
         const code = err?.body?.code;
 
         if (status === 401 || code === "JWT_EXPIRED_TOKEN") {
-          window.sessionStorage.clear();
-          window.location.href = "/login";
+          storage.local.clearExcept(["remember"]);
+          console.log("sse 401 error");
+          window.location.href = "/login/";
           return;
         }
       };

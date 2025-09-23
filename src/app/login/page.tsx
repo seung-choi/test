@@ -29,15 +29,15 @@ const Login = () => {
 
   const router = useRouter();
 
-  const { mutate: loginMutate, isPending  } = useMutation({
+  const { mutate: loginMutate, isPending } = useMutation({
     mutationFn: postLogin,
     onSuccess: (res) => {
-      if(res.groupType === "ADMIN") {
+      if (res.groupType === "ADMIN") {
         setError(true);
       } else {
         localStorage.removeItem("remember");
         if (loginForm.saveId) storage.local.set({ remember: loginForm.username });
-        storage.session.set(res);
+        storage.local.set(res);
         res.initSt === "Y" ? router.push("/repassword") : router.push("/monitoring");
       }
     },
@@ -95,19 +95,15 @@ const Login = () => {
       <h1 className="blind">{t("login.title")}</h1>
       <form className={styles["login-container"]} onSubmit={handleSubmit}>
         <h2 className={styles["login-title"]}>
-          {t("login.subtitle").split("\n").map((line, index) => (
-            <span key={index}>
-              {line}
-            </span>
-          ))}
+          {t("login.subtitle")
+            .split("\n")
+            .map((line, index) => (
+              <span key={index}>{line}</span>
+            ))}
         </h2>
 
         <div className={styles["login-top-wrap"]}>
-          {error && (
-            <div className={styles["login-helper-text"]}>
-              {t("login.errorMessage")}
-            </div>
-          )}
+          {error && <div className={styles["login-helper-text"]}>{t("login.errorMessage")}</div>}
           <Input
             label="ID"
             labelShow={true}

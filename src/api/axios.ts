@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { getOriginURL } from "@/api/API_URL";
+import storage from "@/utils/storage";
 
 interface ErrorResponse {
   status: number;
@@ -21,16 +22,16 @@ const $axios = axios.create({
 
 const tokens = {
   get access() {
-    return window.sessionStorage.getItem("accessToken") ?? "";
+    return (storage.local.get("accessToken") as string) ?? "";
   },
   set access(token: string) {
-    window.sessionStorage.setItem("accessToken", token);
+    storage.local.set({ accessToken: token });
   },
   get refresh() {
-    return window.sessionStorage.getItem("refreshToken") ?? "";
+    return (storage.local.get("refreshToken") as string) ?? "";
   },
   set refresh(token: string) {
-    window.sessionStorage.setItem("refreshToken", token);
+    storage.local.set({ refreshToken: token });
   },
 };
 
@@ -79,8 +80,8 @@ $axios.interceptors.response.use(
       tokens.access = tokens.refresh;
 
       if (response?.data?.status === 401 || response?.data.code === "JWT_EXPIRED_TOKEN") {
-        window.sessionStorage.clear();
-        console.log("401 error");
+        storage.local.clearExcept(["remember"]);
+        console.log("api axios 401 error");
         window.location.href = "/login/";
         return;
       }

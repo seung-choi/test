@@ -27,11 +27,11 @@ const MenuPopup = () => {
 
   const handleLogout = () => {
     setAlertModalState(() => ({
-      isShow: true, 
-      desc:  t("menu.logoutConfirm"),
+      isShow: true,
+      desc: t("menu.logoutConfirm"),
       okBtnLabel: t("alertModal.ok"),
       okCallback: () => {
-        storage.session.clear();
+        storage.local.clearExcept(["remember"]);
         setOpen(false);
         router.push("/login");
       },
@@ -49,12 +49,14 @@ const MenuPopup = () => {
       <div className={styles["menu-inner"]}>
         <div className={styles["user-info"]}>
           <div className={styles["user-info-left"]}>
-            <span className={styles["user-team"]}>{`${storage.session.get("groupNm")}`}</span>
-            <p className={styles["user-name"]}>{`${storage.session.get("userNm")}`} {t("menu.suffix")}</p>
+            <span className={styles["user-team"]}>{`${storage.local.get("groupNm")}`}</span>
+            <p className={styles["user-name"]}>
+              {`${storage.local.get("userNm")}`} {t("menu.suffix")}
+            </p>
           </div>
           <div>
             <button type="button" className={styles["theme-button"]} onClick={handleThemeToggle}>
-              { themeMode === "light" ? "라이트 모드" : "다크 모드" }
+              {themeMode === "light" ? "라이트 모드" : "다크 모드"}
             </button>
             <button type="button" className={styles["user-logout"]} onClick={handleLogout}>
               로그아웃
@@ -63,11 +65,15 @@ const MenuPopup = () => {
         </div>
         <div className={styles["menu-list-wrap"]}>
           <ul className={styles["menu-list"]}>
-            <li className={`${styles["menu-item"]} ${styles["monitoring"]} ${path === "/monitoring/" ? styles["active"] : ""}`}>
-              <button type="button" onClick={() => {  
-                router.push("/monitoring");
-                setOpen(false);
-              }}
+            <li
+              className={`${styles["menu-item"]} ${styles["monitoring"]} ${path === "/monitoring/" ? styles["active"] : ""}`}
+            >
+              <button
+                type="button"
+                onClick={() => {
+                  router.push("/monitoring");
+                  setOpen(false);
+                }}
               >
                 <AutoFontSizeText text={t("monitoring.title")} maxFontSize={15} minFontSize={10} />
               </button>
@@ -80,27 +86,42 @@ const MenuPopup = () => {
                 <AutoFontSizeText text="지도 관제" maxFontSize={15} minFontSize={10} />
               </button>
             </li> */}
-            <li className={`${styles["menu-item"]} ${styles["holecup"]} ${path === "/mapView/" ? styles["active"] : ""}`}>
-              <button type="button" onClick={() => {
-                setHolecupMenuPopupOpen(true);
-                setOpen(false);
-              }}>
+            <li
+              className={`${styles["menu-item"]} ${styles["holecup"]} ${path === "/mapView/" ? styles["active"] : ""}`}
+            >
+              <button
+                type="button"
+                onClick={() => {
+                  setHolecupMenuPopupOpen(true);
+                  setOpen(false);
+                }}
+              >
                 <AutoFontSizeText text="홀컵핀" maxFontSize={15} minFontSize={10} />
               </button>
             </li>
-            <li className={`${styles["menu-item"]} ${styles["search"]} ${path === "/search/" ? styles["active"] : ""}`}>
-              <button type="button" onClick={() => {
-                router.push("/search");
-                setOpen(false);
-              }}>
+            <li
+              className={`${styles["menu-item"]} ${styles["search"]} ${path === "/search/" ? styles["active"] : ""}`}
+            >
+              <button
+                type="button"
+                onClick={() => {
+                  router.push("/search");
+                  setOpen(false);
+                }}
+              >
                 <AutoFontSizeText text="검색" maxFontSize={15} minFontSize={10} />
               </button>
             </li>
-            <li className={`${styles["menu-item"]} ${styles["sos-history"]} ${path === "/sos-history/" ? styles["active"] : ""}`}>
-              <button type="button" onClick={() => {
-                router.push("/sos-history");
-                setOpen(false);
-              }}>
+            <li
+              className={`${styles["menu-item"]} ${styles["sos-history"]} ${path === "/sos-history/" ? styles["active"] : ""}`}
+            >
+              <button
+                type="button"
+                onClick={() => {
+                  router.push("/sos-history");
+                  setOpen(false);
+                }}
+              >
                 <AutoFontSizeText text="오늘 긴급호출 목록" maxFontSize={15} minFontSize={10} />
               </button>
             </li>

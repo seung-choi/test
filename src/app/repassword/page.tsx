@@ -44,7 +44,7 @@ const RePassword = () => {
 
   const handleChange = ({ target }: { target: HTMLInputElement }) => {
     const { name, value } = target;
-    
+
     // 공백 제거
     const trimmedValue = value.replace(/\s/g, "");
 
@@ -88,30 +88,28 @@ const RePassword = () => {
       <h1 className="blind">{t("rePassword.title")}</h1>
       <form className={styles["login-container"]} onSubmit={handleSubmit}>
         <h2 className={styles["login-title"]}>
-          {t("rePassword.subtitle").split("\n").map((line, index) => (
-            <span key={index}>
-              {line}
-              <br />
-            </span>
-          ))}
+          {t("rePassword.subtitle")
+            .split("\n")
+            .map((line, index) => (
+              <span key={index}>
+                {line}
+                <br />
+              </span>
+            ))}
         </h2>
 
         <div className={styles["login-top-wrap"]}>
-          {error && (
-            <div className={styles["login-helper-text"]}>
-              {t("login.errorMessage")}
-            </div>
-          )}
+          {error && <div className={styles["login-helper-text"]}>{t("login.errorMessage")}</div>}
           <div className={styles["input-id"]}>
             <Input
               type="text"
               label="ID"
               labelShow={true}
               id="id"
-              value={`${storage.session.get("userId")}`}
+              value={`${storage.local.get("userId")}`}
               readOnly={true}
             />
-            <span className={styles["input-id-value"]}>{`${storage.session.get("userId")}`}</span>
+            <span className={styles["input-id-value"]}>{`${storage.local.get("userId")}`}</span>
           </div>
 
           <Input

@@ -1,6 +1,6 @@
 // utils/storage.ts
 
-const isClient = typeof window !== 'undefined';
+const isClient = typeof window !== "undefined";
 
 const storage = {
   session: {
@@ -11,7 +11,7 @@ const storage = {
     set(data: Record<string, any> = {}) {
       if (!isClient) return;
       const keys = Object.keys(data);
-      keys.forEach(key => {
+      keys.forEach((key) => {
         const value = data[key];
         window.sessionStorage.setItem(key, value !== undefined ? value : "");
       });
@@ -23,7 +23,16 @@ const storage = {
     clear() {
       if (!isClient) return;
       window.sessionStorage.clear();
-    }
+    },
+    clearExcept(keysToKeep: string[]) {
+      if (!isClient) return;
+      const allKeys = Object.keys(window.sessionStorage);
+      allKeys.forEach((key) => {
+        if (!keysToKeep.includes(key)) {
+          window.sessionStorage.removeItem(key);
+        }
+      });
+    },
   },
 
   local: {
@@ -34,7 +43,7 @@ const storage = {
     set(data: Record<string, any> = {}) {
       if (!isClient) return;
       const keys = Object.keys(data);
-      keys.forEach(key => {
+      keys.forEach((key) => {
         const value = data[key];
         window.localStorage.setItem(key, value !== undefined ? value : "");
       });
@@ -46,8 +55,22 @@ const storage = {
     clear() {
       if (!isClient) return;
       window.localStorage.clear();
-    }
-  }
+    },
+    clearExcept(keysToKeep: string[]) {
+      if (!isClient) return;
+      const allKeys = Object.keys(window.localStorage);
+      allKeys.forEach((key) => {
+        if (!keysToKeep.includes(key)) {
+          window.localStorage.removeItem(key);
+        }
+      });
+    },
+    lengthExcept(keysToExclude: string[] = []) {
+      if (!isClient) return 0;
+      const allKeys = Object.keys(window.localStorage);
+      return allKeys.filter((key) => !keysToExclude.includes(key)).length;
+    },
+  },
 };
 
 export default storage;
