@@ -2,7 +2,7 @@ import styles from "@/styles/components/monitoring/BookingDetail.module.scss";
 import BookingType from "@/types/Booking.type";
 import { Button } from "../Button";
 import { formatGender } from "@/utils/formatGender";
-import { calculateProgressTime } from "@/utils/calculateProgressTime";
+// import { calculateProgressTime } from "@/utils/calculateProgressTime";
 
 interface BookingDetailProps {
   booking: BookingType | null;
@@ -60,7 +60,8 @@ const BookingDetail = ({booking, onBack, onSendMessage} :BookingDetailProps ) =>
               <dl className={styles["booking-detail-info-item"]}>
                 <dt className={styles["booking-detail-info-item-title"]}>전반 진행</dt>
                 <dd className={styles["booking-detail-info-item-desc"]}>
-                {calculateProgressTime(booking?.outStartTm || null, booking?.outEndTm || null)}
+                {/*{calculateProgressTime(booking?.outStartTm || null, booking?.outEndTm || null)}*/}
+                  {booking?.outRunTm}
                 </dd>
               </dl>
               <dl className={styles["booking-detail-info-item"]}>
@@ -69,7 +70,10 @@ const BookingDetail = ({booking, onBack, onSendMessage} :BookingDetailProps ) =>
               </dl>
               <dl className={styles["booking-detail-info-item"]}>
                 <dt className={styles["booking-detail-info-item-title"]}>후반 진행</dt>
-                <dd className={styles["booking-detail-info-item-desc"]}>{calculateProgressTime(booking?.inStartTm || null, booking?.inEndTm || null)}</dd>
+                <dd className={styles["booking-detail-info-item-desc"]}>
+                  {/*calculateProgressTime(booking?.inStartTm || null, booking?.inEndTm || null)}*/}
+                  {booking?.inRunTm}
+                </dd>
               </dl>
             </div>
           </div>

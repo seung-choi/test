@@ -9,6 +9,9 @@ type BookingType = {
   outCourseNm: string;
   inCourseId: number | null;
   inCourseNm: string | null;
+  /* 전/후반 진행시간 */
+  outRunTm: string;
+  inRunTm: string;
   /* 홀 */
   holeId: number;
   holeNo: number;
