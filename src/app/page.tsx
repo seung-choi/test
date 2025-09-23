@@ -9,7 +9,7 @@ export default function Splash() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.push("/login"); // 로그인 화면으로 이동
+      router.push("/login/"); // 로그인 화면으로 이동
     }, 2000); // 2초 후에 실행
 
     return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 정리

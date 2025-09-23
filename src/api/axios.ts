@@ -43,10 +43,10 @@ $axios.interceptors.request.use(
     return config;
   },
   (error) => {
-    console.log(`request error : `, error)
+    console.log(`request error : `, error);
 
     return Promise.reject(error);
-  }
+  },
 );
 
 $axios.interceptors.response.use(
@@ -80,13 +80,14 @@ $axios.interceptors.response.use(
 
       if (response?.data?.status === 401 && response.data.code === "JWT_EXPIRED_TOKEN") {
         window.sessionStorage.clear();
-        window.location.href = "/login";
+        console.log("401 error");
+        window.location.href = "/login/";
         return;
       }
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default $axios;

@@ -47,19 +47,8 @@ const ClientLayoutContent = ({ children }: { children: React.ReactNode }) => {
     };
   }, [pathname]);
 
+  // 언어 설정 초기화
   useEffect(() => {
-    const currentPath = window.location.pathname;
-    if (currentPath !== "/" && sessionStorage.length > 1) {
-      router.push(currentPath);
-    } else if (
-      sessionStorage.length < 1 &&
-      currentPath !== "/" &&
-      currentPath !== "/login" &&
-      currentPath !== "/repassword"
-    ) {
-      router.push("/login");
-    }
-
     if (i18n.isInitialized) {
       setI18nReady(true);
     } else {
@@ -67,7 +56,24 @@ const ClientLayoutContent = ({ children }: { children: React.ReactNode }) => {
         setI18nReady(true);
       });
     }
-  }, [router]);
+  }, []);
+
+  // 경로 변경 및 인증 체크
+  useEffect(() => {
+    const currentPath = pathname;
+
+    if (currentPath !== "/" && sessionStorage.length > 1) {
+      router.push(currentPath);
+    } else if (
+      sessionStorage.length < 1 &&
+      currentPath !== "/" &&
+      !currentPath.startsWith("/login") &&
+      !currentPath.startsWith("/repassword")
+    ) {
+      console.log("ClinenLayout seseeon err");
+      router.push("/login/");
+    }
+  }, [pathname, router]);
 
   if (!i18nReady) {
     // 초기화 전에는 아무 것도 안 보여줌
