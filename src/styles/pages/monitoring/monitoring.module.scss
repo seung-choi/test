@@ -9,7 +9,7 @@
     .monitoring-header {
       z-index: 99;
       position: fixed;
-      top: 0; 
+      top: 0;
       left: 0;
       display: flex;
       align-items: center;
@@ -25,7 +25,7 @@
         border: 3px solid var(--mode-color1);
         border-radius: 28px;
         background: var(--mode-color1);
-        box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.30);
+        box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.3);
         z-index: 2;
         overflow: hidden;
         .course-list {
@@ -59,7 +59,7 @@
       .monitoring-etc-menu {
         display: flex;
         align-items: center;
-        justify-content: center ;
+        justify-content: center;
         gap: 0 20px;
         width: 130px;
         height: 28px;
@@ -88,7 +88,7 @@
     .course-section {
       position: relative;
       width: 100%;
-      height: calc((100% - 5px - 13px) /2);
+      height: calc((100% - 5px - 13px) / 2);
       min-height: 148px;
       margin-bottom: 5px;
       background: var(--mode-Background);
@@ -149,7 +149,7 @@
               position: absolute;
               top: 50%;
               left: 50%;
-              content: '';
+              content: "";
               display: block;
               width: 7px;
               height: 7px;
@@ -205,7 +205,7 @@
             width: 100%;
             height: 5px;
             border-radius: 5px;
-            background: var(--MOBILE-admin-Grayscale2, #EEE);
+            background: var(--MOBILE-admin-Grayscale2, #eee);
           }
           .buggy-wrapper {
             z-index: 1;
@@ -218,7 +218,17 @@
               bottom: calc(100% + 2px);
               width: 2px;
               transform: translateX(-50%);
-              background-image: linear-gradient(to bottom, #888 20%, transparent 20%, transparent 40%, #888 40%, #888 60%, transparent 60%, transparent 80%, #888 80%);
+              background-image: linear-gradient(
+                to bottom,
+                #888 20%,
+                transparent 20%,
+                transparent 40%,
+                #888 40%,
+                #888 60%,
+                transparent 60%,
+                transparent 80%,
+                #888 80%
+              );
               background-size: 2px 8px;
               background-repeat: repeat-y;
               z-index: 1;
@@ -241,7 +251,7 @@
               height: 19px;
               border-radius: 5px;
               border: 2px solid var(--mode-error);
-              background-color: rgba(230, 43, 43, 0.5)
+              background-color: rgba(230, 43, 43, 0.5);
             }
             .tagSelf {
               z-index: 2;
@@ -289,31 +299,31 @@
                 &.FIRSTTEAMF2 {
                   background-image: url("../../../../public/assets/image/tag/tag_first_team_f2.svg");
                 }
-                &.FIRSTTEAMF3 { 
+                &.FIRSTTEAMF3 {
                   background-image: url("../../../../public/assets/image/tag/tag_first_team_f3.svg");
                 }
                 &.LASTTEAMF1 {
                   background-image: url("../../../../public/assets/image/tag/tag_last_team_l1.svg");
                 }
-                &.LASTTEAMF2 {    
+                &.LASTTEAMF2 {
                   background-image: url("../../../../public/assets/image/tag/tag_last_team_l2.svg");
                 }
                 &.LASTTEAMF3 {
                   background-image: url("../../../../public/assets/image/tag/tag_last_team_l3.svg");
                 }
-                &.VIP {     
+                &.VIP {
                   background-image: url("../../../../public/assets/image/tag/tag_vip.svg");
                 }
                 &.TOWPERSONS {
                   background-image: url("../../../../public/assets/image/tag/tag_two_persons.svg");
                 }
-                &.THREEPERSONS {  
+                &.THREEPERSONS {
                   background-image: url("../../../../public/assets/image/tag/tag_three_persons.svg");
                 }
                 &.FIVEPERSONS {
                   background-image: url("../../../../public/assets/image/tag/tag_five_persons.svg");
                 }
-                &.EDUCATION {   
+                &.EDUCATION {
                   background-image: url("../../../../public/assets/image/tag/tag_education.svg");
                 }
                 &.COMP {
@@ -341,7 +351,7 @@
             position: absolute;
             right: -7px;
             bottom: 1px;
-            content:'';
+            content: "";
             display: block;
             width: 4px;
             height: 4px;
@@ -355,7 +365,7 @@
       position: fixed;
       bottom: calc(env(safe-area-inset-bottom) + 20px);
       right: calc(env(safe-area-inset-right) + 12px);
-      z-index: 92;
+      z-index: 110;
       display: flex;
       align-items: center;
       justify-self: center;
@@ -370,9 +380,9 @@
         width: 36px;
         height: 36px;
         border-radius: 50%;
-        box-shadow: 0px 0px 5px 0px #1212124D;
+        box-shadow: 0px 0px 5px 0px #1212124d;
         [data-theme="dark"] & {
-          box-shadow: 0px 0px 5px 0px #FFF;
+          box-shadow: 0px 0px 5px 0px #fff;
         }
         span {
           font-size: 6px;
@@ -384,8 +394,10 @@
           }
         }
         &.map-button {
-           background: var(--mode-keycolor) url("../../../../public/assets/image/icon-cart-whtie.svg") no-repeat center 7px / auto 15px;
-           span {
+          background: var(--mode-keycolor)
+            url("../../../../public/assets/image/icon-cart-whtie.svg") no-repeat center 7px / auto
+            15px;
+          span {
             color: var(--mode-Background);
             [data-theme="dark"] & {
               color: var(--mode-font_key);
@@ -393,13 +405,15 @@
           }
         }
         &.holecup-button {
-          background: var(--mode-gray3) url("../../../../public/assets/image/icon-holecup-dark.svg") no-repeat center 7px / auto 15px;
+          background: var(--mode-gray3) url("../../../../public/assets/image/icon-holecup-dark.svg")
+            no-repeat center 7px / auto 15px;
           [data-theme="dark"] & {
             background-image: url("../../../../public/assets/image/icon-holecup-white.svg");
           }
         }
         &.menu-button {
-          background: var(--mode-gray3) url("../../../../public/assets/image/icon-menu-dark.svg") no-repeat center 7px / auto 13px;
+          background: var(--mode-gray3) url("../../../../public/assets/image/icon-menu-dark.svg")
+            no-repeat center 7px / auto 13px;
           [data-theme="dark"] & {
             background-image: url(../../../../public/assets/image/icon-menu-white.svg);
           }

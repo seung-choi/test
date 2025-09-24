@@ -13,31 +13,37 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import transformBookingData from "@/utils/transformBookingData";
 import { useSetRecoilState, useRecoilValue } from "recoil";
-import { standByPopupState, menuPopupOpenState, holecupMenuPopupState, sseSOSPopupListState, themeModeState } from "@/lib/recoil";
+import {
+  standByPopupState,
+  menuPopupOpenState,
+  holecupMenuPopupState,
+  sseSOSPopupListState,
+  themeModeState,
+} from "@/lib/recoil";
 import HolecupMenuPopup from "@/components/HolcupMenuPopup";
 import useSSE from "@/lib/useSSE";
 import BookingType from "@/types/Booking.type";
 
-  // 태그 순서 정의
-  const tagOrder = [
-    "FIRSTTEAMF1",
-    "FIRSTTEAMF2",
-    "FIRSTTEAMF3",
-    "LASTTEAMF1",
-    "LASTTEAMF2",
-    "LASTTEAMF3",
-    "VIP",
-    "TOWPERSONS",
-    "THREEPERSONS",
-    "FIVEPERSONS",
-    "EDUCATION",
-    "COMP",
-    "GREENCHECK",
-    "ADD9HOLES",
-    "MARSHAL",
-    "TOPDRESSING",
-    "TIMEDELAY",
-  ];
+// 태그 순서 정의
+const tagOrder = [
+  "FIRSTTEAMF1",
+  "FIRSTTEAMF2",
+  "FIRSTTEAMF3",
+  "LASTTEAMF1",
+  "LASTTEAMF2",
+  "LASTTEAMF3",
+  "VIP",
+  "TOWPERSONS",
+  "THREEPERSONS",
+  "FIVEPERSONS",
+  "EDUCATION",
+  "COMP",
+  "GREENCHECK",
+  "ADD9HOLES",
+  "MARSHAL",
+  "TOPDRESSING",
+  "TIMEDELAY",
+];
 
 const Monitoring = () => {
   const { t } = useTranslation();
@@ -51,7 +57,7 @@ const Monitoring = () => {
   const { data: clubData } = useQuery({
     queryKey: ["clubData"],
     queryFn: () => getClub(),
-  }); 
+  });
 
   const { data: bookingData } = useQuery({
     queryKey: ["bookingData"],
@@ -120,7 +126,11 @@ const Monitoring = () => {
                     <button
                       type="button"
                       className={styles["course-name"]}
-                      style={activeMenu === index ? { border: `2px solid ${course.courseCol}` } : undefined}
+                      style={
+                        activeMenu === index
+                          ? { border: `2px solid ${course.courseCol}` }
+                          : undefined
+                      }
                       onClick={() => {
                         scrollToSection(course.courseId);
                         setActiveMenu(index);
@@ -138,19 +148,41 @@ const Monitoring = () => {
             </ul>
           </div>
           <div className={styles["monitoring-etc-menu"]}>
-            <Link href="/message" className={`${styles["monitoring-etc-menu-button"]} ${styles["message-button"]}`}>
-              <img src={themeMode === "dark" ? "/assets/image/icon-message-white.svg" : "/assets/image/icon-message-dark.svg"} alt="메세지" />
+            <Link
+              href="/message"
+              className={`${styles["monitoring-etc-menu-button"]} ${styles["message-button"]}`}
+            >
+              <img
+                src={
+                  themeMode === "dark"
+                    ? "/assets/image/icon-message-white.svg"
+                    : "/assets/image/icon-message-dark.svg"
+                }
+                alt="메세지"
+              />
               <span className={styles["text"]}>메세지</span>
             </Link>
-            <Link href="/search"  className={`${styles["monitoring-etc-menu-button"]} ${styles["search-button"]}`}>
-              <img src={themeMode === "dark" ? "/assets/image/icon-search.svg" : "/assets/image/icon-search-dark.svg"} alt="검색" />
+            <Link
+              href="/search"
+              className={`${styles["monitoring-etc-menu-button"]} ${styles["search-button"]}`}
+            >
+              <img
+                src={
+                  themeMode === "dark"
+                    ? "/assets/image/icon-search.svg"
+                    : "/assets/image/icon-search-dark.svg"
+                }
+                alt="검색"
+              />
               <span className={styles["text"]}>검색</span>
             </Link>
           </div>
         </div>
         {clubData?.courseList.map((course: CourseType) => {
-
-          const courseBookings = refinedBookingData?.filter((booking: BookingType) => booking.courseId === course.courseId) || [];
+          const courseBookings =
+            refinedBookingData?.filter(
+              (booking: BookingType) => booking.courseId === course.courseId,
+            ) || [];
 
           return (
             <section
@@ -167,17 +199,32 @@ const Monitoring = () => {
                   ></span>
                   <h2 className={styles["course-name"]}>{course.courseNm}</h2>
                   <span className={styles["course-teams-state"]}>
-                    {refinedBookingData?.filter((data) => 
-                      data?.courseId === course?.courseId && 
-                      (data?.status === "OP" || data?.status === "IP")
-                    ).length}
+                    {
+                      refinedBookingData?.filter(
+                        (data) =>
+                          data?.courseId === course?.courseId &&
+                          (data?.status === "OP" || data?.status === "IP"),
+                      ).length
+                    }
                     {t("monitoring.teamsPlaying")}
                   </span>
                 </div>
                 <div className={styles["course-standby-info-wrap"]}>
-                  <StandByInfo type="OW" standbyList={courseBookings.filter((booking) => booking.status === "OW")}/>
-                  <StandByInfo type="IW" standbyList={courseBookings.filter((booking) => booking.status === "IW")}/>
-                  <button type="button" className={styles["standby-button"]} onClick={() => setStandByPopupOpen({ isOpen: true, selectedCourseId: course.courseId })}>
+                  <StandByInfo
+                    type="OW"
+                    standbyList={courseBookings.filter((booking) => booking.status === "OW")}
+                  />
+                  <StandByInfo
+                    type="IW"
+                    standbyList={courseBookings.filter((booking) => booking.status === "IW")}
+                  />
+                  <button
+                    type="button"
+                    className={styles["standby-button"]}
+                    onClick={() =>
+                      setStandByPopupOpen({ isOpen: true, selectedCourseId: course.courseId })
+                    }
+                  >
                     <span className="blind">대기 인원 보기</span>
                   </button>
                 </div>
@@ -208,7 +255,9 @@ const Monitoring = () => {
                         <div className={styles["hole-item-line"]}></div>
 
                         {cartListByHoleId?.map((cart) => {
-                          const outCourse = clubData?.courseList.find((c) => c.courseId === cart.outCourseId);
+                          const outCourse = clubData?.courseList.find(
+                            (c) => c.courseId === cart.outCourseId,
+                          );
 
                           // progress 차이로 겹침 판단 (25% 이내면 겹침으로 간주)
                           const overlappingCarts = cartListByHoleId.filter((c) => {
@@ -220,8 +269,6 @@ const Monitoring = () => {
                             .sort((a, b) => (b.progress ?? 0) - (a.progress ?? 0))
                             .findIndex((c) => c.bookingId === cart.bookingId);
 
-                          const zIndex = 10 + (cart.progress ?? 0);
-
                           return (
                             <div
                               data-selector="buggy-item"
@@ -230,10 +277,11 @@ const Monitoring = () => {
                               style={{
                                 left: `${cart.progress}%`,
                                 cursor: "pointer",
-                                zIndex,
+                                zIndex: Math.round(Number(cart.progress)),
                               }}
                             >
-                              {cart.tags?.filter((tag) => tag !== "GROUP" && tag !== "SELF").length > 0 && (
+                              {cart.tags?.filter((tag) => tag !== "GROUP" && tag !== "SELF")
+                                .length > 0 && (
                                 <ul
                                   className={styles.tagList}
                                   style={{
@@ -318,9 +366,21 @@ const Monitoring = () => {
           );
         })}
         <div className={styles["floating-menu-wrap"]}>
-           {/* <button type="button" className={`${styles["floating-menu-button"]} ${styles["map-button"]}`}><span>관제</span></button> */}
-           <button type="button" className={`${styles["floating-menu-button"]} ${styles["holecup-button"]}`} onClick={() => setHolecupMenuPopupOpen(true)}><span>홀컵핀</span></button>
-           <button type="button" className={`${styles["floating-menu-button"]} ${styles["menu-button"]}`} onClick={() => setMenuPopupOpen(true)}><span>메뉴</span></button>
+          {/* <button type="button" className={`${styles["floating-menu-button"]} ${styles["map-button"]}`}><span>관제</span></button> */}
+          <button
+            type="button"
+            className={`${styles["floating-menu-button"]} ${styles["holecup-button"]}`}
+            onClick={() => setHolecupMenuPopupOpen(true)}
+          >
+            <span>홀컵핀</span>
+          </button>
+          <button
+            type="button"
+            className={`${styles["floating-menu-button"]} ${styles["menu-button"]}`}
+            onClick={() => setMenuPopupOpen(true)}
+          >
+            <span>메뉴</span>
+          </button>
         </div>
       </div>
       <MenuPopup />
