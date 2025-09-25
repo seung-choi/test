@@ -78,25 +78,27 @@ const Monitoring = () => {
         (booking) => booking.courseId === course.courseId,
       );
 
-      const OPList = filteredBookings
+      const OWList = filteredBookings
         .filter((b) => b.status === "OW")
         .map((b) => ({
           bookingId: b.bookingId,
           bookingNm: b.bookingNm,
+          bookingTm: b.bookingTm,
         }));
 
-      const IPList = filteredBookings
+      const IWList = filteredBookings
         .filter((b) => b.status === "IW")
         .map((b) => ({
           bookingId: b.bookingId,
           bookingNm: b.bookingNm,
+          bookingTm: b.bookingTm,
         }));
 
       return {
         courseId: course.courseId,
         courseNm: course.courseNm,
-        OPList,
-        IPList,
+        OWList,
+        IWList,
       };
     });
   }, [clubData, refinedBookingData]);

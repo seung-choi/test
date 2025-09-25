@@ -10,13 +10,15 @@ interface standbyCartListType {
   standbyCartList: {
     courseId: number;
     courseNm: string;
-    OPList: {
+    OWList: {
       bookingId: number;
       bookingNm: string;
+      bookingTm: string;
     }[];
-    IPList: {
+    IWList: {
       bookingId: number;
       bookingNm: string;
+      bookingTm: string;
     }[];
   }[];
 }
@@ -30,7 +32,10 @@ const StandByPopup = ({ standbyCartList }: standbyCartListType) => {
 
   // standByPopupState가 변경될 때 activeTab 업데이트
   useEffect(() => {
-    if (standByPopup.selectedCourseId && standbyCartList.some(course => course.courseId === standByPopup.selectedCourseId)) {
+    if (
+      standByPopup.selectedCourseId &&
+      standbyCartList.some((course) => course.courseId === standByPopup.selectedCourseId)
+    ) {
       setActiveTab(standByPopup.selectedCourseId);
     } else if (standbyCartList.length > 0) {
       // 선택된 코스가 없거나 유효하지 않은 경우 첫 번째 코스 선택
@@ -52,10 +57,7 @@ const StandByPopup = ({ standbyCartList }: standbyCartListType) => {
 
   return (
     <div className={`${styles["standby-container"]} ${standByPopup.isOpen ? styles["open"] : ""}`}>
-      <div
-        className={styles["dim"]}
-        onClick={closePopup}
-      ></div>
+      <div className={styles["dim"]} onClick={closePopup}></div>
       <div className={styles["standby-inner"]}>
         <div className={styles["tab-wrapper"]}>
           <ul className={styles["tabs"]}>
@@ -73,16 +75,21 @@ const StandByPopup = ({ standbyCartList }: standbyCartListType) => {
             <div className={styles["standby"]}>
               <div className={styles["standby-title"]}>
                 {t("monitoring.frontStandby")} <br />(
-                {standbyCartList.find((tab) => tab.courseId === activeTab)?.OPList.length || 0})
+                {standbyCartList.find((tab) => tab.courseId === activeTab)?.OWList.length || 0})
               </div>
               <div className={styles["standby-buggy"]}>
                 <ul className={styles["standby-buggy-list"]}>
                   {standbyCartList
                     .find((tab) => tab.courseId === activeTab)
-                    ?.OPList.map((item) => {
+                    ?.OWList.map((item) => {
                       return (
                         <li key={item.bookingId} className={styles["standby-buggy-item"]}>
-                          {item.bookingNm}
+                          <strong className={styles["standby-buggy-item-name"]}>
+                            {item.bookingNm}
+                          </strong>
+                          <span className={styles["standby-buggy-item-time"]}>
+                            {item.bookingTm}
+                          </span>
                         </li>
                       );
                     })}
@@ -91,14 +98,15 @@ const StandByPopup = ({ standbyCartList }: standbyCartListType) => {
             </div>
             <div className={styles["standby"]}>
               <div className={styles["standby-title"]}>
-                {t("monitoring.backStandby")}<br />(
-                {standbyCartList.find((tab) => tab.courseId === activeTab)?.IPList.length || 0})
+                {t("monitoring.backStandby")}
+                <br />(
+                {standbyCartList.find((tab) => tab.courseId === activeTab)?.IWList.length || 0})
               </div>
               <div className={styles["standby-buggy"]}>
                 <ul className={styles["standby-buggy-list"]}>
                   {standbyCartList
                     .find((tab) => tab.courseId === activeTab)
-                    ?.IPList.map((item) => {
+                    ?.IWList.map((item) => {
                       return (
                         <li key={item.bookingId} className={styles["standby-buggy-item"]}>
                           {item.bookingNm}
@@ -110,10 +118,7 @@ const StandByPopup = ({ standbyCartList }: standbyCartListType) => {
             </div>
           </div>
         </div>
-        <button
-          className={styles["close-button"]}
-          onClick={closePopup}
-        >
+        <button className={styles["close-button"]} onClick={closePopup}>
           <span></span>
           <span></span>
         </button>
