@@ -41,7 +41,7 @@ const StandByPopup = ({ standbyCartList }: standbyCartListType) => {
       // 선택된 코스가 없거나 유효하지 않은 경우 첫 번째 코스 선택
       setActiveTab(standbyCartList[0]?.courseId || null);
     }
-  }, [standByPopup.selectedCourseId, standbyCartList]);
+  }, [standByPopup.isOpen]);
 
   const closePopup = () => {
     setStandByPopup({
@@ -61,7 +61,7 @@ const StandByPopup = ({ standbyCartList }: standbyCartListType) => {
       <div className={styles["standby-inner"]}>
         <div className={styles["tab-wrapper"]}>
           <ul className={styles["tabs"]}>
-            {standbyCartList.map((tab) => (
+            {standbyCartList.map((tab, index) => (
               <li
                 key={tab.courseId}
                 className={`${styles["tab"]} ${activeTab === tab.courseId ? styles["active"] : ""}`}
