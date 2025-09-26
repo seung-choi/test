@@ -1,4 +1,4 @@
-import axios, { AxiosError } from "axios";
+import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { getOriginURL } from "@/api/API_URL";
 import storage from "@/utils/storage";
 
@@ -65,26 +65,19 @@ $axios.interceptors.response.use(
     return response;
   },
   async (error: AxiosError<ErrorResponse>) => {
-    const { config, response } = error;
+    if (
+      error.status === 401 &&
+      error.config?.url !== "/mng/v1/auth/login" &&
+      error.response?.data?.code === "JWT_EXPIRED_TOKEN"
+    ) {
+      tokens.access = tokens.refresh;
+      await $axios.patch("/auth/login", {});
+      return $axios(error.config as AxiosRequestConfig);
+    }
 
     if ("ECONNABORTED" === error.code || "Network Error" === error.message) {
       console.log("ECONNABORTED Error || Network Error: ", error.code);
       return "TIMEOUT";
-    } else {
-      if (response?.data) {
-        console.log("response Error : ", response?.data);
-      }
-    }
-
-    if (config) {
-      tokens.access = tokens.refresh;
-
-      if (response?.data?.status === 401 || response?.data.code === "JWT_EXPIRED_TOKEN") {
-        storage.local.clearExcept(["remember"]);
-        console.log("api axios 401 error");
-        window.location.href = "/login/";
-        return;
-      }
     }
 
     return Promise.reject(error);

@@ -56,6 +56,7 @@ const sessionManager = {
 const useSSE = () => {
   const pathname = usePathname();
   const eventSourseRef = useRef<EventSourcePolyfill | null>(null);
+  const retryCountRef = useRef<number>(0);
   const setPin = useSetRecoilState(ssePinState);
   const setSOS = useSetRecoilState(sseSOSState);
   const setSOSPopupList = useSetRecoilState(sseSOSPopupListState);
@@ -78,8 +79,6 @@ const useSSE = () => {
       if (tokens.access) headers["Authorization"] = tokens.access;
       if (eventStore.id) headers["Event-ID"] = eventStore.id;
 
-      console.log(url);
-
       const eventSource = new EventSourcePolyfill(url, {
         withCredentials: true,
         headers,
@@ -89,7 +88,8 @@ const useSSE = () => {
       eventSourseRef.current = eventSource;
 
       eventSource.onopen = () => {
-        console.log(`SSE 연결 성공 - Session ID: ${currentSessionId}`);
+        // 연결 성공 시 재시도 카운터 초기화
+        retryCountRef.current = 0;
       };
 
       eventSource.addEventListener("PIN", (e) => {
@@ -101,7 +101,6 @@ const useSSE = () => {
       eventSource.addEventListener("SOS", (e) => {
         const event = e as MessageEvent;
         const data = event.data ? JSON.parse(event.data) : null;
-        console.log("SOS data", data);
         if (data) {
           const sosData = data as SSESOSData;
           setSOS(sosData);
@@ -122,18 +121,30 @@ const useSSE = () => {
       });
 
       eventSource.addEventListener("SUBSCRIBED", () => {
-        console.log("구독 성공 이벤트");
+        retryCountRef.current = 0;
       });
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      eventSource.onerror = (err: any) => {
-        const status = err?.status ?? err?.detail?.status;
-        const code = err?.body?.code;
+      eventSource.onerror = (error: any) => {
+        const status = error?.status ?? error?.detail?.status;
+        const code = error?.body?.code;
 
-        if (status === 401 || code === "JWT_EXPIRED_TOKEN") {
-          storage.local.clearExcept(["remember"]);
-          console.log("sse 401 error");
-          window.location.href = "/login/";
+        if (status === 401 && code === "JWT_EXPIRED_TOKEN") {
+          const maxRetries = 5;
+
+          if (retryCountRef.current < maxRetries) {
+            retryCountRef.current += 1;
+            // 기존 연결 종료
+            eventSourseRef.current?.close();
+            eventSourseRef.current = null;
+
+            // 1초 후 재연결 시도
+            setTimeout(() => {
+              if (!destroyed) {
+                open();
+              }
+            }, 1000);
+          }
           return;
         }
       };
