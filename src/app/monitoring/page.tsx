@@ -12,7 +12,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import transformBookingData from "@/utils/transformBookingData";
-import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
+import { useSetRecoilState, useRecoilValue } from "recoil";
 import {
   standByPopupState,
   menuPopupOpenState,
@@ -49,7 +49,7 @@ const Monitoring = () => {
   const { t } = useTranslation();
   const [activeMenu, setActiveMenu] = useState<number>(0);
   const setHolecupMenuPopupOpen = useSetRecoilState(holecupMenuPopupState);
-  const [standByPopupOpen, setStandByPopupOpen] = useRecoilState(standByPopupState);
+  const setStandByPopupOpen = useSetRecoilState(standByPopupState);
   const setMenuPopupOpen = useSetRecoilState(menuPopupOpenState);
   const sosPopupList = useRecoilValue(sseSOSPopupListState);
   const themeMode = useRecoilValue(themeModeState);
@@ -387,7 +387,7 @@ const Monitoring = () => {
       </div>
       <MenuPopup />
       <HolecupMenuPopup courseList={clubData?.courseList || []} />
-      {standByPopupOpen.isOpen && <StandByPopup standbyCartList={standbyCartList} />}
+      <StandByPopup standbyCartList={standbyCartList} />
       {sosPopupList.length > 0 && <SOSPopup />}
     </>
   );

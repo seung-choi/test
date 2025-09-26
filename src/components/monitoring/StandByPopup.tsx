@@ -59,69 +59,73 @@ const StandByPopup = ({ standbyCartList }: standbyCartListType) => {
     <div className={`${styles["standby-container"]} ${standByPopup.isOpen ? styles["open"] : ""}`}>
       <div className={styles["dim"]} onClick={closePopup}></div>
       <div className={styles["standby-inner"]}>
-        <div className={styles["tab-wrapper"]}>
-          <ul className={styles["tabs"]}>
-            {standbyCartList.map((tab, index) => (
-              <li
-                key={tab.courseId}
-                className={`${styles["tab"]} ${activeTab === tab.courseId ? styles["active"] : ""}`}
-                onClick={() => setActiveTab(tab.courseId)}
-              >
-                {tab.courseNm}
-              </li>
-            ))}
-          </ul>
-          <div className={styles["tab-content"]}>
-            <div className={styles["standby"]}>
-              <div className={styles["standby-title"]}>
-                {t("monitoring.frontStandby")} <br />(
-                {standbyCartList.find((tab) => tab.courseId === activeTab)?.OWList.length || 0})
-              </div>
-              <div className={styles["standby-buggy"]}>
-                <ul className={`${styles["standby-buggy-list"]} scroll-hidden`}>
-                  {standbyCartList
-                    .find((tab) => tab.courseId === activeTab)
-                    ?.OWList.map((item) => {
-                      return (
-                        <li key={item.bookingId} className={styles["standby-buggy-item"]}>
-                          <strong className={styles["standby-buggy-item-name"]}>
-                            {item.bookingNm}
-                          </strong>
-                          <span className={styles["standby-buggy-item-time"]}>
-                            {item.bookingTm}
-                          </span>
-                        </li>
-                      );
-                    })}
-                </ul>
+        {standByPopup.isOpen &&
+          <>
+            <div className={styles["tab-wrapper"]}>
+              <ul className={styles["tabs"]}>
+                {standbyCartList.map((tab) => (
+                  <li
+                    key={tab.courseId}
+                    className={`${styles["tab"]} ${activeTab === tab.courseId ? styles["active"] : ""}`}
+                    onClick={() => setActiveTab(tab.courseId)}
+                  >
+                    {tab.courseNm}
+                  </li>
+                ))}
+              </ul>
+              <div className={styles["tab-content"]}>
+                <div className={styles["standby"]}>
+                  <div className={styles["standby-title"]}>
+                    {t("monitoring.frontStandby")} <br />(
+                    {standbyCartList.find((tab) => tab.courseId === activeTab)?.OWList.length || 0})
+                  </div>
+                  <div className={styles["standby-buggy"]}>
+                    <ul className={`${styles["standby-buggy-list"]} scroll-hidden`}>
+                      {standbyCartList
+                        .find((tab) => tab.courseId === activeTab)
+                        ?.OWList.map((item) => {
+                          return (
+                            <li key={item.bookingId} className={styles["standby-buggy-item"]}>
+                              <strong className={styles["standby-buggy-item-name"]}>
+                                {item.bookingNm}
+                              </strong>
+                              <span className={styles["standby-buggy-item-time"]}>
+                                {item.bookingTm}
+                              </span>
+                            </li>
+                          );
+                        })}
+                    </ul>
+                  </div>
+                </div>
+                <div className={styles["standby"]}>
+                  <div className={styles["standby-title"]}>
+                    {t("monitoring.backStandby")}
+                    <br />(
+                    {standbyCartList.find((tab) => tab.courseId === activeTab)?.IWList.length || 0})
+                  </div>
+                  <div className={styles["standby-buggy"]}>
+                    <ul className={`${styles["standby-buggy-list"]} scroll-hidden`}>
+                      {standbyCartList
+                        .find((tab) => tab.courseId === activeTab)
+                        ?.IWList.map((item) => {
+                          return (
+                            <li key={item.bookingId} className={styles["standby-buggy-item"]}>
+                              {item.bookingNm}
+                            </li>
+                          );
+                        })}
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className={styles["standby"]}>
-              <div className={styles["standby-title"]}>
-                {t("monitoring.backStandby")}
-                <br />(
-                {standbyCartList.find((tab) => tab.courseId === activeTab)?.IWList.length || 0})
-              </div>
-              <div className={styles["standby-buggy"]}>
-                <ul className={`${styles["standby-buggy-list"]} scroll-hidden`}>
-                  {standbyCartList
-                    .find((tab) => tab.courseId === activeTab)
-                    ?.IWList.map((item) => {
-                      return (
-                        <li key={item.bookingId} className={styles["standby-buggy-item"]}>
-                          {item.bookingNm}
-                        </li>
-                      );
-                    })}
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <button className={styles["close-button"]} onClick={closePopup}>
-          <span></span>
-          <span></span>
-        </button>
+            <button className={styles["close-button"]} onClick={closePopup}>
+              <span></span>
+              <span></span>
+            </button>
+          </>
+        }
       </div>
     </div>
   );

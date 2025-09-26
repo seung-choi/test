@@ -21,12 +21,13 @@
     left: 40px;
     z-index: 1000;
     width: calc(100% - 80px);
-    height: calc(100% - 80px);
+    height: 0;
     background: var(--mode-Background);
     border-radius: 10px 10px 0 0;
     transition: all 0.2s;
     box-shadow: 0px -5px 10px 0px #ffffff40;
     @at-root .open & {
+      height: calc(100% - 80px);
       top: calc(env(safe-area-inset-top) + 80px);
       z-index: 1002;
     }
@@ -154,7 +155,6 @@
         -o-transition: all 0.3s;
         background-color: var(--mode-font_key);
         &:nth-of-type(1) {
-          top: 18px;
           top: 23px;
           transform: rotate(45deg);
         }
