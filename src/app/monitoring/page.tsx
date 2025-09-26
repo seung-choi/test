@@ -106,7 +106,7 @@ const Monitoring = () => {
   const scrollToSection = (courseId: number) => {
     if (typeof window === "undefined") return;
     const section = document.getElementById(`${courseId}`);
-    section?.scrollIntoView({ behavior: "smooth" });
+    section?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
   useSSE();
