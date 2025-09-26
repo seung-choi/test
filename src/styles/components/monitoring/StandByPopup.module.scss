@@ -104,12 +104,6 @@
               font-weight: 400;
               line-height: normal;
               letter-spacing: -0.36px;
-              // 스크롤바 숨김처리
-              -ms-overflow-style: none;
-              scrollbar-width: none;
-              &::-webkit-scrollbar {
-                display: none;
-              }
             }
             &-item {
               display: flex;

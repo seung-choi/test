@@ -64,7 +64,7 @@ const MenuPopup = () => {
           </div>
         </div>
         <div className={styles["menu-list-wrap"]}>
-          <ul className={styles["menu-list"]}>
+          <ul className={`${styles["menu-list"]} scroll-hidden`}>
             <li
               className={`${styles["menu-item"]} ${styles["monitoring"]} ${path === "/monitoring/" ? styles["active"] : ""}`}
             >

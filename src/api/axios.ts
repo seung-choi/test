@@ -76,7 +76,7 @@ $axios.interceptors.response.use(
     }
 
     if ("ECONNABORTED" === error.code || "Network Error" === error.message) {
-      console.log("ECONNABORTED Error || Network Error: ", error.code);
+      console.error("ECONNABORTED Error || Network Error: ", error.code);
       return "TIMEOUT";
     }
 

@@ -78,7 +78,7 @@ const StandByPopup = ({ standbyCartList }: standbyCartListType) => {
                 {standbyCartList.find((tab) => tab.courseId === activeTab)?.OWList.length || 0})
               </div>
               <div className={styles["standby-buggy"]}>
-                <ul className={styles["standby-buggy-list"]}>
+                <ul className={`${styles["standby-buggy-list"]} scroll-hidden`}>
                   {standbyCartList
                     .find((tab) => tab.courseId === activeTab)
                     ?.OWList.map((item) => {
@@ -103,7 +103,7 @@ const StandByPopup = ({ standbyCartList }: standbyCartListType) => {
                 {standbyCartList.find((tab) => tab.courseId === activeTab)?.IWList.length || 0})
               </div>
               <div className={styles["standby-buggy"]}>
-                <ul className={styles["standby-buggy-list"]}>
+                <ul className={`${styles["standby-buggy-list"]} scroll-hidden`}>
                   {standbyCartList
                     .find((tab) => tab.courseId === activeTab)
                     ?.IWList.map((item) => {
