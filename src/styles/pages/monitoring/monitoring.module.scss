@@ -172,7 +172,7 @@
       height: calc(100% - 33px);
       .hole-list {
         position: absolute;
-        bottom: 29px;
+        bottom: 10px;
         display: flex;
         align-items: center;
         flex-wrap: wrap;
@@ -185,10 +185,12 @@
           }
           &-name {
             position: absolute;
-            bottom: -24px;
+            bottom: 75px;
+            width: 100%;
             left: 50%;
             transform: translateX(-50%);
-            margin-bottom: 3px;
+            padding-bottom: 3px;
+            border-bottom: 0.5px solid var(--mode-color2);
             color: var(--mode-gray2);
             text-align: center;
             font-size: 10px;
