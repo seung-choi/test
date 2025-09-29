@@ -16,9 +16,9 @@ import { useSetRecoilState, useRecoilValue } from "recoil";
 import {
   standByPopupState,
   menuPopupOpenState,
-  holecupMenuPopupState,
+  // holecupMenuPopupState,
   sseSOSPopupListState,
-  themeModeState,
+  // themeModeState,
 } from "@/lib/recoil";
 import HolecupMenuPopup from "@/components/HolcupMenuPopup";
 import useSSE from "@/lib/useSSE";
@@ -33,6 +33,7 @@ const tagOrder = [
   "LASTTEAMF2",
   "LASTTEAMF3",
   "VIP",
+  "SELF",
   "TOWPERSONS",
   "THREEPERSONS",
   "FIVEPERSONS",
@@ -48,11 +49,11 @@ const tagOrder = [
 const Monitoring = () => {
   const { t } = useTranslation();
   const [activeMenu, setActiveMenu] = useState<number>(0);
-  const setHolecupMenuPopupOpen = useSetRecoilState(holecupMenuPopupState);
+  // const setHolecupMenuPopupOpen = useSetRecoilState(holecupMenuPopupState);
   const setStandByPopupOpen = useSetRecoilState(standByPopupState);
   const setMenuPopupOpen = useSetRecoilState(menuPopupOpenState);
   const sosPopupList = useRecoilValue(sseSOSPopupListState);
-  const themeMode = useRecoilValue(themeModeState);
+  // const themeMode = useRecoilValue(themeModeState);
 
   const { data: clubData } = useQuery({
     queryKey: ["clubData"],
@@ -249,7 +250,7 @@ const Monitoring = () => {
                         className={styles["hole-item"]}
                         key={hole.holeId}
                         style={{
-                          width: `calc(((100% / ${course.coursePar}) * ${hole.holePar}) - 10px)`,
+                          width: `calc(((100% / ${course.coursePar}) * ${hole.holePar}) - 18px)`,
                         }}
                       >
                         <div className={styles["hole-item-name"]}>
@@ -286,8 +287,7 @@ const Monitoring = () => {
                                   zIndex: Math.round(Number(cart.progress)),
                                 }}
                               >
-                                {cart.tags?.filter((tag) => tag !== "GROUP" && tag !== "SELF")
-                                  .length > 0 && (
+                                {cart.tags?.filter((tag) => tag !== "GROUP").length > 0 && (
                                   <ul
                                     className={styles.tagList}
                                     style={{
@@ -306,6 +306,7 @@ const Monitoring = () => {
                                           "LASTTEAMF2",
                                           "LASTTEAMF3",
                                           "VIP",
+                                          "SELF",
                                         ];
                                         const shouldApplyLevel1 = level1Tags.includes(tag);
                                         return (
@@ -347,16 +348,9 @@ const Monitoring = () => {
                                     <span className="blind">단체팀 빨간 박스</span>
                                   </div>
                                 )}
-                                {cart.tags?.includes("SELF") && (
-                                  <img
-                                    className={styles.tagSelf}
-                                    src="/assets/image/tag/tag_self.svg"
-                                    alt="셀프"
-                                  />
-                                )}
                                 <div
                                   className={styles.buggy}
-                                  style={{ borderColor: outCourse?.courseCol || "#FFDF68" }}
+                                  style={{ backgroundColor: outCourse?.courseCol || "#FFDF68" }}
                                 >
                                   <span className="blind">buggy</span>
                                 </div>
