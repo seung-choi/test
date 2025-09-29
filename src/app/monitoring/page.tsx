@@ -150,7 +150,7 @@ const Monitoring = () => {
             </ul>
           </div>
           <div className={styles["monitoring-etc-menu"]}>
-            <Link
+            {/* <Link
               href="/message"
               className={`${styles["monitoring-etc-menu-button"]} ${styles["message-button"]}`}
             >
@@ -163,21 +163,22 @@ const Monitoring = () => {
                 alt="메세지"
               />
               <span className={styles["text"]}>메세지</span>
-            </Link>
+            </Link> */}
             <Link
               href="/search"
               className={`${styles["monitoring-etc-menu-button"]} ${styles["search-button"]}`}
             >
-              <img
-                src={
-                  themeMode === "dark"
-                    ? "/assets/image/icon-search.svg"
-                    : "/assets/image/icon-search-dark.svg"
-                }
-                alt="검색"
-              />
+              <img src="/assets/image/icon-search.svg" alt="검색" />
               <span className={styles["text"]}>검색</span>
             </Link>
+            <button
+              type="button"
+              className={`${styles["monitoring-etc-menu-button"]} ${styles["menu-button"]}`}
+              onClick={() => setMenuPopupOpen(true)}
+            >
+              <img src="/assets/image/icon-menu-white.svg" alt="메뉴" />
+              <span className={styles["text"]}>메뉴</span>
+            </button>
           </div>
         </div>
         {clubData?.courseList.map((course: CourseType) => {
@@ -367,8 +368,9 @@ const Monitoring = () => {
             </section>
           );
         })}
-        <div className={styles["floating-menu-wrap"]}>
-          {/* <button type="button" className={`${styles["floating-menu-button"]} ${styles["map-button"]}`}><span>관제</span></button> */}
+        {/* 플로팅 메뉴 */}
+        {/* <div className={styles["floating-menu-wrap"]}>
+          <button type="button" className={`${styles["floating-menu-button"]} ${styles["map-button"]}`}><span>관제</span></button>
           <button
             type="button"
             className={`${styles["floating-menu-button"]} ${styles["holecup-button"]}`}
@@ -383,7 +385,7 @@ const Monitoring = () => {
           >
             <span>메뉴</span>
           </button>
-        </div>
+        </div> */}
       </div>
       <MenuPopup />
       <HolecupMenuPopup courseList={clubData?.courseList || []} />

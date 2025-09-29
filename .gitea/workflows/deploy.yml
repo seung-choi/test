@@ -1,4 +1,4 @@
-name: VGolf MNG
+name: Vgolf MNG
 on:
   push:
     branches: ["main", "ap-northeast-2", "ap-southeast-1"]

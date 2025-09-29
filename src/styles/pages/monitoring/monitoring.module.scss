@@ -64,22 +64,26 @@
         width: 130px;
         height: 28px;
         border-radius: 28px;
-        background: var(---mode-gray3);
-        border: 1px solid var(--mode-gray1);
+        background: var(--mode-keycolor);
         box-sizing: border-box;
         [data-theme="dark"] & {
-          background: var(--mode-color1);
-          border-color: var(--mode-color1);
+          // background: var(--mode-color1);
+          // border-color: var(--mode-color1);
         }
         &-button {
           display: flex;
           align-items: center;
           gap: 0 3px;
-          color: var(--mode-darkgray);
           font-size: 11px;
           font-weight: 800;
+          color: var(--mode-Background);
           [data-theme="dark"] & {
             color: var(--mode-font_key);
+          }
+          &.menu-button {
+            img {
+              width: 10px;
+            }
           }
         }
       }

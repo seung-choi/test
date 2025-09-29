@@ -10,7 +10,7 @@ interface BookingDetailProps {
   onSendMessage: () => void; // 메시지 보내기 버튼 클릭 시 호출될 함수 추가
 }
 
-const BookingDetail = ({booking, onBack, onSendMessage} :BookingDetailProps ) => {
+const BookingDetail = ({ booking, onBack, onSendMessage }: BookingDetailProps) => {
   return (
     <div className={styles["booking-detail-container"]}>
       <div className={styles["head"]}>
@@ -19,18 +19,24 @@ const BookingDetail = ({booking, onBack, onSendMessage} :BookingDetailProps ) =>
         </button>
         <h1 className={styles["head-title"]}>검색하기</h1>
       </div>
-      
+
       <div className={styles["content"]}>
         <div className={styles["booking-detail-inner"]}>
-          <h2 className={styles["booking-name"]}>{booking?.bookingNm} {booking?.bookingsNm && `(${booking.bookingsNm})`}
-            {booking?.bookingTm && <span className={styles["booking-teeOff"]}>{booking?.bookingTm}</span>}
+          <h2 className={styles["booking-name"]}>
+            {booking?.bookingNm} {booking?.bookingsNm && `(${booking.bookingsNm})`}
+            {booking?.bookingTm && (
+              <span className={styles["booking-teeOff"]}>{booking?.bookingTm}</span>
+            )}
           </h2>
           <div className={styles["booking-player-info"]}>
             <h3 className={styles["booking-player-title"]}>내장객 정보</h3>
             <ul className={styles["booking-player-list"]}>
-            {booking?.playerList?.map((player) => (
-              <li key={player.playerId} className={styles["booking-player-item"]}> {player.playerNm}&#40;{formatGender(player.playerGen || null)}&#41;</li>
-            ))}
+              {booking?.playerList?.map((player) => (
+                <li key={player.playerId} className={styles["booking-player-item"]}>
+                  {" "}
+                  {player.playerNm}&#40;{formatGender(player.playerGen || null)}&#41;
+                </li>
+              ))}
             </ul>
           </div>
           <div className={styles["booking-detail-info"]}>
@@ -39,7 +45,7 @@ const BookingDetail = ({booking, onBack, onSendMessage} :BookingDetailProps ) =>
               <dl className={styles["booking-detail-info-item"]}>
                 <dt className={styles["booking-detail-info-item-title"]}>현재 위치</dt>
                 <dd className={styles["booking-detail-info-item-desc"]}>
-                {booking?.courseNm}{" "}
+                  {booking?.courseNm}{" "}
                   {booking?.status === "OW"
                     ? "전반 대기중"
                     : booking?.status === "IW"
@@ -50,23 +56,27 @@ const BookingDetail = ({booking, onBack, onSendMessage} :BookingDetailProps ) =>
               <dl className={styles["booking-detail-info-item"]}>
                 <dt className={styles["booking-detail-info-item-title"]}>전반-후반</dt>
                 <dd className={styles["booking-detail-info-item-desc"]}>
-                {booking?.outCourseNm}-{booking?.inCourseNm}
+                  {booking?.outCourseNm}-{booking?.inCourseNm}
                 </dd>
               </dl>
               <dl className={styles["booking-detail-info-item"]}>
                 <dt className={styles["booking-detail-info-item-title"]}>전반 시작</dt>
-                <dd className={styles["booking-detail-info-item-desc"]}>{booking?.outStartTm || "-"}</dd>
+                <dd className={styles["booking-detail-info-item-desc"]}>
+                  {booking?.outStartTm || "-"}
+                </dd>
               </dl>
               <dl className={styles["booking-detail-info-item"]}>
                 <dt className={styles["booking-detail-info-item-title"]}>전반 진행</dt>
                 <dd className={styles["booking-detail-info-item-desc"]}>
-                {/*{calculateProgressTime(booking?.outStartTm || null, booking?.outEndTm || null)}*/}
+                  {/*{calculateProgressTime(booking?.outStartTm || null, booking?.outEndTm || null)}*/}
                   {booking?.outRunTm}
                 </dd>
               </dl>
               <dl className={styles["booking-detail-info-item"]}>
                 <dt className={styles["booking-detail-info-item-title"]}>후반 시작</dt>
-                <dd className={styles["booking-detail-info-item-desc"]}>{booking?.inStartTm || "-"}</dd>
+                <dd className={styles["booking-detail-info-item-desc"]}>
+                  {booking?.inStartTm || "-"}
+                </dd>
               </dl>
               <dl className={styles["booking-detail-info-item"]}>
                 <dt className={styles["booking-detail-info-item-title"]}>후반 진행</dt>
@@ -77,9 +87,9 @@ const BookingDetail = ({booking, onBack, onSendMessage} :BookingDetailProps ) =>
               </dl>
             </div>
           </div>
-          <div className={styles["button-wrapper"]}>
+          {/* <div className={styles["button-wrapper"]}>
             <Button primary type="button" block label="메시지 보내기" onClick={onSendMessage} />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
