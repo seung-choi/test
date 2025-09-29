@@ -255,111 +255,115 @@ const Monitoring = () => {
                         <div className={styles["hole-item-name"]}>
                           <strong>{hole.holeNo}H</strong> {hole.holePar}P
                         </div>
-                        <div className={styles["hole-item-line"]}></div>
+                        <div className={styles["hole-item-body"]}>
+                          <div className={styles["hole-item-line"]}></div>
 
-                        {cartListByHoleId?.map((cart) => {
-                          const outCourse = clubData?.courseList.find(
-                            (c) => c.courseId === cart.outCourseId,
-                          );
+                          {cartListByHoleId?.map((cart) => {
+                            const outCourse = clubData?.courseList.find(
+                              (c) => c.courseId === cart.outCourseId,
+                            );
 
-                          // progress 차이로 겹침 판단 (25% 이내면 겹침으로 간주)
-                          const overlappingCarts = cartListByHoleId.filter((c) => {
-                            const progressDiff = Math.abs((cart.progress ?? 0) - (c.progress ?? 0));
-                            return progressDiff <= 60;
-                          });
+                            // progress 차이로 겹침 판단 (25% 이내면 겹침으로 간주)
+                            const overlappingCarts = cartListByHoleId.filter((c) => {
+                              const progressDiff = Math.abs(
+                                (cart.progress ?? 0) - (c.progress ?? 0),
+                              );
+                              return progressDiff <= 60;
+                            });
 
-                          const stackedIndex = overlappingCarts
-                            .sort((a, b) => (b.progress ?? 0) - (a.progress ?? 0))
-                            .findIndex((c) => c.bookingId === cart.bookingId);
+                            const stackedIndex = overlappingCarts
+                              .sort((a, b) => (b.progress ?? 0) - (a.progress ?? 0))
+                              .findIndex((c) => c.bookingId === cart.bookingId);
 
-                          return (
-                            <div
-                              data-selector="buggy-item"
-                              key={`cartByHole-${cart.bookingId}`}
-                              className={styles["buggy-wrapper"]}
-                              style={{
-                                left: `${cart.progress}%`,
-                                cursor: "pointer",
-                                zIndex: Math.round(Number(cart.progress)),
-                              }}
-                            >
-                              {cart.tags?.filter((tag) => tag !== "GROUP" && tag !== "SELF")
-                                .length > 0 && (
-                                <ul
-                                  className={styles.tagList}
-                                  style={{
-                                    bottom: `calc(100% + ${14 + stackedIndex * 28}px)`,
-                                  }}
-                                >
-                                  {cart.tags
-                                    ?.filter((tag) => tagOrder.includes(tag))
-                                    .sort((a, b) => tagOrder.indexOf(a) - tagOrder.indexOf(b))
-                                    .map((tag, index) => {
-                                      const level1Tags = [
-                                        "FIRSTTEAMF1",
-                                        "FIRSTTEAMF2",
-                                        "FIRSTTEAMF3",
-                                        "LASTTEAMF1",
-                                        "LASTTEAMF2",
-                                        "LASTTEAMF3",
-                                        "VIP",
-                                      ];
-                                      const shouldApplyLevel1 = level1Tags.includes(tag);
-                                      return (
-                                        <li
-                                          key={index}
-                                          className={`${styles[`${tag}`]} ${shouldApplyLevel1 ? styles.level1 : ""}`}
-                                        >
-                                          <span className="blind">{tag}</span>
-                                        </li>
-                                      );
-                                    })}
-                                  {/*{cart.delayTm !== null && (*/}
-                                  {/*  <li className={styles.TIMEDELAY}>*/}
-                                  {/*    <span className="blind">DELAY</span>*/}
-                                  {/*  </li>*/}
-                                  {/*)}*/}
-                                </ul>
-                              )}
-                              <strong
-                                className={styles.bookingNm}
+                            return (
+                              <div
+                                data-selector="buggy-item"
+                                key={`cartByHole-${cart.bookingId}`}
+                                className={styles["buggy-wrapper"]}
                                 style={{
-                                  bottom: `calc(100% + ${stackedIndex * 28}px)`,
+                                  left: `${cart.progress}%`,
+                                  cursor: "pointer",
+                                  zIndex: Math.round(Number(cart.progress)),
                                 }}
                               >
-                                {cart.bookingNm}
-                              </strong>
-
-                              {stackedIndex > 0 && (
-                                <div
-                                  className={styles.dottedLine}
+                                {cart.tags?.filter((tag) => tag !== "GROUP" && tag !== "SELF")
+                                  .length > 0 && (
+                                  <ul
+                                    className={styles.tagList}
+                                    style={{
+                                      bottom: `calc(100% + ${14 + stackedIndex * 28}px)`,
+                                    }}
+                                  >
+                                    {cart.tags
+                                      ?.filter((tag) => tagOrder.includes(tag))
+                                      .sort((a, b) => tagOrder.indexOf(a) - tagOrder.indexOf(b))
+                                      .map((tag, index) => {
+                                        const level1Tags = [
+                                          "FIRSTTEAMF1",
+                                          "FIRSTTEAMF2",
+                                          "FIRSTTEAMF3",
+                                          "LASTTEAMF1",
+                                          "LASTTEAMF2",
+                                          "LASTTEAMF3",
+                                          "VIP",
+                                        ];
+                                        const shouldApplyLevel1 = level1Tags.includes(tag);
+                                        return (
+                                          <li
+                                            key={index}
+                                            className={`${styles[`${tag}`]} ${shouldApplyLevel1 ? styles.level1 : ""}`}
+                                          >
+                                            <span className="blind">{tag}</span>
+                                          </li>
+                                        );
+                                      })}
+                                    {/*{cart.delayTm !== null && (*/}
+                                    {/*  <li className={styles.TIMEDELAY}>*/}
+                                    {/*    <span className="blind">DELAY</span>*/}
+                                    {/*  </li>*/}
+                                    {/*)}*/}
+                                  </ul>
+                                )}
+                                <strong
+                                  className={styles.bookingNm}
                                   style={{
-                                    height: `${stackedIndex * 30}px`,
+                                    bottom: `calc(100% + ${stackedIndex * 28}px)`,
                                   }}
-                                ></div>
-                              )}
+                                >
+                                  {cart.bookingNm}
+                                </strong>
 
-                              {cart.bookingsNo !== null && (
-                                <div className={styles.tagGroup}>
-                                  <span className="blind">단체팀 빨간 박스</span>
+                                {stackedIndex > 0 && (
+                                  <div
+                                    className={styles.dottedLine}
+                                    style={{
+                                      height: `${stackedIndex * 30}px`,
+                                    }}
+                                  ></div>
+                                )}
+
+                                {cart.bookingsNo !== null && (
+                                  <div className={styles.tagGroup}>
+                                    <span className="blind">단체팀 빨간 박스</span>
+                                  </div>
+                                )}
+                                {cart.tags?.includes("SELF") && (
+                                  <img
+                                    className={styles.tagSelf}
+                                    src="/assets/image/tag/tag_self.svg"
+                                    alt="셀프"
+                                  />
+                                )}
+                                <div
+                                  className={styles.buggy}
+                                  style={{ borderColor: outCourse?.courseCol || "#FFDF68" }}
+                                >
+                                  <span className="blind">buggy</span>
                                 </div>
-                              )}
-                              {cart.tags?.includes("SELF") && (
-                                <img
-                                  className={styles.tagSelf}
-                                  src="/assets/image/tag/tag_self.svg"
-                                  alt="셀프"
-                                />
-                              )}
-                              <div
-                                className={styles.buggy}
-                                style={{ borderColor: outCourse?.courseCol || "#FFDF68" }}
-                              >
-                                <span className="blind">buggy</span>
                               </div>
-                            </div>
-                          );
-                        })}
+                            );
+                          })}
+                        </div>
                       </li>
                     );
                   })}
