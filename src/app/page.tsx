@@ -31,7 +31,7 @@ export default function Splash() {
         {/* </h1> */}
         <img
           style={{ width: "100%", height: "100%" }}
-          src={"/assets/image/img-splash.png"}
+          src={"/assets/image/img-vgolf-splash.png"}
           alt={"스플래시 배경 이미지"}
         />
       </div>
