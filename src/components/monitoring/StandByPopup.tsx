@@ -1,49 +1,49 @@
 "use client";
 
 import styles from "@/styles/components/monitoring/StandByPopup.module.scss";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState } from "recoil";
 import { standByPopupState } from "@/lib/recoil";
+import ClubType from "@/types/Club.type";
+import BookingType from "@/types/Booking.type";
 
-interface standbyCartListType {
-  standbyCartList: {
-    courseId: number;
-    courseNm: string;
-    OWList: {
-      bookingId: number;
-      bookingNm: string;
-      bookingTm: string;
-      bookingsNo: number | null;
-      outCourseCol: string;
-    }[];
-    IWList: {
-      bookingId: number;
-      bookingNm: string;
-      bookingTm: string;
-      bookingsNo: number | null;
-      outCourseCol: string;
-    }[];
-  }[];
+interface StandByPopupProps {
+  clubData: ClubType;
+  bookingData: BookingType[];
+  onBookingClick: (booking: BookingType) => void;
 }
 
-const StandByPopup = ({ standbyCartList }: standbyCartListType) => {
+const StandByPopup = ({ clubData, bookingData, onBookingClick }: StandByPopupProps) => {
   const { t } = useTranslation();
   const [standByPopup, setStandByPopup] = useRecoilState(standByPopupState);
-
-  // 선택된 코스 ID를 초기 activeTab으로 설정
   const [activeTab, setActiveTab] = useState<number | null>(null);
+
+  // 선택된 코스의 예약 데이터를 메모이제이션
+  const courseBookings = useMemo(() => {
+    return bookingData?.filter((booking: BookingType) => booking.courseId === activeTab) || [];
+  }, [bookingData, activeTab]);
+
+  // 선택된 코스의 전반 리스트를 메모이제이션
+  const OWList = useMemo(() => {
+    return courseBookings.filter((b) => b.status === "OW");
+  }, [courseBookings]);
+
+  // 선택된 코스의 후반 리스트를 메모이제이션
+  const IWList = useMemo(() => {
+    return courseBookings.filter((b) => b.status === "IW");
+  }, [courseBookings]);
 
   // standByPopupState가 변경될 때 activeTab 업데이트
   useEffect(() => {
     if (
       standByPopup.selectedCourseId &&
-      standbyCartList.some((course) => course.courseId === standByPopup.selectedCourseId)
+      clubData?.courseList.some((course) => course.courseId === standByPopup.selectedCourseId)
     ) {
       setActiveTab(standByPopup.selectedCourseId);
-    } else if (standbyCartList.length > 0) {
+    } else if (clubData?.courseList.length > 0) {
       // 선택된 코스가 없거나 유효하지 않은 경우 첫 번째 코스 선택
-      setActiveTab(standbyCartList[0]?.courseId || null);
+      setActiveTab(clubData?.courseList[0]?.courseId || null);
     }
   }, [standByPopup.isOpen]);
 
@@ -67,7 +67,7 @@ const StandByPopup = ({ standbyCartList }: standbyCartListType) => {
           <>
             <div className={styles["tab-wrapper"]}>
               <ul className={styles["tabs"]}>
-                {standbyCartList.map((tab) => (
+                {clubData?.courseList.map((tab) => (
                   <li
                     key={tab.courseId}
                     className={`${styles["tab"]} ${activeTab === tab.courseId ? styles["active"] : ""}`}
@@ -80,72 +80,78 @@ const StandByPopup = ({ standbyCartList }: standbyCartListType) => {
               <div className={styles["tab-content"]}>
                 <div className={styles["standby"]}>
                   <div className={styles["standby-title"]}>
-                    {t("monitoring.frontStandby")} <br />(
-                    {standbyCartList.find((tab) => tab.courseId === activeTab)?.OWList.length || 0})
+                    {t("monitoring.frontStandby")} <br />({OWList.length})
                   </div>
                   <div className={styles["standby-buggy"]}>
                     <ul className={`${styles["standby-buggy-list"]} scroll-hidden`}>
-                      {standbyCartList
-                        .find((tab) => tab.courseId === activeTab)
-                        ?.OWList.map((item) => {
-                          return (
-                            <li key={item.bookingId} className={styles["standby-buggy-item"]}>
-                              <div className={styles["standby-buggy-item-name"]}>
-                                <div className={styles.waitingItemCart}>
-                                  {item.bookingsNo !== null && (
-                                    <div className={styles.tagGroup}></div>
-                                  )}
-                                  <div
-                                    className={styles.outCourseCol}
-                                    style={{ backgroundColor: item.outCourseCol || "#FFDF68" }}
-                                  ></div>
-                                </div>
-                                <span className={styles["standby-buggy-item-name-text"]}>
-                                  {item.bookingNm}
-                                </span>
+                      {OWList.map((booking) => {
+                        const outCourse = clubData?.courseList.find(
+                          (c) => c.courseId === booking.outCourseId,
+                        );
+                        return (
+                          <li key={booking.bookingId} className={styles["standby-buggy-item"]}>
+                            <div className={styles["standby-buggy-item-name"]}>
+                              <div className={styles.waitingItemCart}>
+                                {booking.bookingsNo !== null && (
+                                  <div className={styles.tagGroup}></div>
+                                )}
+                                <div
+                                  className={styles.outCourseCol}
+                                  style={{ backgroundColor: outCourse?.courseCol || "#FFDF68" }}
+                                ></div>
                               </div>
-                              <span className={styles["standby-buggy-item-time"]}>
-                                {item.bookingTm}
+                              <span
+                                className={styles["standby-buggy-item-name-text"]}
+                                onClick={() => onBookingClick?.(booking)}
+                              >
+                                {booking.bookingNm}
                               </span>
-                            </li>
-                          );
-                        })}
+                            </div>
+                            <span className={styles["standby-buggy-item-time"]}>
+                              {booking.bookingTm}
+                            </span>
+                          </li>
+                        );
+                      })}
                     </ul>
                   </div>
                 </div>
                 <div className={styles["standby"]}>
                   <div className={styles["standby-title"]}>
                     {t("monitoring.backStandby")}
-                    <br />(
-                    {standbyCartList.find((tab) => tab.courseId === activeTab)?.IWList.length || 0})
+                    <br />({IWList.length})
                   </div>
                   <div className={styles["standby-buggy"]}>
                     <ul className={`${styles["standby-buggy-list"]} scroll-hidden`}>
-                      {standbyCartList
-                        .find((tab) => tab.courseId === activeTab)
-                        ?.IWList.map((item) => {
-                          return (
-                            <li key={item.bookingId} className={styles["standby-buggy-item"]}>
-                              <div className={styles["standby-buggy-item-name"]}>
-                                <div className={styles.waitingItemCart}>
-                                  {item.bookingsNo !== null && (
-                                    <div className={styles.tagGroup}></div>
-                                  )}
-                                  <div
-                                    className={styles.outCourseCol}
-                                    style={{ backgroundColor: item.outCourseCol || "#FFDF68" }}
-                                  ></div>
-                                </div>
-                                <span className={styles["standby-buggy-item-name-text"]}>
-                                  {item.bookingNm}
-                                </span>
+                      {IWList.map((booking) => {
+                        const outCourse = clubData?.courseList.find(
+                          (c) => c.courseId === booking.outCourseId,
+                        );
+                        return (
+                          <li key={booking.bookingId} className={styles["standby-buggy-item"]}>
+                            <div className={styles["standby-buggy-item-name"]}>
+                              <div className={styles.waitingItemCart}>
+                                {booking.bookingsNo !== null && (
+                                  <div className={styles.tagGroup}></div>
+                                )}
+                                <div
+                                  className={styles.outCourseCol}
+                                  style={{ backgroundColor: outCourse?.courseCol || "#FFDF68" }}
+                                ></div>
                               </div>
-                              <span className={styles["standby-buggy-item-time"]}>
-                                {item.bookingTm}
+                              <span
+                                className={styles["standby-buggy-item-name-text"]}
+                                onClick={() => onBookingClick?.(booking)}
+                              >
+                                {booking.bookingNm}
                               </span>
-                            </li>
-                          );
-                        })}
+                            </div>
+                            <span className={styles["standby-buggy-item-time"]}>
+                              {booking.bookingTm}
+                            </span>
+                          </li>
+                        );
+                      })}
                     </ul>
                   </div>
                 </div>

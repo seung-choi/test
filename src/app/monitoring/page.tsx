@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getBooking, getClub } from "@/api/main";
 import CourseType from "@/types/Course.type";
 import MenuPopup from "@/components/MenuPopup";
-// import BookingDetailPopup from "@/components/monitoring/BookingDetailPopup";
+import BookingDetailPopup from "@/components/monitoring/BookingDetailPopup";
 import SOSPopup from "@/components/monitoring/SOSPopup";
 import StandByInfo from "@/components/monitoring/StandByInfo";
 import { useMemo, useState } from "react";
@@ -50,6 +50,8 @@ const tagOrder = [
 const Monitoring = () => {
   const { t } = useTranslation();
   const [activeMenu, setActiveMenu] = useState<number>(0);
+  const [selectedDetailData, setSelectedDetailData] = useState<BookingType | null>(null);
+  const [detailPopupOpen, setDetailPopupOpen] = useState<boolean>(false);
   // const setHolecupMenuPopupOpen = useSetRecoilState(holecupMenuPopupState);
   const setStandByPopupOpen = useSetRecoilState(standByPopupState);
   const setMenuPopupOpen = useSetRecoilState(menuPopupOpenState);
@@ -71,49 +73,6 @@ const Monitoring = () => {
     if (!clubData || !bookingData) return [];
     return transformBookingData(bookingData, clubData);
   }, [bookingData, clubData]);
-
-  const standbyCartList = useMemo(() => {
-    if (!clubData || !refinedBookingData) return [];
-
-    return clubData.courseList.map((course) => {
-      const filteredBookings = refinedBookingData.filter(
-        (booking) => booking.courseId === course.courseId,
-      );
-
-      const OWList = filteredBookings
-        .filter((b) => b.status === "OW")
-        .map((b) => {
-          const outCourse = clubData?.courseList.find((c) => c.courseId === b.outCourseId);
-          return {
-            bookingId: b.bookingId,
-            bookingNm: b.bookingNm,
-            bookingTm: b.bookingTm,
-            bookingsNo: b.bookingsNo,
-            outCourseCol: outCourse?.courseCol || "#FFDF68",
-          };
-        });
-
-      const IWList = filteredBookings
-        .filter((b) => b.status === "IW")
-        .map((b) => {
-          const outCourse = clubData?.courseList.find((c) => c.courseId === b.outCourseId);
-          return {
-            bookingId: b.bookingId,
-            bookingNm: b.bookingNm,
-            bookingTm: b.bookingTm,
-            bookingsNo: b.bookingsNo,
-            outCourseCol: outCourse?.courseCol || "#FFDF68",
-          };
-        });
-
-      return {
-        courseId: course.courseId,
-        courseNm: course.courseNm,
-        OWList,
-        IWList,
-      };
-    });
-  }, [clubData, refinedBookingData]);
 
   const scrollToSection = (courseId: number) => {
     if (typeof window === "undefined") return;
@@ -341,6 +300,10 @@ const Monitoring = () => {
                                   style={{
                                     bottom: `calc(100% + ${stackedIndex * 28}px)`,
                                   }}
+                                  onClick={() => {
+                                    setSelectedDetailData(cart);
+                                    setDetailPopupOpen(true);
+                                  }}
                                 >
                                   {cart.bookingNm}
                                 </strong>
@@ -398,8 +361,24 @@ const Monitoring = () => {
       </div>
       <MenuPopup />
       <HolecupMenuPopup courseList={clubData?.courseList || []} />
-      <StandByPopup standbyCartList={standbyCartList} />
-      {/* <BookingDetailPopup /> */}
+      <StandByPopup
+        clubData={clubData}
+        bookingData={refinedBookingData}
+        onBookingClick={(booking: BookingType) => {
+          setSelectedDetailData(booking);
+          setDetailPopupOpen(true);
+          setStandByPopupOpen({
+            isOpen: false,
+            selectedCourseId: null,
+          });
+        }}
+      />
+      {detailPopupOpen && (
+        <BookingDetailPopup
+          onClose={() => setDetailPopupOpen(false)}
+          booking={selectedDetailData}
+        />
+      )}
       {sosPopupList.length > 0 && <SOSPopup />}
     </>
   );

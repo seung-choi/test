@@ -4,12 +4,14 @@ import BookingType from "@/types/Booking.type";
 import { formatGender } from "@/utils/formatGender";
 
 interface BookingDetailPopupProps {
-  booking: BookingType;
+  booking: BookingType | null;
+  onClose: () => void;
 }
 
-const BookingDetailPopup = ({ booking }: BookingDetailPopupProps) => {
+const BookingDetailPopup = ({ booking, onClose }: BookingDetailPopupProps) => {
   return (
     <div className={styles["booking-detail-popup-container"]}>
+      <div className={styles["booking-detail-popup-overlay"]} onClick={onClose}></div>
       <div className={styles["booking-detail-popup-inner"]}>
         <h2 className={styles["booking-name"]}>
           {booking?.bookingNm} {booking?.bookingsNm && `(${booking.bookingsNm})`}
@@ -17,8 +19,8 @@ const BookingDetailPopup = ({ booking }: BookingDetailPopupProps) => {
             <span className={styles["booking-teeOff"]}>{booking?.bookingTm}</span>
           )}
         </h2>
-        <div className={styles["booking-player-info"]}>
-          <h3 className={styles["booking-player-title"]}>내장객 정보</h3>
+        <div className={styles["booking-detail-scroll-wrapper"]}>
+          <h3 className={"blind"}>내장객 정보</h3>
           <ul className={styles["booking-player-list"]}>
             {booking?.playerList?.map((player) => (
               <li key={player.playerId} className={styles["booking-player-item"]}>
@@ -27,9 +29,7 @@ const BookingDetailPopup = ({ booking }: BookingDetailPopupProps) => {
               </li>
             ))}
           </ul>
-        </div>
-        <div className={styles["booking-detail-info"]}>
-          <h3 className={styles["booking-detail-info-title"]}>주요 정보</h3>
+          <h3 className={"blind"}>주요 정보</h3>
           <div className={styles["booking-detail-info-list"]}>
             <dl className={styles["booking-detail-info-item"]}>
               <dt className={styles["booking-detail-info-item-title"]}>전반 시작</dt>
@@ -41,7 +41,7 @@ const BookingDetailPopup = ({ booking }: BookingDetailPopupProps) => {
               <dt className={styles["booking-detail-info-item-title"]}>전반 진행</dt>
               <dd className={styles["booking-detail-info-item-desc"]}>
                 {/*{calculateProgressTime(booking?.outStartTm || null, booking?.outEndTm || null)}*/}
-                {booking?.outRunTm}
+                {booking?.outRunTm || "-"}
               </dd>
             </dl>
             <dl className={styles["booking-detail-info-item"]}>
@@ -52,7 +52,7 @@ const BookingDetailPopup = ({ booking }: BookingDetailPopupProps) => {
             </dl>
             <dl className={styles["booking-detail-info-item"]}>
               <dt className={styles["booking-detail-info-item-title"]}>후반 진행</dt>
-              <dd className={styles["booking-detail-info-item-desc"]}>{booking?.inRunTm}</dd>
+              <dd className={styles["booking-detail-info-item-desc"]}>{booking?.inRunTm || "-"}</dd>
             </dl>
           </div>
         </div>
