@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getBooking, getClub } from "@/api/main";
 import CourseType from "@/types/Course.type";
 import MenuPopup from "@/components/MenuPopup";
+// import BookingDetailPopup from "@/components/monitoring/BookingDetailPopup";
 import SOSPopup from "@/components/monitoring/SOSPopup";
 import StandByInfo from "@/components/monitoring/StandByInfo";
 import { useMemo, useState } from "react";
@@ -81,19 +82,29 @@ const Monitoring = () => {
 
       const OWList = filteredBookings
         .filter((b) => b.status === "OW")
-        .map((b) => ({
-          bookingId: b.bookingId,
-          bookingNm: b.bookingNm,
-          bookingTm: b.bookingTm,
-        }));
+        .map((b) => {
+          const outCourse = clubData?.courseList.find((c) => c.courseId === b.outCourseId);
+          return {
+            bookingId: b.bookingId,
+            bookingNm: b.bookingNm,
+            bookingTm: b.bookingTm,
+            bookingsNo: b.bookingsNo,
+            outCourseCol: outCourse?.courseCol || "#FFDF68",
+          };
+        });
 
       const IWList = filteredBookings
         .filter((b) => b.status === "IW")
-        .map((b) => ({
-          bookingId: b.bookingId,
-          bookingNm: b.bookingNm,
-          bookingTm: b.bookingTm,
-        }));
+        .map((b) => {
+          const outCourse = clubData?.courseList.find((c) => c.courseId === b.outCourseId);
+          return {
+            bookingId: b.bookingId,
+            bookingNm: b.bookingNm,
+            bookingTm: b.bookingTm,
+            bookingsNo: b.bookingsNo,
+            outCourseCol: outCourse?.courseCol || "#FFDF68",
+          };
+        });
 
       return {
         courseId: course.courseId,
@@ -388,6 +399,7 @@ const Monitoring = () => {
       <MenuPopup />
       <HolecupMenuPopup courseList={clubData?.courseList || []} />
       <StandByPopup standbyCartList={standbyCartList} />
+      {/* <BookingDetailPopup /> */}
       {sosPopupList.length > 0 && <SOSPopup />}
     </>
   );

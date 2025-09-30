@@ -14,11 +14,15 @@ interface standbyCartListType {
       bookingId: number;
       bookingNm: string;
       bookingTm: string;
+      bookingsNo: number | null;
+      outCourseCol: string;
     }[];
     IWList: {
       bookingId: number;
       bookingNm: string;
       bookingTm: string;
+      bookingsNo: number | null;
+      outCourseCol: string;
     }[];
   }[];
 }
@@ -59,7 +63,7 @@ const StandByPopup = ({ standbyCartList }: standbyCartListType) => {
     <div className={`${styles["standby-container"]} ${standByPopup.isOpen ? styles["open"] : ""}`}>
       <div className={styles["dim"]} onClick={closePopup}></div>
       <div className={styles["standby-inner"]}>
-        {standByPopup.isOpen &&
+        {standByPopup.isOpen && (
           <>
             <div className={styles["tab-wrapper"]}>
               <ul className={styles["tabs"]}>
@@ -86,9 +90,20 @@ const StandByPopup = ({ standbyCartList }: standbyCartListType) => {
                         ?.OWList.map((item) => {
                           return (
                             <li key={item.bookingId} className={styles["standby-buggy-item"]}>
-                              <strong className={styles["standby-buggy-item-name"]}>
-                                {item.bookingNm}
-                              </strong>
+                              <div className={styles["standby-buggy-item-name"]}>
+                                <div className={styles.waitingItemCart}>
+                                  {item.bookingsNo !== null && (
+                                    <div className={styles.tagGroup}></div>
+                                  )}
+                                  <div
+                                    className={styles.outCourseCol}
+                                    style={{ backgroundColor: item.outCourseCol || "#FFDF68" }}
+                                  ></div>
+                                </div>
+                                <span className={styles["standby-buggy-item-name-text"]}>
+                                  {item.bookingNm}
+                                </span>
+                              </div>
                               <span className={styles["standby-buggy-item-time"]}>
                                 {item.bookingTm}
                               </span>
@@ -111,7 +126,23 @@ const StandByPopup = ({ standbyCartList }: standbyCartListType) => {
                         ?.IWList.map((item) => {
                           return (
                             <li key={item.bookingId} className={styles["standby-buggy-item"]}>
-                              {item.bookingNm}
+                              <div className={styles["standby-buggy-item-name"]}>
+                                <div className={styles.waitingItemCart}>
+                                  {item.bookingsNo !== null && (
+                                    <div className={styles.tagGroup}></div>
+                                  )}
+                                  <div
+                                    className={styles.outCourseCol}
+                                    style={{ backgroundColor: item.outCourseCol || "#FFDF68" }}
+                                  ></div>
+                                </div>
+                                <span className={styles["standby-buggy-item-name-text"]}>
+                                  {item.bookingNm}
+                                </span>
+                              </div>
+                              <span className={styles["standby-buggy-item-time"]}>
+                                {item.bookingTm}
+                              </span>
                             </li>
                           );
                         })}
@@ -125,7 +156,7 @@ const StandByPopup = ({ standbyCartList }: standbyCartListType) => {
               <span></span>
             </button>
           </>
-        }
+        )}
       </div>
     </div>
   );
