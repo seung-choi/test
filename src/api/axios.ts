@@ -44,7 +44,7 @@ $axios.interceptors.request.use(
     return config;
   },
   (error) => {
-    console.log(`request error : `, error);
+    console.error(error);
 
     return Promise.reject(error);
   },

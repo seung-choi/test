@@ -13,10 +13,7 @@ interface SendMessageProps {
   onBack: () => void;
 }
 
-const SendMessage = ({
-  groupedByCourse,
-  onBack,
-}: SendMessageProps) => {
+const SendMessage = ({ groupedByCourse, onBack }: SendMessageProps) => {
   const { t } = useTranslation();
   const { setAlertModalState } = useAlertModal();
 
@@ -27,7 +24,7 @@ const SendMessage = ({
     eventId: null,
     sendMsg: "",
   });
-  
+
   const { data: eventSSEData } = useQuery({
     queryKey: ["eventSSE"],
     queryFn: () => getEventSSE(),
@@ -44,8 +41,8 @@ const SendMessage = ({
         desc: t("message.sent"),
       }));
     },
-    onError: () => {
-      console.log("error!");
+    onError: (error) => {
+      console.error(error);
     },
   });
 

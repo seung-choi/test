@@ -72,7 +72,6 @@ const ClientLayoutContent = ({ children }: { children: React.ReactNode }) => {
       !currentPath.startsWith("/login") &&
       !currentPath.startsWith("/repassword")
     ) {
-      console.log("ClientLayout session err");
       router.push("/login/");
     }
   }, [pathname, router]);
