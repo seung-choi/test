@@ -1,4 +1,5 @@
 import CourseType from "@/types/Course.type";
+import CourseMapListType from "@/types/CourseMapListType";
 
 type ClubType = {
   clubId: string;
@@ -18,6 +19,7 @@ type ClubType = {
   zoneId: string;
   greenSpd: number | null;
   courseList: CourseType[];
+  courseMapList: CourseMapListType[];
 };
 
 export default ClubType;

@@ -10,6 +10,8 @@ import { postLogin } from "@/api/main";
 import { useMutation } from "@tanstack/react-query";
 import storage from "@/utils/storage";
 import { useTranslation } from "react-i18next";
+import { useSetRecoilState } from "recoil";
+import { monitoringViewState } from "@/lib/recoil";
 
 export interface LoginFormAPI {
   username: string;
@@ -24,7 +26,7 @@ const Login = () => {
     password: "",
     saveId: false,
   });
-
+  const setMonitoringView = useSetRecoilState(monitoringViewState);
   const [error, setError] = useState<boolean>(false);
 
   const router = useRouter();
@@ -38,7 +40,13 @@ const Login = () => {
         localStorage.removeItem("remember");
         if (loginForm.saveId) storage.local.set({ remember: loginForm.username });
         storage.local.set(res);
-        res.initSt === "Y" ? router.push("/repassword") : router.push("/monitoring");
+
+        if (res.initSt === "Y") {
+          router.push("/repassword");
+        } else {
+          router.push("/monitoring");
+          setMonitoringView("course");
+        }
       }
     },
     onError: () => {

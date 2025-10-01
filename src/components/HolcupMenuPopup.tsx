@@ -32,22 +32,28 @@ const HolecupMenuPopup = ({ courseList }: courseListProps) => {
       <div className={styles["menu-inner"]}>
         <h2 className={styles["menu-title"]}>홀컵핀 설정</h2>
         <div className={styles["menu-list-wrap"]}>
-          <ul className={styles["menu-list"]}>
+          <ul className={`${styles["menu-list"]} scroll-hidden`}>
             {courseList?.map((course: CourseType) => {
               return (
-                <li className={`${styles["menu-item"]} ${path === "/holecup/" && currentCourse.id === course.courseId ? styles["active"] : ""}`} key={course.courseId}>
-                  <button  type="button"  onClick={() => {
-                    setHolecupPageState({
-                      id: course?.courseId,
-                      Nm: course?.courseNm,
-                    });
-                    router.push("/holecup");
-                    setCurrentHoleState({
-                      id: null,
-                      no: null
-                    })
-                    setOpen(!open);
-                  }}>
+                <li
+                  className={`${styles["menu-item"]} ${path === "/holecup/" && currentCourse.id === course.courseId ? styles["active"] : ""}`}
+                  key={course.courseId}
+                >
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setHolecupPageState({
+                        id: course?.courseId,
+                        Nm: course?.courseNm,
+                      });
+                      router.push("/holecup");
+                      setCurrentHoleState({
+                        id: null,
+                        no: null,
+                      });
+                      setOpen(!open);
+                    }}
+                  >
                     <span className={styles["sub-title"]}>{t("menu.holecupSubTitle")}</span>
                     <strong className={styles["title"]}>{course.courseNm}</strong>
                   </button>

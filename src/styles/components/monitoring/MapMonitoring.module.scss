@@ -1,0 +1,141 @@
+.map-monitoring {
+  &-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    background: var(--mode-gray3);
+  }
+  &-header {
+    z-index: 1;
+    position: absolute;
+    top: 14px;
+    left: 12px;
+    display: flex;
+    align-items: center;
+    gap: 0 5px;
+    &-status {
+      display: flex;
+      align-items: center;
+      gap: 0 8px;
+      height: 28px;
+      border-radius: 7px;
+      background: var(--mode-color3);
+      padding: 0 10px;
+      &-title {
+        font-size: 11px;
+        color: var(--mode-font_key);
+      }
+      &-course {
+        display: flex;
+        align-items: center;
+        .course {
+          &-color {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 2px;
+          }
+          &-name {
+            font-weight: 800;
+            font-size: 11px;
+            color: var(--mode-font_key);
+            margin-right: 8px;
+          }
+          &-state-count {
+            font-size: 11px;
+            color: var(--mode-font_key);
+          }
+        }
+      }
+    }
+    &-standby {
+      position: relative;
+      height: 28px;
+      padding: 0 35px 0 10px;
+      border-radius: 7px;
+      background: var(--mode-color3);
+      font-size: 11px;
+      color: var(--mode-font_key);
+      &::before {
+        position: absolute;
+        top: 50%;
+        right: 5px;
+        content: "";
+        display: block;
+        width: 22px;
+        height: 22px;
+        background: var(--mode-Background);
+        border-radius: 5px;
+        box-shadow: 0 0 5px 0 #666666;
+        transform: translateY(-50%);
+      }
+      &::after {
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        content: "";
+        display: block;
+        width: 6px;
+        height: 6px;
+        transform: rotate(-45deg);
+        border-left: 2px solid var(--mode-font_key);
+        border-bottom: 2px solid var(--mode-font_key);
+      }
+    }
+  }
+  &-content {
+    width: 100%;
+    height: 100%;
+    .map-view {
+      position: relative;
+      width: fit-content;
+      height: 100%;
+      margin: 0 auto;
+      img {
+        max-height: 100%;
+        max-width: 100%;
+      }
+      .cart-item {
+        position: absolute;
+        margin-left: -9px; //라인이 이동한 값 만큼 왼쪽 이동
+        &-booking-name {
+          position: absolute;
+          left: 9px;
+          bottom: 13px;
+          display: inline-block;
+          height: 14px;
+          align-items: center;
+          padding: 0 3px 0 10px;
+          border-radius: 0 2px 2px 0;
+          font-weight: 700;
+          font-size: 10px;
+          color: #fff;
+          white-space: nowrap;
+        }
+        &-icon {
+          position: absolute;
+          left: 0;
+          bottom: 11px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 18px;
+          height: 18px;
+          border: 2px solid;
+          border-radius: 50%;
+          box-sizing: border-box;
+          background: #fff;
+        }
+        &-line {
+          position: absolute;
+          left: 8px;
+          bottom: 0;
+          width: 2px;
+          height: 11px;
+          border-radius: 0 0 2px 2px;
+        }
+      }
+    }
+  }
+}

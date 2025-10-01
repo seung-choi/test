@@ -5,7 +5,12 @@ import storage from "@/utils/storage";
 import { useRouter } from "next/navigation";
 import useAlertModal from "@/hooks/useAlertModal";
 import { usePathname } from "next/navigation";
-import { holecupMenuPopupState, menuPopupOpenState, themeModeState } from "@/lib/recoil";
+import {
+  holecupMenuPopupState,
+  menuPopupOpenState,
+  themeModeState,
+  monitoringViewState,
+} from "@/lib/recoil";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
 import AutoFontSizeText from "@/components/AutoFontSizeText";
@@ -16,6 +21,7 @@ const MenuPopup = () => {
   const [open, setOpen] = useRecoilState(menuPopupOpenState);
   const setHolecupMenuPopupOpen = useSetRecoilState(holecupMenuPopupState);
   const [themeMode, setThemeMode] = useRecoilState(themeModeState);
+  const [monitoringView, setMonitoringView] = useRecoilState(monitoringViewState);
 
   const { setAlertModalState } = useAlertModal();
   const path = usePathname();
@@ -66,26 +72,33 @@ const MenuPopup = () => {
         <div className={styles["menu-list-wrap"]}>
           <ul className={`${styles["menu-list"]} scroll-hidden`}>
             <li
-              className={`${styles["menu-item"]} ${styles["monitoring"]} ${path === "/monitoring/" ? styles["active"] : ""}`}
+              className={`${styles["menu-item"]} ${styles["monitoring"]} ${monitoringView === "course" ? styles["active"] : ""}`}
             >
               <button
                 type="button"
                 onClick={() => {
                   router.push("/monitoring");
+                  setMonitoringView("course");
                   setOpen(false);
                 }}
               >
                 <AutoFontSizeText text={t("monitoring.title")} maxFontSize={15} minFontSize={10} />
               </button>
             </li>
-            {/* <li className={`${styles["menu-item"]} ${styles["map-view"]} ${path === "/mapView/" ? styles["active"] : ""}`}>
-              <button type="button" onClick={() => {
-                router.push("/map-view");
-                setOpen(false);
-              }}>
+            <li
+              className={`${styles["menu-item"]} ${styles["map-view"]} ${monitoringView === "map" ? styles["active"] : ""}`}
+            >
+              <button
+                type="button"
+                onClick={() => {
+                  router.push("/monitoring");
+                  setMonitoringView("map");
+                  setOpen(false);
+                }}
+              >
                 <AutoFontSizeText text="지도 관제" maxFontSize={15} minFontSize={10} />
               </button>
-            </li> */}
+            </li>
             <li
               className={`${styles["menu-item"]} ${styles["holecup"]} ${path === "/mapView/" ? styles["active"] : ""}`}
             >

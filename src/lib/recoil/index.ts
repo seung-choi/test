@@ -7,3 +7,4 @@ export { holecupMenuPopupState } from "./holecupMenuPopupState";
 export { ssePinState } from "./ssePinState";
 export { sseSOSState, sseSOSPopupOpenState, sseSOSPopupListState } from "./sseSOSState";
 export { themeModeState } from "./themeModeState";
+export { monitoringViewState } from "./monitoringViewState";
