@@ -5,7 +5,9 @@ export const getOriginURL = (subdomain: string, path = "/mng/v1/"): string | und
     ? "http://43.202.78.220:7010"
     : window.location.origin;
 
-  return (window.location.protocol.startsWith("https")
-    ? origin.replace("mo", subdomain === "gps" ? "gpis" : "apis")
-    : origin.replace(":7010", subdomain === "gps" ? ":7120" : ":7110")) + path;
+  return (
+    (window.location.protocol.startsWith("https")
+      ? origin.replace("m", subdomain === "gps" ? "gps" : "api")
+      : origin.replace(":7010", subdomain === "gps" ? ":7120" : ":7110")) + path
+  );
 };
