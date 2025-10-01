@@ -109,18 +109,14 @@ const MapMonitoring = ({
       </div>
       <div className={styles["map-monitoring-content"]}>
         <div className={styles["map-view"]}>
-          {courseMapImage?.mapUrl ? (
-            <img
-              className={styles["hole-img"]}
-              src={courseMapImage?.mapUrl || ""}
-              alt="코스 맵 이미지"
-              style={{ width: "auto", height: "auto" }}
-              ref={imgRef}
-              onLoad={() => setIsLoaded(true)}
-            />
-          ) : (
-            <div className={styles["no-img"]}>코스맵 이미지가 없습니다.</div>
-          )}
+          <img
+            className={styles["hole-img"]}
+            src={courseMapImage?.mapUrl || ""}
+            alt="코스 맵 이미지"
+            style={{ width: "auto", height: "auto" }}
+            ref={imgRef}
+            onLoad={() => setIsLoaded(true)}
+          />
           {isLoaded &&
             isConfigReady &&
             booking?.map((bookingItem, index) => {

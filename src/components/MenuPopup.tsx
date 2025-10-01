@@ -14,8 +14,9 @@ import {
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
 import AutoFontSizeText from "@/components/AutoFontSizeText";
+import CourseMapListType from "@/types/CourseMapListType";
 
-const MenuPopup = () => {
+const MenuPopup = ({ courseMap }: { courseMap?: CourseMapListType | null }) => {
   const { t } = useTranslation();
   const router = useRouter();
   const [open, setOpen] = useRecoilState(menuPopupOpenState);
@@ -85,20 +86,22 @@ const MenuPopup = () => {
                 <AutoFontSizeText text={t("monitoring.title")} maxFontSize={15} minFontSize={10} />
               </button>
             </li>
-            <li
-              className={`${styles["menu-item"]} ${styles["map-view"]} ${monitoringView === "map" ? styles["active"] : ""}`}
-            >
-              <button
-                type="button"
-                onClick={() => {
-                  router.push("/monitoring");
-                  setMonitoringView("map");
-                  setOpen(false);
-                }}
+            {courseMap !== null && (
+              <li
+                className={`${styles["menu-item"]} ${styles["map-view"]} ${monitoringView === "map" ? styles["active"] : ""}`}
               >
-                <AutoFontSizeText text="지도 관제" maxFontSize={15} minFontSize={10} />
-              </button>
-            </li>
+                <button
+                  type="button"
+                  onClick={() => {
+                    router.push("/monitoring");
+                    setMonitoringView("map");
+                    setOpen(false);
+                  }}
+                >
+                  <AutoFontSizeText text="지도 관제" maxFontSize={15} minFontSize={10} />
+                </button>
+              </li>
+            )}
             <li
               className={`${styles["menu-item"]} ${styles["holecup"]} ${path === "/mapView/" ? styles["active"] : ""}`}
             >

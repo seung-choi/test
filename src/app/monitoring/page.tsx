@@ -377,7 +377,13 @@ const Monitoring = () => {
           </button>
         </div> */}
       </div>
-      <MenuPopup />
+
+      <MenuPopup
+        courseMap={
+          clubData?.courseMapList.find((map) => map.mapCd === "COURSE" && map.mapType === "IMG") ||
+          null
+        }
+      />
       <HolecupMenuPopup courseList={clubData?.courseList || []} />
       <StandByPopup
         clubData={clubData}
