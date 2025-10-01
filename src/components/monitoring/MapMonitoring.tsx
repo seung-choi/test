@@ -62,7 +62,7 @@ const MapMonitoring = ({
   }, [clubData?.courseMapList]);
 
   // useCourseMapConfig 훅을 컴포넌트 최상위에서 호출
-  const courseMapConfig = useCourseMapConfig({
+  const { config: courseMapConfig, isConfigReady } = useCourseMapConfig({
     imgRef,
     ImageWidth: imageWidth,
     ImageHeight: imageHeight,
@@ -113,11 +113,12 @@ const MapMonitoring = ({
             className={styles["holeImg"]}
             src={courseMapImage?.mapUrl || ""}
             alt="코스 맵 이미지"
-            style={{ width: "auto", height: "100%" }}
+            style={{ width: "auto", height: "auto" }}
             ref={imgRef}
             onLoad={() => setIsLoaded(true)}
           />
           {isLoaded &&
+            isConfigReady &&
             booking?.map((bookingItem, index) => {
               const outCourse = clubData.courseList.find(
                 (c) => c.courseId === bookingItem.outCourseId,
@@ -125,7 +126,7 @@ const MapMonitoring = ({
               try {
                 const { x, y } = gpsToPx(
                   { latitude: bookingItem.latitude, longitude: bookingItem.longitude },
-                  courseMapConfig.config,
+                  courseMapConfig,
                 );
 
                 return (
