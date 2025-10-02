@@ -77,26 +77,20 @@ const MenuPopup = ({ courseMap }: { courseMap?: CourseMapListType | null }) => {
         <div className={styles["menu-list-wrap"]}>
           <ul className={`${styles["menu-list"]} scroll-hidden`}>
             {/* 실시간 관제 메뉴 */}
-            {menuCodes.includes("M_MONITORING") && (
-              <li
-                className={`${styles["menu-item"]}  ${monitoringView === "course" ? styles["active"] : ""}`}
+            <li
+              className={`${styles["menu-item"]}  ${monitoringView === "course" ? styles["active"] : ""}`}
+            >
+              <button
+                type="button"
+                onClick={() => {
+                  router.push("/monitoring");
+                  setMonitoringView("course");
+                  setOpen(false);
+                }}
               >
-                <button
-                  type="button"
-                  onClick={() => {
-                    router.push("/monitoring");
-                    setMonitoringView("course");
-                    setOpen(false);
-                  }}
-                >
-                  <AutoFontSizeText
-                    text={t("monitoring.title")}
-                    maxFontSize={15}
-                    minFontSize={10}
-                  />
-                </button>
-              </li>
-            )}
+                <AutoFontSizeText text={t("monitoring.title")} maxFontSize={15} minFontSize={10} />
+              </button>
+            </li>
 
             {/* 지도 관제 메뉴 */}
             {menuCodes.includes("M_MAPPING") && courseMap !== null && (
