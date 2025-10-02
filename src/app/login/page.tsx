@@ -12,7 +12,6 @@ import storage from "@/utils/storage";
 import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
 import { monitoringViewState } from "@/lib/recoil";
-import { useMenuData } from "@/hooks/useMenuData";
 
 export interface LoginFormAPI {
   username: string;
@@ -29,26 +28,18 @@ const Login = () => {
   });
   const setMonitoringView = useSetRecoilState(monitoringViewState);
   const [error, setError] = useState<boolean>(false);
-  const { refetch: loadMenuData } = useMenuData();
 
   const router = useRouter();
 
   const { mutate: loginMutate, isPending } = useMutation({
     mutationFn: postLogin,
-    onSuccess: async (res) => {
+    onSuccess: (res) => {
       if (res.groupType === "ADMIN") {
         setError(true);
       } else {
         localStorage.removeItem("remember");
         if (loginForm.saveId) storage.local.set({ remember: loginForm.username });
         storage.local.set(res);
-
-        // 로그인 성공 시 메뉴 데이터 로드
-        try {
-          await loadMenuData();
-        } catch (error) {
-          console.error(error);
-        }
 
         if (res.initSt === "Y") {
           router.push("/repassword");

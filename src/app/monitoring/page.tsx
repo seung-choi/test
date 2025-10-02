@@ -3,14 +3,14 @@
 import styles from "@/styles/pages/monitoring/monitoring.module.scss";
 import StandByPopup from "@/components/monitoring/StandByPopup";
 import { useQuery } from "@tanstack/react-query";
-import { getBooking, getClub } from "@/api/main";
+import { getBooking, getClub, getMenuHis } from "@/api/main";
 import CourseType from "@/types/Course.type";
 import MenuPopup from "@/components/MenuPopup";
 import BookingDetailPopup from "@/components/monitoring/BookingDetailPopup";
 import SOSPopup from "@/components/monitoring/SOSPopup";
 import StandByInfo from "@/components/monitoring/StandByInfo";
 import MapMonitoring from "@/components/monitoring/MapMonitoring";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import transformBookingData from "@/utils/transformBookingData";
@@ -20,8 +20,9 @@ import {
   menuPopupOpenState,
   // holecupMenuPopupState,
   sseSOSPopupListState,
-  // themeModeState,
+  themeModeState,
   monitoringViewState,
+  menuState,
 } from "@/lib/recoil";
 import HolecupMenuPopup from "@/components/HolcupMenuPopup";
 import useSSE from "@/lib/useSSE";
@@ -58,8 +59,10 @@ const Monitoring = () => {
   const setStandByPopupOpen = useSetRecoilState(standByPopupState);
   const setMenuPopupOpen = useSetRecoilState(menuPopupOpenState);
   const sosPopupList = useRecoilValue(sseSOSPopupListState);
-  // const themeMode = useRecoilValue(themeModeState);
+  const themeMode = useRecoilValue(themeModeState);
   const monitoringView = useRecoilValue(monitoringViewState);
+  const menuCodes = useRecoilValue(menuState);
+  const setMenuCodes = useSetRecoilState(menuState);
 
   const { data: clubData } = useQuery({
     queryKey: ["clubData"],
@@ -70,6 +73,11 @@ const Monitoring = () => {
     queryKey: ["bookingData"],
     queryFn: () => getBooking(),
     refetchInterval: 1000,
+  });
+
+  const { data: menu } = useQuery({
+    queryKey: ["menu"],
+    queryFn: () => getMenuHis(),
   });
 
   const refinedBookingData = useMemo(() => {
@@ -84,6 +92,13 @@ const Monitoring = () => {
   };
 
   useSSE();
+
+  // 메뉴 데이터가 로드되면 recoil에 저장
+  useEffect(() => {
+    if (menu) {
+      setMenuCodes(menu);
+    }
+  }, [menu, setMenuCodes]);
 
   if (!clubData || !bookingData) {
     return null;
@@ -124,27 +139,31 @@ const Monitoring = () => {
             </ul>
           </div>
           <div className={styles["monitoring-etc-menu"]}>
-            {/* <Link
-              href="/message"
-              className={`${styles["monitoring-etc-menu-button"]} ${styles["message-button"]}`}
-            >
-              <img
-                src={
-                  themeMode === "dark"
-                    ? "/assets/image/icon-message-white.svg"
-                    : "/assets/image/icon-message-dark.svg"
-                }
-                alt="메세지"
-              />
-              <span className={styles["text"]}>메세지</span>
-            </Link> */}
-            <Link
-              href="/search"
-              className={`${styles["monitoring-etc-menu-button"]} ${styles["search-button"]}`}
-            >
-              <img src="/assets/image/icon-search.svg" alt="검색" />
-              <span className={styles["text"]}>검색</span>
-            </Link>
+            {menuCodes.includes("M_SSE") && (
+              <Link
+                href="/message"
+                className={`${styles["monitoring-etc-menu-button"]} ${styles["message-button"]}`}
+              >
+                <img
+                  src={
+                    themeMode === "dark"
+                      ? "/assets/image/icon-message-white.svg"
+                      : "/assets/image/icon-message-dark.svg"
+                  }
+                  alt="메세지"
+                />
+                <span className={styles["text"]}>메세지</span>
+              </Link>
+            )}
+            {menuCodes.includes("M_DETAIL") && (
+              <Link
+                href="/search"
+                className={`${styles["monitoring-etc-menu-button"]} ${styles["search-button"]}`}
+              >
+                <img src="/assets/image/icon-search.svg" alt="검색" />
+                <span className={styles["text"]}>검색</span>
+              </Link>
+            )}
             <button
               type="button"
               className={`${styles["monitoring-etc-menu-button"]} ${styles["menu-button"]}`}

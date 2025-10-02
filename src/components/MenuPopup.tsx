@@ -28,7 +28,6 @@ const MenuPopup = ({ courseMap }: { courseMap?: CourseMapListType | null }) => {
   const { setAlertModalState } = useAlertModal();
   const path = usePathname();
 
-  // recoil에서 메뉴 데이터 가져오기
   const menuCodes = useRecoilValue(menuState);
 
   // 테마 모드 토글 함수

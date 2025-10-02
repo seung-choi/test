@@ -3,8 +3,8 @@
 import styles from "@/styles/components/monitoring/StandByPopup.module.scss";
 import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilState } from "recoil";
-import { standByPopupState } from "@/lib/recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { menuState, standByPopupState } from "@/lib/recoil";
 import ClubType from "@/types/Club.type";
 import BookingType from "@/types/Booking.type";
 
@@ -16,8 +16,9 @@ interface StandByPopupProps {
 
 const StandByPopup = ({ clubData, bookingData, onBookingClick }: StandByPopupProps) => {
   const { t } = useTranslation();
-  const [standByPopup, setStandByPopup] = useRecoilState(standByPopupState);
   const [activeTab, setActiveTab] = useState<number | null>(null);
+  const [standByPopup, setStandByPopup] = useRecoilState(standByPopupState);
+  const menuCodes = useRecoilValue(menuState);
 
   // 선택된 코스의 예약 데이터를 메모이제이션
   const courseBookings = useMemo(() => {
@@ -102,7 +103,11 @@ const StandByPopup = ({ clubData, bookingData, onBookingClick }: StandByPopupPro
                               </div>
                               <span
                                 className={styles["standby-buggy-item-name-text"]}
-                                onClick={() => onBookingClick?.(booking)}
+                                onClick={() => {
+                                  if (menuCodes.includes("M_DETAIL")) {
+                                    onBookingClick?.(booking);
+                                  }
+                                }}
                               >
                                 {booking.bookingNm}
                               </span>

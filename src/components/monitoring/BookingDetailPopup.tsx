@@ -2,6 +2,8 @@ import React from "react";
 import styles from "@/styles/components/monitoring/BookingDetailPopup.module.scss";
 import BookingType from "@/types/Booking.type";
 import { formatGender } from "@/utils/formatGender";
+import { useRecoilValue } from "recoil";
+import { menuState } from "@/lib/recoil";
 
 interface BookingDetailPopupProps {
   booking: BookingType | null;
@@ -9,6 +11,12 @@ interface BookingDetailPopupProps {
 }
 
 const BookingDetailPopup = ({ booking, onClose }: BookingDetailPopupProps) => {
+  const menuCodes = useRecoilValue(menuState);
+
+  if (!menuCodes.includes("M_DETAIL")) {
+    return null;
+  }
+
   return (
     <div className={styles["booking-detail-popup-container"]}>
       <div className={styles["booking-detail-popup-overlay"]} onClick={onClose}></div>

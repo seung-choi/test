@@ -7,7 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AlertModal from "@/components/AlertModal";
 import "@/lib/i18n";
 import i18n from "@/lib/i18n";
-import { themeModeState } from "@/lib/recoil";
+import { themeModeState, menuState } from "@/lib/recoil";
 import storage from "@/utils/storage";
 
 // Recoil 훅을 사용하는 실제 로직 컴포넌트
@@ -16,6 +16,7 @@ const ClientLayoutContent = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const pathname = usePathname();
   const themeMode = useRecoilValue(themeModeState);
+  const menuCodes = useRecoilValue(menuState);
   const [i18nReady, setI18nReady] = useState(false);
   const [orientationClass, setOrientationClass] = useState("portrait");
 
@@ -75,6 +76,22 @@ const ClientLayoutContent = ({ children }: { children: React.ReactNode }) => {
       router.push("/login/");
     }
   }, [pathname, router]);
+
+  // 메뉴 권한 체크
+  useEffect(() => {
+    if (!menuCodes) return; // 메뉴 데이터가 아직 로드되지 않았으면 대기
+
+    const currentPath = pathname;
+
+    // 각 페이지별 필요한 메뉴 코드 체크
+    if (currentPath === "/search/" && !menuCodes.includes("M_DETAIL")) {
+      router.push("/404");
+    } else if (currentPath === "/holecup/" && !menuCodes.includes("M_PIN")) {
+      router.push("/404");
+    } else if (currentPath === "/sos-history/" && !menuCodes.includes("M_SOS")) {
+      router.push("/404");
+    }
+  }, [pathname, menuCodes, router]);
 
   if (!i18nReady) {
     // 초기화 전에는 아무 것도 안 보여줌

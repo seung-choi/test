@@ -1,16 +1,21 @@
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { sseSOSPopupListState } from "@/lib/recoil";
+import { menuState, sseSOSPopupListState } from "@/lib/recoil";
 import styles from "@/styles/components/monitoring/SOSPopup.module.scss";
 import { Button } from "@/components/Button";
 
 const SOSPopup = () => {
   const sosPopupList = useRecoilValue(sseSOSPopupListState);
   const setSOSPopupList = useSetRecoilState(sseSOSPopupListState);
+  const menuCodes = useRecoilValue(menuState);
 
   // 특정 SOS 팝업을 닫는 함수
   const closeSOSPopup = (popupId: string) => {
     setSOSPopupList((prevList) => prevList.filter((popup) => popup.id !== popupId));
   };
+
+  if (!menuCodes.includes("M_MAYDAY")) {
+    return null;
+  }
 
   // 팝업이 없으면 렌더링하지 않음
   if (sosPopupList.length === 0) {
@@ -21,7 +26,7 @@ const SOSPopup = () => {
     <>
       {sosPopupList.map((popup) => (
         <div key={popup.id} className={styles["sos-popup"]}>
-          <div 
+          <div
             className={styles["sos-popup-inner"]}
             style={{
               marginTop: `${popup.position.marginTop}px`,
@@ -42,7 +47,9 @@ const SOSPopup = () => {
               </dl>
               <dl className={styles["sos-popup-info"]}>
                 <dt>위치</dt>
-                <dd>{popup.data?.courseNm} H{popup.data?.holeNo}</dd>
+                <dd>
+                  {popup.data?.courseNm} H{popup.data?.holeNo}
+                </dd>
               </dl>
               <dl className={styles["sos-popup-info"]}>
                 <dt>사유</dt>
@@ -50,11 +57,7 @@ const SOSPopup = () => {
               </dl>
             </div>
             <div className={styles["sos-popup-button-container"]}>
-              <Button 
-                type="button" 
-                label="닫기" 
-                onClick={() => closeSOSPopup(popup.id)} 
-              />
+              <Button type="button" label="닫기" onClick={() => closeSOSPopup(popup.id)} />
             </div>
           </div>
         </div>

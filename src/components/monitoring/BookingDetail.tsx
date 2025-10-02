@@ -2,6 +2,8 @@ import styles from "@/styles/components/monitoring/BookingDetail.module.scss";
 import BookingType from "@/types/Booking.type";
 import { Button } from "../Button";
 import { formatGender } from "@/utils/formatGender";
+import { useRecoilValue } from "recoil";
+import { menuState } from "@/lib/recoil";
 // import { calculateProgressTime } from "@/utils/calculateProgressTime";
 
 interface BookingDetailProps {
@@ -11,6 +13,8 @@ interface BookingDetailProps {
 }
 
 const BookingDetail = ({ booking, onBack, onSendMessage }: BookingDetailProps) => {
+  const menuCodes = useRecoilValue(menuState);
+
   return (
     <div className={styles["booking-detail-container"]}>
       <div className={styles["head"]}>
@@ -87,9 +91,11 @@ const BookingDetail = ({ booking, onBack, onSendMessage }: BookingDetailProps) =
               </dl>
             </div>
           </div>
-          {/* <div className={styles["button-wrapper"]}>
-            <Button primary type="button" block label="메시지 보내기" onClick={onSendMessage} />
-          </div> */}
+          {menuCodes?.includes("M_SSE") && (
+            <div className={styles["button-wrapper"]}>
+              <Button primary type="button" block label="메시지 보내기" onClick={onSendMessage} />
+            </div>
+          )}
         </div>
       </div>
     </div>
