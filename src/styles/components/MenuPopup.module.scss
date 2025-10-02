@@ -2,16 +2,16 @@
   &-container {
     position: relative;
     z-index: 2;
-    transition: all .3s;
+    transition: all 0.3s;
     .dim {
-      position:fixed;
+      position: fixed;
       top: 0;
       left: 0;
-      content: '';
+      content: "";
       display: none;
       width: 100%;
       height: 100%;
-      background: rgba(18, 18, 18, 0.30);
+      background: rgba(18, 18, 18, 0.3);
     }
     &.open {
       z-index: 1002;
@@ -23,22 +23,22 @@
   &-inner {
     position: fixed;
     top: 0;
-    right: -270px;
+    right: -300px;
     z-index: 1000;
     width: 223px;
     height: 100%;
     background: var(--mode-Background);
     border-radius: 10px 0 0 10px;
-    transition: all .3s;
-    box-shadow: 0px 0px 10px 0px #1212124D;
+    transition: all 0.3s;
+    box-shadow: 0px 0px 10px 0px #1212124d;
     [data-theme="dark"] & {
-      box-shadow: 0px 0px 10px 0px #FFFFFF;
+      box-shadow: 0px 0px 10px 0px #ffffff;
     }
     @at-root .open & {
       right: 0;
     }
     & .user {
-      &-info{
+      &-info {
         position: relative;
         display: flex;
         align-items: flex-start;
@@ -50,7 +50,7 @@
           position: absolute;
           left: 15px;
           bottom: 0;
-          content: '';
+          content: "";
           display: block;
           width: calc(100% - 34px);
           height: 1px;
@@ -66,7 +66,8 @@
           width: 40px;
           height: 40px;
           border-radius: 50%;
-          background: var(--mode-keycolor) url("../../../public/assets/image/icon-light-theme.svg") no-repeat center 5px / 19px;
+          background: var(--mode-keycolor) url("../../../public/assets/image/icon-light-theme.svg")
+            no-repeat center 5px / 19px;
           color: var(--mode-Background);
           text-align: center;
           font-size: 5px;
@@ -114,7 +115,8 @@
         height: 40px;
         margin-left: 7px;
         border-radius: 50%;
-        background: var(--Light-mode-keycolor) url("../../../public/assets/image/icon-logout.svg") no-repeat center 5px / 24px;
+        background: var(--Light-mode-keycolor) url("../../../public/assets/image/icon-logout.svg")
+          no-repeat center 5px / 24px;
         color: var(--Light-mode-Background);
         text-align: center;
         font-size: 5px;
@@ -136,11 +138,11 @@
       border-radius: 15px 0 0 15px;
       background-color: var(--mode-Background);
       border: none;
-      box-shadow: -5px 0px 5px -4px #1212124D;
+      box-shadow: -5px 0px 5px -4px #1212124d;
       [data-theme="dark"] & {
-        box-shadow: -5px 0px 5px -4px #FFFFFF;
+        box-shadow: -5px 0px 5px -4px #ffffff;
       }
-      & > span{
+      & > span {
         display: block;
         position: absolute;
         left: 14px;
@@ -203,7 +205,7 @@
         top: 50%;
         right: 15px;
         content: "";
-        display:inline-block;
+        display: inline-block;
         width: 8px;
         height: 2px;
         background-color: var(--mode-gray2);
