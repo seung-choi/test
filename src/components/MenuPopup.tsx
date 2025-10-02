@@ -11,10 +11,11 @@ import {
   themeModeState,
   monitoringViewState,
 } from "@/lib/recoil";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState, useRecoilValue } from "recoil";
 import { useTranslation } from "react-i18next";
 import AutoFontSizeText from "@/components/AutoFontSizeText";
 import CourseMapListType from "@/types/CourseMapListType";
+import { menuState } from "@/lib/recoil";
 
 const MenuPopup = ({ courseMap }: { courseMap?: CourseMapListType | null }) => {
   const { t } = useTranslation();
@@ -26,6 +27,9 @@ const MenuPopup = ({ courseMap }: { courseMap?: CourseMapListType | null }) => {
 
   const { setAlertModalState } = useAlertModal();
   const path = usePathname();
+
+  // recoil에서 메뉴 데이터 가져오기
+  const menuCodes = useRecoilValue(menuState);
 
   // 테마 모드 토글 함수
   const handleThemeToggle = () => {
@@ -72,23 +76,32 @@ const MenuPopup = ({ courseMap }: { courseMap?: CourseMapListType | null }) => {
         </div>
         <div className={styles["menu-list-wrap"]}>
           <ul className={`${styles["menu-list"]} scroll-hidden`}>
-            <li
-              className={`${styles["menu-item"]} ${styles["monitoring"]} ${monitoringView === "course" ? styles["active"] : ""}`}
-            >
-              <button
-                type="button"
-                onClick={() => {
-                  router.push("/monitoring");
-                  setMonitoringView("course");
-                  setOpen(false);
-                }}
-              >
-                <AutoFontSizeText text={t("monitoring.title")} maxFontSize={15} minFontSize={10} />
-              </button>
-            </li>
-            {courseMap !== null && (
+            {/* 실시간 관제 메뉴 */}
+            {menuCodes.includes("M_MONITORING") && (
               <li
-                className={`${styles["menu-item"]} ${styles["map-view"]} ${monitoringView === "map" ? styles["active"] : ""}`}
+                className={`${styles["menu-item"]}  ${monitoringView === "course" ? styles["active"] : ""}`}
+              >
+                <button
+                  type="button"
+                  onClick={() => {
+                    router.push("/monitoring");
+                    setMonitoringView("course");
+                    setOpen(false);
+                  }}
+                >
+                  <AutoFontSizeText
+                    text={t("monitoring.title")}
+                    maxFontSize={15}
+                    minFontSize={10}
+                  />
+                </button>
+              </li>
+            )}
+
+            {/* 지도 관제 메뉴 */}
+            {menuCodes.includes("M_MAPPING") && courseMap !== null && (
+              <li
+                className={`${styles["menu-item"]} ${monitoringView === "map" ? styles["active"] : ""}`}
               >
                 <button
                   type="button"
@@ -102,45 +115,74 @@ const MenuPopup = ({ courseMap }: { courseMap?: CourseMapListType | null }) => {
                 </button>
               </li>
             )}
-            <li
-              className={`${styles["menu-item"]} ${styles["holecup"]} ${path === "/mapView/" ? styles["active"] : ""}`}
-            >
-              <button
-                type="button"
-                onClick={() => {
-                  setHolecupMenuPopupOpen(true);
-                  setOpen(false);
-                }}
+
+            {/* 메시지 메뉴 */}
+            {menuCodes.includes("M_SSE") && (
+              <li
+                className={`${styles["menu-item"]} ${path === "/message/" ? styles["active"] : ""}`}
               >
-                <AutoFontSizeText text="홀컵핀" maxFontSize={15} minFontSize={10} />
-              </button>
-            </li>
-            <li
-              className={`${styles["menu-item"]} ${styles["search"]} ${path === "/search/" ? styles["active"] : ""}`}
-            >
-              <button
-                type="button"
-                onClick={() => {
-                  router.push("/search");
-                  setOpen(false);
-                }}
+                <button
+                  type="button"
+                  onClick={() => {
+                    router.push("/message");
+                    setOpen(false);
+                  }}
+                >
+                  <AutoFontSizeText text="메세지" maxFontSize={15} minFontSize={10} />
+                </button>
+              </li>
+            )}
+
+            {/* 홀컵핀 메뉴 */}
+            {menuCodes.includes("M_PIN") && (
+              <li
+                className={`${styles["menu-item"]} ${path === "/holecup/" ? styles["active"] : ""}`}
               >
-                <AutoFontSizeText text="검색" maxFontSize={15} minFontSize={10} />
-              </button>
-            </li>
-            <li
-              className={`${styles["menu-item"]} ${styles["sos-history"]} ${path === "/sos-history/" ? styles["active"] : ""}`}
-            >
-              <button
-                type="button"
-                onClick={() => {
-                  router.push("/sos-history");
-                  setOpen(false);
-                }}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setHolecupMenuPopupOpen(true);
+                    setOpen(false);
+                  }}
+                >
+                  <AutoFontSizeText text="홀컵핀" maxFontSize={15} minFontSize={10} />
+                </button>
+              </li>
+            )}
+
+            {/* 검색 메뉴 */}
+            {menuCodes.includes("M_DETAIL") && (
+              <li
+                className={`${styles["menu-item"]} ${path === "/search/" ? styles["active"] : ""}`}
               >
-                <AutoFontSizeText text="오늘 긴급호출 목록" maxFontSize={15} minFontSize={10} />
-              </button>
-            </li>
+                <button
+                  type="button"
+                  onClick={() => {
+                    router.push("/search");
+                    setOpen(false);
+                  }}
+                >
+                  <AutoFontSizeText text="검색" maxFontSize={15} minFontSize={10} />
+                </button>
+              </li>
+            )}
+
+            {/* 긴급호출 목록 메뉴 */}
+            {menuCodes.includes("M_SOS") && (
+              <li
+                className={`${styles["menu-item"]} ${path === "/sos-history/" ? styles["active"] : ""}`}
+              >
+                <button
+                  type="button"
+                  onClick={() => {
+                    router.push("/sos-history");
+                    setOpen(false);
+                  }}
+                >
+                  <AutoFontSizeText text="오늘 긴급호출 목록" maxFontSize={15} minFontSize={10} />
+                </button>
+              </li>
+            )}
           </ul>
         </div>
         <button

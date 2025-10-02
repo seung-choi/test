@@ -5,8 +5,8 @@ import BookingType from "@/types/Booking.type";
 import EventHisSOSType from "@/types/EventHisSOSType";
 import ClubType from "@/types/Club.type";
 import EventSSE from "@/types/EventSSE.type";
-import {MapPinAPI} from "@/app/holecup/page";
-import {PassWordFormAPI} from "@/app/repassword/page";
+import { MapPinAPI } from "@/app/holecup/page";
+import { PassWordFormAPI } from "@/app/repassword/page";
 
 //GET
 export const getClub = async () => {
@@ -41,6 +41,14 @@ export const getSOSHistory = async () => {
   return res.data;
 };
 
+export const getMenuHis = async () => {
+  const res = await $axios<string[]>({
+    url: "/menu/his",
+    method: "get",
+  });
+  return res.data;
+};
+
 // POST
 export const postLogin = async (data: LoginFormAPI) => {
   const res = await $axios({
@@ -57,7 +65,7 @@ export const postSendHis = async (formData: FormData) => {
     method: "post",
     data: formData,
     headers: {
-      'Content-Type': 'multipart/form-data',
+      "Content-Type": "multipart/form-data",
     },
   });
   return res.data;
