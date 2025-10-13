@@ -35,7 +35,7 @@
       box-shadow: 0px 0px 10px 0px #ffffff;
     }
     @at-root .open & {
-      right: calc(env(safe-area-inset-bottom) + 0);
+      right: calc(env(safe-area-inset-bottom));
     }
     & .user {
       &-info {

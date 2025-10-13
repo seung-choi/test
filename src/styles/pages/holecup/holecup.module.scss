@@ -384,6 +384,7 @@
     position: fixed;
     top: 16px;
     right: -2px;
+    right: calc(-1 * (2px + env(safe-area-inset-bottom)));
     z-index: 99;
     width: 47px;
     height: 48px;
