@@ -23,7 +23,7 @@
   &-inner {
     position: fixed;
     top: 0;
-    right: -300px;
+    right: calc(-1 * (300px + env(safe-area-inset-bottom)));
     z-index: 1000;
     width: 223px;
     height: 100%;
@@ -35,7 +35,7 @@
       box-shadow: 0px 0px 10px 0px #ffffff;
     }
     @at-root .open & {
-      right: 0;
+      right: calc(env(safe-area-inset-bottom) + 0);
     }
     & .user {
       &-info {
