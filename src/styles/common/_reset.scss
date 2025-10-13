@@ -254,7 +254,7 @@ body ::-webkit-scrollbar-track {
   width: 100vw;
   min-height: 100svh;
   max-height: 100lvh;
-  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .layout.rotate-landscape {
