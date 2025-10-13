@@ -4,7 +4,15 @@ import { ClientLayout } from "@/app/ClientLayout";
 
 export const metadata: Metadata = {
   title: "Vgolf",
-  description: "Vgolf admin page",
+  description: "Vgolf Admin Site",
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({
