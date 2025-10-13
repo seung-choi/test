@@ -67,11 +67,16 @@ $axios.interceptors.response.use(
   async (error: AxiosError<ErrorResponse>) => {
     if (
       error.status === 401 &&
-      error.config?.url !== "/mng/v1/auth/login" &&
+      error.config?.url !== "/auth/login" &&
       error.response?.data?.code === "JWT_EXPIRED_TOKEN"
     ) {
       tokens.access = tokens.refresh;
-      await $axios.patch("/auth/login", {});
+      // 토큰 갱신 시에는 절대 URL을 사용하여 baseURL이 중복으로 붙지 않도록 함
+      await $axios({
+        url: `${getOriginURL("api", "/auth/")}login`,
+        method: "patch",
+        data: {},
+      });
       return $axios(error.config as AxiosRequestConfig);
     }
 
