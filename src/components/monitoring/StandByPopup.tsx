@@ -4,7 +4,7 @@ import styles from "@/styles/components/monitoring/StandByPopup.module.scss";
 import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { menuState, standByPopupState } from "@/lib/recoil";
+import { menuState, standByPopupState, teamClassMappingState } from "@/lib/recoil";
 import ClubType from "@/types/Club.type";
 import BookingType from "@/types/Booking.type";
 
@@ -34,6 +34,9 @@ const StandByPopup = ({ clubData, bookingData, onBookingClick }: StandByPopupPro
   const IWList = useMemo(() => {
     return courseBookings.filter((b) => b.status === "IW");
   }, [courseBookings]);
+
+  // bookingsNo별로 팀 클래스 매핑 생성
+  const teamClassMapping = useRecoilValue(teamClassMappingState);
 
   // standByPopupState가 변경될 때 activeTab 업데이트
   useEffect(() => {
@@ -94,7 +97,9 @@ const StandByPopup = ({ clubData, bookingData, onBookingClick }: StandByPopupPro
                             <div className={styles["standby-buggy-item-name"]}>
                               <div className={styles.waitingItemCart}>
                                 {booking.bookingsNo !== null && (
-                                  <div className={styles.tagGroup}></div>
+                                  <div
+                                    className={`${styles.tagGroup} ${teamClassMapping.get(booking.bookingsNo.toString())}`}
+                                  ></div>
                                 )}
                                 <div
                                   className={styles.outCourseCol}
@@ -137,7 +142,9 @@ const StandByPopup = ({ clubData, bookingData, onBookingClick }: StandByPopupPro
                             <div className={styles["standby-buggy-item-name"]}>
                               <div className={styles.waitingItemCart}>
                                 {booking.bookingsNo !== null && (
-                                  <div className={styles.tagGroup}></div>
+                                  <div
+                                    className={`${styles.tagGroup} ${teamClassMapping.get(booking.bookingsNo.toString())}`}
+                                  ></div>
                                 )}
                                 <div
                                   className={styles.outCourseCol}

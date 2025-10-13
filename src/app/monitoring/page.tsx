@@ -14,6 +14,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import transformBookingData from "@/utils/transformBookingData";
+import { getTeamClassMapping } from "@/utils/getTeamClassMapping";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import {
   standByPopupState,
@@ -23,6 +24,7 @@ import {
   themeModeState,
   monitoringViewState,
   menuState,
+  teamClassMappingState,
 } from "@/lib/recoil";
 import HolecupMenuPopup from "@/components/HolcupMenuPopup";
 import useSSE from "@/lib/useSSE";
@@ -63,6 +65,8 @@ const Monitoring = () => {
   const monitoringView = useRecoilValue(monitoringViewState);
   const menuCodes = useRecoilValue(menuState);
   const setMenuCodes = useSetRecoilState(menuState);
+  // 팀 클래스 매핑 상태 관리
+  const setTeamClassMapping = useSetRecoilState(teamClassMappingState);
 
   const { data: clubData } = useQuery({
     queryKey: ["clubData"],
@@ -84,6 +88,17 @@ const Monitoring = () => {
     if (!clubData || !bookingData) return [];
     return transformBookingData(bookingData, clubData);
   }, [bookingData, clubData]);
+
+  // Recoil state에서 팀 클래스 매핑 가져오기
+  const teamClassMapping = useRecoilValue(teamClassMappingState);
+
+  // refinedBookingData가 변경될 때마다 팀 클래스 매핑 업데이트
+  useEffect(() => {
+    if (refinedBookingData && refinedBookingData.length > 0) {
+      const teamMapping = getTeamClassMapping(refinedBookingData);
+      setTeamClassMapping(teamMapping);
+    }
+  }, [refinedBookingData, setTeamClassMapping]);
 
   const scrollToSection = (courseId: number) => {
     if (typeof window === "undefined") return;
@@ -352,7 +367,9 @@ const Monitoring = () => {
                                     )}
 
                                     {cart.bookingsNo !== null && (
-                                      <div className={styles.tagGroup}>
+                                      <div
+                                        className={`${styles.tagGroup} ${teamClassMapping.get(cart.bookingsNo.toString())}`}
+                                      >
                                         <span className="blind">단체팀 빨간 박스</span>
                                       </div>
                                     )}
