@@ -4,6 +4,7 @@ import BookingType from "@/types/Booking.type";
 import { formatGender } from "@/utils/formatGender";
 import { useRecoilValue } from "recoil";
 import { menuState } from "@/lib/recoil";
+import { removeWhitespace } from "@/utils/removeWhitespace";
 
 interface BookingDetailPopupProps {
   booking: BookingType | null;
@@ -42,25 +43,27 @@ const BookingDetailPopup = ({ booking, onClose }: BookingDetailPopupProps) => {
             <dl className={styles["booking-detail-info-item"]}>
               <dt className={styles["booking-detail-info-item-title"]}>전반 시작</dt>
               <dd className={styles["booking-detail-info-item-desc"]}>
-                {booking?.outStartTm || "-"}
+                {removeWhitespace(booking?.outStartTm) || "-"}
               </dd>
             </dl>
             <dl className={styles["booking-detail-info-item"]}>
               <dt className={styles["booking-detail-info-item-title"]}>전반 진행</dt>
               <dd className={styles["booking-detail-info-item-desc"]}>
                 {/*{calculateProgressTime(booking?.outStartTm || null, booking?.outEndTm || null)}*/}
-                {booking?.outRunTm || "-"}
+                {removeWhitespace(booking?.outRunTm) || "-"}
               </dd>
             </dl>
             <dl className={styles["booking-detail-info-item"]}>
               <dt className={styles["booking-detail-info-item-title"]}>후반 시작</dt>
               <dd className={styles["booking-detail-info-item-desc"]}>
-                {booking?.inStartTm || "-"}
+                {removeWhitespace(booking?.inStartTm) || "-"}
               </dd>
             </dl>
             <dl className={styles["booking-detail-info-item"]}>
               <dt className={styles["booking-detail-info-item-title"]}>후반 진행</dt>
-              <dd className={styles["booking-detail-info-item-desc"]}>{booking?.inRunTm || "-"}</dd>
+              <dd className={styles["booking-detail-info-item-desc"]}>
+                {removeWhitespace(booking?.inRunTm) || "-"}
+              </dd>
             </dl>
           </div>
         </div>
