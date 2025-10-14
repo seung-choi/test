@@ -5,21 +5,61 @@
 // 단체팀 박스 컬러 클래스 추가
 .teamBox1 {
   border: 2px solid var(--team-team1);
-  background-color: rgba(230, 43, 43, 0.7);
+  background-color: rgba(230, 43, 43, 0.2);
 }
 .teamBox2 {
   border: 2px solid var(--team-team2);
-  background-color: rgba(0, 183, 82, 0.7);
+  background-color: rgba(0, 183, 82, 0.2);
 }
 .teamBox3 {
   border: 2px solid var(--team-team3);
-  background-color: rgba(128, 67, 198, 0.7);
+  background-color: rgba(128, 67, 198, 0.2);
 }
 .teamBox4 {
   border: 2px solid var(--team-team4);
-  background-color: rgba(255, 204, 0, 0.7);
+  background-color: rgba(255, 204, 0, 0.2);
 }
 .teamBox5 {
   border: 2px solid var(--team-team5);
-  background-color: rgba(237, 56, 247, 0.7);
+  background-color: rgba(237, 56, 247, 0.2);
+}
+.teamBox6 {
+  border: 2px solid var(--team-team6);
+  background-color: rgba(167, 224, 32, 0.2);
+}
+.teamBox7 {
+  border: 2px solid var(--team-team7);
+  background-color: rgba(59, 217, 199, 0.2);
+}
+.teamBox8 {
+  border: 2px solid var(--team-team8);
+  background-color: rgba(180, 2, 250, 0.4);
+}
+.teamBox9 {
+  border: 2px solid var(--team-team9);
+  background-color: rgba(51, 154, 239, 0.2);
+}
+.teamBox10 {
+  border: 2px solid var(--team-team10);
+  background-color: rgba(246, 69, 125, 0.2);
+}
+.teamBox11 {
+  border: 2px solid var(--team-team11);
+  background-color: rgba(254, 118, 0, 0.2);
+}
+.teamBox12 {
+  border: 2px solid var(--team-team12);
+  background-color: rgba(61, 227, 27, 0.2);
+}
+.teamBox13 {
+  border: 2px solid var(--team-team13);
+  background-color: rgba(123, 15, 255, 0.4);
+}
+.teamBox14 {
+  border: 2px solid var(--team-team14);
+  background-color: rgba(24, 0, 129, 0.2);
+}
+.teamBox15 {
+  border: 2px solid var(--team-team15);
+  background-color: rgba(240, 233, 21, 0.2);
 }

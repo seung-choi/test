@@ -1,103 +1,113 @@
-
 :root {
-/*font*/
---main-font-family: 'SUIT';
---main-font-color: rgb(68, 68, 68);
---main-font-size: 15px;
+  /*font*/
+  --main-font-family: "SUIT";
+  --main-font-color: rgb(68, 68, 68);
+  --main-font-size: 15px;
 
-/*color*/
---MOBILE-admin-Keypurple: rgba(47, 0, 119, 1);
---MOBILE-admin-Pointpurple: rgba(102, 0, 255, 1);
---MOBILE-admin-Purplemiddle: rgba(115, 104, 198, 1);
---MOBILE-admin-Purplelight: rgba(234, 230, 255, 1);
---MOBILE-admin-Purplegray: rgba(210, 204, 219, 1);
---MOBILE-admin-Keywhite: rgba(255, 255, 255, 1);
---MOBILE-admin-Keyblack: rgba(18, 18, 18, 1);
---MOBILE-admin-Grayscale1: rgba(245, 245, 245, 1);
---MOBILE-admin-Grayscale2: rgba(238, 238, 238, 1);
---MOBILE-admin-Grayscale3: rgba(180, 180, 180, 1);
---MOBILE-admin-Grayscale4: rgba(102, 102, 102, 1);
---MOBILE-admin-PointYellow: rgba(255, 238, 0, 1);
---MOBILE-admin-Pointred: rgba(255, 75, 75, 1);
---MOBILE-admin-Redmiddle: rgba(255, 117, 117, 1);
---MOBILE-admin-Redlight: rgba(255, 217, 217, 1);
---MOBILE-admin-Pointblue: rgba(117, 124, 255, 1);
+  /*color*/
+  --MOBILE-admin-Keypurple: rgba(47, 0, 119, 1);
+  --MOBILE-admin-Pointpurple: rgba(102, 0, 255, 1);
+  --MOBILE-admin-Purplemiddle: rgba(115, 104, 198, 1);
+  --MOBILE-admin-Purplelight: rgba(234, 230, 255, 1);
+  --MOBILE-admin-Purplegray: rgba(210, 204, 219, 1);
+  --MOBILE-admin-Keywhite: rgba(255, 255, 255, 1);
+  --MOBILE-admin-Keyblack: rgba(18, 18, 18, 1);
+  --MOBILE-admin-Grayscale1: rgba(245, 245, 245, 1);
+  --MOBILE-admin-Grayscale2: rgba(238, 238, 238, 1);
+  --MOBILE-admin-Grayscale3: rgba(180, 180, 180, 1);
+  --MOBILE-admin-Grayscale4: rgba(102, 102, 102, 1);
+  --MOBILE-admin-PointYellow: rgba(255, 238, 0, 1);
+  --MOBILE-admin-Pointred: rgba(255, 75, 75, 1);
+  --MOBILE-admin-Redmiddle: rgba(255, 117, 117, 1);
+  --MOBILE-admin-Redlight: rgba(255, 217, 217, 1);
+  --MOBILE-admin-Pointblue: rgba(117, 124, 255, 1);
 
---secondary-purplescalelight: #ECE6F4;
---secondary-purplescalemiddle: #9081D8;
---Adminkey-keyblue: #0655F6;
---Adminkey-keybluedark: #001A9F;
---Adminkey-keygray: #666666;
---Adminkey-keydarkgray: #444444;
---Adminkey-keyblack: #1F1F1F;
---Adminkey-keydarknavy: #1B1C31;
---Adminkey-white: #FFFFFF;
---gray-grayscale1: #7B7B7B;
---gray-Grayscale2: #959595;
---gray-Grayscale3: #D9D9D9;
---gray-Grayscale4: #F3F3F3;
---unit-error: #DC0000;
---navy-dark-lightnavy3: #48487C;
---navy-dark-lightnavy1: #313246;
---navy-dark-lightnavy2: #3A3C56;
---Team-Team1: #E62B2B;
---Team-Team2: #00B752;
---Team-Team3: #5943C6;
---Team-Team4: #FFCC00;
---Team-Team5: #ED38F7;
---blue-lightblue2: #D4E6FA;
---blue-lightblue4: #F2F8FF;
---blue-lightblue5: #E6E9F1;
---blue-lightblue1: #C8E2FF;
---blue-lightblue3: #DDEBFB;
+  --secondary-purplescalelight: #ece6f4;
+  --secondary-purplescalemiddle: #9081d8;
+  --Adminkey-keyblue: #0655f6;
+  --Adminkey-keybluedark: #001a9f;
+  --Adminkey-keygray: #666666;
+  --Adminkey-keydarkgray: #444444;
+  --Adminkey-keyblack: #1f1f1f;
+  --Adminkey-keydarknavy: #1b1c31;
+  --Adminkey-white: #ffffff;
+  --gray-grayscale1: #7b7b7b;
+  --gray-Grayscale2: #959595;
+  --gray-Grayscale3: #d9d9d9;
+  --gray-Grayscale4: #f3f3f3;
+  --unit-error: #dc0000;
+  --navy-dark-lightnavy3: #48487c;
+  --navy-dark-lightnavy1: #313246;
+  --navy-dark-lightnavy2: #3a3c56;
+  --blue-lightblue2: #d4e6fa;
+  --blue-lightblue4: #f2f8ff;
+  --blue-lightblue5: #e6e9f1;
+  --blue-lightblue1: #c8e2ff;
+  --blue-lightblue3: #ddebfb;
 
---Light-mode-Background: #FFFFFF;
---Light-mode-error: #DC0000;
---Light-mode-pointred: #FF4B4B;
---Light-mode-pointred2: #FF7575;
---Light-mode-pointred3: #FFD9D9;
---Light-mode-font_key: #121212;
---Light-mode-keycolor: #001A9F;
---Light-mode-darkgray: #444444;
---Light-mode-gray1: #666666;
---Light-mode-gray2: #B4B4B4;
---Light-mode-gray3: #F5F5F5;
---Light-mode-blue1: #C8E2FF;
---Light-mode-blue2: #DDEBFB;
---Light-mode-blue3: #F1F7FF;
+  --Light-mode-Background: #ffffff;
+  --Light-mode-error: #dc0000;
+  --Light-mode-pointred: #ff4b4b;
+  --Light-mode-pointred2: #ff7575;
+  --Light-mode-pointred3: #ffd9d9;
+  --Light-mode-font_key: #121212;
+  --Light-mode-keycolor: #001a9f;
+  --Light-mode-darkgray: #444444;
+  --Light-mode-gray1: #666666;
+  --Light-mode-gray2: #b4b4b4;
+  --Light-mode-gray3: #f5f5f5;
+  --Light-mode-blue1: #c8e2ff;
+  --Light-mode-blue2: #ddebfb;
+  --Light-mode-blue3: #f1f7ff;
 
-//NEw variables
-[data-theme="dark"] {
-  --mode-Background: #1B1C31;
-  --mode-error: #DC0000;
-  --mode-pointred: #FF4B4B;
-  --mode-pointred2: #FF7575;
-  --mode-pointred3: #FFD9D9;
-  --mode-font_key: #FFFFFF;
-  --mode-keycolor: #001A9F;
-  --mode-darkgray: #444444;
-  --mode-gray1: #D9D9D9;
-  --mode-gray2: #B4B4B4;
-  --mode-gray3: #232331;
-  --mode-color1: #3A3C56;
-  --mode-color2: #30314C;
-  --mode-color3: #48487C;
-}
-[data-theme="light"] {
-  --mode-Background: #FFFFFF;
-  --mode-error: #DC0000;
-  --mode-pointred: #FF4B4B;
-  --mode-pointred2: #FF7575;
-  --mode-pointred3: #FFD9D9;
-  --mode-font_key: #121212;
-  --mode-keycolor: #001A9F;
-  --mode-darkgray: #444444;
-  --mode-gray1: #666666;
-  --mode-gray2: #B4B4B4;
-  --mode-gray3: #F5F5F5;
-  --mode-color1: #C8E2FF;
-  --mode-color2: #DDEBFB;
-  --mode-color3: #F1F7FF;
-}
+  /* Team Colors */
+  --team-team1: #e62b2b;
+  --team-team2: #00b752;
+  --team-team3: #5943c6;
+  --team-team4: #ffcc00;
+  --team-team5: #ed38f7;
+  --team-team6: #a7e020;
+  --team-team7: #3bd9c7;
+  --team-team8: #b402fa;
+  --team-team9: #339aef;
+  --team-team10: #f6457d;
+  --team-team11: #ff7700;
+  --team-team12: #3de31b;
+  --team-team13: #7b0fff;
+  --team-team14: #180081;
+  --team-team15: #f2a72e;
 
+  //NEw variables
+  [data-theme="dark"] {
+    --mode-Background: #1b1c31;
+    --mode-error: #dc0000;
+    --mode-pointred: #ff4b4b;
+    --mode-pointred2: #ff7575;
+    --mode-pointred3: #ffd9d9;
+    --mode-font_key: #ffffff;
+    --mode-keycolor: #001a9f;
+    --mode-darkgray: #444444;
+    --mode-gray1: #d9d9d9;
+    --mode-gray2: #b4b4b4;
+    --mode-gray3: #232331;
+    --mode-color1: #3a3c56;
+    --mode-color2: #30314c;
+    --mode-color3: #48487c;
+  }
+  [data-theme="light"] {
+    --mode-Background: #ffffff;
+    --mode-error: #dc0000;
+    --mode-pointred: #ff4b4b;
+    --mode-pointred2: #ff7575;
+    --mode-pointred3: #ffd9d9;
+    --mode-font_key: #121212;
+    --mode-keycolor: #001a9f;
+    --mode-darkgray: #444444;
+    --mode-gray1: #666666;
+    --mode-gray2: #b4b4b4;
+    --mode-gray3: #f5f5f5;
+    --mode-color1: #c8e2ff;
+    --mode-color2: #ddebfb;
+    --mode-color3: #f1f7ff;
+  }
 }
