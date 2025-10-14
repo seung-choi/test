@@ -361,7 +361,7 @@ const Monitoring = () => {
                                       <div
                                         className={styles.dottedLine}
                                         style={{
-                                          height: `${stackedIndex * 30}px`,
+                                          height: `calc(${stackedIndex * 30}px - 2px)`,
                                         }}
                                       ></div>
                                     )}
