@@ -73,7 +73,7 @@
     }
     .holecup-map {
       position: relative;
-      width: calc(100% - 60px - 220px);
+      width: calc((100% - 60px) * 0.7);
       height: 100%;
       & > img {
         width: auto;
@@ -105,7 +105,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      width: 220px;
+      width: calc((100% - 60px) * 0.3);
       height: 100%;
       gap: 15px;
       padding-bottom: 60px;
@@ -388,7 +388,7 @@
 .floating-menu-button {
   position: fixed;
   top: 16px;
-  right: calc(-1 * (2px + env(safe-area-inset-bottom)));
+  right: 0;
   z-index: 99;
   width: 47px;
   height: 48px;

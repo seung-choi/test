@@ -34,10 +34,8 @@
     [data-theme="dark"] & {
       box-shadow: 0 0 10px 0 #ffffff;
     }
-    @at-root .rotate-landscape & {
-      @at-root .open & {
-        right: calc(env(safe-area-inset-bottom));
-      }
+    @at-root .rotate-landscape .menu-container.open & {
+      right: calc(env(safe-area-inset-bottom));
     }
     @at-root .open & {
       right: 0;
