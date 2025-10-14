@@ -230,7 +230,7 @@ body ::-webkit-scrollbar-track {
   transform: none;
   width: 100vw;
   min-height: calc(100svh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
-  max-height: calc(100svh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  max-height: calc(100lvh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
   padding-top: env(safe-area-inset-top);
 }
 
@@ -238,7 +238,7 @@ body ::-webkit-scrollbar-track {
   transform: rotate(-90deg) translateX(-100%);
   transform-origin: left top;
   min-width: calc(100svh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
-  max-width: calc(100svh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  max-width: calc(100lvh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
   height: 100vw;
   position: absolute;
   top: 0;
