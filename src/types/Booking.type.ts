@@ -30,7 +30,10 @@ type BookingType = {
   /* 노캐디 */
   playerId: number | null;
   playerNm: string | null;
+  // 경기 지연
+  delayTm: string | null;
   /* 기기 */
+  device: string | null;
   deviceNo: string;
   /* 좌표: 픽셀(원본 기준) */
   x: number | null;

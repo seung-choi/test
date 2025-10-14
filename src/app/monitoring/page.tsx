@@ -49,7 +49,6 @@ const tagOrder = [
   "ADD9HOLES",
   "MARSHAL",
   "TOPDRESSING",
-  "TIMEDELAY",
 ];
 
 const Monitoring = () => {
@@ -337,11 +336,13 @@ const Monitoring = () => {
                                               </li>
                                             );
                                           })}
-                                        {/*{cart.delayTm !== null && (*/}
-                                        {/*  <li className={styles.TIMEDELAY}>*/}
-                                        {/*    <span className="blind">DELAY</span>*/}
-                                        {/*  </li>*/}
-                                        {/*)}*/}
+                                        {/* TIMEDELAY 태그가 tags에 있거나 delayTm이 null이 아닐 경우 노출 */}
+                                        {(cart.tags?.includes("TIMEDELAY") ||
+                                          cart.delayTm !== null) && (
+                                          <li className={styles.TIMEDELAY}>
+                                            <span className="blind">TIMEDELAY</span>
+                                          </li>
+                                        )}
                                       </ul>
                                     )}
                                     <strong
