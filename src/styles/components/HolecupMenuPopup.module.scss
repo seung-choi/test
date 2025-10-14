@@ -23,7 +23,7 @@
   &-inner {
     position: fixed;
     top: 0;
-    right: calc(-1 * (270px + env(safe-area-inset-bottom)));
+    right: calc(-1 * (276px + env(safe-area-inset-bottom)));
     z-index: 1000;
     width: 223px;
     height: 100%;
