@@ -3,7 +3,7 @@
   background-color: var(--mode-Background);
   .head {
     &-arrow {
-      position: fixed;
+      position: absolute;
       top: 18px;
       left: 12px;
       width: 42px;
@@ -20,11 +20,11 @@
         height: 13px;
         margin-left: -7px;
         margin-top: -7px;
-        content: '';
+        content: "";
         display: block;
         border-radius: 2px;
-        border-left : 4px solid var(--mode-gray1);
-        border-top : 4px solid var(--mode-gray1);
+        border-left: 4px solid var(--mode-gray1);
+        border-top: 4px solid var(--mode-gray1);
         transform: rotate(-45deg);
       }
     }
@@ -42,7 +42,7 @@
       [data-theme="dark"] & {
         color: var(--mode-gray1);
       }
-    } 
+    }
   }
   .content {
     height: calc(100% - 77px);
@@ -74,7 +74,7 @@
           background: var(--mode-gray3);
           color: var(--mode-gray1);
           font-weight: 500;
-          font-size:16px;
+          font-size: 16px;
           &:focus-visible {
             outline: none;
           }
@@ -133,7 +133,7 @@
             }
           }
           &-name {
-            width: calc((100% - 50px - 8px) * 0.3)
+            width: calc((100% - 50px - 8px) * 0.3);
           }
           &-teeOff {
             width: calc((100% - 50px - 8px) * 0.3);
