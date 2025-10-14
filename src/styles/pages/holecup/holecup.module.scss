@@ -400,7 +400,7 @@
   font-size: 6px;
   font-weight: 700;
   text-align: center;
-  @at-root .rotate-landscape & {
+  @at-root :global(.rotate-landscape) & {
     right: env(safe-area-inset-bottom);
   }
   [data-theme="dark"] & {
