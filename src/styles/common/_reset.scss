@@ -229,16 +229,16 @@ body ::-webkit-scrollbar-track {
 .layout.portrait {
   transform: none;
   width: 100vw;
-  min-height: 100svh;
-  max-height: 100lvh;
+  min-height: calc(100svh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  max-height: calc(100svh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
   padding-top: env(safe-area-inset-top);
 }
 
 .layout.rotate-portrait {
   transform: rotate(-90deg) translateX(-100%);
   transform-origin: left top;
-  min-width: calc(100svh - env(safe-area-inset-top));
-  max-width: calc(100svh - env(safe-area-inset-top));
+  min-width: calc(100svh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  max-width: calc(100svh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
   height: 100vw;
   position: absolute;
   top: 0;

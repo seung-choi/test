@@ -30,12 +30,17 @@
     background: var(--mode-Background);
     border-radius: 10px 0 0 10px;
     transition: all 0.3s;
-    box-shadow: 0px 0px 10px 0px #1212124d;
+    box-shadow: 0 0 10px 0 #1212124d;
     [data-theme="dark"] & {
-      box-shadow: 0px 0px 10px 0px #ffffff;
+      box-shadow: 0 0 10px 0 #ffffff;
+    }
+    @at-root .rotate-landscape & {
+      @at-root .open & {
+        right: calc(env(safe-area-inset-bottom));
+      }
     }
     @at-root .open & {
-      right: calc(env(safe-area-inset-bottom));
+      right: 0;
     }
     & .user {
       &-info {

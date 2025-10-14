@@ -1,4 +1,5 @@
 .holecup {
+  position: relative;
   height: 100%;
   &-content {
     position: relative;
@@ -22,11 +23,11 @@
         height: 13px;
         margin-left: -7px;
         margin-top: -7px;
-        content: '';
+        content: "";
         display: block;
         border-radius: 2px;
-        border-left : 4px solid var(--mode-gray1);
-        border-top : 4px solid var(--mode-gray1);
+        border-left: 4px solid var(--mode-gray1);
+        border-top: 4px solid var(--mode-gray1);
         transform: rotate(-45deg);
       }
     }
@@ -115,11 +116,11 @@
         width: 120px;
         padding: 6px 8px;
         background-color: var(--mode-color3);
-        box-shadow: 0 2px 9px 0 rgba(0, 0, 0, 0.40);
+        box-shadow: 0 2px 9px 0 rgba(0, 0, 0, 0.4);
         border-radius: 10px;
         [data-theme="dark"] & {
           background: var(--mode-gray3);
-          box-shadow: 0px 0px 5px 0px #FFFFFF;
+          box-shadow: 0 0 5px 0 #ffffff;
           backdrop-filter: blur(19px);
         }
         button {
@@ -129,13 +130,17 @@
           border: none;
           border-radius: 10px;
           &.landscape {
-            background: var(--mode-color3) url("../../../../public/assets/image/icon-phone-landscape.svg") no-repeat center / 30px auto;
+            background: var(--mode-color3)
+              url("../../../../public/assets/image/icon-phone-landscape.svg") no-repeat center /
+              30px auto;
             [data-theme="dark"] & {
               background-color: var(--mode-gray3);
             }
           }
           &.portrait {
-            background: var(--mode-color3) url("../../../../public/assets/image/icon-phone-portrait.svg") no-repeat center / 17px auto;
+            background: var(--mode-color3)
+              url("../../../../public/assets/image/icon-phone-portrait.svg") no-repeat center / 17px
+              auto;
             [data-theme="dark"] & {
               background-color: var(--mode-gray3);
             }
@@ -153,10 +158,10 @@
         padding: 8px 10px;
         border-radius: 15px;
         background: var(--mode-Background);
-        box-shadow: 0 2px 9px 0 rgba(0, 0, 0, 0.40);
+        box-shadow: 0 2px 9px 0 rgba(0, 0, 0, 0.4);
         backdrop-filter: blur(9.5px);
         [data-theme="dark"] & {
-          background: var(--mode-color2); 
+          background: var(--mode-color2);
         }
         .img-wrap {
           position: relative;
@@ -226,7 +231,7 @@
         justify-content: center;
         height: 36px;
         width: 100%;
-        max-width : 150px;
+        max-width: 150px;
         border-radius: 36px;
         background: var(--mode-keycolor);
         color: var(--mode-Background);
@@ -234,7 +239,7 @@
         font-size: 18px;
         font-style: normal;
         font-weight: 700;
-        line-height: normal; 
+        line-height: normal;
         letter-spacing: -0.36px;
         [data-theme="dark"] & {
           background: var(--mode-keycolor);
@@ -260,7 +265,7 @@
     height: 60px;
     max-height: 60px;
     background: var(--mode-color1);
-    box-shadow: 0 0 13px 0 rgba(0, 0, 0, 0.20);
+    box-shadow: 0 0 13px 0 rgba(0, 0, 0, 0.2);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -305,7 +310,7 @@
       max-width: 100%;
       overflow: hidden;
       overflow-x: scroll;
-      li{
+      li {
         display: inline-block;
       }
       .hole-item {
@@ -335,7 +340,7 @@
           color: var(--mode-keycolor);
           border-color: var(--mode-Background);
           background: var(--mode-color1);
-          box-shadow: 0px 0px 6px 0px #00000066;
+          box-shadow: 0 0 6px 0 #00000066;
           [data-theme="dark"] & {
             background: var(--mode-keycolor);
             color: var(--mode-font_key);
@@ -369,7 +374,7 @@
   height: 25px;
   padding: 0 30px;
   border-radius: 0 0 5px 5px;
-  background: var(--MOBILE-admin-PointYellow, #FE0);
+  background: var(--MOBILE-admin-PointYellow, #fe0);
   box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.25);
   color: var(--MOBILE-admin-Keyblack, #121212);
   text-align: center;
@@ -381,21 +386,24 @@
 }
 
 .floating-menu-button {
-    position: fixed;
-    top: 16px;
-    right: -2px;
-    right: calc(-1 * (2px + env(safe-area-inset-bottom)));
-    z-index: 99;
-    width: 47px;
-    height: 48px;
-    padding-top: 28px;
-    border-radius: 15px 0 0 15px;
-    background: var(--mode-keycolor) url("../../../../public/assets/image/icon-holecup-white.svg") no-repeat center 10px / 20px auto;
-    color: var(--mode-Background);
-    font-size: 6px;
-    font-weight: 700;
-    text-align: center;
-    [data-theme="dark"] & {
-      color: var(--mode-font_key);
-    }
+  position: fixed;
+  top: 16px;
+  right: calc(-1 * (2px + env(safe-area-inset-bottom)));
+  z-index: 99;
+  width: 47px;
+  height: 48px;
+  padding-top: 28px;
+  border-radius: 15px 0 0 15px;
+  background: var(--mode-keycolor) url("../../../../public/assets/image/icon-holecup-white.svg")
+    no-repeat center 10px / 20px auto;
+  color: var(--mode-Background);
+  font-size: 6px;
+  font-weight: 700;
+  text-align: center;
+  @at-root .rotate-landscape & {
+    right: env(safe-area-inset-bottom);
+  }
+  [data-theme="dark"] & {
+    color: var(--mode-font_key);
+  }
 }
