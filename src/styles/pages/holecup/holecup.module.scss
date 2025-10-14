@@ -290,16 +290,6 @@
         white-space: nowrap;
       }
     }
-    &::after {
-      content: "";
-      display: block;
-      width: 10px;
-      height: 10px;
-      background: pink;
-      position: fixed;
-      bottom: 0;
-      right: 0;
-    }
   }
   &-menu-box {
     display: flex;
