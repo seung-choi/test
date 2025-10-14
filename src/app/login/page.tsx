@@ -102,13 +102,10 @@ const Login = () => {
     <>
       <h1 className="blind">{t("login.title")}</h1>
       <form className={styles["login-container"]} onSubmit={handleSubmit}>
-        <h2 className={styles["login-title"]}>
-          {t("login.subtitle")
-            .split("\n")
-            .map((line, index) => (
-              <span key={index}>{line}</span>
-            ))}
-        </h2>
+        <h2
+          className={styles["login-title"]}
+          dangerouslySetInnerHTML={{ __html: t("login.subtitle") }}
+        ></h2>
 
         <div className={styles["login-top-wrap"]}>
           {error && <div className={styles["login-helper-text"]}>{t("login.errorMessage")}</div>}

@@ -1,7 +1,7 @@
 {
   "login": {
     "title": "Log In",
-    "subtitle": "Please enter your \nID and PW",
+    "subtitle": "Please enter your <br/>ID and PW",
     "errorMessage": "Please check your ID and PW then try again.",
     "idPlaceholder": "Please Enter ID",
     "pwPlaceholder": "Please Enter Password",
@@ -26,7 +26,7 @@
   },
   "message": {
     "title": "Send Messages",
-    "selectTargetDesc": "Please select all recipients\nfor the message",
+    "selectTargetDesc": "Please select all recipients<br/>for the message",
     "selectByCourse": "By Course",
     "noCart": "No Carts Avaiable.",
     "selectByCart": "By Cart",

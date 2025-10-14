@@ -1,7 +1,7 @@
 {
   "login": {
     "title": "로그인",
-    "subtitle": "아이디와 비밀번호를\n입력해주세요",
+    "subtitle": "아이디와 비밀번호를<br/>입력해주세요",
     "errorMessage": "아이디와 비밀번호를 확인하신 후 다시 입력해주세요.",
     "idPlaceholder": "아이디를 입력해주세요",
     "pwPlaceholder": "비밀번호를 입력해주세요",
@@ -26,7 +26,7 @@
   },
   "message": {
     "title": "메세지 보내기",
-    "selectTargetDesc": "메세지를 보낼 대상을\n모두 선택해주세요",
+    "selectTargetDesc": "메세지를 보낼 대상을<br/>모두 선택해주세요",
     "selectByCourse": "코스별",
     "noCart": "카트 목록이 없습니다.",
     "selectByCart": "카트별",

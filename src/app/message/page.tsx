@@ -118,16 +118,10 @@ const Message = () => {
             <h1 className={styles["head-title"]}>{t("message.title")}</h1>
           </div>
           <div className={styles["content"]}>
-            <strong className={styles["message-desc"]}>
-              {t("message.selectTargetDesc")
-                .split("\n")
-                .map((line, i) => (
-                  <span key={i}>
-                    {line}
-                    <br />
-                  </span>
-                ))}
-            </strong>
+            <strong
+              className={styles["message-desc"]}
+              dangerouslySetInnerHTML={{ __html: t("message.selectTargetDesc") }}
+            />
             <div className={styles["select-content-inner"]}>
               <div className={styles["select-wrap"]}>
                 <strong className={styles["select-title"]}>{t("message.selectByCourse")}</strong>
