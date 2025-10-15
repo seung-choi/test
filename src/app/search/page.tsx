@@ -42,7 +42,17 @@ const Search = () => {
   const filteredData = useMemo(() => {
     if (!searchName.trim()) return [];
 
-    return refinedBookingData.filter((booking: BookingType) => {
+    //전반진행중(IP) 후반진행중(OP) 전반대기(OW) 후반대기(IW) 종료 대기(CW) 카운팅
+    const participateBookings = refinedBookingData.filter(
+      (booking) =>
+        booking.status === "OP" ||
+        booking.status === "IP" ||
+        booking.status === "OW" ||
+        booking.status === "IW" ||
+        booking.status === "CW",
+    );
+
+    return participateBookings.filter((booking: BookingType) => {
       if (searchType === "caddy") {
         return (
           booking.caddyNm &&

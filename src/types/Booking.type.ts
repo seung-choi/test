@@ -41,7 +41,7 @@ type BookingType = {
   /* 위경도: 실제 발생 */
   latitude: number;
   longitude: number;
-  status: "OW" | "OP" | "IW" | "IP" | "C";
+  status: string;
   /* 진행률: 퍼센트(시작점 기준) */
   progress: number;
   /* 전반 시작: HH:mm(시:분) */
