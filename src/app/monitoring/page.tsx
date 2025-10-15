@@ -282,16 +282,47 @@ const Monitoring = () => {
                                   (c) => c.courseId === cart.outCourseId,
                                 );
 
-                                // progress 차이로 겹침 판단 (25% 이내면 겹침으로 간주)
-                                const overlappingCarts = cartListByHoleId.filter((c) => {
-                                  const progressDiff = Math.abs(
-                                    (cart.progress ?? 0) - (c.progress ?? 0),
-                                  );
-                                  return progressDiff <= 60;
-                                });
+                                // 전체 카트에서 겹침 그룹 찾기 (60% 이내면 겹침으로 간주)
+                                const findOverlappingGroup = (carts: any[], targetCart: any) => {
+                                  const group = [targetCart];
 
-                                const stackedIndex = overlappingCarts
-                                  .sort((a, b) => (b.progress ?? 0) - (a.progress ?? 0))
+                                  for (const cart of carts) {
+                                    if (cart.bookingId === targetCart.bookingId) continue;
+
+                                    const isOverlapping = group.some((groupCart) => {
+                                      const progressDiff = Math.abs(
+                                        (cart.progress ?? 0) - (groupCart.progress ?? 0),
+                                      );
+                                      return progressDiff <= 60;
+                                    });
+
+                                    if (isOverlapping) {
+                                      group.push(cart);
+                                    }
+                                  }
+
+                                  return group;
+                                };
+
+                                const overlappingGroup = findOverlappingGroup(
+                                  cartListByHoleId,
+                                  cart,
+                                );
+                                const stackedIndex = overlappingGroup
+                                  .sort((a, b) => {
+                                    // progress가 다르면 높은 순으로 정렬
+                                    const progressDiff = (b.progress ?? 0) - (a.progress ?? 0);
+                                    if (progressDiff !== 0) return progressDiff;
+
+                                    // progress가 같으면 원본 배열에서의 순서 유지 (앞에 있는 게 위로)
+                                    const aIndex = cartListByHoleId.findIndex(
+                                      (c) => c.bookingId === a.bookingId,
+                                    );
+                                    const bIndex = cartListByHoleId.findIndex(
+                                      (c) => c.bookingId === b.bookingId,
+                                    );
+                                    return aIndex - bIndex;
+                                  })
                                   .findIndex((c) => c.bookingId === cart.bookingId);
 
                                 return (
