@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "@/styles/components/monitoring/BookingDetailPopup.module.scss";
 import BookingType from "@/types/Booking.type";
-import { formatGender } from "@/utils/formatGender";
 import { useRecoilValue } from "recoil";
 import { menuState } from "@/lib/recoil";
 import { removeWhitespace } from "@/utils/removeWhitespace";
@@ -33,8 +32,12 @@ const BookingDetailPopup = ({ booking, onClose }: BookingDetailPopupProps) => {
           <ul className={styles["booking-player-list"]}>
             {booking?.playerList?.map((player) => (
               <li key={player.playerId} className={styles["booking-player-item"]}>
-                {" "}
-                {player.playerNm}&#40;{formatGender(player.playerGen || null)}&#41;
+                <span title={player.playerNm + " (" + player.playerGen || "-" + ")"}>
+                  {player.playerNm} ({player.playerGen || "-"})
+                </span>
+                <span title={player.sumScore?.toString() || "-"}>
+                  {player.sumScore?.toString() || "-"}
+                </span>
               </li>
             ))}
           </ul>

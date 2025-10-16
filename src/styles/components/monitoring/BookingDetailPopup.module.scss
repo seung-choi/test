@@ -54,17 +54,26 @@
       padding: 0 30px 20px;
       box-sizing: border-box;
       .booking-player-list {
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 2px 10px;
-        padding: 5px 0;
-        margin-bottom: 7px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px 15px;
+        margin-bottom: 13px;
         .booking-player-item {
-          font-weight: 400;
-          font-size: 15px;
-          color: var(--mode-font_key);
-          line-height: 19px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 0 5px;
+          height: 20px;
+          border-bottom: 1px solid var(--mode-font_key);
+          span {
+            display: block;
+            padding: 0 3px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 15px;
+            color: var(--mode-font_key);
+          }
         }
       }
       .booking-detail-info-list {
