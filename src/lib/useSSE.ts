@@ -143,7 +143,7 @@ const useSSE = () => {
               if (!destroyed) {
                 open();
               }
-            }, 1000);
+            }, 1500);
           }
           return;
         }
