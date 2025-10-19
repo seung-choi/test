@@ -7,6 +7,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { menuState, standByPopupState, teamClassMappingState } from "@/lib/recoil";
 import ClubType from "@/types/Club.type";
 import BookingType from "@/types/Booking.type";
+import { TAG_ORDER, LEVEL1_TAGS } from "@/constants/tags";
 
 interface StandByPopupProps {
   clubData: ClubType;
@@ -94,32 +95,54 @@ const StandByPopup = ({ clubData, bookingData, onBookingClick }: StandByPopupPro
                         );
                         return (
                           <li key={booking.bookingId} className={styles["standby-buggy-item"]}>
-                            <div className={styles["standby-buggy-item-name"]}>
-                              <div className={styles.waitingItemCart}>
-                                {booking.bookingsNo !== null && (
-                                  <div
-                                    className={`${styles.tagGroup} ${teamClassMapping.get(booking.bookingsNo.toString())}`}
-                                  ></div>
+                            {TAG_ORDER && booking.tags?.filter((tag) => tag !== "GROUP").length > 0 && (
+                              <ul className={styles.tagList}>
+                                {booking.tags
+                                  ?.filter((tag) => TAG_ORDER.includes(tag))
+                                  .sort((a, b) => TAG_ORDER.indexOf(a) - TAG_ORDER.indexOf(b))
+                                  .map((tag, index) => {
+                                    const shouldApplyLevel1 = LEVEL1_TAGS.includes(tag);
+                                    return (
+                                      <li key={index} className={`${styles[`${tag}`]} ${shouldApplyLevel1 ? styles.level1 : ""}`}>
+                                        <span className="blind">{tag}</span>
+                                      </li>
+                                    );
+                                  })}
+                                {(booking.tags?.includes("TIMEDELAY") || booking.delayTm !== null) && (
+                                  <li className={styles.TIMEDELAY}>
+                                    <span className="blind">TIMEDELAY</span>
+                                  </li>
                                 )}
-                                <div
-                                  className={styles.outCourseCol}
-                                  style={{ backgroundColor: outCourse?.courseCol || "#FFDF68" }}
-                                ></div>
+                              </ul>
+                            )}
+                            <div className={styles["standby-buggy-item-info"]}>
+                              <div className={styles["standby-buggy-item-name"]}>
+                                <div className={styles.waitingItemCart}>
+                                  {booking.bookingsNo !== null && (
+                                    <div
+                                      className={`${styles.tagGroup} ${teamClassMapping.get(booking.bookingsNo.toString())}`}
+                                    ></div>
+                                  )}
+                                  <div
+                                    className={styles.outCourseCol}
+                                    style={{ backgroundColor: outCourse?.courseCol || "#FFDF68" }}
+                                  ></div>
+                                </div>
+                                <span
+                                  className={styles["standby-buggy-item-name-text"]}
+                                  onClick={() => {
+                                    if (menuCodes.includes("M_DETAIL")) {
+                                      onBookingClick?.(booking);
+                                    }
+                                  }}
+                                >
+                                  {booking.bookingNm}
+                                </span>
                               </div>
-                              <span
-                                className={styles["standby-buggy-item-name-text"]}
-                                onClick={() => {
-                                  if (menuCodes.includes("M_DETAIL")) {
-                                    onBookingClick?.(booking);
-                                  }
-                                }}
-                              >
-                                {booking.bookingNm}
+                              <span className={styles["standby-buggy-item-time"]}>
+                                {booking.bookingTm}
                               </span>
                             </div>
-                            <span className={styles["standby-buggy-item-time"]}>
-                              {booking.bookingTm}
-                            </span>
                           </li>
                         );
                       })}
@@ -139,28 +162,50 @@ const StandByPopup = ({ clubData, bookingData, onBookingClick }: StandByPopupPro
                         );
                         return (
                           <li key={booking.bookingId} className={styles["standby-buggy-item"]}>
-                            <div className={styles["standby-buggy-item-name"]}>
-                              <div className={styles.waitingItemCart}>
-                                {booking.bookingsNo !== null && (
-                                  <div
-                                    className={`${styles.tagGroup} ${teamClassMapping.get(booking.bookingsNo.toString())}`}
-                                  ></div>
+                            {TAG_ORDER && booking.tags?.filter((tag) => tag !== "GROUP").length > 0 && (
+                              <ul className={styles.tagList}>
+                                {booking.tags
+                                  ?.filter((tag) => TAG_ORDER.includes(tag))
+                                  .sort((a, b) => TAG_ORDER.indexOf(a) - TAG_ORDER.indexOf(b))
+                                  .map((tag, index) => {
+                                    const shouldApplyLevel1 = LEVEL1_TAGS.includes(tag);
+                                    return (
+                                      <li key={index} className={`${styles[`${tag}`]} ${shouldApplyLevel1 ? styles.level1 : ""}`}>
+                                        <span className="blind">{tag}</span>
+                                      </li>
+                                    );
+                                  })}
+                                {(booking.tags?.includes("TIMEDELAY") || booking.delayTm !== null) && (
+                                  <li className={styles.TIMEDELAY}>
+                                    <span className="blind">TIMEDELAY</span>
+                                  </li>
                                 )}
-                                <div
-                                  className={styles.outCourseCol}
-                                  style={{ backgroundColor: outCourse?.courseCol || "#FFDF68" }}
-                                ></div>
+                              </ul>
+                            )}
+                            <div className={styles["standby-buggy-item-info"]}>
+                              <div className={styles["standby-buggy-item-name"]}>
+                                <div className={styles.waitingItemCart}>
+                                  {booking.bookingsNo !== null && (
+                                    <div
+                                      className={`${styles.tagGroup} ${teamClassMapping.get(booking.bookingsNo.toString())}`}
+                                    ></div>
+                                  )}
+                                  <div
+                                    className={styles.outCourseCol}
+                                    style={{ backgroundColor: outCourse?.courseCol || "#FFDF68" }}
+                                  ></div>
+                                </div>
+                                <span
+                                  className={styles["standby-buggy-item-name-text"]}
+                                  onClick={() => onBookingClick?.(booking)}
+                                >
+                                  {booking.bookingNm}
+                                </span>
                               </div>
-                              <span
-                                className={styles["standby-buggy-item-name-text"]}
-                                onClick={() => onBookingClick?.(booking)}
-                              >
-                                {booking.bookingNm}
+                              <span className={styles["standby-buggy-item-time"]}>
+                                {booking.bookingTm}
                               </span>
                             </div>
-                            <span className={styles["standby-buggy-item-time"]}>
-                              {booking.bookingTm}
-                            </span>
                           </li>
                         );
                       })}

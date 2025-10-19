@@ -29,27 +29,7 @@ import {
 import HolecupMenuPopup from "@/components/HolcupMenuPopup";
 import useSSE from "@/lib/useSSE";
 import BookingType from "@/types/Booking.type";
-
-// 태그 순서 정의
-const tagOrder = [
-  "FIRSTTEAMF1",
-  "FIRSTTEAMF2",
-  "FIRSTTEAMF3",
-  "LASTTEAMF1",
-  "LASTTEAMF2",
-  "LASTTEAMF3",
-  "VIP",
-  "SELF",
-  "TOWPERSONS",
-  "THREEPERSONS",
-  "FIVEPERSONS",
-  "EDUCATION",
-  "COMP",
-  "GREENCHECK",
-  "ADD9HOLES",
-  "MARSHAL",
-  "TOPDRESSING",
-];
+import { LEVEL1_TAGS, TAG_ORDER } from "@/constants/tags";
 
 const Monitoring = () => {
   const { t } = useTranslation();
@@ -344,20 +324,10 @@ const Monitoring = () => {
                                         }}
                                       >
                                         {cart.tags
-                                          ?.filter((tag) => tagOrder.includes(tag))
-                                          .sort((a, b) => tagOrder.indexOf(a) - tagOrder.indexOf(b))
+                                          ?.filter((tag) => TAG_ORDER.includes(tag))
+                                          .sort((a, b) => TAG_ORDER.indexOf(a) - TAG_ORDER.indexOf(b))
                                           .map((tag, index) => {
-                                            const level1Tags = [
-                                              "FIRSTTEAMF1",
-                                              "FIRSTTEAMF2",
-                                              "FIRSTTEAMF3",
-                                              "LASTTEAMF1",
-                                              "LASTTEAMF2",
-                                              "LASTTEAMF3",
-                                              "VIP",
-                                              "SELF",
-                                            ];
-                                            const shouldApplyLevel1 = level1Tags.includes(tag);
+                                            const shouldApplyLevel1 = LEVEL1_TAGS.includes(tag);
                                             return (
                                               <li
                                                 key={index}

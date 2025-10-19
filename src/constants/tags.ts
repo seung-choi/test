@@ -1,0 +1,31 @@
+// 태그 순서 정의 - 여러 컴포넌트에서 공통으로 사용
+export const TAG_ORDER = [
+  "FIRSTTEAMF1",
+  "FIRSTTEAMF2",
+  "FIRSTTEAMF3",
+  "LASTTEAMF1",
+  "LASTTEAMF2",
+  "LASTTEAMF3",
+  "VIP",
+  "SELF",
+  "TOWPERSONS",
+  "THREEPERSONS",
+  "FIVEPERSONS",
+  "EDUCATION",
+  "COMP",
+  "GREENCHECK",
+  "ADD9HOLES",
+  "MARSHAL",
+  "TOPDRESSING",
+];
+
+export const LEVEL1_TAGS = [
+  "FIRSTTEAMF1",
+  "FIRSTTEAMF2",
+  "FIRSTTEAMF3",
+  "LASTTEAMF1",
+  "LASTTEAMF2",
+  "LASTTEAMF3",
+  "VIP",
+  "SELF",
+];
