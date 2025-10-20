@@ -223,7 +223,7 @@
           .buggy-wrapper {
             z-index: 1;
             position: absolute;
-            bottom: -3px;
+            bottom: -1px;
             transform: translateX(-50%);
             transition: left 0.5s ease-in-out;
             .dottedLine {
@@ -276,10 +276,9 @@
             }
             .buggy {
               position: relative;
-              width: 10px;
-              height: 10px;
+              width: 8px;
+              height: 8px;
               border-radius: 50%;
-              border: 1px solid #fff;
               box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.25);
               box-sizing: border-box;
               cursor: pointer;
