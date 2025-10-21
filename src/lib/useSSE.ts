@@ -130,7 +130,7 @@ const useSSE = () => {
         const code = error?.body?.code;
 
         if (status === 401 && code === "JWT_EXPIRED_TOKEN") {
-          const maxRetries = 5;
+          const maxRetries = 3;
 
           if (retryCountRef.current < maxRetries) {
             retryCountRef.current += 1;
@@ -143,7 +143,11 @@ const useSSE = () => {
               if (!destroyed) {
                 open();
               }
-            }, 1500);
+            }, 1000);
+          } else {
+            // 최대 재시도 횟수 초과 시 새로고침
+            console.warn("SSE 최대 재시도 횟수 초과, 페이지 새로고침");
+            window.location.reload();
           }
           return;
         }
