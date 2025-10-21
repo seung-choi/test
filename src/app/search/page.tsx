@@ -126,9 +126,11 @@ const Search = () => {
             {/* 검색 결과가 있을 때만 표시 */}
             {hasSearchResults && (
               <div className={styles["search-result-inner"]}>
-                <span className={styles["search-result-desc"]}>
-                  중복된 검색 결과입니다. 찾으시는 항목을 선택해주세요.
-                </span>
+                {filteredData.length > 1 && (
+                  <span className={styles["search-result-desc"]}>
+                    중복된 검색 결과입니다. 찾으시는 항목을 선택해주세요.
+                  </span>
+                )}
                 <ul className={styles["search-result-list"]}>
                   {filteredData.map((booking: BookingType) => {
                     // 캐디 검색인 경우 캐디명, 내장객 검색인 경우 첫 번째 플레이어명 표시

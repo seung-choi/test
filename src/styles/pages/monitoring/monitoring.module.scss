@@ -64,11 +64,12 @@
         gap: 0 20px;
         height: 28px;
         border-radius: 28px;
-        background: var(--mode-keycolor);
+        background: var(--mode-gray3);
+        border: 1px solid var(--mode-gray1);
         box-sizing: border-box;
         [data-theme="dark"] & {
-          // background: var(--mode-color1);
-          // border-color: var(--mode-color1);
+          background: var(--mode-keycolor);
+          border-color: var(--mode-keycolor);
         }
         &-button {
           display: flex;
@@ -76,7 +77,7 @@
           gap: 0 3px;
           font-size: 11px;
           font-weight: 800;
-          color: var(--mode-Background);
+          color: var(--mode-darkgray);
           white-space: nowrap;
           [data-theme="dark"] & {
             color: var(--mode-font_key);
@@ -218,7 +219,7 @@
             width: 100%;
             height: 5px;
             border-radius: 5px;
-            background: var(--MOBILE-admin-Grayscale2, #eee);
+            background: var(--mode-gray1);
           }
           .buggy-wrapper {
             z-index: 1;
@@ -230,22 +231,9 @@
               position: absolute;
               left: 50%;
               bottom: calc(100% + 2px);
-              width: 2px;
               transform: translateX(-50%);
-              background-image: linear-gradient(
-                to bottom,
-                #888 20%,
-                transparent 20%,
-                transparent 40%,
-                #888 40%,
-                #888 60%,
-                transparent 60%,
-                transparent 80%,
-                #888 80%
-              );
-              background-size: 2px 8px;
-              background-repeat: repeat-y;
               z-index: 1;
+              border-left: 1px dashed #d9d9d9;
             }
             .bookingNm {
               position: absolute;
@@ -369,7 +357,7 @@
             width: 4px;
             height: 4px;
             border-radius: 50%;
-            background: #959595;
+            background: var(--mode-gray1);
           }
         }
       }

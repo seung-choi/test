@@ -21,8 +21,11 @@
       gap: 0 8px;
       height: 28px;
       border-radius: 7px;
-      background: var(--mode-color3);
+      background: var(--mode-color1);
       padding: 0 10px;
+      [data-theme="dark"] & {
+        background: var(--mode-color3);
+      }
       &-title {
         font-size: 11px;
         color: var(--mode-font_key);
@@ -55,9 +58,12 @@
       height: 28px;
       padding: 0 35px 0 10px;
       border-radius: 7px;
-      background: var(--mode-color3);
+      background: var(--mode-color1);
       font-size: 11px;
       color: var(--mode-font_key);
+      [data-theme="dark"] & {
+        background: var(--mode-color3);
+      }
       &::before {
         position: absolute;
         top: 50%;

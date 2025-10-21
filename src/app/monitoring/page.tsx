@@ -154,7 +154,14 @@ const Monitoring = () => {
                 href="/search"
                 className={`${styles["monitoring-etc-menu-button"]} ${styles["search-button"]}`}
               >
-                <img src="/assets/image/icon-search.svg" alt="검색" />
+                <img
+                  src={
+                    themeMode === "dark"
+                      ? "/assets/image/icon-search.svg"
+                      : "/assets/image/icon-search-dark.svg"
+                  }
+                  alt="검색"
+                />
                 <span className={styles["text"]}>검색</span>
               </Link>
             )}
@@ -163,7 +170,14 @@ const Monitoring = () => {
               className={`${styles["monitoring-etc-menu-button"]} ${styles["menu-button"]}`}
               onClick={() => setMenuPopupOpen(true)}
             >
-              <img src="/assets/image/icon-menu-white.svg" alt="메뉴" />
+              <img
+                src={
+                  themeMode === "dark"
+                    ? "/assets/image/icon-menu-white.svg"
+                    : "/assets/image/icon-menu-dark.svg"
+                }
+                alt="메뉴"
+              />
               <span className={styles["text"]}>메뉴</span>
             </button>
           </div>
@@ -325,7 +339,9 @@ const Monitoring = () => {
                                       >
                                         {cart.tags
                                           ?.filter((tag) => TAG_ORDER.includes(tag))
-                                          .sort((a, b) => TAG_ORDER.indexOf(a) - TAG_ORDER.indexOf(b))
+                                          .sort(
+                                            (a, b) => TAG_ORDER.indexOf(a) - TAG_ORDER.indexOf(b),
+                                          )
                                           .map((tag, index) => {
                                             const shouldApplyLevel1 = LEVEL1_TAGS.includes(tag);
                                             return (
