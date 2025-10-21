@@ -34,7 +34,8 @@
       position: sticky;
       top: 0;
       left: 0;
-      display: block;
+      display: flex;
+      align-items: center;
       height: 45px;
       padding: 15px 30px 5px;
       font-weight: 700;
@@ -42,7 +43,17 @@
       color: var(--mode-font_key);
       line-height: 25px;
       background-color: var(--mode-Background);
+      .booking-name-text {
+        display: inline-block;
+        max-width: calc(100% - 50px);
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
       .booking-teeOff {
+        display: inline-block;
+        width: 50px;
+        padding-left: 10px;
         font-weight: 400;
         font-size: 16px;
         color: var(--mode-gray1);

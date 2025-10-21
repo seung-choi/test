@@ -22,7 +22,9 @@ const BookingDetailPopup = ({ booking, onClose }: BookingDetailPopupProps) => {
       <div className={styles["booking-detail-popup-overlay"]} onClick={onClose}></div>
       <div className={styles["booking-detail-popup-inner"]}>
         <h2 className={styles["booking-name"]}>
-          {booking?.bookingNm} {booking?.bookingsNm && `(${booking.bookingsNm})`}
+          <span className={styles["booking-name-text"]}>
+            {booking?.bookingNm} {booking?.bookingsNm && `(${booking.bookingsNm})`}
+          </span>
           {booking?.bookingTm && (
             <span className={styles["booking-teeOff"]}>{booking?.bookingTm}</span>
           )}
