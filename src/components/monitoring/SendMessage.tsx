@@ -7,13 +7,15 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { getEventSSE, postSendHis } from "@/api/main";
 import { useTranslation } from "react-i18next";
 import useAlertModal from "@/hooks/useAlertModal";
+import BookingType from "@/types/Booking.type";
 
 interface SendMessageProps {
-  groupedByCourse: { courseId: number; bookingIdList: number[] }[];
+  selctedBookingList: BookingType[];
+  sendTo: string;
   onBack: () => void;
 }
 
-const SendMessage = ({ groupedByCourse, onBack }: SendMessageProps) => {
+const SendMessage = ({ selctedBookingList, sendTo, onBack }: SendMessageProps) => {
   const { t } = useTranslation();
   const { setAlertModalState } = useAlertModal();
 
@@ -68,17 +70,43 @@ const SendMessage = ({ groupedByCourse, onBack }: SendMessageProps) => {
   };
 
   const handleSubmit = () => {
-    const sendTo = groupedByCourse.map(item => item.courseId).join(', ');
+    // 메시지 보낼 카트가 없는 경우 알림창 표시
+    if (selctedBookingList.length === 0) {
+      setAlertModalState(() => ({
+        isShow: true,
+        cancleBtnLabel: "닫기",
+        desc: "메세지 보낼 카트가 존재하지 않습니다.",
+      }));
+      return;
+    }
 
     const formData = new FormData();
 
     formData.append("eventId", selectedMsg.eventId?.toString() ?? "");
-    formData.append("sendTo", `sendCourseId : ${sendTo}`);
+    formData.append("sendTo", sendTo);
     formData.append("sendMsg", selectedMsg.sendMsg?.toString() ?? "");
-    groupedByCourse.forEach((v, i) => {
-      formData.append(`courseList[${i}].courseId`, v.courseId.toString());
-      v.bookingIdList.forEach((bookingId) => {
-        formData.append(`courseList[${i}].bookingIdList`, bookingId.toString());
+
+    // selctedBookingList를 courseId별로 그룹화
+    const groupedByCourse = selctedBookingList.reduce(
+      (acc, booking) => {
+        const courseId = booking.courseId;
+        if (!acc[courseId]) {
+          acc[courseId] = {
+            courseId: courseId,
+            bookingIdList: [],
+          };
+        }
+        acc[courseId].bookingIdList.push(booking.bookingId);
+        return acc;
+      },
+      {} as Record<number, { courseId: number; bookingIdList: number[] }>,
+    );
+
+    // 그룹화된 데이터를 formData에 추가
+    Object.values(groupedByCourse).forEach((courseData, index) => {
+      formData.append(`courseList[${index}].courseId`, courseData.courseId.toString());
+      courseData.bookingIdList.forEach((bookingId) => {
+        formData.append(`courseList[${index}].bookingIdList`, bookingId.toString());
       });
     });
 

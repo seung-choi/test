@@ -18,11 +18,6 @@ const Search = () => {
   const [searchName, setSearchName] = useState<string>("");
   // 선택된 booking data를 저장할 state 추가
   const [selectedBookingData, setSelectedBookingData] = useState<BookingType | null>(null);
-  // SendMessage 컴포넌트로 전달할 groupedByCourse 데이터를 저장할 state 추가
-  const [groupedByCourseData, setGroupedByCourseData] = useState<
-    { courseId: number; bookingIdList: number[] }[]
-  >([]);
-
   const { data: clubData } = useQuery({
     queryKey: ["clubData"],
     queryFn: () => getClub(),
@@ -182,16 +177,7 @@ const Search = () => {
           booking={selectedBookingData} // 선택된 booking data 전달
           onBack={() => setStep(1)}
           onSendMessage={() => {
-            // booking data를 groupedByCourse 형식으로 변환
             if (selectedBookingData) {
-              const groupedByCourse = [
-                {
-                  courseId: selectedBookingData.courseId,
-                  bookingIdList: [selectedBookingData.bookingId],
-                },
-              ];
-              // 변환된 데이터를 state에 저장
-              setGroupedByCourseData(groupedByCourse);
               // step 3으로 이동
               setStep(3);
             }
@@ -200,7 +186,8 @@ const Search = () => {
       )}
       {step === 3 && (
         <SendMessage
-          groupedByCourse={groupedByCourseData} // 변환된 groupedByCourse 데이터 전달
+          selctedBookingList={selectedBookingData ? [selectedBookingData] : []}
+          sendTo={"cart"}
           onBack={() => setStep(2)}
         />
       )}

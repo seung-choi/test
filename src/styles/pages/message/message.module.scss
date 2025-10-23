@@ -60,6 +60,9 @@
     }
 
     .select-content-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
       height: calc(100% - 152px);
       overflow: auto;
     }
@@ -68,9 +71,6 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
-      &.cart {
-        margin-top: 32px;
-      }
     }
 
     .select-title,
