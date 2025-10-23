@@ -153,7 +153,7 @@ const Message = () => {
             />
             <div className={styles["select-content-inner"]}>
               <div className={styles["select-wrap"]}>
-                <strong className={styles["select-title"]}>전체</strong>
+                <strong className={styles["select-title"]}>{t("message.selectByCourse")}</strong>
                 <div className={styles["select-list"]}>
                   <label>
                     <input
@@ -164,11 +164,6 @@ const Message = () => {
                     />
                     <span className={styles["select-label"]}>전체</span>
                   </label>
-                </div>
-              </div>
-              <div className={styles["select-wrap"]}>
-                <strong className={styles["select-title"]}>{t("message.selectByCourse")}</strong>
-                <div className={styles["select-list"]}>
                   {clubData?.courseList ? (
                     clubData.courseList.map((course) => {
                       return (
