@@ -15,16 +15,15 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import transformBookingData from "@/utils/transformBookingData";
 import { getTeamClassMapping } from "@/utils/getTeamClassMapping";
-import { useSetRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
-  standByPopupState,
   menuPopupOpenState,
-  // holecupMenuPopupState,
-  sseSOSPopupListState,
-  themeModeState,
-  monitoringViewState,
   menuState,
+  monitoringViewState,
+  sseSOSPopupListState,
+  standByPopupState,
   teamClassMappingState,
+  themeModeState,
 } from "@/lib/recoil";
 import HolecupMenuPopup from "@/components/HolcupMenuPopup";
 import useSSE from "@/lib/useSSE";
@@ -253,7 +252,8 @@ const Monitoring = () => {
                             (gps) =>
                               gps.courseId === course.courseId &&
                               gps.holeId === hole.holeId &&
-                              (gps.status === "OP" || gps.status === "IP"),
+                              // 251024 서서울 샷건 대회로 인해 바타입 임시 CW 허용.
+                              (gps.status === "OP" || gps.status === "IP" || gps.status === "CW"),
                           )
                           .sort((a, b) => a.holeId - b.holeId || a.progress - b.progress);
 
