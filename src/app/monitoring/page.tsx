@@ -252,8 +252,7 @@ const Monitoring = () => {
                             (gps) =>
                               gps.courseId === course.courseId &&
                               gps.holeId === hole.holeId &&
-                              // 251024 서서울 샷건 대회로 인해 바타입 임시 CW 허용.
-                              (gps.status === "OP" || gps.status === "IP" || gps.status === "CW"),
+                              (gps.status === "OP" || gps.status === "IP"),
                           )
                           .sort((a, b) => a.holeId - b.holeId || a.progress - b.progress);
 
