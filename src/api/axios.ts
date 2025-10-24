@@ -55,7 +55,16 @@ $axios.interceptors.response.use(
     const { headers } = response;
 
     if (headers["access-token"]) {
-      tokens.access = headers["access-token"];
+      const newToken = headers["access-token"];
+      const currentToken = tokens.access;
+
+      // 토큰이 실제로 변경되었을 때만 이벤트 발생
+      if (newToken !== currentToken) {
+        tokens.access = newToken;
+        // 토큰 갱신 이벤트 발생
+        console.log("토큰 갱신 이벤트 발생");
+        window.dispatchEvent(new CustomEvent("tokenRefreshed"));
+      }
     }
 
     if (headers["refresh-token"]) {

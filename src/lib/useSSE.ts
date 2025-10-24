@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { EventSourcePolyfill } from "event-source-polyfill";
 import { useSetRecoilState } from "recoil";
 import { getOriginURL } from "@/api/API_URL";
@@ -53,8 +53,28 @@ const sessionManager = {
   },
 };
 
+// 토큰 갱신 이벤트를 감지하는 커스텀 훅
+const useTokenRefresh = () => {
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+  useEffect(() => {
+    const handleTokenRefresh = () => {
+      setRefreshTrigger((prev) => prev + 1);
+    };
+
+    window.addEventListener("tokenRefreshed", handleTokenRefresh);
+
+    return () => {
+      window.removeEventListener("tokenRefreshed", handleTokenRefresh);
+    };
+  }, []);
+
+  return refreshTrigger;
+};
+
 const useSSE = () => {
   const pathname = usePathname();
+  const refreshTrigger = useTokenRefresh(); // 토큰 갱신 트리거
   const eventSourseRef = useRef<EventSourcePolyfill | null>(null);
   const retryCountRef = useRef<number>(0);
   const setPin = useSetRecoilState(ssePinState);
@@ -127,29 +147,32 @@ const useSSE = () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       eventSource.onerror = (error: any) => {
         const status = error?.status ?? error?.detail?.status;
-        const code = error?.body?.code;
 
-        if (status === 401 && code === "JWT_EXPIRED_TOKEN") {
-          // 최대 재시도 횟수 초과 시 새로고침
-          if (retryCountRef.current < 2) {
-            retryCountRef.current += 1;
-            // 기존 연결 종료
-            eventSourseRef.current?.close();
-            eventSourseRef.current = null;
-
-            // 1초 후 재연결 시도
-            setTimeout(() => {
-              if (!destroyed) {
-                open();
-              }
-            }, 1000);
-          } else {
-            // 최대 재시도 횟수 초과 시 새로고침
-            console.warn("SSE 최대 재시도 횟수 초과, 페이지 새로고침");
-            window.location.reload();
-          }
+        if (status >= 500) {
+          window.location.reload();
           return;
         }
+
+        // 500 미만 에러들에 대해 재시도 로직
+        retryCountRef.current += 1;
+        console.warn(`SSE 연결 에러 (${retryCountRef.current}/3):`, error);
+
+        if (retryCountRef.current >= 3) {
+          console.warn("SSE 최대 재시도 횟수 초과, 페이지 새로고침");
+          window.location.reload();
+          return;
+        }
+
+        // 기존 연결 종료
+        eventSourseRef.current?.close();
+        eventSourseRef.current = null;
+
+        // 1초 후 재연결 시도
+        setTimeout(() => {
+          if (!destroyed) {
+            open();
+          }
+        }, 1000);
       };
     };
 
@@ -160,7 +183,7 @@ const useSSE = () => {
       eventSourseRef.current?.close();
       eventSourseRef.current = null;
     };
-  }, []);
+  }, [pathname, refreshTrigger]); // pathname과 refreshTrigger를 의존성에 추가
 
   return null;
 };
