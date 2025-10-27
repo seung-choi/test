@@ -15,16 +15,15 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import transformBookingData from "@/utils/transformBookingData";
 import { getTeamClassMapping } from "@/utils/getTeamClassMapping";
-import { useSetRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
-  standByPopupState,
   menuPopupOpenState,
-  // holecupMenuPopupState,
-  sseSOSPopupListState,
-  themeModeState,
-  monitoringViewState,
   menuState,
+  monitoringViewState,
+  sseSOSPopupListState,
+  standByPopupState,
   teamClassMappingState,
+  themeModeState,
 } from "@/lib/recoil";
 import HolecupMenuPopup from "@/components/HolcupMenuPopup";
 import useSSE from "@/lib/useSSE";
