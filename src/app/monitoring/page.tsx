@@ -54,7 +54,7 @@ const Monitoring = () => {
   const { data: bookingData } = useQuery({
     queryKey: ["bookingData"],
     queryFn: () => getBooking(),
-    refetchInterval: 1000,
+    refetchInterval: 1800,
   });
 
   const { data: menu } = useQuery({

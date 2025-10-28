@@ -52,7 +52,7 @@ export const getMenuHis = async () => {
 // POST
 export const postLogin = async (data: LoginFormAPI) => {
   const res = await $axios({
-    url: `${getOriginURL("api", "/auth/")}login`,
+    url: `${getOriginURL("api", "/auth/login")}`,
     method: "post",
     data: data,
   });

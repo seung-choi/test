@@ -55,7 +55,7 @@ $axios.interceptors.response.use(
     const { headers } = response;
 
     if (headers["access-token"]) {
-       tokens.access = headers["access-token"];
+      tokens.access = headers["access-token"];
     }
     if (headers["refresh-token"]) {
       tokens.refresh = headers["refresh-token"];
@@ -65,7 +65,7 @@ $axios.interceptors.response.use(
   },
   async (error: AxiosError<ErrorResponse>) => {
     // 500 초과일 경우 페이지 새로고침
-    if(error?.status && error.status > 500) {
+    if (error?.status && error.status > 500) {
       location.reload();
       return;
     }
@@ -77,7 +77,7 @@ $axios.interceptors.response.use(
       tokens.access = tokens.refresh;
       // 토큰 갱신 시에는 절대 URL을 사용하여 baseURL이 중복으로 붙지 않도록 함
       await $axios({
-        url: `${getOriginURL("api", "/auth/")}login`,
+        url: `${getOriginURL("api", "/auth/login")}`,
         method: "patch",
         data: {},
       });
