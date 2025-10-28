@@ -56,50 +56,13 @@ const sessionManager = {
 const useSSE = () => {
   const pathname = usePathname();
   const eventSourseRef = useRef<EventSourcePolyfill | null>(null);
-  const retryCountRef = useRef<number>(0);
-  const openCallbackRef = useRef<(() => void) | null>(null); // open 함수를 ref에 저장
-  const destroyedRef = useRef(false); // destroyed 상태를 ref로 관리
   const setPin = useSetRecoilState(ssePinState);
   const setSOS = useSetRecoilState(sseSOSState);
   const setSOSPopupList = useSetRecoilState(sseSOSPopupListState);
 
-  // tokenRefreshed 이벤트 리스너 - 직접 재연결
   useEffect(() => {
-    const handleTokenRefresh = () => {
-      console.log("handleTokenRefresh 내부 진입");
-      // retryCount 초기화
-      retryCountRef.current = 0;
-
-      // 기존 연결 종료
-      eventSourseRef.current?.close();
-      eventSourseRef.current = null;
-
-      // 재연결 - openCallbackRef가 준비될 때까지 대기
-      const retryReconnect = () => {
-        if (pathname === "/monitoring/" && !destroyedRef.current) {
-          if (openCallbackRef.current) {
-            openCallbackRef.current();
-          } else {
-            // open 함수가 아직 준비되지 않았으면 다시 시도
-            setTimeout(retryReconnect, 50);
-          }
-        }
-      };
-
-      setTimeout(retryReconnect, 100);
-    };
-
-    window.addEventListener("tokenRefreshed", handleTokenRefresh);
-
-    return () => {
-      window.removeEventListener("tokenRefreshed", handleTokenRefresh);
-    };
-  }, [pathname]);
-
-  useEffect(() => {
-    destroyedRef.current = false;
-
     if (pathname !== "/monitoring/") {
+      // 모니터링 페이지가 아닐 경우 SSE 연결 종료
       eventSourseRef.current?.close();
       eventSourseRef.current = null;
       return;
@@ -123,8 +86,7 @@ const useSSE = () => {
       eventSourseRef.current = eventSource;
 
       eventSource.onopen = () => {
-        // 연결 성공 시 재시도 카운터 초기화
-        retryCountRef.current = 0;
+        console.log(`SSE 연결 성공 - Session ID: ${currentSessionId}`);
       };
 
       eventSource.addEventListener("PIN", (e) => {
@@ -155,57 +117,23 @@ const useSSE = () => {
         }
       });
 
-      eventSource.addEventListener("SUBSCRIBED", () => {
-        retryCountRef.current = 0;
-      });
+      eventSource.addEventListener("SUBSCRIBED", () => {});
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       eventSource.onerror = (error: any) => {
-        const status = error?.status ?? error?.detail?.status;
-
-        console.log("eventSource.onerror 내부 진입", error);
-
-        if (status >= 500) {
-          window.location.reload();
-          return;
-        }
-
-        // 500 미만 에러들에 대해 재시도 로직
-        console.log("retryCountRef.current : ", retryCountRef.current);
-        retryCountRef.current += 1;
-
-        if (retryCountRef.current >= 3) {
-          // 3번 이상 에러 발생 시 토큰 리프레시 이벤트 발생
-          console.log("3번 이상 에러 발생 후 토큰 리프레시 이벤트 발생");
-          window.dispatchEvent(new CustomEvent("tokenRefreshed"));
-          return;
-        }
-
-        // 기존 연결 종료
-        eventSourseRef.current?.close();
-        eventSourseRef.current = null;
-
-        // 1초 후 재연결 시도
-        setTimeout(() => {
-          if (!destroyedRef.current) {
-            open();
-          }
-        }, 1000);
+        console.error("SSE 오류 발생:", error);
+        return;
       };
     };
 
     open();
 
-    // open 함수를 ref에 저장
-    openCallbackRef.current = open;
-
     return () => {
-      destroyedRef.current = true;
+      //컴포넌트 언마운트 시 SSE 연결 종료.
       eventSourseRef.current?.close();
       eventSourseRef.current = null;
-      openCallbackRef.current = null;
     };
-  }, [pathname]); // pathname만 의존성으로 사용 (refreshTrigger 제거)
+  }, []);
 
   return null;
 };
