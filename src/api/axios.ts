@@ -68,11 +68,29 @@ const refreshToken = async (): Promise<void> => {
     isRefreshing = true;
     refreshPromise = (async () => {
       tokens.access = tokens.refresh;
-      await $axios({
+      const response = await $axios({
         url: `${getOriginURL("api", "/auth/login")}`,
         method: "patch",
         data: {},
       });
+
+      // 응답 헤더에서 새 토큰 확인 및 저장
+      // axios는 헤더를 소문자로 변환하므로 소문자로 접근
+      const headers = response.headers;
+      const accessToken = headers["access-token"];
+      const refreshTokenValue = headers["refresh-token"];
+
+      if (accessToken) {
+        tokens.access = accessToken;
+      }
+      if (refreshTokenValue) {
+        tokens.refresh = refreshTokenValue;
+      }
+
+      // 토큰이 없으면 에러 발생 (갱신 실패)
+      if (!accessToken) {
+        throw new Error("토큰 갱신 실패: Access-Token이 응답에 없습니다");
+      }
     })();
 
     await refreshPromise;
@@ -138,21 +156,39 @@ $axios.interceptors.response.use(
     }
 
     // 토큰 만료 에러 처리
+    const isLoginUrl = originalRequest?.url?.includes("/auth/login");
     if (
       error.status === 401 &&
-      originalRequest?.url !== "/auth/login" &&
+      !isLoginUrl &&
       error.response?.data?.code === "JWT_EXPIRED_TOKEN" &&
       !originalRequest._retry
     ) {
       // 이미 토큰 갱신 중이면 요청을 큐에 추가
       if (isRefreshing) {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
           addToQueue(() => {
             // 토큰 갱신 완료 후 원래 요청 재시도
-            if (originalRequest.headers) {
-              originalRequest.headers.Authorization = tokens.access;
+            try {
+              // storage에서 최신 토큰 읽기
+              const latestToken = tokens.access;
+
+              if (!latestToken) {
+                reject(new Error("토큰이 없습니다"));
+                return;
+              }
+
+              if (originalRequest.headers) {
+                originalRequest.headers.Authorization = latestToken;
+              } else {
+                originalRequest.headers = {
+                  Authorization: latestToken,
+                };
+              }
+
+              resolve($axios(originalRequest));
+            } catch (err) {
+              reject(err);
             }
-            resolve($axios(originalRequest));
           });
         });
       }
@@ -162,10 +198,21 @@ $axios.interceptors.response.use(
 
       try {
         await refreshToken();
-        // 원래 요청에 새 토큰 적용
+
+        // 원래 요청에 새 토큰 적용 (storage에서 최신 토큰 읽기)
         if (originalRequest.headers) {
           originalRequest.headers.Authorization = tokens.access;
+        } else {
+          originalRequest.headers = {
+            Authorization: tokens.access,
+          };
         }
+
+        // 토큰이 비어있으면 에러
+        if (!tokens.access) {
+          throw new Error("토큰 갱신 후 토큰이 비어있습니다");
+        }
+
         return $axios(originalRequest);
       } catch (refreshError) {
         // 토큰 갱신 실패 시 로그아웃
