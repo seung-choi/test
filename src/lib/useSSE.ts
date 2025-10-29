@@ -59,6 +59,7 @@ const useSSE = () => {
   const setPin = useSetRecoilState(ssePinState);
   const setSOS = useSetRecoilState(sseSOSState);
   const setSOSPopupList = useSetRecoilState(sseSOSPopupListState);
+  const clubId = storage.local.get("clubId");
 
   useEffect(() => {
     if (pathname !== "/monitoring/") {
@@ -70,7 +71,7 @@ const useSSE = () => {
 
     const open = () => {
       const currentSessionId = sessionManager.sessionId;
-      const url = getOriginURL("api", `/mng/v1/subscribe/${currentSessionId}`);
+      const url = getOriginURL("api", `/mng/v1/subscribe/${clubId}/${currentSessionId}`);
       if (!url) return;
 
       const headers: Record<string, string> = {};
@@ -85,9 +86,7 @@ const useSSE = () => {
 
       eventSourseRef.current = eventSource;
 
-      eventSource.onopen = () => {
-        console.log(`SSE 연결 성공 - Session ID: ${currentSessionId}`);
-      };
+      eventSource.onopen = () => {};
 
       eventSource.addEventListener("PIN", (e) => {
         const event = e as MessageEvent;
@@ -133,7 +132,7 @@ const useSSE = () => {
       eventSourseRef.current?.close();
       eventSourseRef.current = null;
     };
-  }, []);
+  }, [pathname, clubId]);
 
   return null;
 };
