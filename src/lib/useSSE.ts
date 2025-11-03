@@ -18,20 +18,20 @@ const generateNumericSessionId = (): string => {
   return result;
 };
 
-const tokens = {
-  get access() {
-    return (storage.local.get("accessToken") as string) ?? "";
-  },
-  set access(token: string) {
-    storage.local.set({ accessToken: token });
-  },
-  get refresh() {
-    return (storage.local.get("refreshToken") as string) ?? "";
-  },
-  set refresh(token: string) {
-    storage.local.set({ refreshToken: token });
-  },
-};
+// const tokens = {
+//   get access() {
+//     return (storage.local.get("accessToken") as string) ?? "";
+//   },
+//   set access(token: string) {
+//     storage.local.set({ accessToken: token });
+//   },
+//   get refresh() {
+//     return (storage.local.get("refreshToken") as string) ?? "";
+//   },
+//   set refresh(token: string) {
+//     storage.local.set({ refreshToken: token });
+//   },
+// };
 
 const eventStore = {
   get id() {
@@ -75,7 +75,7 @@ const useSSE = () => {
       if (!url) return;
 
       const headers: Record<string, string> = {};
-      if (tokens.access) headers["Authorization"] = tokens.access;
+      // if (tokens.access) headers["Authorization"] = tokens.access;
       if (eventStore.id) headers["Event-ID"] = eventStore.id;
 
       const eventSource = new EventSourcePolyfill(url, {
