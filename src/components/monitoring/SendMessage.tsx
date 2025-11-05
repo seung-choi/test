@@ -82,7 +82,9 @@ const SendMessage = ({ selctedBookingList, sendTo, onBack }: SendMessageProps) =
 
     const formData = new FormData();
 
-    formData.append("eventId", selectedMsg.eventId?.toString() ?? "");
+    if (selectedMsg.eventId !== null) {
+      formData.append("eventId", selectedMsg.eventId.toString());
+    }
     formData.append("sendTo", sendTo);
     formData.append("sendMsg", selectedMsg.sendMsg?.toString() ?? "");
 
