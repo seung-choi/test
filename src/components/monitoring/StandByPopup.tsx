@@ -142,7 +142,7 @@ const StandByPopup = ({ clubData, tagData, bookingData, onBookingClick }: StandB
                             <div className={styles["standby-buggy-item-info"]}>
                               <div className={styles["standby-buggy-item-name"]}>
                                 <div className={styles.waitingItemCart}>
-                                  {booking.bookingsNo !== null && (
+                                  {booking.bookingsNo !== null && booking.bookingsSt === "Y" && (
                                     <div
                                       className={`${styles.tagGroup} ${teamClassMapping.get(booking.bookingsNo.toString())}`}
                                     ></div>
@@ -226,7 +226,7 @@ const StandByPopup = ({ clubData, tagData, bookingData, onBookingClick }: StandB
                             <div className={styles["standby-buggy-item-info"]}>
                               <div className={styles["standby-buggy-item-name"]}>
                                 <div className={styles.waitingItemCart}>
-                                  {booking.bookingsNo !== null && (
+                                  {booking.bookingsNo !== null && booking.bookingsSt === "Y" && (
                                     <div
                                       className={`${styles.tagGroup} ${teamClassMapping.get(booking.bookingsNo.toString())}`}
                                     ></div>

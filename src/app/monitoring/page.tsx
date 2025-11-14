@@ -418,7 +418,7 @@ const Monitoring = () => {
                                       ></div>
                                     )}
 
-                                    {cart.bookingsNo !== null && (
+                                    {cart.bookingsNo !== null && cart.bookingsSt === "Y" && (
                                       <div
                                         className={`${styles.tagGroup} ${teamClassMapping.get(cart.bookingsNo.toString())}`}
                                       >
