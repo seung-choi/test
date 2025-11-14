@@ -24,6 +24,7 @@ type BookingType = {
   bookingTm: string;
   bookingsNo: number | null;
   bookingsNm: string | null;
+  bookingsSt: "Y" | "N"; // 단체팀 지정 여부
 
   playerList: PlayerType[];
 

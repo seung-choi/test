@@ -1,3 +1,5 @@
+import { TagType } from "@/types/Tag.type";
+
 // 태그 순서 정의 - 여러 컴포넌트에서 공통으로 사용
 export const TAG_ORDER = [
   "FIRSTTEAMF1",
@@ -28,4 +30,133 @@ export const LEVEL1_TAGS = [
   "LASTTEAMF3",
   "VIP",
   "SELF",
+];
+
+export const DEFAULT_TAG: TagType[] = [
+  {
+    tagCd: "FIRSTTEAMF1",
+    tagNm: "1부첫팀",
+    tagOrd: 0,
+    tagSt: "N",
+    tagImg: "/assets/image/tag/tag_first_team_f1.svg",
+  },
+  {
+    tagCd: "FIRSTTEAMF2",
+    tagNm: "2부첫팀",
+    tagOrd: 1,
+    tagSt: "N",
+    tagImg: "/assets/icon/tag_first_team_f2.svg",
+  },
+  {
+    tagCd: "FIRSTTEAMF3",
+    tagNm: "3부첫팀",
+    tagOrd: 2,
+    tagSt: "N",
+    tagImg: "/assets/icon/tag_first_team_f3.svg",
+  },
+  {
+    tagCd: "LASTTEAMF1",
+    tagNm: "1부막팀",
+    tagOrd: 3,
+    tagSt: "N",
+    tagImg: "/assets/icon/tag_last_team_l1.svg",
+  },
+  {
+    tagCd: "LASTTEAMF2",
+    tagNm: "2부막팀",
+    tagOrd: 4,
+    tagSt: "N",
+    tagImg: "/assets/icon/tag_last_team_l2.svg",
+  },
+  {
+    tagCd: "LASTTEAMF3",
+    tagNm: "3부막팀",
+    tagOrd: 5,
+    tagSt: "N",
+    tagImg: "/assets/icon/tag_last_team_l3.svg",
+  },
+  {
+    tagCd: "VIP",
+    tagNm: "VIP",
+    tagOrd: 6,
+    tagSt: "N",
+    tagImg: "/assets/icon/tag_vip.svg",
+  },
+  {
+    tagCd: "TOWPERSONS",
+    tagNm: "2인",
+    tagOrd: 7,
+    tagSt: "N",
+    tagImg: "/assets/icon/tag_two_persons.svg",
+  },
+  {
+    tagCd: "THREEPERSONS",
+    tagNm: "3인",
+    tagOrd: 8,
+    tagSt: "N",
+    tagImg: "/assets/icon/tag_three_persons.svg",
+  },
+  {
+    tagCd: "FIVEPERSONS",
+    tagNm: "5인",
+    tagOrd: 9,
+    tagSt: "N",
+    tagImg: "/assets/icon/tag_five_persons.svg",
+  },
+  {
+    tagCd: "EDUCATION",
+    tagNm: "교육",
+    tagOrd: 10,
+    tagSt: "N",
+    tagImg: "/assets/icon/tag_education.svg",
+  },
+  {
+    tagCd: "COMP",
+    tagNm: "COMP",
+    tagOrd: 11,
+    tagSt: "N",
+    tagImg: "/assets/icon/tag_comp.svg",
+  },
+  {
+    tagCd: "TOPDRESSING",
+    tagNm: "배토",
+    tagOrd: 12,
+    tagSt: "N",
+    tagImg: "/assets/icon/tag_topdressing.svg",
+  },
+  {
+    tagCd: "GREENCHECK",
+    tagNm: "작업",
+    tagOrd: 13,
+    tagSt: "N",
+    tagImg: "/assets/icon/tag_green_check.svg",
+  },
+  {
+    tagCd: "ADD9HOLES",
+    tagNm: "9홀 추가",
+    tagOrd: 14,
+    tagSt: "N",
+    tagImg: "/assets/icon/tag_add_9_holes.svg",
+  },
+  {
+    tagCd: "MARSHAL",
+    tagNm: "마샬",
+    tagOrd: 15,
+    tagSt: "N",
+    tagImg: "/assets/icon/tag_marshal.svg",
+  },
+  {
+    tagCd: "TIMEDELAY",
+    tagNm: "지연",
+    tagOrd: 16,
+    tagSt: "N",
+    tagImg: "/assets/icon/tag_delay.svg",
+  },
+  {
+    tagCd: "SELF",
+    tagNm: "셀프",
+    tagOrd: 17,
+    tagSt: "N",
+    tagImg: "/assets/icon/tag_self01.svg",
+  },
 ];

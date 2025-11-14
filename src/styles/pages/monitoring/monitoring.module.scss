@@ -279,14 +279,14 @@
               align-items: center;
               gap: 1px;
               padding: 0;
-              li {
+              .tagItem {
                 width: 12px;
                 height: 12px;
                 border-radius: 5px;
-                background-position: center;
-                background-repeat: no-repeat;
-                background-size: contain;
                 overflow: hidden;
+                img {
+                  object-fit: contain;
+                }
                 &.level1 {
                   width: 15px;
                   height: 15px;

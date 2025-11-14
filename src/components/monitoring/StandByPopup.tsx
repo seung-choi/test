@@ -7,15 +7,22 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { menuState, standByPopupState, teamClassMappingState } from "@/lib/recoil";
 import ClubType from "@/types/Club.type";
 import BookingType from "@/types/Booking.type";
-import { TAG_ORDER, LEVEL1_TAGS } from "@/constants/tags";
+import { useDefaultTagImg } from "@/hooks/useDefaultTagImg";
+import { TagType } from "@/types/Tag.type";
 
 interface StandByPopupProps {
   clubData: ClubType;
+  tagData: TagType[];
   bookingData: BookingType[];
   onBookingClick: (booking: BookingType) => void;
 }
 
-const StandByPopup = ({ clubData, bookingData, onBookingClick }: StandByPopupProps) => {
+const StandByPopup = ({ clubData, tagData, bookingData, onBookingClick }: StandByPopupProps) => {
+  // DEFAULT_TAG의 tagImg를 가져오는 hook
+  const { getDefaultTagImg } = useDefaultTagImg();
+  // tagData에서 tagSt가 'Y'인 것만 필터링
+  const activeTagData = tagData?.filter((tag) => tag.tagSt === "Y") || [];
+
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<number | null>(null);
   const [standByPopup, setStandByPopup] = useRecoilState(standByPopupState);
@@ -95,21 +102,38 @@ const StandByPopup = ({ clubData, bookingData, onBookingClick }: StandByPopupPro
                         );
                         return (
                           <li key={booking.bookingId} className={styles["standby-buggy-item"]}>
-                            {TAG_ORDER && booking.tags?.filter((tag) => tag !== "GROUP").length > 0 && (
+                            {booking.tags?.filter((tag) => tag !== "GROUP").length > 0 && (
                               <ul className={styles.tagList}>
                                 {booking.tags
-                                  ?.filter((tag) => TAG_ORDER.includes(tag))
-                                  .sort((a, b) => TAG_ORDER.indexOf(a) - TAG_ORDER.indexOf(b))
+                                  ?.filter((tag) => {
+                                    if (tag === "GROUP" || tag === "TIMEDELAY") return false;
+                                    // tagSt가 'Y'인 태그만 필터링
+                                    const tagInfo = activeTagData.find((t) => t.tagCd === tag);
+                                    return tagInfo !== undefined;
+                                  })
                                   .map((tag, index) => {
-                                    const shouldApplyLevel1 = LEVEL1_TAGS.includes(tag);
+                                    // tagData에서 tagCd와 일치하는 태그 찾기
+                                    const tagInfo = activeTagData.find((t) => t.tagCd === tag);
+                                    // DEFAULT_TAG에 있으면 그것의 tagImg 사용, 없으면 tagData의 tagImg 사용
+                                    const tagImgSrc = getDefaultTagImg(tag, tagInfo?.tagImg || "");
+
                                     return (
-                                      <li key={index} className={`${styles[`${tag}`]} ${shouldApplyLevel1 ? styles.level1 : ""}`}>
+                                      <li key={index} className={styles.tagItem}>
+                                        <img src={tagImgSrc} alt={tag} width={17} height={17} />
                                         <span className="blind">{tag}</span>
                                       </li>
                                     );
                                   })}
-                                {(booking.tags?.includes("TIMEDELAY") || booking.delayTm !== null) && (
-                                  <li className={styles.TIMEDELAY}>
+                                {(booking.delayTm !== null ||
+                                  (booking.tags?.includes("TIMEDELAY") &&
+                                    activeTagData.some((tag) => tag.tagCd === "TIMEDELAY"))) && (
+                                  <li className={styles.tagItem}>
+                                    <img
+                                      src={getDefaultTagImg("TIMEDELAY")}
+                                      alt="TIMEDELAY"
+                                      width={17}
+                                      height={17}
+                                    />
                                     <span className="blind">TIMEDELAY</span>
                                   </li>
                                 )}
@@ -162,21 +186,38 @@ const StandByPopup = ({ clubData, bookingData, onBookingClick }: StandByPopupPro
                         );
                         return (
                           <li key={booking.bookingId} className={styles["standby-buggy-item"]}>
-                            {TAG_ORDER && booking.tags?.filter((tag) => tag !== "GROUP").length > 0 && (
+                            {booking.tags?.filter((tag) => tag !== "GROUP").length > 0 && (
                               <ul className={styles.tagList}>
                                 {booking.tags
-                                  ?.filter((tag) => TAG_ORDER.includes(tag))
-                                  .sort((a, b) => TAG_ORDER.indexOf(a) - TAG_ORDER.indexOf(b))
+                                  ?.filter((tag) => {
+                                    if (tag === "GROUP" || tag === "TIMEDELAY") return false;
+                                    // tagSt가 'Y'인 태그만 필터링
+                                    const tagInfo = activeTagData.find((t) => t.tagCd === tag);
+                                    return tagInfo !== undefined;
+                                  })
                                   .map((tag, index) => {
-                                    const shouldApplyLevel1 = LEVEL1_TAGS.includes(tag);
+                                    // tagData에서 tagCd와 일치하는 태그 찾기
+                                    const tagInfo = activeTagData.find((t) => t.tagCd === tag);
+                                    // DEFAULT_TAG에 있으면 그것의 tagImg 사용, 없으면 tagData의 tagImg 사용
+                                    const tagImgSrc = getDefaultTagImg(tag, tagInfo?.tagImg || "");
+
                                     return (
-                                      <li key={index} className={`${styles[`${tag}`]} ${shouldApplyLevel1 ? styles.level1 : ""}`}>
+                                      <li key={index} className={styles.tagItem}>
+                                        <img src={tagImgSrc} alt={tag} width={17} height={17} />
                                         <span className="blind">{tag}</span>
                                       </li>
                                     );
                                   })}
-                                {(booking.tags?.includes("TIMEDELAY") || booking.delayTm !== null) && (
-                                  <li className={styles.TIMEDELAY}>
+                                {(booking.delayTm !== null ||
+                                  (booking.tags?.includes("TIMEDELAY") &&
+                                    activeTagData.some((tag) => tag.tagCd === "TIMEDELAY"))) && (
+                                  <li className={styles.tagItem}>
+                                    <img
+                                      src={getDefaultTagImg("TIMEDELAY")}
+                                      alt="TIMEDELAY"
+                                      width={17}
+                                      height={17}
+                                    />
                                     <span className="blind">TIMEDELAY</span>
                                   </li>
                                 )}

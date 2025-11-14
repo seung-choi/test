@@ -2,6 +2,7 @@ import $axios from "@/api/axios";
 import { LoginFormAPI } from "@/app/login/page";
 import { getOriginURL } from "@/api/API_URL";
 import BookingType from "@/types/Booking.type";
+import { TagType } from "@/types/Tag.type";
 import EventHisSOSType from "@/types/EventHisSOSType";
 import ClubType from "@/types/Club.type";
 import EventSSE from "@/types/EventSSE.type";
@@ -44,6 +45,14 @@ export const getSOSHistory = async () => {
 export const getMenuHis = async () => {
   const res = await $axios<string[]>({
     url: "/menu/his",
+    method: "get",
+  });
+  return res.data;
+};
+
+export const getTag = async () => {
+  const res = await $axios<TagType[]>({
+    url: "/tag",
     method: "get",
   });
   return res.data;

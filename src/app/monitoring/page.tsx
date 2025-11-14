@@ -3,7 +3,7 @@
 import styles from "@/styles/pages/monitoring/monitoring.module.scss";
 import StandByPopup from "@/components/monitoring/StandByPopup";
 import { useQuery } from "@tanstack/react-query";
-import { getBooking, getClub, getMenuHis } from "@/api/main";
+import { getBooking, getClub, getMenuHis, getTag } from "@/api/main";
 import CourseType from "@/types/Course.type";
 import MenuPopup from "@/components/MenuPopup";
 import BookingDetailPopup from "@/components/monitoring/BookingDetailPopup";
@@ -28,7 +28,7 @@ import {
 import HolecupMenuPopup from "@/components/HolcupMenuPopup";
 import useSSE from "@/lib/useSSE";
 import BookingType from "@/types/Booking.type";
-import { LEVEL1_TAGS, TAG_ORDER } from "@/constants/tags";
+import { useDefaultTagImg } from "@/hooks/useDefaultTagImg";
 
 const Monitoring = () => {
   const { t } = useTranslation();
@@ -46,6 +46,9 @@ const Monitoring = () => {
   // 팀 클래스 매핑 상태 관리
   const setTeamClassMapping = useSetRecoilState(teamClassMappingState);
 
+  // DEFAULT_TAG의 tagImg를 가져오는 hook
+  const { getDefaultTagImg } = useDefaultTagImg();
+
   const { data: clubData } = useQuery({
     queryKey: ["clubData"],
     queryFn: () => getClub(),
@@ -62,6 +65,11 @@ const Monitoring = () => {
     queryFn: () => getMenuHis(),
   });
 
+  const { data: tagData } = useQuery({
+    queryKey: ["apiTag"],
+    queryFn: () => getTag(),
+  });
+
   const refinedBookingData = useMemo(() => {
     if (!clubData || !bookingData) return [];
     return transformBookingData(bookingData, clubData);
@@ -69,6 +77,9 @@ const Monitoring = () => {
 
   // Recoil state에서 팀 클래스 매핑 가져오기
   const teamClassMapping = useRecoilValue(teamClassMappingState);
+
+  // tagData에서 tagSt가 'Y'인 것만 필터링
+  const activeTagData = tagData?.filter((tag) => tag.tagSt === "Y") || [];
 
   // refinedBookingData가 변경될 때마다 팀 클래스 매핑 업데이트
   useEffect(() => {
@@ -337,25 +348,49 @@ const Monitoring = () => {
                                         }}
                                       >
                                         {cart.tags
-                                          ?.filter((tag) => TAG_ORDER.includes(tag))
-                                          .sort(
-                                            (a, b) => TAG_ORDER.indexOf(a) - TAG_ORDER.indexOf(b),
-                                          )
+                                          ?.filter((tag) => {
+                                            if (tag === "GROUP" || tag === "TIMEDELAY")
+                                              return false;
+                                            // tagSt가 'Y'인 태그만 필터링
+                                            const tagInfo = activeTagData.find(
+                                              (t) => t.tagCd === tag,
+                                            );
+                                            return tagInfo !== undefined;
+                                          })
                                           .map((tag, index) => {
-                                            const shouldApplyLevel1 = LEVEL1_TAGS.includes(tag);
+                                            // tagData에서 tagCd와 일치하는 태그 찾기
+                                            const tagInfo = activeTagData.find(
+                                              (t) => t.tagCd === tag,
+                                            );
+                                            // DEFAULT_TAG에 있으면 그것의 tagImg 사용, 없으면 tagData의 tagImg 사용
+                                            const tagImgSrc = getDefaultTagImg(
+                                              tag,
+                                              tagInfo?.tagImg || "",
+                                            );
                                             return (
-                                              <li
-                                                key={index}
-                                                className={`${styles[`${tag}`]} ${shouldApplyLevel1 ? styles.level1 : ""}`}
-                                              >
+                                              <li key={index} className={styles.tagItem}>
+                                                <img
+                                                  src={tagImgSrc}
+                                                  alt={tag}
+                                                  width={12}
+                                                  height={12}
+                                                />
                                                 <span className="blind">{tag}</span>
                                               </li>
                                             );
                                           })}
-                                        {/* TIMEDELAY 태그가 tags에 있거나 delayTm이 null이 아닐 경우 노출 */}
-                                        {(cart.tags?.includes("TIMEDELAY") ||
-                                          cart.delayTm !== null) && (
-                                          <li className={styles.TIMEDELAY}>
+                                        {(cart.delayTm !== null ||
+                                          (cart.tags?.includes("TIMEDELAY") &&
+                                            activeTagData.some(
+                                              (tag) => tag.tagCd === "TIMEDELAY",
+                                            ))) && (
+                                          <li className={styles.tagItem}>
+                                            <img
+                                              src={getDefaultTagImg("TIMEDELAY")}
+                                              alt="TIMEDELAY"
+                                              width={12}
+                                              height={12}
+                                            />
                                             <span className="blind">TIMEDELAY</span>
                                           </li>
                                         )}
@@ -440,6 +475,7 @@ const Monitoring = () => {
       <HolecupMenuPopup courseList={clubData?.courseList || []} />
       <StandByPopup
         clubData={clubData}
+        tagData={tagData || []}
         bookingData={refinedBookingData}
         onBookingClick={(booking: BookingType) => {
           setSelectedDetailData(booking);
