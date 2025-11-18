@@ -8,6 +8,8 @@ type HoleType = {
   holeHdc: number;
   holeAlt: number;
   holePer: string;
+  holeWth: number; //홀 너비
+  holeGap: number; //홀간 거리
   mapList: MapType[];
 };
 

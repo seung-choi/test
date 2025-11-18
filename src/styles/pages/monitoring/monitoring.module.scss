@@ -172,19 +172,17 @@
     .hole-list-wrap {
       position: relative;
       height: calc(100% - 33px);
+      padding: 0 20px;
       .hole-list {
+        position: relative;
         display: flex;
         align-items: center;
         flex-wrap: wrap;
         width: 100%;
         height: 100%;
-        padding: 0 2px 0 20px;
         .hole-item {
           position: relative;
           height: 100%;
-          &:not(:last-of-type) {
-            margin-right: 18px;
-          }
           &-body {
             position: absolute;
             bottom: 10px;
@@ -221,143 +219,132 @@
             border-radius: 5px;
             background: var(--mode-gray1);
           }
-          .buggy-wrapper {
-            z-index: 1;
+        }
+        .buggy-wrapper {
+          z-index: 1;
+          position: absolute;
+          bottom: 9px;
+          transform: translateX(-50%);
+          transition: left 0.5s ease-in-out;
+          .dottedLine {
             position: absolute;
-            bottom: -1px;
+            left: 50%;
+            bottom: calc(100% + 2px);
             transform: translateX(-50%);
-            transition: left 0.5s ease-in-out;
-            .dottedLine {
-              position: absolute;
-              left: 50%;
-              bottom: calc(100% + 2px);
-              transform: translateX(-50%);
-              z-index: 1;
-              border-left: 1px dashed #d9d9d9;
-            }
-            .bookingNm {
-              position: absolute;
-              left: 50%;
-              transform: translateX(-50%);
-              font-weight: 800;
-              font-size: 11px;
-              color: var(--mode-gray1);
-              white-space: nowrap;
-            }
-            .tagGroup {
-              position: absolute;
-              left: 50%;
-              top: 50%;
-              transform: translate(-50%, -50%);
-              width: 14px;
-              height: 14px;
+            z-index: 1;
+            border-left: 1px dashed #d9d9d9;
+          }
+          .bookingNm {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: 800;
+            font-size: 11px;
+            color: var(--mode-gray1);
+            white-space: nowrap;
+          }
+          .tagGroup {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 14px;
+            height: 14px;
+            border-radius: 5px;
+          }
+          .tagSelf {
+            z-index: 2;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: auto;
+          }
+          .buggy {
+            position: relative;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.25);
+            box-sizing: border-box;
+            cursor: pointer;
+          }
+          .tagList {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 1px;
+            padding: 0;
+            .tagItem {
+              width: 12px;
+              height: 12px;
               border-radius: 5px;
-            }
-            .tagSelf {
-              z-index: 2;
-              position: absolute;
-              left: 50%;
-              top: 50%;
-              transform: translate(-50%, -50%);
-              width: 10px;
-              height: auto;
-            }
-            .buggy {
-              position: relative;
-              width: 8px;
-              height: 8px;
-              border-radius: 50%;
-              box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.25);
-              box-sizing: border-box;
-              cursor: pointer;
-            }
-            .tagList {
-              position: absolute;
-              left: 50%;
-              transform: translateX(-50%);
-              display: flex;
-              align-items: center;
-              gap: 1px;
-              padding: 0;
-              .tagItem {
-                width: 12px;
-                height: 12px;
-                border-radius: 5px;
-                overflow: hidden;
-                img {
-                  object-fit: contain;
-                }
-                &.level1 {
-                  width: 15px;
-                  height: 15px;
-                }
-                &.FIRSTTEAMF1 {
-                  background-image: url("../../../../public/assets/image/tag/tag_first_team_f1.svg");
-                }
-                &.FIRSTTEAMF2 {
-                  background-image: url("../../../../public/assets/image/tag/tag_first_team_f2.svg");
-                }
-                &.FIRSTTEAMF3 {
-                  background-image: url("../../../../public/assets/image/tag/tag_first_team_f3.svg");
-                }
-                &.LASTTEAMF1 {
-                  background-image: url("../../../../public/assets/image/tag/tag_last_team_l1.svg");
-                }
-                &.LASTTEAMF2 {
-                  background-image: url("../../../../public/assets/image/tag/tag_last_team_l2.svg");
-                }
-                &.LASTTEAMF3 {
-                  background-image: url("../../../../public/assets/image/tag/tag_last_team_l3.svg");
-                }
-                &.VIP {
-                  background-image: url("../../../../public/assets/image/tag/tag_vip.svg");
-                }
-                &.SELF {
-                  background-image: url("../../../../public/assets/image/tag/tag_self01.svg");
-                }
-                &.TOWPERSONS {
-                  background-image: url("../../../../public/assets/image/tag/tag_two_persons.svg");
-                }
-                &.THREEPERSONS {
-                  background-image: url("../../../../public/assets/image/tag/tag_three_persons.svg");
-                }
-                &.FIVEPERSONS {
-                  background-image: url("../../../../public/assets/image/tag/tag_five_persons.svg");
-                }
-                &.EDUCATION {
-                  background-image: url("../../../../public/assets/image/tag/tag_education.svg");
-                }
-                &.COMP {
-                  background-image: url("../../../../public/assets/image/tag/tag_comp.svg");
-                }
-                &.GREENCHECK {
-                  background-image: url("../../../../public/assets/image/tag/tag_green_check.svg");
-                }
-                &.TOPDRESSING {
-                  background-image: url("../../../../public/assets/image/tag/tag_topdressing.svg");
-                }
-                &.ADD9HOLES {
-                  background-image: url("../../../../public/assets/image/tag/tag_add_9_holes.svg");
-                }
-                &.MARSHAL {
-                  background-image: url("../../../../public/assets/image/tag/tag_marshal.svg");
-                }
-                &.TIMEDELAY {
-                  background-image: url("../../../../public/assets/image/tag/tag_delay.svg");
-                }
+              overflow: hidden;
+              img {
+                object-fit: contain;
+              }
+              &.level1 {
+                width: 15px;
+                height: 15px;
+              }
+              &.FIRSTTEAMF1 {
+                background-image: url("../../../../public/assets/image/tag/tag_first_team_f1.svg");
+              }
+              &.FIRSTTEAMF2 {
+                background-image: url("../../../../public/assets/image/tag/tag_first_team_f2.svg");
+              }
+              &.FIRSTTEAMF3 {
+                background-image: url("../../../../public/assets/image/tag/tag_first_team_f3.svg");
+              }
+              &.LASTTEAMF1 {
+                background-image: url("../../../../public/assets/image/tag/tag_last_team_l1.svg");
+              }
+              &.LASTTEAMF2 {
+                background-image: url("../../../../public/assets/image/tag/tag_last_team_l2.svg");
+              }
+              &.LASTTEAMF3 {
+                background-image: url("../../../../public/assets/image/tag/tag_last_team_l3.svg");
+              }
+              &.VIP {
+                background-image: url("../../../../public/assets/image/tag/tag_vip.svg");
+              }
+              &.SELF {
+                background-image: url("../../../../public/assets/image/tag/tag_self01.svg");
+              }
+              &.TOWPERSONS {
+                background-image: url("../../../../public/assets/image/tag/tag_two_persons.svg");
+              }
+              &.THREEPERSONS {
+                background-image: url("../../../../public/assets/image/tag/tag_three_persons.svg");
+              }
+              &.FIVEPERSONS {
+                background-image: url("../../../../public/assets/image/tag/tag_five_persons.svg");
+              }
+              &.EDUCATION {
+                background-image: url("../../../../public/assets/image/tag/tag_education.svg");
+              }
+              &.COMP {
+                background-image: url("../../../../public/assets/image/tag/tag_comp.svg");
+              }
+              &.GREENCHECK {
+                background-image: url("../../../../public/assets/image/tag/tag_green_check.svg");
+              }
+              &.TOPDRESSING {
+                background-image: url("../../../../public/assets/image/tag/tag_topdressing.svg");
+              }
+              &.ADD9HOLES {
+                background-image: url("../../../../public/assets/image/tag/tag_add_9_holes.svg");
+              }
+              &.MARSHAL {
+                background-image: url("../../../../public/assets/image/tag/tag_marshal.svg");
+              }
+              &.TIMEDELAY {
+                background-image: url("../../../../public/assets/image/tag/tag_delay.svg");
               }
             }
-          }
-          &:not(:last-of-type) .hole-item-body::after {
-            position: absolute;
-            right: -11px;
-            bottom: 1px;
-            content: "";
-            display: block;
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            background: var(--mode-gray1);
           }
         }
       }

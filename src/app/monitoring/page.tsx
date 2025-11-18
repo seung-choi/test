@@ -29,6 +29,7 @@ import HolecupMenuPopup from "@/components/HolcupMenuPopup";
 import useSSE from "@/lib/useSSE";
 import BookingType from "@/types/Booking.type";
 import { useDefaultTagImg } from "@/hooks/useDefaultTagImg";
+import HoleType from "@/types/Hole.type";
 
 const Monitoring = () => {
   const { t } = useTranslation();
@@ -80,6 +81,70 @@ const Monitoring = () => {
 
   // tagData에서 tagSt가 'Y'인 것만 필터링
   const activeTagData = tagData?.filter((tag) => tag.tagSt === "Y") || [];
+
+  // 홀 너비와 간격 계산 함수
+  const getHoleWidth = (hole: HoleType) => {
+    // holeWth는 이미 전체 holeList 기준으로 정규화되어 있음
+    return `${hole.holeWth}%`;
+  };
+
+  const getHoleGap = (hole: HoleType, holeList: HoleType[]) => {
+    // 마지막 홀은 gap이 없음
+    const isLastHole = hole.holeNo === holeList[holeList.length - 1].holeNo;
+    if (isLastHole) {
+      return "0%";
+    }
+    // holeGap는 이미 전체 holeList 기준으로 정규화되어 있음
+    return `${hole.holeGap}%`;
+  };
+
+  // 특정 홀의 시작 위치를 전체 홀 기준으로 계산 (퍼센트)
+  const getHoleStartPosition = (targetHole: HoleType, holeList: HoleType[]) => {
+    let startPosition = 0;
+    for (const hole of holeList) {
+      if (hole.holeId === targetHole.holeId) {
+        break;
+      }
+      startPosition += hole.holeWth;
+      // 마지막 홀이 아니면 gap 추가
+      const isLastHole = hole.holeNo === holeList[holeList.length - 1].holeNo;
+      if (!isLastHole) {
+        startPosition += hole.holeGap;
+      }
+    }
+    return startPosition;
+  };
+
+  // 카트의 progress를 전체 홀 기준으로 변환
+  const getGlobalProgress = (cart: BookingType, holeList: HoleType[]) => {
+    const hole = holeList.find((h) => h.holeId === cart.holeId);
+    if (!hole) return 0;
+
+    const holeStartPosition = getHoleStartPosition(hole, holeList);
+    const progressInHole = cart.progress ?? 0;
+
+    // progress가 100%이고 다음 홀이 있는 경우, 홀간 사이 가운데 지점에 위치
+    if (progressInHole >= 100) {
+      const currentHoleIndex = holeList.findIndex((h) => h.holeId === hole.holeId);
+      const isLastHole = currentHoleIndex === holeList.length - 1;
+
+      // 마지막 홀이 아니면 다음 홀의 gap 중간 지점에 위치
+      if (!isLastHole) {
+        const currentHoleEndPosition = holeStartPosition + hole.holeWth;
+        const nextHoleGap = hole.holeGap;
+        // 현재 홀의 끝 + 다음 홀 gap의 절반
+        return currentHoleEndPosition + nextHoleGap / 2;
+      } else {
+        // 마지막 홀이면 현재 홀의 끝에 위치
+        return holeStartPosition + hole.holeWth;
+      }
+    }
+
+    // progress가 100%가 아니면 기존 로직대로 계산
+    // 홀 내에서의 progress를 전체 홀 기준으로 변환
+    const globalProgress = holeStartPosition + (hole.holeWth * progressInHole) / 100;
+    return globalProgress;
+  };
 
   // refinedBookingData가 변경될 때마다 팀 클래스 매핑 업데이트
   useEffect(() => {
@@ -256,23 +321,15 @@ const Monitoring = () => {
                     </div>
                   </div>
                   <div className={styles["hole-list-wrap"]}>
-                    <ul className={styles["hole-list"]}>
+                    <div className={styles["hole-list"]}>
                       {course.holeList.map((hole) => {
-                        const cartListByHoleId = refinedBookingData
-                          ?.filter(
-                            (gps) =>
-                              gps.courseId === course.courseId &&
-                              gps.holeId === hole.holeId &&
-                              (gps.status === "OP" || gps.status === "IP"),
-                          )
-                          .sort((a, b) => a.holeId - b.holeId || a.progress - b.progress);
-
                         return (
-                          <li
+                          <div
                             className={styles["hole-item"]}
                             key={hole.holeId}
                             style={{
-                              width: `calc(((100% / ${course.coursePar}) * ${hole.holePar}) - 18px)`,
+                              width: getHoleWidth(hole),
+                              marginRight: getHoleGap(hole, course.holeList),
                             }}
                           >
                             <div className={styles["hole-item-name"]}>
@@ -280,165 +337,166 @@ const Monitoring = () => {
                             </div>
                             <div className={styles["hole-item-body"]}>
                               <div className={styles["hole-item-line"]}></div>
-
-                              {cartListByHoleId?.map((cart) => {
-                                const outCourse = clubData?.courseList.find(
-                                  (c) => c.courseId === cart.outCourseId,
-                                );
-
-                                // 전체 카트에서 겹침 그룹 찾기 (60% 이내면 겹침으로 간주)
-                                const findOverlappingGroup = (carts: any[], targetCart: any) => {
-                                  const group = [targetCart];
-
-                                  for (const cart of carts) {
-                                    if (cart.bookingId === targetCart.bookingId) continue;
-
-                                    const isOverlapping = group.some((groupCart) => {
-                                      const progressDiff = Math.abs(
-                                        (cart.progress ?? 0) - (groupCart.progress ?? 0),
-                                      );
-                                      return progressDiff <= 60;
-                                    });
-
-                                    if (isOverlapping) {
-                                      group.push(cart);
-                                    }
-                                  }
-
-                                  return group;
-                                };
-
-                                const overlappingGroup = findOverlappingGroup(
-                                  cartListByHoleId,
-                                  cart,
-                                );
-                                const stackedIndex = overlappingGroup
-                                  .sort((a, b) => {
-                                    // progress가 다르면 높은 순으로 정렬
-                                    const progressDiff = (b.progress ?? 0) - (a.progress ?? 0);
-                                    if (progressDiff !== 0) return progressDiff;
-
-                                    // progress가 같으면 원본 배열에서의 순서 유지 (앞에 있는 게 위로)
-                                    const aIndex = cartListByHoleId.findIndex(
-                                      (c) => c.bookingId === a.bookingId,
-                                    );
-                                    const bIndex = cartListByHoleId.findIndex(
-                                      (c) => c.bookingId === b.bookingId,
-                                    );
-                                    return aIndex - bIndex;
-                                  })
-                                  .findIndex((c) => c.bookingId === cart.bookingId);
-
-                                return (
-                                  <div
-                                    data-selector="buggy-item"
-                                    key={`cartByHole-${cart.bookingId}`}
-                                    className={styles["buggy-wrapper"]}
-                                    style={{
-                                      left: `${cart.progress}%`,
-                                      cursor: "pointer",
-                                      zIndex: Math.round(Number(cart.progress)),
-                                    }}
-                                  >
-                                    {cart.tags?.filter((tag) => tag !== "GROUP").length > 0 && (
-                                      <ul
-                                        className={styles.tagList}
-                                        style={{
-                                          bottom: `calc(100% + ${14 + stackedIndex * 28}px)`,
-                                        }}
-                                      >
-                                        {cart.tags
-                                          ?.filter((tag) => {
-                                            if (tag === "GROUP" || tag === "TIMEDELAY")
-                                              return false;
-                                            // tagSt가 'Y'인 태그만 필터링
-                                            const tagInfo = activeTagData.find(
-                                              (t) => t.tagCd === tag,
-                                            );
-                                            return tagInfo !== undefined;
-                                          })
-                                          .map((tag, index) => {
-                                            // tagData에서 tagCd와 일치하는 태그 찾기
-                                            const tagInfo = activeTagData.find(
-                                              (t) => t.tagCd === tag,
-                                            );
-                                            // DEFAULT_TAG에 있으면 그것의 tagImg 사용, 없으면 tagData의 tagImg 사용
-                                            const tagImgSrc = getDefaultTagImg(
-                                              tag,
-                                              tagInfo?.tagImg || "",
-                                            );
-                                            return (
-                                              <li key={index} className={styles.tagItem}>
-                                                <img
-                                                  src={tagImgSrc}
-                                                  alt={tag}
-                                                  width={12}
-                                                  height={12}
-                                                />
-                                                <span className="blind">{tag}</span>
-                                              </li>
-                                            );
-                                          })}
-                                        {(cart.delayTm !== null ||
-                                          (cart.tags?.includes("TIMEDELAY") &&
-                                            activeTagData.some(
-                                              (tag) => tag.tagCd === "TIMEDELAY",
-                                            ))) && (
-                                          <li className={styles.tagItem}>
-                                            <img
-                                              src={getDefaultTagImg("TIMEDELAY")}
-                                              alt="TIMEDELAY"
-                                              width={12}
-                                              height={12}
-                                            />
-                                            <span className="blind">TIMEDELAY</span>
-                                          </li>
-                                        )}
-                                      </ul>
-                                    )}
-                                    <strong
-                                      className={styles.bookingNm}
-                                      style={{
-                                        bottom: `calc(100% + ${stackedIndex * 28}px)`,
-                                      }}
-                                      onClick={() => {
-                                        setSelectedDetailData(cart);
-                                        setDetailPopupOpen(true);
-                                      }}
-                                    >
-                                      {cart.bookingNm}
-                                    </strong>
-
-                                    {stackedIndex > 0 && (
-                                      <div
-                                        className={styles.dottedLine}
-                                        style={{
-                                          height: `calc(${stackedIndex * 30}px - 2px)`,
-                                        }}
-                                      ></div>
-                                    )}
-
-                                    {cart.bookingsNo !== null && cart.bookingsSt === "Y" && (
-                                      <div
-                                        className={`${styles.tagGroup} ${teamClassMapping.get(cart.bookingsNo.toString())}`}
-                                      >
-                                        <span className="blind">단체팀 빨간 박스</span>
-                                      </div>
-                                    )}
-                                    <div
-                                      className={styles.buggy}
-                                      style={{ backgroundColor: outCourse?.courseCol || "#FFDF68" }}
-                                    >
-                                      <span className="blind">buggy</span>
-                                    </div>
-                                  </div>
-                                );
-                              })}
                             </div>
-                          </li>
+                          </div>
                         );
                       })}
-                    </ul>
+                      {/* 전체 홀 기준으로 모든 카트 렌더링 */}
+                      {courseBookings
+                        ?.filter((gps) => gps.status === "OP" || gps.status === "IP")
+                        .map((cart) => {
+                          const outCourse = clubData?.courseList.find(
+                            (c) => c.courseId === cart.outCourseId,
+                          );
+                          const globalProgress = getGlobalProgress(cart, course.holeList);
+
+                          // 전체 카트에서 겹침 그룹 찾기 (전체 홀 기준으로 7% 이내면 겹침으로 간주)
+                          const allPlayingCarts = courseBookings.filter(
+                            (gps) => gps.status === "OP" || gps.status === "IP",
+                          );
+                          const findOverlappingGroup = (
+                            carts: BookingType[],
+                            targetCart: BookingType,
+                          ) => {
+                            const group = [targetCart];
+
+                            for (const cart of carts) {
+                              if (cart.bookingId === targetCart.bookingId) continue;
+
+                              const cartGlobalProgress = getGlobalProgress(cart, course.holeList);
+                              const isOverlapping = group.some((groupCart) => {
+                                const groupGlobalProgress = getGlobalProgress(
+                                  groupCart,
+                                  course.holeList,
+                                );
+                                const progressDiff = Math.abs(
+                                  cartGlobalProgress - groupGlobalProgress,
+                                );
+                                return progressDiff <= 7; // 전체 홀 기준 7% 이내
+                              });
+
+                              if (isOverlapping) {
+                                group.push(cart);
+                              }
+                            }
+
+                            return group;
+                          };
+
+                          const overlappingGroup = findOverlappingGroup(allPlayingCarts, cart);
+                          const stackedIndex = overlappingGroup
+                            .sort((a, b) => {
+                              // 전체 홀 기준 progress가 다르면 높은 순으로 정렬
+                              const progressDiff =
+                                getGlobalProgress(b, course.holeList) -
+                                getGlobalProgress(a, course.holeList);
+                              if (progressDiff !== 0) return progressDiff;
+
+                              // progress가 같으면 원본 배열에서의 순서 유지 (앞에 있는 게 위로)
+                              const aIndex = allPlayingCarts.findIndex(
+                                (c) => c.bookingId === a.bookingId,
+                              );
+                              const bIndex = allPlayingCarts.findIndex(
+                                (c) => c.bookingId === b.bookingId,
+                              );
+                              return aIndex - bIndex;
+                            })
+                            .findIndex((c) => c.bookingId === cart.bookingId);
+
+                          return (
+                            <div
+                              data-selector="buggy-item"
+                              key={`cartByHole-${cart.bookingId}`}
+                              className={styles["buggy-wrapper"]}
+                              style={{
+                                left: `${globalProgress}%`,
+                                cursor: "pointer",
+                                zIndex: Math.round(globalProgress),
+                              }}
+                            >
+                              {cart.tags?.filter((tag) => tag !== "GROUP").length > 0 && (
+                                <ul
+                                  className={styles.tagList}
+                                  style={{
+                                    bottom: `calc(100% + ${14 + stackedIndex * 28}px)`,
+                                  }}
+                                >
+                                  {cart.tags
+                                    ?.filter((tag) => {
+                                      if (tag === "GROUP" || tag === "TIMEDELAY") return false;
+                                      // tagSt가 'Y'인 태그만 필터링
+                                      const tagInfo = activeTagData.find((t) => t.tagCd === tag);
+                                      return tagInfo !== undefined;
+                                    })
+                                    .map((tag, index) => {
+                                      // tagData에서 tagCd와 일치하는 태그 찾기
+                                      const tagInfo = activeTagData.find((t) => t.tagCd === tag);
+                                      // DEFAULT_TAG에 있으면 그것의 tagImg 사용, 없으면 tagData의 tagImg 사용
+                                      const tagImgSrc = getDefaultTagImg(
+                                        tag,
+                                        tagInfo?.tagImg || "",
+                                      );
+                                      return (
+                                        <li key={index} className={styles.tagItem}>
+                                          <img src={tagImgSrc} alt={tag} width={12} height={12} />
+                                          <span className="blind">{tag}</span>
+                                        </li>
+                                      );
+                                    })}
+                                  {(cart.delayTm !== null ||
+                                    (cart.tags?.includes("TIMEDELAY") &&
+                                      activeTagData.some((tag) => tag.tagCd === "TIMEDELAY"))) && (
+                                    <li className={styles.tagItem}>
+                                      <img
+                                        src={getDefaultTagImg("TIMEDELAY")}
+                                        alt="TIMEDELAY"
+                                        width={12}
+                                        height={12}
+                                      />
+                                      <span className="blind">TIMEDELAY</span>
+                                    </li>
+                                  )}
+                                </ul>
+                              )}
+                              <strong
+                                className={styles.bookingNm}
+                                style={{
+                                  bottom: `calc(100% + ${stackedIndex * 28}px)`,
+                                }}
+                                onClick={() => {
+                                  setSelectedDetailData(cart);
+                                  setDetailPopupOpen(true);
+                                }}
+                              >
+                                {cart.bookingNm}
+                              </strong>
+
+                              {stackedIndex > 0 && (
+                                <div
+                                  className={styles.dottedLine}
+                                  style={{
+                                    height: `calc(${stackedIndex * 30}px - 2px)`,
+                                  }}
+                                ></div>
+                              )}
+
+                              {cart.bookingsNo !== null && cart.bookingsSt === "Y" && (
+                                <div
+                                  className={`${styles.tagGroup} ${teamClassMapping.get(cart.bookingsNo.toString())}`}
+                                >
+                                  <span className="blind">단체팀 빨간 박스</span>
+                                </div>
+                              )}
+                              <div
+                                className={styles.buggy}
+                                style={{ backgroundColor: outCourse?.courseCol || "#FFDF68" }}
+                              >
+                                <span className="blind">buggy</span>
+                              </div>
+                            </div>
+                          );
+                        })}
+                    </div>
                   </div>
                 </section>
               );
