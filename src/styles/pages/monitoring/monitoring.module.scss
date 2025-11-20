@@ -230,18 +230,50 @@
             position: absolute;
             left: 50%;
             bottom: calc(100% + 2px);
+            height: 0;
             transform: translateX(-50%);
             z-index: 1;
             border-left: 1px dashed #d9d9d9;
+            &.oneLevel {
+              height: 0;
+            }
+            &.twoLevel {
+              height: 14px;
+            }
+            &.threeLevel {
+              height: 14px + 14px;
+            }
+            &.fourLevel {
+              height: 14px + 14px + 14px;
+            }
+            &.fiveLevel {
+              height: 14px + 14px + 14px + 14px;
+            }
           }
           .bookingNm {
             position: absolute;
             left: 50%;
+            bottom: 100%;
             transform: translateX(-50%);
             font-weight: 800;
             font-size: 11px;
             color: var(--mode-gray1);
             white-space: nowrap;
+            &.oneLevel {
+              bottom: 100%;
+            }
+            &.twoLevel {
+              bottom: calc(100% + 14px);
+            }
+            &.threeLevel {
+              bottom: calc(100% + 14px + 14px);
+            }
+            &.fourLevel {
+              bottom: calc(100% + 14px + 14px + 14px);
+            }
+            &.fiveLevel {
+              bottom: calc(100% + 14px + 14px + 14px + 14px);
+            }
           }
           .tagGroup {
             position: absolute;
@@ -278,6 +310,22 @@
             align-items: center;
             gap: 1px;
             padding: 0;
+            bottom: calc(100% + 14px);
+            &.oneLevel {
+              bottom: calc(100% + 14px);
+            }
+            &.twoLevel {
+              bottom: calc(100% + 14px + 14px);
+            }
+            &.threeLevel {
+              bottom: calc(100% + 14px + 14px + 14px);
+            }
+            &.fourLevel {
+              bottom: calc(100% + 14px + 14px + 14px + 14px);
+            }
+            &.fiveLevel {
+              bottom: calc(100% + 14px + 14px + 14px + 14px + 14px);
+            }
             .tagItem {
               width: 12px;
               height: 12px;

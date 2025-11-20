@@ -346,6 +346,29 @@ const Monitoring = () => {
                         // 카트 간 겹침 판단 기준 거리 (퍼센트)
                         const OVERLAP_THRESHOLD = 7;
 
+                        // 카트에 태그 영역이 있는지 확인하는 함수
+                        // 렌더링할 때 태그 리스트가 표시되는 조건과 동일하게 확인
+                        const hasTags = (cart: BookingType) => {
+                          // 렌더링 조건: cart.tags?.filter((tag) => tag !== "GROUP").length > 0
+                          const nonGroupTags = cart.tags?.filter((tag) => tag !== "GROUP") || [];
+                          if (nonGroupTags.length === 0) return false;
+
+                          // 실제로 화면에 표시되는 태그가 있는지 확인 (activeTagData에 있는 태그)
+                          const visibleTags = nonGroupTags.filter((tag) => {
+                            if (tag === "TIMEDELAY") return false;
+                            const tagInfo = activeTagData.find((t) => t.tagCd === tag);
+                            return tagInfo !== undefined;
+                          });
+
+                          // TIMEDELAY도 태그로 간주 (delayTm이 있거나 TIMEDELAY 태그가 activeTagData에 있으면)
+                          const hasTimeDelay =
+                            cart.delayTm !== null ||
+                            (cart.tags?.includes("TIMEDELAY") &&
+                              activeTagData.some((tag) => tag.tagCd === "TIMEDELAY"));
+
+                          return visibleTags.length > 0 || hasTimeDelay;
+                        };
+
                         // 전체 카트를 progress 순으로 정렬
                         const allPlayingCarts = courseBookings
                           .filter((gps) => gps.status === "OP" || gps.status === "IP")
@@ -365,93 +388,69 @@ const Monitoring = () => {
                             return aIndex - bIndex;
                           });
 
-                        // 겹치는 카트들을 그룹으로 묶기
-                        const overlapGroups: number[][] = [];
-                        const cartGroupMap = new Map<number, number>(); // cart index -> group index
-
+                        // 각 카트의 레벨 계산
+                        const cartLevels = new Map<number, number>();
                         allPlayingCarts.forEach((cart, index) => {
-                          const globalProgress = getGlobalProgress(cart, course.holeList);
-                          let foundGroup = -1;
-
-                          // 기존 그룹 중 하나에 속하는지 확인
-                          for (let i = 0; i < overlapGroups.length; i++) {
-                            const group = overlapGroups[i];
-                            // 그룹 내의 어떤 카트와도 기준 거리 이내인지 확인
-                            const isInGroup = group.some((groupIndex) => {
-                              const groupCartProgress = getGlobalProgress(
-                                allPlayingCarts[groupIndex],
-                                course.holeList,
-                              );
-                              return (
-                                Math.abs(globalProgress - groupCartProgress) <= OVERLAP_THRESHOLD
-                              );
-                            });
-
-                            if (isInGroup) {
-                              foundGroup = i;
-                              break;
-                            }
+                          if (index === 0) {
+                            // 첫 번째 카트는 항상 1레벨
+                            cartLevels.set(cart.bookingId, 1);
+                            return;
                           }
 
-                          if (foundGroup >= 0) {
-                            // 기존 그룹에 추가
-                            overlapGroups[foundGroup].push(index);
-                            cartGroupMap.set(index, foundGroup);
+                          const currentProgress = getGlobalProgress(cart, course.holeList);
+                          const prevCart = allPlayingCarts[index - 1];
+                          const prevProgress = getGlobalProgress(prevCart, course.holeList);
+                          const distance = Math.abs(currentProgress - prevProgress);
+
+                          // 앞 카트와의 거리가 7% 이내인 경우
+                          if (distance <= OVERLAP_THRESHOLD) {
+                            const prevLevel = cartLevels.get(prevCart.bookingId) || 1;
+                            const prevHasTags = hasTags(prevCart);
+
+                            let newLevel: number;
+                            if (prevLevel === 1) {
+                              // 앞 카트가 1레벨
+                              newLevel = prevHasTags ? 3 : 2;
+                            } else if (prevLevel === 2) {
+                              // 앞 카트가 2레벨
+                              newLevel = prevHasTags ? 4 : 3;
+                            } else if (prevLevel === 3) {
+                              // 앞 카트가 3레벨
+                              newLevel = prevHasTags ? 5 : 4;
+                            } else if (prevLevel === 4) {
+                              // 앞 카트가 4레벨
+                              newLevel = prevHasTags ? 1 : 5;
+                            } else if (prevLevel === 5) {
+                              // 앞 카트가 5레벨
+                              newLevel = 1;
+                            } else {
+                              // 기본값
+                              newLevel = 1;
+                            }
+                            cartLevels.set(cart.bookingId, newLevel);
                           } else {
-                            // 앞뒤 카트와의 거리 확인 (기준 거리 이내면 겹침으로 간주)
-                            const hasOverlap =
-                              (index > 0 &&
-                                Math.abs(
-                                  globalProgress -
-                                    getGlobalProgress(allPlayingCarts[index - 1], course.holeList),
-                                ) <= OVERLAP_THRESHOLD) ||
-                              (index < allPlayingCarts.length - 1 &&
-                                Math.abs(
-                                  globalProgress -
-                                    getGlobalProgress(allPlayingCarts[index + 1], course.holeList),
-                                ) <= OVERLAP_THRESHOLD);
-
-                            if (hasOverlap) {
-                              // 새 그룹 생성
-                              const newGroupIndex = overlapGroups.length;
-                              overlapGroups.push([index]);
-                              cartGroupMap.set(index, newGroupIndex);
-                            }
+                            // 앞 카트와의 거리가 7% 이상인 경우 기본 1레벨
+                            cartLevels.set(cart.bookingId, 1);
                           }
                         });
 
-                        // 각 그룹 내에서 progress 순으로 정렬
-                        overlapGroups.forEach((group) => {
-                          group.sort((a, b) => {
-                            const progressA = getGlobalProgress(
-                              allPlayingCarts[a],
-                              course.holeList,
-                            );
-                            const progressB = getGlobalProgress(
-                              allPlayingCarts[b],
-                              course.holeList,
-                            );
-                            return progressA - progressB;
-                          });
-                        });
-
-                        return allPlayingCarts.map((cart, sortedIndex) => {
+                        return allPlayingCarts.map((cart) => {
                           const outCourse = clubData?.courseList.find(
                             (c) => c.courseId === cart.outCourseId,
                           );
                           const globalProgress = getGlobalProgress(cart, course.holeList);
-
-                          // 겹침 그룹에 속하는지 확인
-                          let stackedIndex = 0;
-                          const groupIndex = cartGroupMap.get(sortedIndex);
-                          if (groupIndex !== undefined) {
-                            // 그룹 내에서의 상대적 인덱스 찾기
-                            const group = overlapGroups[groupIndex];
-                            const groupLocalIndex = group.indexOf(sortedIndex);
-                            // 0→1→2→1→0→1→2 패턴 적용
-                            const pattern = groupLocalIndex % 4;
-                            stackedIndex = pattern === 3 ? 1 : pattern;
-                          }
+                          const level = cartLevels.get(cart.bookingId) || 1;
+                          const levelClass = `${
+                            level === 1
+                              ? "oneLevel"
+                              : level === 2
+                                ? "twoLevel"
+                                : level === 3
+                                  ? "threeLevel"
+                                  : level === 4
+                                    ? "fourLevel"
+                                    : "fiveLevel"
+                          }`;
 
                           return (
                             <div
@@ -465,12 +464,7 @@ const Monitoring = () => {
                               }}
                             >
                               {cart.tags?.filter((tag) => tag !== "GROUP").length > 0 && (
-                                <ul
-                                  className={styles.tagList}
-                                  style={{
-                                    bottom: `calc(100% + ${14 + stackedIndex * 28}px)`,
-                                  }}
-                                >
+                                <ul className={`${styles.tagList} ${styles[levelClass]}`}>
                                   {cart.tags
                                     ?.filter((tag) => {
                                       if (tag === "GROUP" || tag === "TIMEDELAY") return false;
@@ -509,10 +503,7 @@ const Monitoring = () => {
                                 </ul>
                               )}
                               <strong
-                                className={styles.bookingNm}
-                                style={{
-                                  bottom: `calc(100% + ${stackedIndex * 28}px)`,
-                                }}
+                                className={`${styles.bookingNm} ${styles[levelClass]}`}
                                 onClick={() => {
                                   setSelectedDetailData(cart);
                                   setDetailPopupOpen(true);
@@ -521,14 +512,7 @@ const Monitoring = () => {
                                 {cart.bookingNm}
                               </strong>
 
-                              {stackedIndex > 0 && (
-                                <div
-                                  className={styles.dottedLine}
-                                  style={{
-                                    height: `calc(${stackedIndex * 30}px - 2px)`,
-                                  }}
-                                ></div>
-                              )}
+                              <div className={`${styles.dottedLine} ${styles[levelClass]}`}></div>
 
                               {cart.bookingsNo !== null && cart.bookingsSt === "Y" && (
                                 <div
