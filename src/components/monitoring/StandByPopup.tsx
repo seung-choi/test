@@ -119,7 +119,7 @@ const StandByPopup = ({ clubData, tagData, bookingData, onBookingClick }: StandB
 
                                     return (
                                       <li key={index} className={styles.tagItem}>
-                                        <img src={tagImgSrc} alt={tag} width={17} height={17} />
+                                        <img src={tagImgSrc} alt={tag} width={12} height={12} />
                                         <span className="blind">{tag}</span>
                                       </li>
                                     );
@@ -203,7 +203,7 @@ const StandByPopup = ({ clubData, tagData, bookingData, onBookingClick }: StandB
 
                                     return (
                                       <li key={index} className={styles.tagItem}>
-                                        <img src={tagImgSrc} alt={tag} width={17} height={17} />
+                                        <img src={tagImgSrc} alt={tag} width={12} height={12} />
                                         <span className="blind">{tag}</span>
                                       </li>
                                     );
