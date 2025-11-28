@@ -3,10 +3,11 @@
 import { useEffect, useRef } from "react";
 import { EventSourcePolyfill } from "event-source-polyfill";
 import { useSetRecoilState } from "recoil";
+import { useQueryClient } from "@tanstack/react-query";
 import { getOriginURL } from "@/api/API_URL";
 import { usePathname } from "next/navigation";
-import { ssePinState, sseSOSState, sseSOSPopupListState } from "@/lib/recoil";
-import { SSEPinData, SSESOSData } from "@/types/sseType";
+import { sseSOSState, sseSOSPopupListState } from "@/lib/recoil";
+import { SSESOSData } from "@/types/sseType";
 import storage from "@/utils/storage";
 
 // 숫자로만 구성된 10자리 세션 ID 생성 함수
@@ -55,8 +56,8 @@ const sessionManager = {
 
 const useSSE = () => {
   const pathname = usePathname();
+  const queryClient = useQueryClient();
   const eventSourseRef = useRef<EventSourcePolyfill | null>(null);
-  const setPin = useSetRecoilState(ssePinState);
   const setSOS = useSetRecoilState(sseSOSState);
   const setSOSPopupList = useSetRecoilState(sseSOSPopupListState);
   const clubId = storage.local.get("clubId");
@@ -88,10 +89,13 @@ const useSSE = () => {
 
       eventSource.onopen = () => {};
 
-      eventSource.addEventListener("PIN", (e) => {
+      eventSource.addEventListener("CLUB", (e) => {
         const event = e as MessageEvent;
         const data = event.data ? JSON.parse(event.data) : null;
-        if (data) setPin(data as SSEPinData[]);
+        if (data) {
+          // club 데이터 재조회
+          queryClient.invalidateQueries({ queryKey: ["clubData"] });
+        }
       });
 
       eventSource.addEventListener("SOS", (e) => {
