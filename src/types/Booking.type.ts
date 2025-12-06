@@ -1,4 +1,5 @@
 import PlayerType from "@/types/Player.type";
+import { VisitedHoleType } from "./VisitedHoleType";
 
 type BookingType = {
   /* 코스 */
@@ -60,6 +61,9 @@ type BookingType = {
   progressInCourse: number[];
 
   mode: "PORTRAIT" | "LANDSCAPE";
+  gap: boolean;
+  gapList?: number[]; // 홀간 거리 영역이 있는 홀 ID 리스트
+  visitedHole?: VisitedHoleType;
 };
 
 export default BookingType;

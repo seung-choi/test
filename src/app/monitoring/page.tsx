@@ -123,27 +123,56 @@ const Monitoring = () => {
     const holeStartPosition = getHoleStartPosition(hole, holeList);
     const progressInHole = cart.progress ?? 0;
 
-    // progress가 100%이고 다음 홀이 있는 경우, 홀간 사이 가운데 지점에 위치
-    if (progressInHole >= 100) {
-      const currentHoleIndex = holeList.findIndex((h) => h.holeId === hole.holeId);
-      const isLastHole = currentHoleIndex === holeList.length - 1;
+    // gapList에 현재 holeId가 포함되어 있는지 확인
+    const isInGapList = cart.gapList?.includes(cart.holeId ?? 0) ?? false;
+    const isGap = cart.gap === true;
 
-      // 마지막 홀이 아니면 다음 홀의 gap 중간 지점에 위치
-      if (!isLastHole) {
+    if (isInGapList) {
+      // gapList에 포함된 경우
+      if (isGap) {
+        // isGap === true: 홀간 영역 안에 있다고 판단하여 홀간 영역의 progress로 계산
+        const currentHoleIndex = holeList.findIndex((h) => h.holeId === hole.holeId);
+        const isLastHole = currentHoleIndex === holeList.length - 1;
+
+        // 마지막 홀이면 현재 홀의 끝에 위치
+        if (isLastHole) {
+          return holeStartPosition + hole.holeWth;
+        }
+
+        // 마지막 홀이 아니면 현재 홀의 끝 + 다음 홀 gap 내에서 progress 비율로 위치
         const currentHoleEndPosition = holeStartPosition + hole.holeWth;
         const nextHoleGap = hole.holeGap;
-        // 현재 홀의 끝 + 다음 홀 gap의 절반
-        return currentHoleEndPosition + nextHoleGap / 2;
+        // 현재 홀의 끝 + 다음 홀 gap 내에서의 progress 비율
+        return currentHoleEndPosition + (nextHoleGap * progressInHole) / 100;
       } else {
-        // 마지막 홀이면 현재 홀의 끝에 위치
-        return holeStartPosition + hole.holeWth;
+        // isGap === false: 홀 내부에 있다고 판단하여 홀 내부에서 progress 계산
+        const globalProgress = holeStartPosition + (hole.holeWth * progressInHole) / 100;
+        return globalProgress;
       }
-    }
+    } else {
+      // gapList에 포함되지 않은 경우
+      // progress가 100%이고 다음 홀이 있는 경우, 홀간 사이 가운데 지점(50%)에 위치
+      if (progressInHole >= 100) {
+        const currentHoleIndex = holeList.findIndex((h) => h.holeId === hole.holeId);
+        const isLastHole = currentHoleIndex === holeList.length - 1;
 
-    // progress가 100%가 아니면 기존 로직대로 계산
-    // 홀 내에서의 progress를 전체 홀 기준으로 변환
-    const globalProgress = holeStartPosition + (hole.holeWth * progressInHole) / 100;
-    return globalProgress;
+        // 마지막 홀이 아니면 다음 홀의 gap 중간 지점에 위치
+        if (!isLastHole) {
+          const currentHoleEndPosition = holeStartPosition + hole.holeWth;
+          const nextHoleGap = hole.holeGap;
+          // 현재 홀의 끝 + 다음 홀 gap의 절반
+          return currentHoleEndPosition + nextHoleGap / 2;
+        } else {
+          // 마지막 홀이면 현재 홀의 끝에 위치
+          return holeStartPosition + hole.holeWth;
+        }
+      }
+
+      // progress가 100%가 아니면 기존 로직대로 계산
+      // 홀 내에서의 progress를 전체 홀 기준으로 변환
+      const globalProgress = holeStartPosition + (hole.holeWth * progressInHole) / 100;
+      return globalProgress;
+    }
   };
 
   // refinedBookingData가 변경될 때마다 팀 클래스 매핑 업데이트
