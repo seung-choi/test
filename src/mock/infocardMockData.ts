@@ -53,7 +53,7 @@ export const mockInfoCards: InfoCardData[] = [
   {
     id: '3',
     status: 'accept',
-    cardType: 'history',
+    cardType: 'new',
     tableType: 'room',
     tableNumber: '6번',
     customerInfo: {

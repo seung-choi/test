@@ -8,59 +8,8 @@
   flex: 1;
   padding: 20px;
   display: flex;
-  flex-direction: column;
   gap: 20px;
   overflow: hidden;
-}
-
-.cardNavigation {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  background: white;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.navButton {
-  padding: 8px 16px;
-  background: #6600FF;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-family: 'SUIT', sans-serif;
-  font-weight: 600;
-  transition: background-color 0.2s ease;
-
-  &:hover:not(:disabled) {
-    background: #5500dd;
-  }
-
-  &:disabled {
-    background: #cccccc;
-    cursor: not-allowed;
-  }
-}
-
-.cardCounter {
-  font-family: 'SUIT', sans-serif;
-  font-weight: 700;
-  font-size: 18px;
-  color: #333;
-  min-width: 80px;
-  text-align: center;
-}
-
-.cardContainer {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  max-width: 600px;
-  margin: 0 auto;
 }
 
 .filterInfo {

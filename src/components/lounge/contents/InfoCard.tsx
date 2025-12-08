@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react';
-import styles from '../../../styles/components/lounge/content/InfoCard.module.scss';
+import styles from '../../../styles/components/lounge/contents/InfoCard.module.scss';
 import { InfoCardProps } from '@/types/orderInfoType';
 
 const InfoCard: React.FC<InfoCardProps> = ({
@@ -222,26 +222,53 @@ const InfoCard: React.FC<InfoCardProps> = ({
         )}
       </div>
 
-      {isCompleteStatus && (
-        <div className={styles.completeButton}>
-          <span>정산 완료</span>
-        </div>
-      )}
+      {!isHistoryCard && (
+        <div className={styles.buttonSection}>
+          {status === 'order' && (
+            <>
+              <button
+                className={`${styles.button} ${styles.cancelButton}`}
+                onClick={onCancelOrder}
+              >
+                주문 취소
+              </button>
+              <button
+                className={`${styles.button} ${styles.orderButton}`}
+                onClick={onAcceptOrder}
+              >
+                주문 수락
+              </button>
+            </>
+          )}
 
-      {isCancelStatus && (
-        <div className={styles.cancelButton}>
-          <span>주문 취소 : {cancelReason || '품절'}</span>
-        </div>
-      )}
+          {status === 'accept' && (
+            <>
+              <button
+                className={`${styles.button} ${styles.cancelButton}`}
+                onClick={onCancelOrder}
+              >
+                주문 취소
+              </button>
+              <button
+                className={`${styles.button} ${styles.acceptButton}`}
+                onClick={onCompleteOrder}
+              >
+                정산 완료
+              </button>
+            </>
+          )}
 
-      {!isDisabledStatus && !isHistoryCard && (
-        <div className={styles.actionButtons}>
-          <button className={styles.actionCancelButton} onClick={onCancelOrder}>
-            취소
-          </button>
-          <button className={styles.acceptButton} onClick={onAcceptOrder}>
-            수락
-          </button>
+          {isCompleteStatus && (
+            <div className={`${styles.button} ${styles.completeButton}`}>
+              <span>정산 완료</span>
+            </div>
+          )}
+
+          {status === 'cancel' && (
+            <div className={`${styles.button} ${styles.canceledButton}`}>
+              <span>주문 취소 : {cancelReason || '품절'}</span>
+            </div>
+          )}
         </div>
       )}
     </div>
