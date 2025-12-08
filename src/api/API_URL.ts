@@ -1,4 +1,4 @@
-export const getOriginURL = (subdomain: string, path = "/mng/v1/"): string | undefined => {
+export const getOriginURL = (subdomain: string, path = "/fnb/v1/"): string | undefined => {
   if (typeof window === "undefined") return undefined;
 
   const origin = window.location.origin.includes("localhost")

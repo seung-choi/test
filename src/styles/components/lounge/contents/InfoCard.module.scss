@@ -1,0 +1,407 @@
+
+.infoCard {
+  width: 100%;
+  height: 100%;
+  padding-top: 30px;
+  position: relative;
+  background: #F3F3F3;
+  box-shadow: 0px 0px 10px rgba(144, 129, 216, 0.50);
+  border-radius: 30px;
+  border: 2px solid #9081D8;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  overflow: hidden;
+
+  &.disabledCard {
+    background: #F3F3F3;
+    border: 2px solid #D9D9D9;
+    box-shadow: none;
+  }
+}
+
+.content {
+  width: 510px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  flex: 1;
+  padding: 0 30px;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.tableTag {
+  min-width: 125px;
+  height: 51px;
+  padding: 0 20px;
+  background: rgba(219.94, 0, 0, 0.10);
+  border-radius: 50px;
+  border: 1px solid #DC0000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &.disabledTableTag {
+    background: #D9D9D9;
+    border: 1px solid #E6E9F1;
+
+    .tableText {
+      color: #666666;
+      font-weight: 700;
+    }
+  }
+}
+
+.tableText {
+  color: #DC0000;
+  font-size: 20px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 400;
+}
+
+.tableInfo {
+  height: 51px;
+  padding: 0 15px 0 20px;
+  background: white;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0.7;
+}
+
+.tableNumber {
+  color: #666666;
+  font-size: 20px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 600;
+}
+
+.customerSection {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.customerHeader {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.tags {
+  display: flex;
+  gap: 5px;
+}
+
+.tag {
+  width: 25px;
+  height: 25px;
+  border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+
+  &.vipTag {
+    background: #FEBA38;
+  }
+
+  &.teamTag {
+    background: #D65BFF;
+  }
+}
+
+.customerInfo {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+.customerMain {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.customerName,
+.customerTime {
+  color: #1F1F1F;
+  font-size: 28px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 700;
+}
+
+.membersList {
+  width: 100%;
+  text-align: center;
+  color: #444444;
+  font-size: 22px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 400;
+}
+
+.orderSection {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.historyOrderSection {
+  position: relative;
+  width: 100%;
+}
+
+.orderSummary {
+  width: 100%;
+  padding: 10px 0;
+  border-top: 1px solid #D9D9D9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.totalItems {
+  color: #7B7B7B;
+  font-size: 20px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 700;
+}
+
+.orderInfo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.orderLabel {
+  color: #7B7B7B;
+  font-size: 20px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 400;
+}
+
+.orderDetails {
+  display: flex;
+  gap: 7px;
+}
+
+.orderTimeText,
+.orderLocationText {
+  color: #7B7B7B;
+  font-size: 20px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 700;
+}
+
+.orderItems {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  margin-top: 30px;
+}
+
+.orderItem {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &.disabledOrderItem {
+    .itemName span,
+    .itemPrice span,
+    .itemQuantity span {
+      color: #959595;
+    }
+  }
+
+  &.historyOrderItem {
+    .itemName span,
+    .itemQuantity span {
+      color: #959595;
+    }
+  }
+}
+
+.itemName {
+  flex: 1;
+  max-width: 244px;
+
+  span {
+    color: #1F1F1F;
+    font-size: 26px;
+    font-family: 'SUIT', sans-serif;
+    font-weight: 400;
+  }
+}
+
+.itemPrice {
+  width: 121px;
+  text-align: right;
+
+  span {
+    color: #1F1F1F;
+    font-size: 26px;
+    font-family: 'SUIT', sans-serif;
+    font-weight: 400;
+  }
+}
+
+.itemQuantity {
+  width: 80px;
+  text-align: right;
+
+  span {
+    color: #1F1F1F;
+    font-size: 26px;
+    font-family: 'SUIT', sans-serif;
+    font-weight: 400;
+  }
+}
+
+.specialRequest {
+  width: 100%;
+  padding: 10px;
+  background: #FFFFFF;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+
+  &.disabledSpecialRequest {
+    background: #D9D9D9;
+
+    span {
+      color: #959595;
+    }
+  }
+
+  span {
+    color: #1F1F1F;
+    font-size: 20px;
+    font-family: 'SUIT', sans-serif;
+    font-weight: 400;
+    word-wrap: break-word;
+  }
+}
+
+.totalSection {
+  width: 100%;
+  padding: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.totalLabel {
+  color: #1F1F1F;
+  font-size: 30px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 700;
+}
+
+.totalAmount {
+  color: #1F1F1F;
+  font-size: 30px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 700;
+  text-align: right;
+}
+
+.completeButton {
+  width: 509px;
+  height: 96px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: #959595;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    color: white;
+    font-size: 28px;
+    font-family: 'SUIT', sans-serif;
+    font-weight: 700;
+    text-align: center;
+  }
+}
+
+.cancelButton {
+  width: 509px;
+  height: 96px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: #D9D9D9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    color: #DC0000;
+    font-size: 28px;
+    font-family: 'SUIT', sans-serif;
+    font-weight: 700;
+    text-align: center;
+  }
+}
+
+.actionButtons {
+  width: 100%;
+  height: 60px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: flex;
+}
+
+.actionCancelButton,
+.acceptButton {
+  flex: 1;
+  height: 100%;
+  border: none;
+  font-size: 24px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.actionCancelButton {
+  background: #FF6B6B;
+  color: white;
+}
+
+.acceptButton {
+  background: #4ECDC4;
+  color: white;
+}
+
+.newCard {
+  background: white;
+}
+
+.historyCard {
+  background: #F8F9FA;
+  border: 2px solid #D9D9D9;
+  box-shadow: none;
+}

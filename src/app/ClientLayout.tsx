@@ -18,36 +18,36 @@ const ClientLayoutContent = ({ children }: { children: React.ReactNode }) => {
   const themeMode = useRecoilValue(themeModeState);
   const menuCodes = useRecoilValue(menuState);
   const [i18nReady, setI18nReady] = useState(false);
-  const [orientationClass, setOrientationClass] = useState("portrait");
+  // const [orientationClass, setOrientationClass] = useState("portrait");
 
-  useEffect(() => {
-    const isLandscapePage =
-      pathname === "/monitoring/" ||
-      pathname === "/holecup/" ||
-      pathname === "/sos-history/" ||
-      pathname === "/map-monitoring/";
+  // useEffect(() => {
+  //   const isLandscapePage =
+  //     pathname === "/monitoring/" ||
+  //     pathname === "/holecup/" ||
+  //     pathname === "/sos-history/" ||
+  //     pathname === "/map-monitoring/";
 
-    const handleOrientationChange = () => {
-      const orientation = window.screen && window.screen.orientation;
-      const orientationType = orientation && orientation.type;
-      const isLandscape =
-        (orientationType && orientationType.includes("landscape")) ||
-        window.innerWidth > window.innerHeight;
-
-      setOrientationClass(() => {
-        if (isLandscapePage) return isLandscape ? "landscape" : "rotate-landscape";
-        return isLandscape ? "rotate-portrait" : "portrait";
-      });
-    };
-
-    handleOrientationChange();
-    window.addEventListener("orientationchange", handleOrientationChange);
-    window.addEventListener("resize", handleOrientationChange);
-    return () => {
-      window.removeEventListener("orientationchange", handleOrientationChange);
-      window.removeEventListener("resize", handleOrientationChange);
-    };
-  }, [pathname]);
+  //   const handleOrientationChange = () => {
+  //     const orientation = window.screen && window.screen.orientation;
+  //     const orientationType = orientation && orientation.type;
+  //     const isLandscape =
+  //       (orientationType && orientationType.includes("landscape")) ||
+  //       window.innerWidth > window.innerHeight;
+  //
+  //     setOrientationClass(() => {
+  //       if (isLandscapePage) return isLandscape ? "landscape" : "rotate-landscape";
+  //       return isLandscape ? "rotate-portrait" : "portrait";
+  //     });
+  //   };
+  //
+  //   handleOrientationChange();
+  //   window.addEventListener("orientationchange", handleOrientationChange);
+  //   window.addEventListener("resize", handleOrientationChange);
+  //   return () => {
+  //     window.removeEventListener("orientationchange", handleOrientationChange);
+  //     window.removeEventListener("resize", handleOrientationChange);
+  //   };
+  // }, [pathname]);
 
   // 언어 설정 초기화
   useEffect(() => {
@@ -102,7 +102,7 @@ const ClientLayoutContent = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className={`layout ${orientationClass}`} data-theme={themeMode}>
+      <div className='layout' data-theme={themeMode}>
         {children}
         <AlertModal />
       </div>
