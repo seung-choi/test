@@ -4,7 +4,7 @@ import React, { useState, useMemo } from 'react';
 import SideTab from '@/components/lounge/layout/SideTab';
 import HeaderBar from '@/components/lounge/layout/HeaderBar';
 import InfoCard from '@/components/lounge/contents/InfoCard';
-import { mockInfoCards } from '@/mock/infocardMockData';
+import { mockInfoCards, mockAvailableTables } from '@/mock/infocardMockData';
 import { mockCourseData } from '@/mock/courseMockData';
 import styles from '@/styles/pages/lounge/lounge.module.scss';
 import CancelModal from '@/components/CancelModal';
@@ -109,6 +109,7 @@ const Lounge = () => {
               onCancelOrder={handleCancelOrder}
               onCompleteOrder={handleCompleteOrder}
               onMessageOrder={handleMessageOrder}
+              availableTables={mockAvailableTables}
             />
           ))}
         </div>

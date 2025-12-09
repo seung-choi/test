@@ -36,6 +36,11 @@
     padding: 0 30px;
   }
 
+  .tableSelectContainer {
+    position: relative;
+    z-index: 10;
+  }
+
   .tableTag {
     min-width: 125px;
     height: 51px;
@@ -46,6 +51,15 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    transition: all 0.2s ease;
+
+    &.clickableTableTag {
+      cursor: pointer;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
 
     &.disabledTableTag {
       background: #D9D9D9;
@@ -58,11 +72,46 @@
     }
   }
 
-  .tableText {
-    color: #DC0000;
+  .tableDropdown {
+    position: absolute;
+    top: 55px;
+    left: 0;
+    right: 0;
+    background: #F3F3F3;
+    box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.15);
+    border-radius: 5px;
+    border: 1px solid #F3F3F3;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 20;
+  }
+
+  .tableOption {
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #666666;
     font-size: 20px;
     font-family: 'SUIT', sans-serif;
     font-weight: 400;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: #6600FF;
+      color: white;
+    }
+
+    &.selectedOption {
+      background: #3A3C56;
+      color: white;
+    }
+
+    &:nth-child(even) {
+      height: 29px;
+    }
   }
 
   .tableInfo {
@@ -244,6 +293,7 @@
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    gap: 20px;
 
     .orderSummary {
       width: 450px;
@@ -359,6 +409,28 @@
         }
       }
     }
+  }
+
+  .totalSection {
+    width: 100%;
+    padding: 0 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    line-height: 30px;
+  }
+
+  .totalLabel {
+    color: #1F1F1F;
+    font-size: 30px;
+    font-weight: 700;
+  }
+
+  .totalAmount {
+    color: #1F1F1F;
+    font-size: 30px;
+    font-weight: 700;
+    text-align: right;
   }
 
 .buttonSection {

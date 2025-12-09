@@ -1,6 +1,8 @@
 
 import { InfoCardData } from "@/types/orderInfoType";
 
+export const mockAvailableTables = ['1번', '2번', '3번', '4번', '5번', '6번', '7번']
+
 export const mockInfoCards: InfoCardData[] = [
   {
     id: '1',

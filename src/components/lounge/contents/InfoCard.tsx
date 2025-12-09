@@ -22,6 +22,8 @@ export interface InfoCardProps {
   onCancelOrder?: () => void;
   onCompleteOrder?: () => void;
   onMessageOrder?: () => void;
+  onTableSelect?: (tableNumber: string) => void;
+  availableTables?: string[];
 }
 
 const InfoCard: React.FC<InfoCardProps> = ({
@@ -41,8 +43,12 @@ const InfoCard: React.FC<InfoCardProps> = ({
                                              onCancelOrder,
                                              onCompleteOrder,
                                              onMessageOrder,
+                                             onTableSelect,
+                                             availableTables = [],
                                            }) => {
   const [expandedHistoryIds, setExpandedHistoryIds] = useState<Set<string>>(new Set());
+  const [isTableDropdownOpen, setIsTableDropdownOpen] = useState(false);
+  const [selectedTable, setSelectedTable] = useState<string | null>(null);
 
   const toggleHistoryExpansion = (historyId: string) => {
     const newExpanded = new Set(expandedHistoryIds);
@@ -52,6 +58,18 @@ const InfoCard: React.FC<InfoCardProps> = ({
       newExpanded.add(historyId);
     }
     setExpandedHistoryIds(newExpanded);
+  };
+
+  const handleTableSelect = (table: string) => {
+    setSelectedTable(table);
+    setIsTableDropdownOpen(false);
+    if (onTableSelect) {
+      onTableSelect(table);
+    }
+  };
+
+  const toggleTableDropdown = () => {
+    setIsTableDropdownOpen(!isTableDropdownOpen);
   };
 
   const isOrderCard = status === 'order';
@@ -67,6 +85,36 @@ const InfoCard: React.FC<InfoCardProps> = ({
     return price.toLocaleString('ko-KR');
   };
 
+  const getTableTagStyles = () => {
+    if (isDisabledStatus) {
+      return {
+        background: '#D9D9D9',
+        border: 'none',
+        color: '#666'
+      };
+    } else if (selectedTable){
+      return {
+        background: '#E6E9F1',
+        border: 'none',
+        color: '#313246'
+      }
+    } else {
+      return {
+        background: 'rgba(219.94, 0, 0, 0.10)',
+        border: '1px solid #DC0000',
+        color: '#DC0000'
+      };
+    }
+  };
+
+  const getArrowIcon = () => {
+    if (selectedTable || isDisabledStatus) {
+      return <img src={'/assets/image/info-card/arrow-dark.svg'} alt="arrow" />;
+    }
+    return <img src={'/assets/image/info-card/arrow-red.svg'} alt="arrow" />
+  };
+
+
   return (
     <div
       className={`${styles.infoCard} ${isOrderCard ? styles.historyCard : styles.newCard} ${isDisabledStatus ? styles.disabledCard : ''}`}
@@ -77,16 +125,36 @@ const InfoCard: React.FC<InfoCardProps> = ({
     >
       <div className={styles.content}>
         <div className={styles.header}>
-          <div className={`${styles.tableTag} ${isOrderCard || isDisabledStatus ? styles.disabledTableTag : ''}`}>
-            <span className={styles.tableText}>
-              {isOrderCard ? tableNumber : '테이블'}
-            </span>
-            <img src={'/assets/image/info-card/arrow-red.svg'} alt="arrow" />
+          <div className={styles.tableSelectContainer}>
+            <div
+              className={`${styles.tableTag} ${styles.clickableTableTag}`}
+              style={getTableTagStyles()}
+              onClick={toggleTableDropdown}
+            >
+              <span className={`${styles.tableText} ${selectedTable}`}>
+                {tableNumber || (selectedTable || '테이블')}
+              </span>
+              {getArrowIcon()}
+            </div>
+            {isTableDropdownOpen && !isDisabledStatus && (
+              <div className={styles.tableDropdown}>
+                {availableTables.map((table, index) => (
+                  <div
+                    key={index}
+                    className={`${styles.tableOption} ${selectedTable === table ? styles.selectedOption : ''}`}
+                    onClick={() => handleTableSelect(table)}
+                  >
+                    {table}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
+
           <div className={styles.tableInfo}>
-            <img src="/assets/image/info-card/location.svg" alt="위치" />
-            <span className={styles.tableNumber}>{orderLocation}</span>
-          </div>
+              <img src="/assets/image/info-card/location.svg" alt="위치" />
+              <span className={styles.tableNumber}>{orderLocation}</span>
+            </div>
         </div>
 
         <div className={styles.customerSection}>
@@ -202,6 +270,14 @@ const InfoCard: React.FC<InfoCardProps> = ({
               ))}
             </div>
           )}
+
+          {isCompleteStatus && (
+            <div className={styles.totalSection}>
+              <div className={styles.totalLabel}>주문 합계</div>
+              <div className={styles.totalAmount}>{formatPrice(totalAmount)}원</div>
+            </div>
+          )}
+
         </div>
       </div>
 
