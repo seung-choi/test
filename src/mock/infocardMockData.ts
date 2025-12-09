@@ -1,3 +1,4 @@
+
 import { InfoCardData, OrderCounts } from "@/types/orderInfoType";
 
 export const mockInfoCards: InfoCardData[] = [
@@ -5,7 +6,6 @@ export const mockInfoCards: InfoCardData[] = [
     id: '1',
     status: 'order',
     cardType: 'new',
-    tableType: 'room',
     tableNumber: '3번',
     customerInfo: {
       name: '김지원',
@@ -23,15 +23,13 @@ export const mockInfoCards: InfoCardData[] = [
     totalItems: 25,
     orderTime: '14:10',
     orderLocation: 'LAKE 7H',
-    isVip: true,
-    hasTeamTag: true,
+    tags: ['vip', 'group', 'marshal'],
     totalAmount: 250000
   },
   {
     id: '2',
     status: 'order',
     cardType: 'new',
-    tableType: 'table',
     tableNumber: '5번',
     customerInfo: {
       name: '이민호',
@@ -46,15 +44,13 @@ export const mockInfoCards: InfoCardData[] = [
     totalItems: 6,
     orderTime: '15:25',
     orderLocation: '테이블 5',
-    isVip: false,
-    hasTeamTag: false,
+    tags: ['two_persons'],
     totalAmount: 60000
   },
   {
     id: '3',
     status: 'accept',
     cardType: 'new',
-    tableType: 'room',
     tableNumber: '6번',
     customerInfo: {
       name: '박서준',
@@ -69,7 +65,7 @@ export const mockInfoCards: InfoCardData[] = [
     orderHistory: [
       {
         id: 'h1',
-        status: 'accepted',
+        status: 'accept',
         totalItems: 8,
         orderTime: '13:30',
         orderLocation: 'LAKE 6H',
@@ -83,15 +79,13 @@ export const mockInfoCards: InfoCardData[] = [
     totalItems: 6,
     orderTime: '13:40',
     orderLocation: 'LAKE 6H',
-    isVip: false,
-    hasTeamTag: true,
+    tags: ['comp', 'four_persons'],
     totalAmount: 76000
   },
   {
     id: '4',
     status: 'complete',
     cardType: 'new',
-    tableType: 'table',
     tableNumber: '3번',
     customerInfo: {
       name: '정유진',
@@ -109,15 +103,13 @@ export const mockInfoCards: InfoCardData[] = [
     totalItems: 20,
     orderTime: '11:45',
     orderLocation: 'LAKE 7H',
-    isVip: true,
-    hasTeamTag: false,
+    tags: ['vip', 'green_check', 'education'],
     totalAmount: 250000
   },
   {
     id: '5',
     status: 'cancel',
     cardType: 'new',
-    tableType: 'room',
     tableNumber: '3번',
     customerInfo: {
       name: '김지원',
@@ -135,19 +127,29 @@ export const mockInfoCards: InfoCardData[] = [
     totalItems: 25,
     orderTime: '14:10',
     orderLocation: 'LAKE 7H',
-    isVip: true,
-    hasTeamTag: true,
+    tags: ['delay', 'first_team_f1', 'add_9_holes'],
     cancelReason: '품절',
     totalAmount: 250000
+  },
+  {
+    id: '6',
+    status: 'order',
+    cardType: 'new',
+    tableNumber: '2번',
+    customerInfo: {
+      name: '홍길동',
+      group: '골프모임',
+      time: '16:00',
+      members: ['이철수(M)', '김영희(F)', '박민수(M)', '최수진(F)', '정민호(M)']
+    },
+    orderItems: [
+      { name: '돼지갈비', quantity: 5, price: 18000 },
+      { name: '소주', quantity: 3, price: 4000 }
+    ],
+    totalItems: 8,
+    orderTime: '15:55',
+    orderLocation: '테이블 2',
+    tags: ['five_persons', 'topdressing', 'last_team_l2'],
+    totalAmount: 102000
   }
 ];
-
-export const getOrderCounts = (cards: InfoCardData[]): OrderCounts => {
-  return {
-    all: cards.length,
-    order: cards.filter(card => card.status === 'order').length,
-    accept: cards.filter(card => card.status === 'accept').length,
-    complete: cards.filter(card => card.status === 'complete').length,
-    cancel: cards.filter(card => card.status === 'cancel').length,
-  };
-};

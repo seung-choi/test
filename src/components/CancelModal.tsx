@@ -55,19 +55,9 @@ const CancelModal: React.FC<CancelModalProps> = ({
 
         <div className={styles.divider}></div>
 
-        {/* Reasons */}
         <div className={styles.reasonsContainer}>
-          <div
-            className={`${styles.reasonItem} ${styles.mainReason} ${
-              selectedReason === '고객 요청' ? styles.selected : ''
-            }`}
-            onClick={() => handleReasonClick('고객 요청')}
-          >
-            <span className={styles.reasonText}>고객 요청</span>
-          </div>
-
           <div className={styles.subReasonsGrid}>
-            {reasons.slice(1).map((reason) => (
+            {reasons.slice(0).map((reason) => (
               <div
                 key={reason}
                 className={`${styles.reasonItem} ${styles.subReason} ${
@@ -81,7 +71,6 @@ const CancelModal: React.FC<CancelModalProps> = ({
           </div>
         </div>
 
-        {/* Action Buttons */}
         <div className={styles.buttonContainer}>
           <button
             className={styles.closeButton}

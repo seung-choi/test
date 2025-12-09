@@ -2,11 +2,32 @@
 
 import React, { useState } from 'react';
 import styles from '../../../styles/components/lounge/contents/InfoCard.module.scss';
-import { InfoCardProps } from '@/types/orderInfoType';
+import { CardType, CustomerInfo, OrderItem, OrderHistory, OrderStatus } from '@/types';
+import { getTagAltText, getTagImage } from '@/utils/tagUtils';
+
+export interface InfoCardProps {
+  cardType?: CardType;
+
+  tableNumber: string;
+  customerInfo: CustomerInfo;
+  orderItems?: OrderItem[];
+  orderHistory?: OrderHistory[];
+  specialRequest?: string;
+  totalItems: number;
+  orderTime: string;
+  orderLocation: string;
+  status?: OrderStatus;
+  cancelReason?: string;
+  tags?: string[];
+  totalAmount?: number;
+  onAcceptOrder?: () => void;
+  onCancelOrder?: () => void;
+  onCompleteOrder?: () => void;
+  onMessageOrder?: () => void;
+}
 
 const InfoCard: React.FC<InfoCardProps> = ({
                                              cardType = 'new',
-                                             tableType,
                                              tableNumber,
                                              customerInfo,
                                              orderItems = [],
@@ -15,14 +36,14 @@ const InfoCard: React.FC<InfoCardProps> = ({
                                              totalItems,
                                              orderTime,
                                              orderLocation,
-                                             isVip = false,
-                                             hasTeamTag = false,
                                              status = 'order',
                                              cancelReason,
+                                             tags=[],
                                              totalAmount = 250000,
                                              onAcceptOrder,
                                              onCancelOrder,
                                              onCompleteOrder,
+                                             onMessageOrder,
                                            }) => {
   const [expandedHistoryIds, setExpandedHistoryIds] = useState<Set<string>>(new Set());
 
@@ -60,7 +81,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
         <div className={styles.header}>
           <div className={`${styles.tableTag} ${isHistoryCard || isDisabledStatus ? styles.disabledTableTag : ''}`}>
             <span className={styles.tableText}>
-              {isHistoryCard ? tableNumber : (tableType === 'table' ? '테이블' : '룸')}
+              {isHistoryCard ? tableNumber : '테이블'}
             </span>
             <img src={'/assets/image/info-card/arrow-red.svg'} alt="arrow" />
           </div>
@@ -73,16 +94,11 @@ const InfoCard: React.FC<InfoCardProps> = ({
         <div className={styles.customerSection}>
           <div className={styles.customerHeader}>
             <div className={styles.tags}>
-              {isVip && (
-                <div className={`${styles.tag} ${styles.vipTag}`}>
-                  <img src={'/assets/image/info-card/tag-vip.svg'} alt="VIP" />
+              {tags.map((tag, index) => (
+                <div key={index} className={`${styles.tag} ${styles[`${tag}Tag`] || styles.defaultTag}`}>
+                  <img src={getTagImage(tag)} alt={getTagAltText(tag)} />
                 </div>
-              )}
-              {hasTeamTag && (
-                <div className={`${styles.tag} ${styles.teamTag}`}>
-                  <img src={'/assets/image/info-card/tag-team.svg'} alt="팀" />
-                </div>
-              )}
+              ))}
             </div>
             <div className={styles.customerInfo}>
               <div className={styles.customerMain}>
@@ -91,7 +107,10 @@ const InfoCard: React.FC<InfoCardProps> = ({
                 </span>
                 <span className={styles.customerTime}>{customerInfo.time}</span>
               </div>
-              <img src="/assets/image/info-card/meassage.svg" alt="메시지" />
+              <div onClick={onMessageOrder}>
+                <img src="/assets/image/info-card/meassage.svg" alt="메시지" />
+              </div>
+
             </div>
           </div>
           <div className={styles.membersList}>

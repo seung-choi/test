@@ -1,0 +1,229 @@
+.headerContainer {
+  width: 100%;
+  background: #F3F3F3;
+  border-bottom: 1px solid #D9D9D9;
+  transition: all 0.3s ease;
+}
+
+.expandedHeader {
+  width: 100%;
+  padding: 50px 15px 20px 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 43px;
+}
+
+.collapsedHeader {
+  width: 100%;
+  padding: 10px 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.headerContent {
+  width: 100%;
+  max-width: 1705px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.courseSection {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
+}
+
+.holeTag {
+  min-width: 122px;
+  height: 20px;
+  padding: 4px 16px;
+  background: #959595;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  &:first-child {
+    min-width: 187px;
+  }
+
+  &:last-child {
+    min-width: 217px;
+  }
+}
+
+.holeText {
+  color: #F3F3F3;
+  font-size: 15px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 700;
+  text-align: right;
+  word-wrap: break-word;
+}
+
+.holeDot {
+  width: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  &::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    background: #D9D9D9;
+    border-radius: 50%;
+  }
+}
+
+.centerSection {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.courseButton {
+  height: 28px;
+  padding: 2px 20px;
+  border-radius: 50px;
+  border: 2px solid transparent;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  font-size: 18px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 700;
+  color: #313246;
+
+  &.lakeButton {
+    background: rgba(219.94, 0, 0, 0.20);
+    border-color: #CE0A0A;
+
+    &.active {
+      background: rgba(219.94, 0, 0, 0.40);
+      border-color: #CE0A0A;
+    }
+  }
+
+  &.hillButton {
+    background: rgba(251.81, 228.94, 23.08, 0.20);
+    border-color: #FFCC00;
+
+    &.active {
+      background: rgba(251.81, 228.94, 23.08, 0.40);
+      border-color: #FFCC00;
+    }
+  }
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.startHouse {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.startHouseTitle {
+  text-align: center;
+  color: #1F1F1F;
+  font-size: 25px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 600;
+  line-height: 31px;
+  word-wrap: break-word;
+  margin: 0;
+}
+
+.startHouseUnderline {
+  width: 14px;
+  height: 7px;
+  border: 2px solid #1F1F1F;
+}
+
+.toggleButton {
+  width: 22px;
+  height: 22px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+.toggleIcon {
+  transition: transform 0.3s ease;
+}
+
+.collapsedHeader .toggleIcon {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 1200px) {
+  .headerContent {
+    max-width: 100%;
+    padding: 0 10px;
+  }
+
+  .courseSection {
+    gap: 15px;
+  }
+
+  .holeTag {
+    min-width: 100px;
+
+    &:first-child,
+    &:last-child {
+      min-width: 150px;
+    }
+  }
+
+  .centerSection {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .expandedHeader {
+    padding: 30px 10px 15px 10px;
+    gap: 30px;
+  }
+
+  .headerContent {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .courseSection {
+    justify-content: center;
+  }
+
+  .startHouseTitle {
+    font-size: 20px;
+  }
+}
