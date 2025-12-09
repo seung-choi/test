@@ -1,11 +1,10 @@
 
-import { InfoCardData, OrderCounts } from "@/types/orderInfoType";
+import { InfoCardData } from "@/types/orderInfoType";
 
 export const mockInfoCards: InfoCardData[] = [
   {
     id: '1',
     status: 'order',
-    cardType: 'new',
     tableNumber: '3번',
     customerInfo: {
       name: '김지원',
@@ -19,17 +18,45 @@ export const mockInfoCards: InfoCardData[] = [
       { name: '제육볶음', quantity: 2, price: 12000 },
       { name: '김치찌게', quantity: 10, price: 12000 }
     ],
+    orderHistory: [
+      {
+        id: 'h1',
+        status: 'accept',
+        totalItems: 15,
+        orderTime: '14:10',
+        orderLocation: 'LAKE 7H',
+        items: [
+          { name: '삼겹살', quantity: 5, price: 18000 },
+          { name: '소주', quantity: 8, price: 4000 },
+          { name: '김치찌개', quantity: 2, price: 8000 }
+        ],
+        specialRequest: '고기 잘 구워주세요.'
+      },
+      {
+        id: 'h2',
+        status: 'accept',
+        totalItems: 15,
+        orderTime: '14:00',
+        orderLocation: 'LAKE 7H',
+        items: [
+          { name: '갈비살', quantity: 3, price: 22000 },
+          { name: '맥주', quantity: 6, price: 5000 },
+          { name: '된장찌개', quantity: 4, price: 7000 },
+          { name: '밥', quantity: 2, price: 2000 }
+        ],
+        specialRequest: '맥주 차갑게 주세요.'
+      }
+    ],
     specialRequest: '제육 덜 맵게 해주세요.',
     totalItems: 25,
     orderTime: '14:10',
     orderLocation: 'LAKE 7H',
-    tags: ['vip', 'group', 'marshal'],
+    tags: ['vip', 'last_team_l1'],
     totalAmount: 250000
   },
   {
     id: '2',
-    status: 'order',
-    cardType: 'new',
+    status: 'accept',
     tableNumber: '5번',
     customerInfo: {
       name: '이민호',
@@ -41,16 +68,29 @@ export const mockInfoCards: InfoCardData[] = [
       { name: '치킨', quantity: 2, price: 20000 },
       { name: '맥주', quantity: 4, price: 5000 }
     ],
+    orderHistory: [
+      {
+        id: 'h3',
+        status: 'accept',
+        totalItems: 8,
+        orderTime: '15:10',
+        orderLocation: '테이블 5',
+        items: [
+          { name: '떡볶이', quantity: 3, price: 8000 },
+          { name: '순대', quantity: 2, price: 10000 },
+          { name: '콜라', quantity: 3, price: 3000 }
+        ]
+      }
+    ],
     totalItems: 6,
     orderTime: '15:25',
     orderLocation: '테이블 5',
-    tags: ['two_persons'],
+    tags: ['three_persons', 'comp'],
     totalAmount: 60000
   },
   {
     id: '3',
-    status: 'accept',
-    cardType: 'new',
+    status: 'complete',
     tableNumber: '6번',
     customerInfo: {
       name: '박서준',
@@ -64,28 +104,39 @@ export const mockInfoCards: InfoCardData[] = [
     ],
     orderHistory: [
       {
-        id: 'h1',
+        id: 'h4',
         status: 'accept',
-        totalItems: 8,
+        totalItems: 12,
         orderTime: '13:30',
         orderLocation: 'LAKE 6H',
         items: [
-          { name: '삼겹살', quantity: 3, price: 18000 },
-          { name: '소주', quantity: 5, price: 4000 }
+          { name: '삼겹살', quantity: 4, price: 18000 },
+          { name: '소주', quantity: 6, price: 4000 },
+          { name: '상추', quantity: 2, price: 3000 }
         ],
         specialRequest: '고기 잘 구워주세요.'
+      },
+      {
+        id: 'h5',
+        status: 'accept',
+        totalItems: 8,
+        orderTime: '13:15',
+        orderLocation: 'LAKE 6H',
+        items: [
+          { name: '김치찌개', quantity: 4, price: 8000 },
+          { name: '밥', quantity: 4, price: 2000 }
+        ]
       }
     ],
     totalItems: 6,
     orderTime: '13:40',
     orderLocation: 'LAKE 6H',
-    tags: ['comp', 'four_persons'],
+    tags: ['marshal', 'five_persons'],
     totalAmount: 76000
   },
   {
     id: '4',
-    status: 'complete',
-    cardType: 'new',
+    status: 'order',
     tableNumber: '3번',
     customerInfo: {
       name: '정유진',
@@ -109,7 +160,6 @@ export const mockInfoCards: InfoCardData[] = [
   {
     id: '5',
     status: 'cancel',
-    cardType: 'new',
     tableNumber: '3번',
     customerInfo: {
       name: '김지원',
@@ -130,26 +180,5 @@ export const mockInfoCards: InfoCardData[] = [
     tags: ['delay', 'first_team_f1', 'add_9_holes'],
     cancelReason: '품절',
     totalAmount: 250000
-  },
-  {
-    id: '6',
-    status: 'order',
-    cardType: 'new',
-    tableNumber: '2번',
-    customerInfo: {
-      name: '홍길동',
-      group: '골프모임',
-      time: '16:00',
-      members: ['이철수(M)', '김영희(F)', '박민수(M)', '최수진(F)', '정민호(M)']
-    },
-    orderItems: [
-      { name: '돼지갈비', quantity: 5, price: 18000 },
-      { name: '소주', quantity: 3, price: 4000 }
-    ],
-    totalItems: 8,
-    orderTime: '15:55',
-    orderLocation: '테이블 2',
-    tags: ['five_persons', 'topdressing', 'last_team_l2'],
-    totalAmount: 102000
   }
 ];

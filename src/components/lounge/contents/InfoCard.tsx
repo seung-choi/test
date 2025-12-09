@@ -2,12 +2,10 @@
 
 import React, { useState } from 'react';
 import styles from '../../../styles/components/lounge/contents/InfoCard.module.scss';
-import { CardType, CustomerInfo, OrderItem, OrderHistory, OrderStatus } from '@/types';
+import { CustomerInfo, OrderItem, OrderHistory, OrderStatus } from '@/types';
 import { getTagAltText, getTagImage } from '@/utils/tagUtils';
 
 export interface InfoCardProps {
-  cardType?: CardType;
-
   tableNumber: string;
   customerInfo: CustomerInfo;
   orderItems?: OrderItem[];
@@ -27,7 +25,6 @@ export interface InfoCardProps {
 }
 
 const InfoCard: React.FC<InfoCardProps> = ({
-                                             cardType = 'new',
                                              tableNumber,
                                              customerInfo,
                                              orderItems = [],
@@ -57,13 +54,13 @@ const InfoCard: React.FC<InfoCardProps> = ({
     setExpandedHistoryIds(newExpanded);
   };
 
-  const isHistoryCard = cardType === 'history';
+  const isOrderCard = status === 'order';
   const isCompleteStatus = status === 'complete';
   const isCancelStatus = status === 'cancel';
   const isDisabledStatus = isCompleteStatus || isCancelStatus;
 
-  const borderColor = isHistoryCard ? '#D9D9D9' : '#9081D8';
-  const hasShadow = !isHistoryCard;
+  const borderColor = isOrderCard ? '#9081D8' : '#D9D9D9';
+  const hasShadow = isOrderCard;
 
   const formatPrice = (price: number) => {
     return price.toLocaleString('ko-KR');
@@ -71,7 +68,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
 
   return (
     <div
-      className={`${styles.infoCard} ${isHistoryCard ? styles.historyCard : styles.newCard} ${isDisabledStatus ? styles.disabledCard : ''}`}
+      className={`${styles.infoCard} ${isOrderCard ? styles.historyCard : styles.newCard} ${isDisabledStatus ? styles.disabledCard : ''}`}
       style={{
         border: `2px solid ${borderColor}`,
         boxShadow: hasShadow ? '0px 0px 10px rgba(144, 129, 216, 0.50)' : 'none'
@@ -79,9 +76,9 @@ const InfoCard: React.FC<InfoCardProps> = ({
     >
       <div className={styles.content}>
         <div className={styles.header}>
-          <div className={`${styles.tableTag} ${isHistoryCard || isDisabledStatus ? styles.disabledTableTag : ''}`}>
+          <div className={`${styles.tableTag} ${isOrderCard || isDisabledStatus ? styles.disabledTableTag : ''}`}>
             <span className={styles.tableText}>
-              {isHistoryCard ? tableNumber : '테이블'}
+              {isOrderCard ? tableNumber : '테이블'}
             </span>
             <img src={'/assets/image/info-card/arrow-red.svg'} alt="arrow" />
           </div>
@@ -118,7 +115,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
           </div>
         </div>
 
-        {!isHistoryCard && (
+        {!isOrderCard && (
           <div className={styles.orderSection}>
             <div className={styles.orderSummary}>
               <span className={styles.totalItems}>총 {totalItems}개</span>
@@ -157,7 +154,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
           </div>
         )}
 
-        {isHistoryCard && (
+        {isOrderCard && (
           <div className={styles.historyOrderSection}>
             {orderHistory.map((history) => (
               <div key={history.id} className={styles.orderSection}>
@@ -233,7 +230,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
           </div>
         )}
 
-        {!isHistoryCard && isCompleteStatus && (
+        {!isOrderCard && isCompleteStatus && (
           <div className={styles.totalSection}>
             <div className={styles.totalLabel}>주문 합계</div>
             <div className={styles.totalAmount}>{formatPrice(totalAmount)}원</div>
@@ -241,7 +238,6 @@ const InfoCard: React.FC<InfoCardProps> = ({
         )}
       </div>
 
-      {!isHistoryCard && (
         <div className={styles.buttonSection}>
           {status === 'order' && (
             <>
@@ -289,7 +285,6 @@ const InfoCard: React.FC<InfoCardProps> = ({
             </div>
           )}
         </div>
-      )}
     </div>
   );
 };

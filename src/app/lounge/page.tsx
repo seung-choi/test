@@ -93,8 +93,6 @@ const Lounge = () => {
           {filteredCards.map((card, index) => (
             <InfoCard
               key={card.id || index}
-              cardType={card.cardType}
-              tableType={card.tableType}
               tableNumber={card.tableNumber}
               customerInfo={card.customerInfo}
               orderItems={card.orderItems}
@@ -103,8 +101,7 @@ const Lounge = () => {
               totalItems={card.totalItems}
               orderTime={card.orderTime}
               orderLocation={card.orderLocation}
-              isVip={card.isVip}
-              hasTeamTag={card.hasTeamTag}
+              tags={card.tags}
               status={card.status}
               cancelReason={card.cancelReason}
               totalAmount={card.totalAmount}

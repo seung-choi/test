@@ -1,5 +1,4 @@
 export type OrderStatus = 'order' | 'accept' | 'complete' | 'cancel';
-export type CardType = 'new' | 'history';
 
 export interface OrderItem {
   name: string;
@@ -28,7 +27,6 @@ export interface OrderHistory {
 export interface InfoCardData {
   id: string;
   status: OrderStatus;
-  cardType?: CardType;
   tableNumber: string;
   customerInfo: CustomerInfo;
   orderItems?: OrderItem[];

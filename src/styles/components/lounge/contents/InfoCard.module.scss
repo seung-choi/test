@@ -1,10 +1,9 @@
-
 .infoCard {
   width: 510px;
   height: 100%;
   padding-top: 30px;
   position: relative;
-  background: #F3F3F3;
+  background: #FFFFFF;
   box-shadow: 0px 0px 10px rgba(144, 129, 216, 0.50);
   border-radius: 30px;
   border: 2px solid #9081D8;
@@ -110,7 +109,6 @@
 .tag {
   width: 25px;
   height: 25px;
-  border-radius: 5px;
   position: relative;
   overflow: hidden;
 }
@@ -362,16 +360,6 @@
 .actionCancelButton {
   background: #959595;
   color: white;
-}
-
-.newCard {
-  background: white;
-}
-
-.historyCard {
-  background: #F8F9FA;
-  border: 2px solid #D9D9D9;
-  box-shadow: none;
 }
 
 .buttonSection {
