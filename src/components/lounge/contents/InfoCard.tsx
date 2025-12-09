@@ -85,7 +85,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
           </div>
           <div className={styles.tableInfo}>
             <img src="/assets/image/info-card/location.svg" alt="위치" />
-            <span className={styles.tableNumber}>{tableNumber}</span>
+            <span className={styles.tableNumber}>{orderLocation}</span>
           </div>
         </div>
 
