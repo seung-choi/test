@@ -35,7 +35,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
                                              orderLocation,
                                              status = 'order',
                                              cancelReason,
-                                             tags=[],
+                                             tags = [],
                                              totalAmount = 250000,
                                              onAcceptOrder,
                                              onCancelOrder,
@@ -58,6 +58,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
   const isCompleteStatus = status === 'complete';
   const isCancelStatus = status === 'cancel';
   const isDisabledStatus = isCompleteStatus || isCancelStatus;
+  const hasOrderHistory = orderHistory && orderHistory.length > 0;
 
   const borderColor = isOrderCard ? '#9081D8' : '#D9D9D9';
   const hasShadow = isOrderCard;
@@ -107,7 +108,6 @@ const InfoCard: React.FC<InfoCardProps> = ({
               <div onClick={onMessageOrder}>
                 <img src="/assets/image/info-card/meassage.svg" alt="메시지" />
               </div>
-
             </div>
           </div>
           <div className={styles.membersList}>
@@ -115,19 +115,19 @@ const InfoCard: React.FC<InfoCardProps> = ({
           </div>
         </div>
 
-        {!isOrderCard && (
-          <div className={styles.orderSection}>
-            <div className={styles.orderSummary}>
-              <span className={styles.totalItems}>총 {totalItems}개</span>
-              <div className={styles.orderInfo}>
-                <span className={styles.orderLabel}>주문 정보</span>
-                <div className={styles.orderDetails}>
-                  <span className={styles.orderTimeText}>{orderTime}</span>
-                  <span className={styles.orderLocationText}>({orderLocation})</span>
-                </div>
+        <div className={styles.currentOrderSection}>
+          <div className={styles.orderSummary}>
+            <span className={styles.totalItems}>총 {totalItems}개</span>
+            <div className={styles.orderInfo}>
+              <span className={styles.orderLabel}>주문 정보</span>
+              <div className={styles.orderDetails}>
+                <span className={styles.orderTimeText}>{orderTime}</span>
+                <span className={styles.orderLocationText}>({orderLocation})</span>
               </div>
             </div>
+          </div>
 
+          <div className={styles.scrollableOrderItems}>
             <div className={styles.orderItems}>
               {orderItems.map((item, index) => (
                 <div key={index} className={`${styles.orderItem} ${isDisabledStatus ? styles.disabledOrderItem : ''}`}>
@@ -152,90 +152,57 @@ const InfoCard: React.FC<InfoCardProps> = ({
               )}
             </div>
           </div>
-        )}
 
-        {isOrderCard && (
-          <div className={styles.historyOrderSection}>
-            {orderHistory.map((history) => (
-              <div key={history.id} className={styles.orderSection}>
+          {isOrderCard && hasOrderHistory && (
+            <div className={styles.orderHistorySection}>
+              {orderHistory.map((history) => (
                 <div
-                  className={styles.orderSummary}
+                  key={history.id}
+                  className={styles.historyItem}
                   onClick={() => toggleHistoryExpansion(history.id)}
-                  style={{ cursor: 'pointer' }}
                 >
-                  <span className={styles.totalItems}>총 {history.totalItems}개</span>
-                  <div className={styles.orderInfo}>
-                    <span className={styles.orderLabel}>주문 정보</span>
-                    <div className={styles.orderDetails}>
-                      <span className={styles.orderTimeText}>{history.orderTime}</span>
-                      <span className={styles.orderLocationText}>({history.orderLocation})</span>
-                    </div>
-                  </div>
-                </div>
-
-                {expandedHistoryIds.has(history.id) && (
-                  <div className={styles.orderItems}>
-                    {history.items.map((item, index) => (
-                      <div key={index} className={`${styles.orderItem} ${styles.historyOrderItem}`}>
-                        <div className={styles.itemName}>
-                          <span>{item.name}</span>
-                        </div>
-                        <div className={styles.itemQuantity}>
-                          <span>{item.quantity}개</span>
-                        </div>
+                  <div className={styles.historySummary}>
+                  <span className={styles.historyStatus}>
+                    {history.status === 'accept' ? '수락' : '완료'} (총 {history.totalItems}개)
+                  </span>
+                    <div className={styles.historyInfo}>
+                      <span className={styles.orderLabel}>주문 정보</span>
+                      <div className={styles.orderDetails}>
+                        <span className={styles.orderTimeText}>{history.orderTime}</span>
+                        <span className={styles.orderLocationText}>({history.orderLocation})</span>
                       </div>
-                    ))}
-
-                    {history.specialRequest && (
-                      <div className={styles.specialRequest}>
-                        <span>[요청] {history.specialRequest}</span>
-                      </div>
-                    )}
+                      <img
+                        src="/assets/image/global/arrow.svg"
+                        alt="펼치기"
+                        className={`${styles.expandArrow} ${expandedHistoryIds.has(history.id) ? styles.expanded : ''}`}
+                      />
+                    </div>
                   </div>
-                )}
-              </div>
-            ))}
 
-            <div className={styles.orderSection}>
-              <div className={styles.orderSummary}>
-                <span className={styles.totalItems}>총 {totalItems}개</span>
-                <div className={styles.orderInfo}>
-                  <span className={styles.orderLabel}>주문 정보</span>
-                  <div className={styles.orderDetails}>
-                    <span className={styles.orderTimeText}>{orderTime}</span>
-                    <span className={styles.orderLocationText}>({orderLocation})</span>
-                  </div>
+                  {expandedHistoryIds.has(history.id) && (
+                    <div className={styles.historyDetails}>
+                      {history.items.map((item, index) => (
+                        <div key={index} className={styles.historyOrderItem}>
+                          <div>
+                            <span className={styles.itemName}>{item.name}</span>
+                          </div>
+                          <div>
+                            <span className={styles.itemQuantity}>{item.quantity}개</span>
+                          </div>
+                        </div>
+                      ))}
+                      {history.specialRequest && (
+                        <div className={styles.historySpecialRequest}>
+                          <span>[요청] {history.specialRequest}</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
-              </div>
-
-              <div className={styles.orderItems}>
-                {orderItems.map((item, index) => (
-                  <div key={index} className={`${styles.orderItem} ${styles.historyOrderItem}`}>
-                    <div className={styles.itemName}>
-                      <span>{item.name}</span>
-                    </div>
-                    <div className={styles.itemQuantity}>
-                      <span>{item.quantity}개</span>
-                    </div>
-                  </div>
-                ))}
-
-                {specialRequest && (
-                  <div className={styles.specialRequest}>
-                    <span>[요청] {specialRequest}</span>
-                  </div>
-                )}
-              </div>
+              ))}
             </div>
-          </div>
-        )}
-
-        {!isOrderCard && isCompleteStatus && (
-          <div className={styles.totalSection}>
-            <div className={styles.totalLabel}>주문 합계</div>
-            <div className={styles.totalAmount}>{formatPrice(totalAmount)}원</div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
         <div className={styles.buttonSection}>
