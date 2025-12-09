@@ -90,7 +90,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
       return {
         background: '#D9D9D9',
         border: 'none',
-        color: '#666'
+        color: '#666',
       };
     } else if (selectedTable){
       return {
