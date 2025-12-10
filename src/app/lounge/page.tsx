@@ -15,6 +15,7 @@ const Lounge = () => {
   const [selectedCardIndex, setSelectedCardIndex] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<'lake' | 'hill'>('lake');
+  const [isHeaderExpanded, setIsHeaderExpanded] = useState(true);
 
   const filteredCards = useMemo(() => {
     if (activeFilter === 'all') {
@@ -38,6 +39,10 @@ const Lounge = () => {
   const handleFilterChange = (filter: string) => {
     setActiveFilter(filter);
     setSelectedCardIndex(0);
+  };
+
+  const handleHeaderExpandedChange = (expanded: boolean) => {
+    setIsHeaderExpanded(expanded);
   };
 
   const handleCourseChange = (courseType: 'lake' | 'hill') => {
@@ -88,8 +93,9 @@ const Lounge = () => {
         <HeaderBar
           courseData={mockCourseData}
           onCourseChange={handleCourseChange}
+          onExpandedChange={handleHeaderExpandedChange}
         />
-        <div className={styles.infoCardContainer}>
+        <div className={`${styles.infoCardContainer} ${isHeaderExpanded ? styles.headerExpanded : styles.headerCollapsed}`}>
           {filteredCards.map((card, index) => (
             <InfoCard
               key={card.id || index}

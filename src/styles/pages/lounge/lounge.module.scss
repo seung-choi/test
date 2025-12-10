@@ -7,7 +7,6 @@
 .mainContent {
   display: flex;
   flex-direction: column;
-  gap: 20px;
   overflow: hidden;
   width: calc(100% - 106px);
   background: white;
@@ -20,10 +19,16 @@
   overflow-x: auto;
   height: 100%;
 
+  &.headerExpanded {
+    height: calc(100% - 200px);
+  }
+
+  &.headerCollapsed {
+    height: calc(100% - 50px);
+  }
+
   > * {
     flex-shrink: 0;
-    min-width: 510px;
-    height: 100%;
   }
 }
 
@@ -35,20 +40,10 @@
   background: white;
   margin: 20px;
   border-radius: 10px;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
   p {
     font-size: 18px;
     color: #666;
-  }
-}
-
-@media (max-width: 1024px) {
-  .mainContent {
-    padding: 10px;
-  }
-
-  .cardContainer {
-    max-width: 90%;
   }
 }

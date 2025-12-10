@@ -287,6 +287,7 @@
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    overflow-x: hidden;
     gap: 20px;
 
     .orderSummary {
@@ -391,6 +392,15 @@
             text-align: right;
             width: 80px;
           }
+
+          &.disabledOrderItem {
+            .itemName span,
+            .itemPrice span,
+            .itemQuantity span {
+              color: #959595;
+              font-weight: 400;
+            }
+          }
         }
 
         .specialRequest {
@@ -400,6 +410,14 @@
           color: #666666;
           font-size: 20px;
           font-weight: 400;
+
+          &.disabledSpecialRequest {
+            background: #D9D9D9;
+
+            span {
+              color: #959595;
+            }
+          }
         }
       }
     }

@@ -3,29 +3,75 @@
   background: #F3F3F3;
   border-bottom: 1px solid #D9D9D9;
   transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.expanded{
+  height: 201px;
+
+  @media (max-width: 768px) {
+    height: 145px;
+  }
+}
+
+.collapsed {
+  height: 50px;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .expandedHeader {
-  width: 100%;
-  padding: 50px 15px 20px 15px;
+  padding: 30px 20px 15px 20px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
-  gap: 43px;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+  height: 100%;
+
 }
 
 .collapsedHeader {
-  width: 100%;
-  padding: 10px 15px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease;
+  
+  .headerContainer.collapsed & {
+    opacity: 1;
+  }
+}
+
+.toggleButton {
+  width: 22px;
+  height: 22px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+.toggleIcon {
+  transition: transform 0.3s ease;
+  
+  .headerContainer.collapsed & {
+    transform: rotate(180deg);
+  }
 }
 
 .headerContent {
   width: 100%;
-  max-width: 1705px;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -158,31 +204,6 @@
   border: 2px solid #1F1F1F;
 }
 
-.toggleButton {
-  width: 22px;
-  height: 22px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-
-  &:hover {
-    opacity: 0.7;
-  }
-}
-
-.toggleIcon {
-  transition: transform 0.3s ease;
-}
-
-.collapsedHeader .toggleIcon {
-  transform: rotate(180deg);
-}
-
 @media (max-width: 1200px) {
   .headerContent {
     max-width: 100%;
@@ -202,12 +223,23 @@
     }
   }
 
+  .holeDot {
+    display: none;
+  }
+
   .centerSection {
     gap: 20px;
+
   }
 }
 
 @media (max-width: 768px) {
+  .headerContainer {
+    &.expanded {
+      height: auto;
+    }
+  }
+  
   .expandedHeader {
     padding: 30px 10px 15px 10px;
     gap: 30px;
