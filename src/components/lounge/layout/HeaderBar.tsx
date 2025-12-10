@@ -140,6 +140,108 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
           </div>
         </div>
 
+        <div className={styles.scheduleSection}>
+          <div className={styles.scheduleRow}>
+            <div className={styles.scheduleItems}>
+              <div className={styles.scheduleItem}>
+                <div className={styles.statusIndicator}>
+                  <div className={styles.statusIconLarge} />
+                </div>
+                <div className={styles.userInfo}>
+                  <div className={styles.userName}>김지원</div>
+                </div>
+                <div className={styles.timeInfo}>
+                  <div className={styles.timeText}>11:30</div>
+                </div>
+              </div>
+              <div className={styles.scheduleItem}>
+                <div className={styles.statusIndicator}>
+                  <div className={styles.statusIcon} />
+                </div>
+                <div className={styles.userInfo}>
+                  <div className={styles.userName}>김지원</div>
+                </div>
+                <div className={styles.timeInfo}>
+                  <div className={styles.timeText}>11:30</div>
+                </div>
+              </div>
+              <div className={styles.scheduleItem}>
+                <div className={styles.statusIndicator}>
+                  <div className={styles.statusIcon} />
+                </div>
+                <div className={styles.userInfo}>
+                  <div className={styles.userName}>김지원</div>
+                </div>
+                <div className={styles.timeInfo}>
+                  <div className={styles.timeText}>11:30</div>
+                </div>
+              </div>
+              <div className={styles.scheduleItem}>
+                <div className={styles.statusIndicator}>
+                  <div className={styles.statusIconLarge} />
+                </div>
+                <div className={styles.userInfo}>
+                  <div className={styles.userName}>김지원</div>
+                </div>
+                <div className={styles.timeInfo}>
+                  <div className={styles.timeText}>11:30</div>
+                </div>
+              </div>
+            </div>
+            <img src="/assets/image/global/arrow-sm.svg" alt="arrow" />
+          </div>
+          <div className={styles.spacer} />
+          <div className={styles.scheduleRow}>
+            <div className={styles.scheduleItems}>
+              <div className={styles.scheduleItem}>
+                <div className={styles.statusIndicator}>
+                  <div className={styles.statusIconLarge} />
+                </div>
+                <div className={styles.userInfo}>
+                  <div className={styles.userName}>김지원</div>
+                </div>
+                <div className={styles.timeInfo}>
+                  <div className={styles.timeText}>11:30</div>
+                </div>
+              </div>
+              <div className={styles.scheduleItem}>
+                <div className={styles.statusIndicator}>
+                  <div className={styles.statusIcon} />
+                </div>
+                <div className={styles.userInfo}>
+                  <div className={styles.userName}>김지원</div>
+                </div>
+                <div className={styles.timeInfo}>
+                  <div className={styles.timeText}>11:30</div>
+                </div>
+              </div>
+              <div className={styles.scheduleItem}>
+                <div className={styles.statusIndicator}>
+                  <div className={styles.statusIcon} />
+                </div>
+                <div className={styles.userInfo}>
+                  <div className={styles.userName}>김지원</div>
+                </div>
+                <div className={styles.timeInfo}>
+                  <div className={styles.timeText}>11:30</div>
+                </div>
+              </div>
+              <div className={styles.scheduleItem}>
+                <div className={styles.statusIndicator}>
+                  <div className={styles.statusIconLarge} />
+                </div>
+                <div className={styles.userInfo}>
+                  <div className={styles.userName}>김지원</div>
+                </div>
+                <div className={styles.timeInfo}>
+                  <div className={styles.timeText}>11:30</div>
+                </div>
+              </div>
+            </div>
+            <img src="/assets/image/global/arrow-sm.svg" alt="arrow" />
+          </div>
+        </div>
+
         <button
           className={styles.toggleButton}
           onClick={toggleExpanded}
