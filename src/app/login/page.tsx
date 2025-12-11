@@ -44,7 +44,7 @@ const Login = () => {
         if (res.initSt === "Y") {
           router.push("/repassword");
         } else {
-          router.push("/monitoring");
+          router.push("/admin/lounge");
           setMonitoringView("course");
         }
       }

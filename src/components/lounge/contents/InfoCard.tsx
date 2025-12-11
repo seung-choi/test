@@ -173,9 +173,9 @@ const InfoCard: React.FC<InfoCardProps> = ({
                 </span>
                 <span className={styles.customerTime}>{customerInfo.time}</span>
               </div>
-              <div onClick={onMessageOrder}>
+              <button style={{'cursor': 'pointer'}} onClick={onMessageOrder}>
                 <img src="/assets/image/info-card/meassage.svg" alt="메시지" />
-              </div>
+              </button>
             </div>
           </div>
           <div className={styles.membersList}>

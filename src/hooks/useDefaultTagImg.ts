@@ -26,7 +26,7 @@ export const useDefaultTagImg = () => {
   const defaultTagImgMap = useMemo(() => {
     const map = new Map<string, string>();
     DEFAULT_TAG.forEach((tag) => {
-      if (tag.tagImg) {
+      if (tag.tagImg && tag.tagCd) {
         // 경로를 정규화하여 저장
         map.set(tag.tagCd, normalizeImagePath(tag.tagImg));
       }

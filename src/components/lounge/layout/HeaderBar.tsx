@@ -1,7 +1,9 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { CourseData } from '@/types';
+import { InfoCardData } from '@/types/orderInfoType';
+import { mockInfoCards } from '@/mock/infocardMockData';
 import styles from '@/styles/components/lounge/layout/HeaderBar.module.scss';
 
 interface HeaderBarProps {
@@ -14,6 +16,9 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
   const [isExpanded, setIsExpanded] = useState(true);
   const [selectedCourse, setSelectedCourse] = useState<'lake' | 'hill'>('lake');
   const [isAnimating, setIsAnimating] = useState(false);
+
+  const lakeScheduleRef = useRef<HTMLDivElement>(null);
+  const hillScheduleRef = useRef<HTMLDivElement>(null);
 
   const toggleExpanded = useCallback(() => {
     if (isAnimating) return;
@@ -34,6 +39,37 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
   };
 
   const currentCourseData = selectedCourse === 'lake' ? courseData.lakeCourse : courseData.hillCourse;
+
+  // Filter schedule data by course
+  const lakeScheduleData = mockInfoCards.filter(
+    (card) => card.orderLocation.toUpperCase().includes('LAKE')
+  );
+  const hillScheduleData = mockInfoCards.filter(
+    (card) => card.orderLocation.toUpperCase().includes('HILL')
+  );
+
+  // Scroll handler for arrow buttons
+  const handleScroll = (ref: React.RefObject<HTMLDivElement>, direction: 'left' | 'right') => {
+    if (ref.current) {
+      const scrollAmount = 300;
+      const newScrollLeft = direction === 'left'
+        ? ref.current.scrollLeft - scrollAmount
+        : ref.current.scrollLeft + scrollAmount;
+
+      ref.current.scrollTo({
+        left: newScrollLeft,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  // Render status indicator based on order status
+  const renderStatusIndicator = (status: InfoCardData['status']) => {
+    if (status === 'order') {
+      return <div className={styles.statusIconLarge} />;
+    }
+    return <div className={styles.statusIcon} />;
+  };
 
   const getHeaderContainerClass = () => {
     let classes = [styles.headerContainer];
@@ -142,103 +178,51 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
 
         <div className={styles.scheduleSection}>
           <div className={styles.scheduleRow}>
-            <div className={styles.scheduleItems}>
-              <div className={styles.scheduleItem}>
-                <div className={styles.statusIndicator}>
-                  <div className={styles.statusIconLarge} />
+            <div className={styles.scheduleItems} ref={lakeScheduleRef}>
+              {lakeScheduleData.map((schedule) => (
+                <div key={schedule.id} className={styles.scheduleItem}>
+                  <div className={styles.statusIndicator}>
+                    {renderStatusIndicator(schedule.status)}
+                  </div>
+                  <div className={styles.userInfo}>
+                    <div className={styles.userName}>{schedule.customerInfo.name}</div>
+                  </div>
+                  <div className={styles.timeInfo}>
+                    <div className={styles.timeText}>{schedule.customerInfo.time}</div>
+                  </div>
                 </div>
-                <div className={styles.userInfo}>
-                  <div className={styles.userName}>김지원</div>
-                </div>
-                <div className={styles.timeInfo}>
-                  <div className={styles.timeText}>11:30</div>
-                </div>
-              </div>
-              <div className={styles.scheduleItem}>
-                <div className={styles.statusIndicator}>
-                  <div className={styles.statusIcon} />
-                </div>
-                <div className={styles.userInfo}>
-                  <div className={styles.userName}>김지원</div>
-                </div>
-                <div className={styles.timeInfo}>
-                  <div className={styles.timeText}>11:30</div>
-                </div>
-              </div>
-              <div className={styles.scheduleItem}>
-                <div className={styles.statusIndicator}>
-                  <div className={styles.statusIcon} />
-                </div>
-                <div className={styles.userInfo}>
-                  <div className={styles.userName}>김지원</div>
-                </div>
-                <div className={styles.timeInfo}>
-                  <div className={styles.timeText}>11:30</div>
-                </div>
-              </div>
-              <div className={styles.scheduleItem}>
-                <div className={styles.statusIndicator}>
-                  <div className={styles.statusIconLarge} />
-                </div>
-                <div className={styles.userInfo}>
-                  <div className={styles.userName}>김지원</div>
-                </div>
-                <div className={styles.timeInfo}>
-                  <div className={styles.timeText}>11:30</div>
-                </div>
-              </div>
+              ))}
             </div>
-            <img src="/assets/image/global/arrow-sm.svg" alt="arrow" />
+            <img
+              src="/assets/image/global/arrow-sm.svg"
+              alt="arrow"
+              onClick={() => handleScroll(lakeScheduleRef, 'right')}
+              style={{ cursor: 'pointer' }}
+            />
           </div>
           <div className={styles.spacer} />
           <div className={styles.scheduleRow}>
-            <div className={styles.scheduleItems}>
-              <div className={styles.scheduleItem}>
-                <div className={styles.statusIndicator}>
-                  <div className={styles.statusIconLarge} />
+            <div className={styles.scheduleItems} ref={hillScheduleRef}>
+              {hillScheduleData.map((schedule) => (
+                <div key={schedule.id} className={styles.scheduleItem}>
+                  <div className={styles.statusIndicator}>
+                    {renderStatusIndicator(schedule.status)}
+                  </div>
+                  <div className={styles.userInfo}>
+                    <div className={styles.userName}>{schedule.customerInfo.name}</div>
+                  </div>
+                  <div className={styles.timeInfo}>
+                    <div className={styles.timeText}>{schedule.customerInfo.time}</div>
+                  </div>
                 </div>
-                <div className={styles.userInfo}>
-                  <div className={styles.userName}>김지원</div>
-                </div>
-                <div className={styles.timeInfo}>
-                  <div className={styles.timeText}>11:30</div>
-                </div>
-              </div>
-              <div className={styles.scheduleItem}>
-                <div className={styles.statusIndicator}>
-                  <div className={styles.statusIcon} />
-                </div>
-                <div className={styles.userInfo}>
-                  <div className={styles.userName}>김지원</div>
-                </div>
-                <div className={styles.timeInfo}>
-                  <div className={styles.timeText}>11:30</div>
-                </div>
-              </div>
-              <div className={styles.scheduleItem}>
-                <div className={styles.statusIndicator}>
-                  <div className={styles.statusIcon} />
-                </div>
-                <div className={styles.userInfo}>
-                  <div className={styles.userName}>김지원</div>
-                </div>
-                <div className={styles.timeInfo}>
-                  <div className={styles.timeText}>11:30</div>
-                </div>
-              </div>
-              <div className={styles.scheduleItem}>
-                <div className={styles.statusIndicator}>
-                  <div className={styles.statusIconLarge} />
-                </div>
-                <div className={styles.userInfo}>
-                  <div className={styles.userName}>김지원</div>
-                </div>
-                <div className={styles.timeInfo}>
-                  <div className={styles.timeText}>11:30</div>
-                </div>
-              </div>
+              ))}
             </div>
-            <img src="/assets/image/global/arrow-sm.svg" alt="arrow" />
+            <img
+              src="/assets/image/global/arrow-sm.svg"
+              alt="arrow"
+              onClick={() => handleScroll(hillScheduleRef, 'right')}
+              style={{ cursor: 'pointer' }}
+            />
           </div>
         </div>
 

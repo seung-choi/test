@@ -1,88 +1,12 @@
 import $axios from "@/api/axios";
 import { LoginFormAPI } from "@/app/login/page";
 import { getOriginURL } from "@/api/API_URL";
-import BookingType from "@/types/Booking.type";
-import { TagType } from "@/types/Tag.type";
-import EventHisSOSType from "@/types/EventHisSOSType";
-import ClubType from "@/types/Club.type";
-import EventSSE from "@/types/EventSSE.type";
-import { MapPinAPI } from "@/app/holecup/page";
 import { PassWordFormAPI } from "@/app/repassword/page";
-
-//GET
-export const getClub = async () => {
-  const res = await $axios<ClubType>({
-    url: "/club",
-    method: "get",
-  });
-  return res.data;
-};
-
-export const getBooking = async () => {
-  const res = await $axios<BookingType[]>({
-    url: `${getOriginURL("gps")}booking`,
-    method: "get",
-  });
-  return res.data;
-};
-
-export const getEventSSE = async () => {
-  const res = await $axios<EventSSE[]>({
-    url: "event/SSE",
-    method: "get",
-  });
-  return res.data;
-};
-
-export const getSOSHistory = async () => {
-  const res = await $axios<EventHisSOSType[]>({
-    url: "/event/his/SOS",
-    method: "get",
-  });
-  return res.data;
-};
-
-export const getMenuHis = async () => {
-  const res = await $axios<string[]>({
-    url: "/menu/his",
-    method: "get",
-  });
-  return res.data;
-};
-
-export const getTag = async () => {
-  const res = await $axios<TagType[]>({
-    url: "/tag",
-    method: "get",
-  });
-  return res.data;
-};
 
 // POST
 export const postLogin = async (data: LoginFormAPI) => {
   const res = await $axios({
     url: `${getOriginURL("api", "/auth/login")}`,
-    method: "post",
-    data: data,
-  });
-  return res.data;
-};
-
-export const postSendHis = async (formData: FormData) => {
-  const res = await $axios({
-    url: "send/his",
-    method: "post",
-    data: formData,
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
-  return res.data;
-};
-
-export const postMapPin = async (data: MapPinAPI[]) => {
-  const res = await $axios({
-    url: "map/pin",
     method: "post",
     data: data,
   });

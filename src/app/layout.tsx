@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
+import { Lexend_Exa } from "next/font/google";
 import "./globals.scss";
 import { ClientLayout } from "@/app/ClientLayout";
+
+const lexendExa = Lexend_Exa({
+  weight: ["100", "800"],
+  subsets: ["latin"],
+  variable: "--font-lexend-exa",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Vgolf",
@@ -21,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={lexendExa.variable}>
       <body>
         <ClientLayout>{children}</ClientLayout>
       </body>

@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { RecoilRoot, useRecoilValue } from "recoil";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AlertModal from "@/components/AlertModal";
+import UnifiedModal from "@/components/modal/UnifiedModal";
 import "@/lib/i18n";
 import i18n from "@/lib/i18n";
 import { themeModeState, menuState } from "@/lib/recoil";
@@ -18,36 +19,6 @@ const ClientLayoutContent = ({ children }: { children: React.ReactNode }) => {
   const themeMode = useRecoilValue(themeModeState);
   const menuCodes = useRecoilValue(menuState);
   const [i18nReady, setI18nReady] = useState(false);
-  // const [orientationClass, setOrientationClass] = useState("portrait");
-
-  // useEffect(() => {
-  //   const isLandscapePage =
-  //     pathname === "/monitoring/" ||
-  //     pathname === "/holecup/" ||
-  //     pathname === "/sos-history/" ||
-  //     pathname === "/map-monitoring/";
-
-  //   const handleOrientationChange = () => {
-  //     const orientation = window.screen && window.screen.orientation;
-  //     const orientationType = orientation && orientation.type;
-  //     const isLandscape =
-  //       (orientationType && orientationType.includes("landscape")) ||
-  //       window.innerWidth > window.innerHeight;
-  //
-  //     setOrientationClass(() => {
-  //       if (isLandscapePage) return isLandscape ? "landscape" : "rotate-landscape";
-  //       return isLandscape ? "rotate-portrait" : "portrait";
-  //     });
-  //   };
-  //
-  //   handleOrientationChange();
-  //   window.addEventListener("orientationchange", handleOrientationChange);
-  //   window.addEventListener("resize", handleOrientationChange);
-  //   return () => {
-  //     window.removeEventListener("orientationchange", handleOrientationChange);
-  //     window.removeEventListener("resize", handleOrientationChange);
-  //   };
-  // }, [pathname]);
 
   // 언어 설정 초기화
   useEffect(() => {
@@ -77,21 +48,6 @@ const ClientLayoutContent = ({ children }: { children: React.ReactNode }) => {
     }
   }, [pathname, router]);
 
-  // 메뉴 권한 체크
-  useEffect(() => {
-    if (!menuCodes) return; // 메뉴 데이터가 아직 로드되지 않았으면 대기
-
-    const currentPath = pathname;
-
-    // 각 페이지별 필요한 메뉴 코드 체크
-    if (currentPath === "/search/" && !menuCodes.includes("M_DETAIL")) {
-      router.push("/404");
-    } else if (currentPath === "/holecup/" && !menuCodes.includes("M_PIN")) {
-      router.push("/404");
-    } else if (currentPath === "/sos-history/" && !menuCodes.includes("M_SOS")) {
-      router.push("/404");
-    }
-  }, [pathname, menuCodes, router]);
 
   if (!i18nReady) {
     // 초기화 전에는 아무 것도 안 보여줌
@@ -105,6 +61,7 @@ const ClientLayoutContent = ({ children }: { children: React.ReactNode }) => {
       <div className='layout' data-theme={themeMode}>
         {children}
         <AlertModal />
+        <UnifiedModal />
       </div>
     </QueryClientProvider>
   );
