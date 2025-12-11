@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useCallback, useRef } from 'react';
@@ -16,7 +15,6 @@ interface HeaderBarProps {
 
 const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExpandedChange }) => {
   const [isExpanded, setIsExpanded] = useState(true);
-  const [selectedCourse, setSelectedCourse] = useState<'lake' | 'hill'>('lake');
   const [isAnimating, setIsAnimating] = useState(false);
 
   const lakeScheduleRef = useRef<HTMLDivElement>(null);
@@ -35,23 +33,11 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
     }, 300);
   }, [isAnimating, isExpanded, onExpandedChange]);
 
-  const handleCourseChange = (courseType: 'lake' | 'hill') => {
-    setSelectedCourse(courseType);
-    onCourseChange?.(courseType);
-  };
-
-  const currentCourseData = selectedCourse === 'lake' ? courseData.lakeCourse : courseData.hillCourse;
-
   const lakeScheduleData = mockInfoCards.filter(
     (card) => card.orderLocation.toUpperCase().includes('LAKE')
   );
   const hillScheduleData = mockInfoCards.filter(
     (card) => card.orderLocation.toUpperCase().includes('HILL')
-  );
-
-  // 현재 선택된 코스에 해당하는 골퍼들 필터링
-  const currentGolfers = golferPositions.filter(
-    (golfer) => golfer.course.toLowerCase() === selectedCourse
   );
 
   const handleScroll = (ref: React.RefObject<HTMLDivElement>, direction: 'left' | 'right') => {
@@ -75,7 +61,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
     return <div className={styles.statusIcon} />;
   };
 
-  const renderGolferPosition = (golfer: any) => {
+  const renderGolferCard = (golfer: any) => {
     return (
       <div
         key={golfer.id}
@@ -83,7 +69,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
         style={{
           position: 'absolute',
           left: golfer.position.left,
-          top: golfer.position.top,
+          top: '-35px',
           zIndex: 10
         }}
       >
@@ -92,7 +78,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
             {golfer.name}
           </div>
           <div className={styles.golferStatusContainer}>
-            {golfer.hasAlert ? (
+            {golfer.isGroup ? (
               <div className={styles.golferStatusAlert}>
                 <div className={styles.golferStatusBackground} />
                 <div className={styles.golferStatusIcon} />
@@ -106,6 +92,13 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
           </div>
         </div>
       </div>
+    );
+  };
+
+  const getGolfersForHole = (holeNumber: string, courseType: 'lake' | 'hill') => {
+    return golferPositions.filter(golfer =>
+      golfer.hole === holeNumber &&
+      golfer.course.toUpperCase() === courseType.toUpperCase()
     );
   };
 
@@ -162,56 +155,49 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
     <div className={getHeaderContainerClass()}>
       <div className={styles.expandedHeader}>
         <div className={styles.headerContent}>
+          {/* 좌측 LAKE 코스 섹션 */}
           <div className={styles.courseSection}>
             <div className={styles.courseSectionWrapper}>
-              {currentCourseData.map((hole, index) => (
+              {courseData.lakeCourse.map((hole, index) => (
                 <React.Fragment key={hole.id}>
-                  <div className={styles.holeTag}>
+                  <div className={styles.holeTag} style={{ position: 'relative' }}>
                     <span className={styles.holeText}>{hole.holeNumber}</span>
+                    {getGolfersForHole(hole.holeNumber, 'lake').map(renderGolferCard)}
                   </div>
-                  {index < currentCourseData.length - 1 && (
+                  {index < courseData.lakeCourse.length - 1 && (
                     <div className={styles.holeDot}></div>
                   )}
                 </React.Fragment>
               ))}
-              {/* 골퍼 위치 렌더링 */}
-              {currentGolfers.map(renderGolferPosition)}
             </div>
           </div>
 
+          {/* 중앙 섹션 - 기존 위치와 디자인 유지 */}
           <div className={styles.centerSection}>
-            <button
-              className={`${styles.courseButton} ${
-                selectedCourse === 'lake' ? styles.active : ''
-              } ${styles.lakeButton}`}
-              onClick={() => handleCourseChange('lake')}
-            >
+            <div className={`${styles.courseButton} ${styles.active} ${styles.lakeButton}`}>
               LAKE
-            </button>
+            </div>
 
             <div className={styles.startHouse}>
               <h2 className={styles.startHouseTitle}>스타트 하우스</h2>
               <img src="/assets/image/global/arrow.svg" alt="arrow" />
             </div>
 
-            <button
-              className={`${styles.courseButton} ${
-                selectedCourse === 'hill' ? styles.active : ''
-              } ${styles.hillButton}`}
-              onClick={() => handleCourseChange('hill')}
-            >
+            <div className={`${styles.courseButton} ${styles.active} ${styles.hillButton}`}>
               HILL
-            </button>
+            </div>
           </div>
 
+          {/* 우측 HILL 코스 섹션 */}
           <div className={styles.courseSection}>
             <div className={styles.courseSectionWrapper}>
-              {[...currentCourseData].reverse().map((hole, index) => (
-                <React.Fragment key={`${hole.id}-reverse`}>
-                  <div className={styles.holeTag}>
+              {courseData.hillCourse.map((hole, index) => (
+                <React.Fragment key={hole.id}>
+                  <div className={styles.holeTag} style={{ position:'relative' }}>
                     <span className={styles.holeText}>{hole.holeNumber}</span>
+                    {getGolfersForHole(hole.holeNumber, 'hill').map(renderGolferCard)}
                   </div>
-                  {index < currentCourseData.length - 1 && (
+                  {index < courseData.hillCourse.length - 1 && (
                     <div className={styles.holeDot}></div>
                   )}
                 </React.Fragment>
@@ -221,6 +207,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
         </div>
 
         <div className={styles.scheduleSection}>
+          {/* 상단 LAKE 스케줄 */}
           <div className={styles.scheduleRow}>
             <div className={styles.scheduleItems} ref={lakeScheduleRef}>
               {lakeScheduleData.map((schedule) => (
@@ -244,7 +231,10 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
               style={{ cursor: 'pointer' }}
             />
           </div>
+
           <div className={styles.spacer} />
+
+          {/* 하단 HILL 스케줄 */}
           <div className={styles.scheduleRow}>
             <div className={styles.scheduleItems} ref={hillScheduleRef}>
               {hillScheduleData.map((schedule) => (

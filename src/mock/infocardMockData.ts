@@ -305,10 +305,10 @@ export const mockInfoCards: InfoCardData[] = [
     status: 'order',
     tableNumber: '1번',
     customerInfo: {
-      name: '정우성',
+      name: '정우현',
       group: '회사임원',
       time: '19:45',
-      members: ['조인성(M)', '송강민(M)', '황정우(M)', '이병철(M)', '김윤호(M)']
+      members: ['조인성(M)', '송강민(M)', '이병철(M)', '김윤호(M)']
     },
     orderItems: [
       { name: '회덮밥', quantity: 6, price: 25000 },
@@ -346,7 +346,7 @@ export const mockInfoCards: InfoCardData[] = [
       name: '김태수',
       group: '동아리모임',
       time: '20:00',
-      members: ['박준영(M)', '이진수(M)', '최수가(M)', '정민호(M)', '김정국(M)', '송태형(M)']
+      members: ['박준영(M)', '이진수(M)', '정민호(M)', '김정국(M)', '송태형(M)']
     },
     orderItems: [
       { name: '한정식', quantity: 7, price: 50000 },
@@ -453,7 +453,7 @@ export const mockInfoCards: InfoCardData[] = [
       name: '조현우',
       group: '학회모임',
       time: '16:45',
-      members: ['신동엽(M)', '유재석(M)', '강호동(M)', '이경규(M)', '김구라(M)']
+      members: ['신동현(M)', '이재석(M)', '강호준(M)', '이경호(M)']
     },
     orderItems: [
       { name: '회식세트', quantity: 6, price: 35000 },
@@ -559,7 +559,7 @@ export const mockInfoCards: InfoCardData[] = [
       name: '신동현',
       group: '축구동호회',
       time: '12:30',
-      members: ['박지성(M)', '이동국(M)', '안정환(M)', '홍명보(M)', '차두리(M)', '이천수(M)']
+      members: ['박지국(M)', '안정환(M)', '홍명수(M)']
     },
     orderItems: [
       { name: '바베큐세트', quantity: 8, price: 30000 },
@@ -629,7 +629,7 @@ export const mockInfoCards: InfoCardData[] = [
       name: '강민석',
       group: '창업동아리',
       time: '10:15',
-      members: ['정우영(M)', '김도현(M)', '이준혁(M)', '박상현(M)', '최지훈(M)', '윤성민(M)']
+      members: ['정우영(M)', '김도현(M)', '최지훈(M)', '윤성민(M)']
     },
     orderItems: [
       { name: '비즈니스런치', quantity: 7, price: 28000 },
@@ -696,10 +696,10 @@ export const mockInfoCards: InfoCardData[] = [
     status: 'cancel',
     tableNumber: '8번',
     customerInfo: {
-      name: '임재범',
-      group: '음악동호회',
+      name: '이재범',
+      group: '동호회',
       time: '19:15',
-      members: ['박효신(M)', '김범수(M)', '이승철(M)', '신승훈(M)', '김동률(M)', '윤종신(M)', '이적(M)']
+      members: ['신승훈(M)', '김동윤(M)', '윤종민(M)', '이주호(M)']
     },
     orderItems: [
       { name: '뮤지션세트', quantity: 8, price: 40000 },
