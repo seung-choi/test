@@ -1,0 +1,358 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  width: 1063px;
+  min-height: 400px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0px 4px 4px rgba(128, 128, 128, 0.55);
+  outline: 1px #666666 solid;
+  outline-offset: -1px;
+  position: relative;
+  overflow: hidden;
+}
+
+.header {
+  padding: 25px 66px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .title {
+    color: black;
+    font-size: 30px;
+    
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .closeButton {
+    width: 23px;
+    height: 23px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+
+    .closeIcon {
+      width: 100%;
+      height: 100%;
+      background: #666666;
+      position: relative;
+
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 2px;
+        height: 16px;
+        background: white;
+        transform: translate(-50%, -50%);
+      }
+
+      &::before {
+        transform: translate(-50%, -50%) rotate(45deg);
+      }
+
+      &::after {
+        transform: translate(-50%, -50%) rotate(-45deg);
+      }
+    }
+  }
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background: #D9D9D9;
+}
+
+.content {
+  padding: 26px 66px;
+}
+
+.formContainer {
+  display: flex;
+  gap: 7px;
+  position: relative;
+}
+
+.labelColumn {
+  width: 172px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  .label {
+    height: 50px;
+    padding: 10px;
+    background: #D9D9D9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #444444;
+    font-size: 22px;
+    
+    font-weight: 700;
+  }
+}
+
+.inputColumn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.inputWrapper {
+  position: relative;
+
+  .selectBox {
+    width: 100%;
+    height: 50px;
+    background: white;
+    border-radius: 2px;
+    outline: 1px #D9D9D9 solid;
+    outline-offset: -1px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 23px;
+    cursor: pointer;
+
+    .selectedText {
+      color: black;
+      font-size: 22px;
+      font-weight: 400;
+    }
+
+    .placeholderText {
+      color: #959595;
+      font-size: 22px;
+      font-weight: 400;
+    }
+
+    .arrow {
+      width: 0;
+      height: 0;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+
+      &.arrowDown {
+        border-top: 7px solid #1F1F1F;
+      }
+
+      &.arrowUp {
+        border-bottom: 7px solid #1F1F1F;
+      }
+    }
+  }
+
+  .dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #D9D9D9;
+    border-radius: 2px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1001;
+
+    .dropdownItem {
+      padding: 10px 23px;
+      cursor: pointer;
+      font-size: 22px;
+      font-weight: 400;
+
+      &:hover {
+        background: #f5f5f5;
+      }
+    }
+  }
+
+  .textInput {
+    width: 100%;
+    height: 50px;
+    background: white;
+    border: none;
+    border-radius: 2px;
+    outline: 1px #D9D9D9 solid;
+    outline-offset: -1px;
+    padding: 0 23px;
+    color: black;
+    font-size: 22px;
+    font-weight: 400;
+
+    &::placeholder {
+      color: #959595;
+    }
+  }
+
+  .fileInputContainer {
+    width: 100%;
+    height: 50px;
+    background: white;
+    border-radius: 2px;
+    outline: 1px #D9D9D9 solid;
+    outline-offset: -1px;
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    .placeholderText {
+      flex: 1;
+      padding: 0 23px;
+      color: #959595;
+      font-size: 22px;
+      font-weight: 400;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      line-height: 50px;
+    }
+
+    .attachButton {
+      min-width: 132px;
+      height: 49px;
+      background: #48487C;
+      color: #F3F3F3;
+      border: none;
+      font-size: 22px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      &:hover {
+        background: #3a3a66;
+      }
+    }
+  }
+}
+
+.submitButtonContainer {
+  margin-left: 7px;
+
+  .submitButton {
+    width: 99px;
+    height: 160px;
+    background: #001A9F;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    outline: 1px #0655F6 solid;
+    font-size: 22px;
+    font-weight: 700;
+    cursor: pointer;
+
+    &:hover {
+      background: #001580;
+    }
+  }
+}
+
+.cancelContent {
+  padding: 60px;
+  text-align: center;
+
+  .cancelMessage {
+    font-size: 24px;
+    font-weight: 400;
+    color: black;
+    margin: 0;
+  }
+}
+
+.buttonContainer {
+  padding: 0 66px 40px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+
+  .cancelButton {
+    width: 213px;
+    height: 54px;
+    padding: 10px 20px;
+    background: white;
+    color: #001A9F;
+    border: none;
+    border-radius: 5px;
+    outline: 1px #0655F6 solid;
+    outline-offset: -1px;
+    font-size: 22px;
+    font-weight: 400;
+    cursor: pointer;
+
+    &:hover {
+      background: #f5f5f5;
+    }
+  }
+
+  .confirmButton {
+    width: 213px;
+    height: 54px;
+    padding: 10px 20px;
+    background: #001A9F;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    outline: 1px #0655F6 solid;
+    outline-offset: -1px;
+    font-size: 22px;
+    font-weight: 700;
+    cursor: pointer;
+
+    &:hover {
+      background: #001580;
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .modal {
+    width: 90%;
+    max-width: 1063px;
+  }
+}
+
+@media (max-width: 768px) {
+  .modal {
+    width: 95%;
+    margin: 20px;
+  }
+
+  .formContainer {
+    flex-direction: column;
+  }
+
+  .labelColumn {
+    width: 100%;
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .submitButtonContainer {
+    margin-left: 0;
+    margin-top: 20px;
+
+    .submitButton {
+      width: 100%;
+      height: 50px;
+    }
+  }
+}

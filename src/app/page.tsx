@@ -13,7 +13,7 @@ export default function Splash() {
       // accessToken이 있으면 monitoring 페이지로, 없으면 login 페이지로 이동
       const accessToken = storage.local.get("accessToken");
       if (accessToken) {
-        router.push("/monitoring");
+        router.push("/admin/lounge");
       } else {
         router.push("/login");
       }

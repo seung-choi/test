@@ -27,7 +27,7 @@ const RePassword = () => {
   const { mutate: passwordMutate } = useMutation({
     mutationFn: patchPassword,
     onSuccess: () => {
-      router.push("/monitoring");
+      router.push("/admin/lounge");
     },
     onError: () => {
       setError("Error");
