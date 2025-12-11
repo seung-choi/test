@@ -23,7 +23,7 @@
 }
 
 .expandedHeader {
-  padding: 30px 20px 15px 20px;
+  padding: 50px 30px 15px 30px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -39,7 +39,7 @@
   align-items: center;
   justify-content: center;
   transition: opacity 0.3s ease;
-  
+
   .headerContainer.collapsed & {
     opacity: 1;
   }
@@ -64,7 +64,7 @@
 
 .toggleIcon {
   transition: transform 0.3s ease;
-  
+
   .headerContainer.collapsed & {
     transform: rotate(180deg);
   }
@@ -74,12 +74,19 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .courseSection {
   display: flex;
   justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
+}
+
+.courseSectionWrapper {
+  position: relative;
+  display: flex;
   align-items: center;
   gap: 20px;
 }
@@ -128,6 +135,98 @@
     background: #D9D9D9;
     border-radius: 50%;
   }
+}
+
+// 골퍼 위치 관련 스타일
+.golferPosition {
+  position: absolute;
+  z-index: 10;
+}
+
+.golferCard {
+  width: 100%;
+  height: 100%;
+  padding: 5px;
+  border-radius: 5px;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 2px;
+  display: inline-flex;
+}
+
+.golferName {
+  background: rgba(243, 243, 243, 0.80);
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  color: #1F1F1F;
+  font-size: 20px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 400;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+
+.golferStatusContainer {
+  height: 26px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  position: relative;
+}
+
+.golferStatusAlert {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.golferStatusBackground {
+  width: 26px;
+  height: 26px;
+  background: rgba(230, 43, 43, 0.50);
+  border-radius: 5px;
+  outline: 3px solid #DC0000;
+  outline-offset: -1.5px;
+  position: absolute;
+}
+
+.golferStatusIcon {
+  width: 16px;
+  height: 16px;
+  background: #FEBA38;
+  border-radius: 50%;
+  position: relative;
+  z-index: 1;
+}
+
+.golferStatusNormal {
+  width: 16px;
+  height: 16px;
+  background: #FEBA38;
+  border-radius: 50%;
+}
+
+.golferTime {
+  background: rgba(243, 243, 243, 0.80);
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  color: #1F1F1F;
+  font-size: 20px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 400;
+  line-height: 20px;
+  word-wrap: break-word;
 }
 
 .centerSection {
@@ -214,6 +313,10 @@
     gap: 15px;
   }
 
+  .courseSectionWrapper {
+    gap: 15px;
+  }
+
   .holeTag {
     min-width: 100px;
 
@@ -231,20 +334,25 @@
     gap: 20px;
 
   }
+
+  .golferName,
+  .golferTime {
+    font-size: 16px;
+    line-height: 16px;
+  }
 }
 
 .scheduleSection {
   width: 100%;
   height: 100%;
   justify-content: space-between;
-  align-items: center;
+  align-items: end;
   display: inline-flex;
 }
 
 .scheduleRow {
   width: 641px;
   padding-top: 10px;
-  padding-bottom: 10px;
   overflow: hidden;
   border-top: 1px solid #D9D9D9;
   justify-content: flex-start;
@@ -263,18 +371,16 @@
   display: flex;
   scroll-behavior: smooth;
 
-  /* Hide scrollbar for Chrome, Safari and Opera */
   &::-webkit-scrollbar {
     display: none;
   }
 
-  /* Hide scrollbar for IE, Edge and Firefox */
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .scheduleItem {
-  padding: 5px 5px 5px 5px;
+  padding: 5px 20px 5px 5px;
   border-right: 0.5px solid black;
   justify-content: flex-start;
   align-items: center;
@@ -385,7 +491,7 @@
       height: auto;
     }
   }
-  
+
   .expandedHeader {
     padding: 30px 10px 15px 10px;
     gap: 30px;

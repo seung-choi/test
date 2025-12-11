@@ -1,9 +1,11 @@
+
 'use client';
 
 import React, { useState, useCallback, useRef } from 'react';
 import { CourseData } from '@/types';
 import { InfoCardData } from '@/types/orderInfoType';
 import { mockInfoCards } from '@/mock/infocardMockData';
+import { golferPositions } from '@/mock/golferMockData';
 import styles from '@/styles/components/lounge/layout/HeaderBar.module.scss';
 
 interface HeaderBarProps {
@@ -40,7 +42,6 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
 
   const currentCourseData = selectedCourse === 'lake' ? courseData.lakeCourse : courseData.hillCourse;
 
-  // Filter schedule data by course
   const lakeScheduleData = mockInfoCards.filter(
     (card) => card.orderLocation.toUpperCase().includes('LAKE')
   );
@@ -48,7 +49,11 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
     (card) => card.orderLocation.toUpperCase().includes('HILL')
   );
 
-  // Scroll handler for arrow buttons
+  // 현재 선택된 코스에 해당하는 골퍼들 필터링
+  const currentGolfers = golferPositions.filter(
+    (golfer) => golfer.course.toLowerCase() === selectedCourse
+  );
+
   const handleScroll = (ref: React.RefObject<HTMLDivElement>, direction: 'left' | 'right') => {
     if (ref.current) {
       const scrollAmount = 300;
@@ -63,12 +68,45 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
     }
   };
 
-  // Render status indicator based on order status
   const renderStatusIndicator = (status: InfoCardData['status']) => {
     if (status === 'order') {
       return <div className={styles.statusIconLarge} />;
     }
     return <div className={styles.statusIcon} />;
+  };
+
+  const renderGolferPosition = (golfer: any) => {
+    return (
+      <div
+        key={golfer.id}
+        className={styles.golferPosition}
+        style={{
+          position: 'absolute',
+          left: golfer.position.left,
+          top: golfer.position.top,
+          zIndex: 10
+        }}
+      >
+        <div className={styles.golferCard}>
+          <div className={styles.golferName}>
+            {golfer.name}
+          </div>
+          <div className={styles.golferStatusContainer}>
+            {golfer.hasAlert ? (
+              <div className={styles.golferStatusAlert}>
+                <div className={styles.golferStatusBackground} />
+                <div className={styles.golferStatusIcon} />
+              </div>
+            ) : (
+              <div className={styles.golferStatusNormal} />
+            )}
+          </div>
+          <div className={styles.golferTime}>
+            {golfer.time}
+          </div>
+        </div>
+      </div>
+    );
   };
 
   const getHeaderContainerClass = () => {
@@ -125,16 +163,20 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
       <div className={styles.expandedHeader}>
         <div className={styles.headerContent}>
           <div className={styles.courseSection}>
-            {currentCourseData.map((hole, index) => (
-              <React.Fragment key={hole.id}>
-                <div className={styles.holeTag}>
-                  <span className={styles.holeText}>{hole.holeNumber}</span>
-                </div>
-                {index < currentCourseData.length - 1 && (
-                  <div className={styles.holeDot}></div>
-                )}
-              </React.Fragment>
-            ))}
+            <div className={styles.courseSectionWrapper}>
+              {currentCourseData.map((hole, index) => (
+                <React.Fragment key={hole.id}>
+                  <div className={styles.holeTag}>
+                    <span className={styles.holeText}>{hole.holeNumber}</span>
+                  </div>
+                  {index < currentCourseData.length - 1 && (
+                    <div className={styles.holeDot}></div>
+                  )}
+                </React.Fragment>
+              ))}
+              {/* 골퍼 위치 렌더링 */}
+              {currentGolfers.map(renderGolferPosition)}
+            </div>
           </div>
 
           <div className={styles.centerSection}>
@@ -163,16 +205,18 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
           </div>
 
           <div className={styles.courseSection}>
-            {[...currentCourseData].reverse().map((hole, index) => (
-              <React.Fragment key={`${hole.id}-reverse`}>
-                <div className={styles.holeTag}>
-                  <span className={styles.holeText}>{hole.holeNumber}</span>
-                </div>
-                {index < currentCourseData.length - 1 && (
-                  <div className={styles.holeDot}></div>
-                )}
-              </React.Fragment>
-            ))}
+            <div className={styles.courseSectionWrapper}>
+              {[...currentCourseData].reverse().map((hole, index) => (
+                <React.Fragment key={`${hole.id}-reverse`}>
+                  <div className={styles.holeTag}>
+                    <span className={styles.holeText}>{hole.holeNumber}</span>
+                  </div>
+                  {index < currentCourseData.length - 1 && (
+                    <div className={styles.holeDot}></div>
+                  )}
+                </React.Fragment>
+              ))}
+            </div>
           </div>
         </div>
 
