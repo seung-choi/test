@@ -1,0 +1,282 @@
+// ========================================
+// Default 테이블 (Settings 페이지용)
+// ========================================
+.tableContainer {
+  width: 100%;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+// ========================================
+// Menu 테이블 (Menu Management용)
+// ========================================
+.menuTableContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+// ========================================
+// 공통 스타일
+// ========================================
+.tableHeader {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  background: white;
+}
+
+.headerCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 50px;
+  padding: 0 10px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: #F9F9F9;
+  }
+
+  .headerText {
+    color: #1F1F1F;
+    font-size: 20px;
+    font-family: 'SUIT', sans-serif;
+    font-weight: 700;
+  }
+
+  .sortIcon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+}
+
+// Menu 테이블 헤더 스타일
+.menuTableContainer .tableHeader {
+  .headerCell {
+    height: 56px;
+    border-bottom: 1px #959595 solid;
+
+    &:hover {
+      background: transparent;
+    }
+  }
+}
+
+.tableBody {
+  display: flex;
+  flex-direction: column;
+  max-height: 600px;
+  overflow-y: auto;
+
+  /* 스크롤바 스타일 */
+  &::-webkit-scrollbar {
+    width: 9px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #D9D9D9;
+    border-radius: 5px;
+  }
+}
+
+.tableRow {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border-top: 1px solid #F3F3F3;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: #F9F9F9;
+  }
+}
+
+// Menu 테이블 Row 스타일
+.menuTableContainer .tableBody {
+  .tableRow {
+    border-top: none;
+    border-bottom: 1px #666666 solid;
+
+    &:hover {
+      background: transparent;
+    }
+  }
+}
+
+.tableCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 74px;
+  padding: 10px;
+  text-align: center;
+  word-break: break-word;
+
+  .cellText {
+    color: #1F1F1F;
+    font-size: 19px;
+    font-family: 'SUIT', sans-serif;
+    font-weight: 600;
+  }
+}
+
+// Menu 테이블 Cell 스타일
+.menuTableContainer .tableBody {
+  .tableCell {
+    min-height: 102px;
+
+    .cellText {
+      font-size: 20px;
+      font-weight: 400;
+    }
+  }
+}
+
+// ========================================
+// 특수 컴포넌트 스타일
+// ========================================
+
+// 체크박스
+.checkbox {
+  width: 24px;
+  height: 24px;
+  background: #959595;
+  border: 3px solid white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &.checked {
+    background: #3A3C56;
+  }
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+// 메뉴 이미지
+.menuImage {
+  width: 117px;
+  height: 72px;
+  border-radius: 20px;
+  border: 1px #959595 solid;
+  object-fit: cover;
+}
+
+// 태그 컨테이너
+.tagsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  gap: 4px;
+}
+
+.tag {
+  height: 24px;
+  padding: 0 11px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .tagText {
+    color: #1F1F1F;
+    font-size: 14px;
+    font-family: 'SUIT', sans-serif;
+    font-weight: 700;
+  }
+
+  &.new {
+    background: #FEC738;
+  }
+
+  &.signature {
+    background: #FF4B4B;
+
+    .tagText {
+      color: white;
+    }
+  }
+}
+
+// 상태 선택기
+.statusSelector {
+  width: 120px;
+  height: 42px;
+  padding: 0 15px;
+  background: white;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.35);
+  }
+
+  .statusText {
+    color: #1F1F1F;
+    font-size: 20px;
+    font-family: 'SUIT', sans-serif;
+    font-weight: 400;
+  }
+
+  .dropdownArrow {
+    width: 14px;
+    height: 7px;
+    background: #959595;
+    outline: 2px #959595 solid;
+    outline-offset: -1px;
+  }
+}
+
+// 채널/유형 태그
+.channelTags {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.channelTag {
+  color: #1F1F1F;
+  font-size: 20px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 400;
+}
+
+// 수정 버튼
+.editButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  img {
+    width: 24px;
+    height: 24px;
+  }
+}
