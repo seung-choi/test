@@ -25,8 +25,13 @@ const mockOrderRecords: OrderRecord[] = Array.from({ length: 12 }, (_, i) => ({
 const SettingPage = () => {
   const [activeTab, setActiveTab] = useState<SettingTab>('sales');
   const [currentFilter, setCurrentFilter] = useState<SalesFilter>({
-    startDate: '2025-12-25',
-    endDate: '2025-12-25',
+    dateRange: {
+      startDate: '2025-12-25',
+      endDate: '2025-12-25',
+    },
+    status: '전체',
+    caddyName: '',
+    searchTerm: '',
   });
 
   // 통계 계산
@@ -96,6 +101,7 @@ const SettingPage = () => {
       <ActionBar>
         {activeTab === 'sales' && (
           <SalesInquiryActionBar
+            filter={currentFilter}
             onFilterChange={handleFilterChange}
             stats={stats}
             onExportExcel={handleExportExcel}

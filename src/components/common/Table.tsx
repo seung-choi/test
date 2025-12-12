@@ -6,7 +6,7 @@ import styles from '@/styles/components/common/Table.module.scss';
 export interface TableColumn {
   key: string;
   label: string;
-  width?: number;
+  width?: string;
   sortable?: boolean;
   render?: (value: any, row: any) => React.ReactNode;
 }
@@ -14,16 +14,11 @@ export interface TableColumn {
 export interface TableProps {
   columns: TableColumn[];
   data: any[];
-  variant?: 'default' | 'menu';
+  variant?: 'default' | 'menu' | 'sales';
   onSort?: (key: string) => void;
   className?: string;
 }
 
-/**
- * 통합 테이블 컴포넌트
- * - variant='default': Settings 페이지용 (기본 스타일)
- * - variant='menu': Menu Management 페이지용 (확장된 스타일)
- */
 const Table: React.FC<TableProps> = ({
   columns,
   data,
@@ -37,7 +32,6 @@ const Table: React.FC<TableProps> = ({
 
   return (
     <div className={`${containerClass} ${className || ''}`}>
-      {/* 테이블 헤더 */}
       <div className={styles.tableHeader}>
         {columns.map((column) => (
           <div
@@ -58,7 +52,6 @@ const Table: React.FC<TableProps> = ({
         ))}
       </div>
 
-      {/* 테이블 바디 */}
       <div className={styles.tableBody}>
         {data.map((row, index) => (
           <div key={row.id || index} className={styles.tableRow}>

@@ -1,18 +1,14 @@
 import React, { useState } from 'react';
-import styles from '../../../../styles/components/lounge/layout/SideTab.module.scss';
+import { useRecoilState } from 'recoil';
+import styles from '@/styles/components/admin/lounge/layout/SideTab.module.scss';
 import Drawer from '../drawer/Drawer';
 import MenuManagement from '../drawer/MenuManagement';
-
-interface OrderCount {
-  all: number;
-  order: number;
-  accept: number;
-  complete: number;
-  cancel: number;
-}
+import { drawerState } from '@/lib/recoil';
+import { OrderCounts } from '@/types';
+import SettingManagement from '../drawer/SettingManagement';
 
 interface SideTabProps {
-  orderCounts: OrderCount;
+  orderCounts: OrderCounts;
   onFilterChange: (filter: string) => void;
   hasNotification?: boolean;
 }
@@ -23,8 +19,7 @@ const SideTab: React.FC<SideTabProps> = ({
                                            hasNotification = false
                                          }) => {
   const [activeFilter, setActiveFilter] = useState('all');
-  const [isMenuDrawerOpen, setIsMenuDrawerOpen] = useState(false);
-  const [isSettingsDrawerOpen, setIsSettingsDrawerOpen] = useState(false);
+  const [drawer, setDrawer] = useRecoilState(drawerState);
 
   const handleFilterClick = (filter: string) => {
     setActiveFilter(filter);
@@ -72,7 +67,7 @@ const SideTab: React.FC<SideTabProps> = ({
             <img src="/assets/image/layout/side-bar/menu.svg" alt="logo" />
           </div>
           <div className={styles.menuLabel}>
-            <button onClick={() => setIsMenuDrawerOpen(true)}>
+            <button onClick={() => setDrawer({ ...drawer, openDrawer: 'menu' })}>
               메뉴 관리
             </button>
           </div>
@@ -83,7 +78,7 @@ const SideTab: React.FC<SideTabProps> = ({
             <img src="/assets/image/layout/side-bar/setting.svg" alt="logo" />
           </div>
           <div className={styles.menuLabel}>
-            <button onClick={() => setIsSettingsDrawerOpen(true)}>
+            <button onClick={() => setDrawer({ ...drawer, openDrawer: 'setting' })}>
               설정
             </button>
           </div>
@@ -108,21 +103,21 @@ const SideTab: React.FC<SideTabProps> = ({
       </div>
 
       <Drawer
-        isOpen={isMenuDrawerOpen}
-        onClose={() => setIsMenuDrawerOpen(false)}
+        isOpen={drawer.openDrawer === 'menu'}
+        onClose={() => setDrawer({ ...drawer, openDrawer: null })}
         title="메뉴 관리"
         mode='menu'
       >
-        <MenuManagement onClose={() => setIsMenuDrawerOpen(false)} />
+        <MenuManagement onClose={() => setDrawer({ ...drawer, openDrawer: null })} />
       </Drawer>
 
       <Drawer
-        isOpen={isSettingsDrawerOpen}
-        onClose={() => setIsSettingsDrawerOpen(false)}
+        isOpen={drawer.openDrawer === 'setting'}
+        onClose={() => setDrawer({ ...drawer, openDrawer: null })}
         title="설정"
         mode='setting'
       >
-        <div>설정 콘텐츠 (미구현)</div>
+        <SettingManagement onClose={() => setDrawer({ ...drawer, openDrawer: null })} />
       </Drawer>
 
     </div>

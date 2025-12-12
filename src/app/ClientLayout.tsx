@@ -32,21 +32,21 @@ const ClientLayoutContent = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   // 경로 변경 및 인증 체크
-  useEffect(() => {
-    const currentPath = pathname;
-    const localStorageLength = storage.local.lengthExcept(["remember"]);
-
-    if (currentPath !== "/" && localStorageLength > 1) {
-      router.push(currentPath);
-    } else if (
-      localStorageLength < 1 &&
-      currentPath !== "/" &&
-      !currentPath.startsWith("/login") &&
-      !currentPath.startsWith("/repassword")
-    ) {
-      router.push("/login/");
-    }
-  }, [pathname, router]);
+  // useEffect(() => {
+  //   const currentPath = pathname;
+  //   const localStorageLength = storage.local.lengthExcept(["remember"]);
+  //
+  //   if (currentPath !== "/" && localStorageLength > 1) {
+  //     router.push(currentPath);
+  //   } else if (
+  //     localStorageLength < 1 &&
+  //     currentPath !== "/" &&
+  //     !currentPath.startsWith("/login") &&
+  //     !currentPath.startsWith("/repassword")
+  //   ) {
+  //     router.push("/login/");
+  //   }
+  // }, [pathname, router]);
 
 
   if (!i18nReady) {

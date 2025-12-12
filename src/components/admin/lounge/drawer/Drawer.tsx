@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import styles from '../../../../styles/components/lounge/drawer/Drawer.module.scss';
+import React from 'react';
+import { useRecoilState } from 'recoil';
+import styles from '@/styles/components/admin/lounge/drawer/Drawer.module.scss';
+import { drawerState } from '@/lib/recoil';
 
 type DrawerMode = 'setting' | 'menu';
 
@@ -20,8 +22,7 @@ const Drawer: React.FC<DrawerProps> = ({
                                          hasBackgroundImage = true,
                                          mode
                                        }) => {
-  const [selectedStore, setSelectedStore] = useState('스타트 하우스');
-  const [activeTab, setActiveTab] = useState<'sales' | 'layout'>('sales');
+  const [drawer, setDrawer] = useRecoilState(drawerState);
 
   if (!isOpen) return null;
 
@@ -39,7 +40,7 @@ const Drawer: React.FC<DrawerProps> = ({
           <div className={styles.titleContainer}>
             <div className={styles.title}>{title}</div>
             <div className={styles.storeSelector}>
-              <div className={styles.storeName}>{selectedStore}</div>
+              <div className={styles.storeName}>{drawer.selectedStore}</div>
               <img src="/assets/image/global/arrow.svg" alt="arrow" />
             </div>
           </div>
@@ -47,14 +48,14 @@ const Drawer: React.FC<DrawerProps> = ({
           {mode === 'setting' && (
             <div className={styles.settingModeHeader}>
               <div
-                className={`${styles.tab} ${activeTab === 'sales' ? styles.active : ''}`}
-                onClick={() => setActiveTab('sales')}
+                className={`${styles.tab} ${drawer.settingActiveTab === 'sales' ? styles.active : ''}`}
+                onClick={() => setDrawer({ ...drawer, settingActiveTab: 'sales' })}
               >
                 <div className={styles.tabText}>매출 조회</div>
               </div>
               <div
-                className={`${styles.tab} ${activeTab === 'layout' ? styles.active : ''}`}
-                onClick={() => setActiveTab('layout')}
+                className={`${styles.tab} ${drawer.settingActiveTab === 'layout' ? styles.active : ''}`}
+                onClick={() => setDrawer({ ...drawer, settingActiveTab: 'layout' })}
               >
                 <div className={styles.tabText}>배치도 관리</div>
               </div>
@@ -64,9 +65,13 @@ const Drawer: React.FC<DrawerProps> = ({
           {mode === 'menu' && (
             <div className={styles.menuModeHeader}>
               <div className={styles.searchSection}>
-                <div className={styles.searchInput}>
-                  <div className={styles.searchPlaceholder}>메뉴명 또는 코드를 입력해주세요.</div>
-                </div>
+                  <input
+                      type="text"
+                      className={styles.searchInput}
+                      placeholder="메뉴명 또는 코드를 입력해주세요."
+                      value={drawer.menuSearchTerm}
+                      onChange={(e) => setDrawer({ ...drawer, menuSearchTerm: e.target.value })}
+                  />
                 <div className={styles.searchButton}>
                   <div className={styles.buttonText}>검색</div>
                 </div>

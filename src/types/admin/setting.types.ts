@@ -3,9 +3,13 @@ export type SettingTab = 'sales' | 'layout';
 
 // 매출 조회 필터 타입
 export interface SalesFilter {
-  startDate: string;
-  endDate: string;
-  course?: 'lake' | 'hill';
+  dateRange: {
+    startDate: string;
+    endDate: string;
+  };
+  status: string;
+  caddyName: string;
+  searchTerm: string;
 }
 
 // 매출 통계 타입

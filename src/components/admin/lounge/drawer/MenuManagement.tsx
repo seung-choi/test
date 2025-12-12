@@ -1,26 +1,21 @@
 import React, { useState, useMemo } from 'react';
-import styles from '../../../../styles/components/lounge/drawer/MenuManagement.module.scss';
-import Table, { TableColumn } from '@/components/common/Table';
-import {
-  renderCheckbox,
-  renderImage,
-  renderTags,
-  renderStatusSelector,
-  renderChannelTags,
-  renderEditButton,
-} from '@/utils/tableRenderers';
+import { useRecoilValue } from 'recoil';
+import styles from '@/styles/components/admin/lounge/drawer/MenuManagement.module.scss';
+import Table from '@/components/common/Table';
 import { MenuMockData } from '@/mock/menuMockData';
+import { getMenuTableColumns } from "@/constants/columns/MenuTable";
+import { drawerState } from '@/lib/recoil';
 
 interface MenuManagementProps {
   onClose: () => void;
 }
 
 const MenuManagement: React.FC<MenuManagementProps> = ({ onClose }) => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const drawer = useRecoilValue(drawerState);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
   const handleSearch = () => {
-    console.log('검색:', searchTerm);
+    console.log('검색:', drawer.menuSearchTerm);
   };
 
   const handleItemSelect = (itemId: string, checked: boolean) => {
@@ -35,105 +30,30 @@ const MenuManagement: React.FC<MenuManagementProps> = ({ onClose }) => {
     console.log(`${action} 실행:`, selectedItems);
   };
 
-  const columns: TableColumn[] = useMemo(() => [
-    {
-      key: 'select',
-      label: '선택',
-      width: 81,
-      render: renderCheckbox(selectedItems, handleItemSelect),
-    },
-    {
-      key: 'store',
-      label: '매장',
-      width: 146,
-      sortable: true,
-    },
-    {
-      key: 'image',
-      label: '이미지',
-      width: 174,
-      render: renderImage,
-    },
-    {
-      key: 'code',
-      label: '코드',
-      width: 120,
-      sortable: true,
-    },
-    {
-      key: 'category',
-      label: '분류',
-      width: 120,
-      sortable: true,
-    },
-    {
-      key: 'name',
-      label: '메뉴명',
-      width: 174,
-      sortable: true,
-    },
-    {
-      key: 'price',
-      label: '금액',
-      width: 150,
-      sortable: true,
-    },
-    {
-      key: 'tags',
-      label: '태그',
-      width: 120,
-      sortable: true,
-      render: renderTags,
-    },
-    {
-      key: 'cookingTime',
-      label: '조리시간',
-      width: 133,
-      sortable: true,
-    },
-    {
-      key: 'status',
-      label: '상태',
-      width: 141,
-      sortable: true,
-      render: renderStatusSelector((itemId, status) => console.log('상태 변경:', itemId, status)),
-    },
-    {
-      key: 'channels',
-      label: '채널',
-      width: 130,
-      sortable: true,
-      render: renderChannelTags,
-    },
-    {
-      key: 'types',
-      label: '유형',
-      width: 130,
-      sortable: true,
-      render: renderChannelTags,
-    },
-    {
-      key: 'registerDate',
-      label: '등록일',
-      width: 120,
-      sortable: true,
-    },
-    {
-      key: 'edit',
-      label: '수정',
-      width: 50,
-      render: renderEditButton((itemId) => console.log('수정:', itemId)),
-    },
-  ], [selectedItems]);
+  const columns = useMemo(
+    () => getMenuTableColumns({ selectedItems, handleItemSelect }),
+    [selectedItems]
+  );
+
+  const filteredData = useMemo(() => {
+    if (!drawer.menuSearchTerm) return MenuMockData;
+
+    const searchTerm = drawer.menuSearchTerm.toLowerCase();
+    return MenuMockData.filter(
+      (item) =>
+        item.name?.toLowerCase().includes(searchTerm) ||
+        item.code?.toLowerCase().includes(searchTerm)
+    );
+  }, [drawer.menuSearchTerm]);
 
   return (
     <div className={styles.menuManagement}>
       <div className={styles.contentArea}>
-        <div className={styles.itemCount}>총 {MenuMockData.length}개</div>
+        <div className={styles.itemCount}>총 {filteredData.length}개</div>
 
         <Table
           columns={columns}
-          data={MenuMockData}
+          data={filteredData}
           variant="menu"
           onSort={(key) => console.log('정렬:', key)}
         />

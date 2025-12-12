@@ -5,7 +5,7 @@ import { CourseData } from '@/types';
 import { InfoCardData } from '@/types/orderInfoType';
 import { mockInfoCards } from '@/mock/infocardMockData';
 import { golferPositions } from '@/mock/golferMockData';
-import styles from '@/styles/components/lounge/layout/HeaderBar.module.scss';
+import styles from '@/styles/components/admin/lounge/layout/HeaderBar.module.scss';
 
 interface HeaderBarProps {
   courseData: CourseData;
