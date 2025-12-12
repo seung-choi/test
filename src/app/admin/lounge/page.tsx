@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import SideTab from '@/components/lounge/layout/SideTab';
-import HeaderBar from '@/components/lounge/layout/HeaderBar';
-import InfoCard from '@/components/lounge/contents/InfoCard';
+import SideTab from '@/components/admin/lounge/layout/SideTab';
+import HeaderBar from '@/components/admin/lounge/layout/HeaderBar';
+import InfoCard from '@/components/admin/lounge/contents/InfoCard';
 import { mockInfoCards, mockAvailableTables } from '@/mock/infocardMockData';
 import { mockCourseData } from '@/mock/courseMockData';
 import styles from '@/styles/pages/lounge/lounge.module.scss';

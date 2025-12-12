@@ -1,7 +1,16 @@
 import $axios from "@/api/axios";
-import { LoginFormAPI } from "@/app/login/page";
 import { getOriginURL } from "@/api/API_URL";
-import { PassWordFormAPI } from "@/app/repassword/page";
+
+// Type definitions
+export interface LoginFormAPI {
+  username: string;
+  password: string;
+}
+
+export interface PassWordFormAPI {
+  oldPassword: string;
+  newPassword: string;
+}
 
 // POST
 export const postLogin = async (data: LoginFormAPI) => {

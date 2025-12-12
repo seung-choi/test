@@ -53,7 +53,7 @@ export const mockInfoCards: InfoCardData[] = [
     totalItems: 25,
     orderTime: '14:10',
     orderLocation: 'LAKE 7H',
-    tags: ['vip', 'last_team_l1'],
+    tags: ['VIP', 'LASTTEAMF1'],
     totalAmount: 250000
   },
   {
@@ -87,7 +87,7 @@ export const mockInfoCards: InfoCardData[] = [
     totalItems: 6,
     orderTime: '15:25',
     orderLocation: 'HILL 5H',
-    tags: ['three_persons', 'comp'],
+    tags: ['THREEPERSONS', 'COMP'],
     totalAmount: 60000
   },
   {
@@ -133,7 +133,7 @@ export const mockInfoCards: InfoCardData[] = [
     totalItems: 6,
     orderTime: '13:40',
     orderLocation: 'LAKE 6H',
-    tags: ['marshal', 'five_persons'],
+    tags: ['MARSHAL', 'FIVEPERSONS'],
     totalAmount: 76000
   },
   {
@@ -156,7 +156,7 @@ export const mockInfoCards: InfoCardData[] = [
     totalItems: 20,
     orderTime: '11:45',
     orderLocation: 'HILL 7H',
-    tags: ['vip', 'green_check', 'education'],
+    tags: ['VIP', 'GREENCHECK', 'EDUCATION'],
     totalAmount: 250000
   },
   {
@@ -179,7 +179,7 @@ export const mockInfoCards: InfoCardData[] = [
     totalItems: 25,
     orderTime: '14:10',
     orderLocation: 'LAKE 7H',
-    tags: ['delay', 'first_team_f1', 'add_9_holes'],
+    tags: ['TIMEDELAY', 'FIRSTTEAMF1', 'ADD9HOLES'],
     cancelReason: '품절',
     totalAmount: 250000
   },
@@ -216,7 +216,7 @@ export const mockInfoCards: InfoCardData[] = [
     totalItems: 15,
     orderTime: '16:10',
     orderLocation: 'HILL 8H',
-    tags: ['vip', 'five_persons'],
+    tags: ['VIP', 'FIVEPERSONS'],
     totalAmount: 177500
   },
   {
@@ -261,7 +261,7 @@ export const mockInfoCards: InfoCardData[] = [
     totalItems: 14,
     orderTime: '16:55',
     orderLocation: 'LAKE 10H',
-    tags: ['marshal', 'three_persons'],
+    tags: ['MARSHAL', 'THREEPERSONS'],
     totalAmount: 188000
   },
   {
@@ -297,7 +297,7 @@ export const mockInfoCards: InfoCardData[] = [
     totalItems: 7,
     orderTime: '18:25',
     orderLocation: 'HILL 12H',
-    tags: ['comp', 'green_check'],
+    tags: ['COMP', 'GREENCHECK'],
     totalAmount: 186000
   },
   {
@@ -335,7 +335,7 @@ export const mockInfoCards: InfoCardData[] = [
     totalItems: 21,
     orderTime: '19:40',
     orderLocation: 'LAKE 1H',
-    tags: ['vip', 'marshal'],
+    tags: ['VIP', 'MARSHAL'],
     totalAmount: 290000
   },
   {
@@ -372,7 +372,7 @@ export const mockInfoCards: InfoCardData[] = [
     totalItems: 15,
     orderTime: '19:55',
     orderLocation: 'HILL 14H',
-    tags: ['delay', 'education'],
+    tags: ['TIMEDELAY', 'EDUCATION'],
     cancelReason: '일정 변경',
     totalAmount: 485000
   },
@@ -408,7 +408,7 @@ export const mockInfoCards: InfoCardData[] = [
     totalItems: 10,
     orderTime: '09:25',
     orderLocation: 'HILL 2H',
-    tags: ['first_team_f1', 'education'],
+    tags: ['FIRSTTEAMF1', 'EDUCATION'],
     totalAmount: 90000
   },
   {
@@ -442,7 +442,7 @@ export const mockInfoCards: InfoCardData[] = [
     totalItems: 10,
     orderTime: '10:55',
     orderLocation: 'LAKE 4H',
-    tags: ['three_persons', 'comp'],
+    tags: ['THREEPERSONS', 'COMP'],
     totalAmount: 114000
   },
   {
@@ -477,7 +477,7 @@ export const mockInfoCards: InfoCardData[] = [
     totalItems: 21,
     orderTime: '16:40',
     orderLocation: 'HILL 7H',
-    tags: ['marshal', 'five_persons'],
+    tags: ['MARSHAL', 'FIVEPERSONS'],
     totalAmount: 238000
   },
   {
@@ -512,7 +512,7 @@ export const mockInfoCards: InfoCardData[] = [
     totalItems: 11,
     orderTime: '14:10',
     orderLocation: 'LAKE 9H',
-    tags: ['vip', 'five_persons'],
+    tags: ['VIP', 'FIVEPERSONS'],
     totalAmount: 162500
   },
   {
@@ -547,7 +547,7 @@ export const mockInfoCards: InfoCardData[] = [
     totalItems: 11,
     orderTime: '18:15',
     orderLocation: 'HILL 11H',
-    tags: ['delay', 'green_check'],
+    tags: ['TIMEDELAY', 'GREENCHECK'],
     cancelReason: '교통체증',
     totalAmount: 390000
   },
@@ -584,7 +584,7 @@ export const mockInfoCards: InfoCardData[] = [
     totalItems: 29,
     orderTime: '12:25',
     orderLocation: 'LAKE 13H',
-    tags: ['marshal', 'add_9_holes'],
+    tags: ['MARSHAL', 'ADD9HOLES'],
     totalAmount: 363000
   },
   {
@@ -618,7 +618,7 @@ export const mockInfoCards: InfoCardData[] = [
     totalItems: 7,
     orderTime: '15:40',
     orderLocation: 'HILL 14H',
-    tags: ['education', 'three_persons'],
+    tags: ['EDUCATION', 'THREEPERSONS'],
     totalAmount: 80000
   },
   {
@@ -653,7 +653,7 @@ export const mockInfoCards: InfoCardData[] = [
     totalItems: 15,
     orderTime: '10:10',
     orderLocation: 'LAKE 1H',
-    tags: ['first_team_f1', 'education'],
+    tags: ['FIRSTTEAMF1', 'EDUCATION'],
     totalAmount: 280000
   },
   {
@@ -688,7 +688,7 @@ export const mockInfoCards: InfoCardData[] = [
     totalItems: 8,
     orderTime: '13:15',
     orderLocation: 'HILL 6H',
-    tags: ['vip', 'green_check'],
+    tags: ['VIP', 'GREENCHECK'],
     totalAmount: 185000
   },
   {
@@ -724,7 +724,7 @@ export const mockInfoCards: InfoCardData[] = [
     totalItems: 16,
     orderTime: '19:10',
     orderLocation: 'LAKE 8H',
-    tags: ['delay', 'last_team_l1', 'add_9_holes'],
+    tags: ['TIMEDELAY', 'LASTTEAMF1', 'ADD9HOLES'],
     cancelReason: '장비 문제',
     totalAmount: 560000
   }

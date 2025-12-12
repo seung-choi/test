@@ -155,7 +155,6 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
     <div className={getHeaderContainerClass()}>
       <div className={styles.expandedHeader}>
         <div className={styles.headerContent}>
-          {/* 좌측 LAKE 코스 섹션 */}
           <div className={styles.courseSection}>
             <div className={styles.courseSectionWrapper}>
               {courseData.lakeCourse.map((hole, index) => (
@@ -172,7 +171,6 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
             </div>
           </div>
 
-          {/* 중앙 섹션 - 기존 위치와 디자인 유지 */}
           <div className={styles.centerSection}>
             <div className={`${styles.courseButton} ${styles.active} ${styles.lakeButton}`}>
               LAKE
@@ -188,7 +186,6 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
             </div>
           </div>
 
-          {/* 우측 HILL 코스 섹션 */}
           <div className={styles.courseSection}>
             <div className={styles.courseSectionWrapper}>
               {courseData.hillCourse.map((hole, index) => (
@@ -207,7 +204,6 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
         </div>
 
         <div className={styles.scheduleSection}>
-          {/* 상단 LAKE 스케줄 */}
           <div className={styles.scheduleRow}>
             <div className={styles.scheduleItems} ref={lakeScheduleRef}>
               {lakeScheduleData.map((schedule) => (
@@ -234,7 +230,6 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
 
           <div className={styles.spacer} />
 
-          {/* 하단 HILL 스케줄 */}
           <div className={styles.scheduleRow}>
             <div className={styles.scheduleItems} ref={hillScheduleRef}>
               {hillScheduleData.map((schedule) => (

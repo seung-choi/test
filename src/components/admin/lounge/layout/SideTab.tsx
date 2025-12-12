@@ -1,6 +1,7 @@
-
 import React, { useState } from 'react';
-import styles from '../../../styles/components/lounge/layout/SideTab.module.scss';
+import styles from '../../../../styles/components/lounge/layout/SideTab.module.scss';
+import Drawer from '../drawer/Drawer';
+import MenuManagement from '../drawer/MenuManagement';
 
 interface OrderCount {
   all: number;
@@ -22,6 +23,8 @@ const SideTab: React.FC<SideTabProps> = ({
                                            hasNotification = false
                                          }) => {
   const [activeFilter, setActiveFilter] = useState('all');
+  const [isMenuDrawerOpen, setIsMenuDrawerOpen] = useState(false);
+  const [isSettingsDrawerOpen, setIsSettingsDrawerOpen] = useState(false);
 
   const handleFilterClick = (filter: string) => {
     setActiveFilter(filter);
@@ -68,14 +71,22 @@ const SideTab: React.FC<SideTabProps> = ({
           <div className={styles.menuIcon}>
             <img src="/assets/image/layout/side-bar/menu.svg" alt="logo" />
           </div>
-          <div className={styles.menuLabel}>메뉴관리</div>
+          <div className={styles.menuLabel}>
+            <button onClick={() => setIsMenuDrawerOpen(true)}>
+              메뉴 관리
+            </button>
+          </div>
         </div>
 
         <div className={styles.menuItem}>
           <div className={styles.menuIcon}>
             <img src="/assets/image/layout/side-bar/setting.svg" alt="logo" />
           </div>
-          <div className={styles.menuLabel}>설정</div>
+          <div className={styles.menuLabel}>
+            <button onClick={() => setIsSettingsDrawerOpen(true)}>
+              설정
+            </button>
+          </div>
         </div>
 
         <div className={styles.menuItem}>
@@ -95,6 +106,25 @@ const SideTab: React.FC<SideTabProps> = ({
           <div className={styles.menuLabel}>보기설정</div>
         </div>
       </div>
+
+      <Drawer
+        isOpen={isMenuDrawerOpen}
+        onClose={() => setIsMenuDrawerOpen(false)}
+        title="메뉴 관리"
+        mode='menu'
+      >
+        <MenuManagement onClose={() => setIsMenuDrawerOpen(false)} />
+      </Drawer>
+
+      <Drawer
+        isOpen={isSettingsDrawerOpen}
+        onClose={() => setIsSettingsDrawerOpen(false)}
+        title="설정"
+        mode='setting'
+      >
+        <div>설정 콘텐츠 (미구현)</div>
+      </Drawer>
+
     </div>
   );
 };

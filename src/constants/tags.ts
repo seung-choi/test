@@ -1,6 +1,5 @@
 import { TagType } from "@/types/Tag.type";
 
-// 태그 순서 정의 - 여러 컴포넌트에서 공통으로 사용
 export const TAG_ORDER = [
   "FIRSTTEAMF1",
   "FIRSTTEAMF2",

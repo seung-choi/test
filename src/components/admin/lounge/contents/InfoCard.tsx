@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react';
-import styles from '../../../styles/components/lounge/contents/InfoCard.module.scss';
+import styles from '../../../../styles/components/lounge/contents/InfoCard.module.scss';
 import { CustomerInfo, OrderItem, OrderHistory, OrderStatus } from '@/types';
 import { getTagAltText, getTagImage } from '@/utils/tagUtils';
 
