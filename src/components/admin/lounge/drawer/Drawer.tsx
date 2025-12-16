@@ -12,6 +12,7 @@ interface DrawerProps {
   children: React.ReactNode;
   hasBackgroundImage?: boolean;
   mode?: DrawerMode;
+  onDelete?: () => void;
 }
 
 const Drawer: React.FC<DrawerProps> = ({
@@ -20,7 +21,8 @@ const Drawer: React.FC<DrawerProps> = ({
                                          title,
                                          children,
                                          hasBackgroundImage = true,
-                                         mode
+                                         mode,
+                                         onDelete
                                        }) => {
   const [drawer, setDrawer] = useRecoilState(drawerState);
 
@@ -49,13 +51,13 @@ const Drawer: React.FC<DrawerProps> = ({
             <div className={styles.settingModeHeader}>
               <div
                 className={`${styles.tab} ${drawer.settingActiveTab === 'sales' ? styles.active : ''}`}
-                onClick={() => setDrawer({ ...drawer, settingActiveTab: 'sales' })}
+                onClick={() => setDrawer(prev => ({ ...prev, settingActiveTab: 'sales' }))}
               >
                 <div className={styles.tabText}>매출 조회</div>
               </div>
               <div
                 className={`${styles.tab} ${drawer.settingActiveTab === 'layout' ? styles.active : ''}`}
-                onClick={() => setDrawer({ ...drawer, settingActiveTab: 'layout' })}
+                onClick={() => setDrawer(prev => ({ ...prev, settingActiveTab: 'layout' }))}
               >
                 <div className={styles.tabText}>배치도 관리</div>
               </div>
@@ -70,7 +72,7 @@ const Drawer: React.FC<DrawerProps> = ({
                       className={styles.searchInput}
                       placeholder="메뉴명 또는 코드를 입력해주세요."
                       value={drawer.menuSearchTerm}
-                      onChange={(e) => setDrawer({ ...drawer, menuSearchTerm: e.target.value })}
+                      onChange={(e) => setDrawer(prev => ({ ...prev, menuSearchTerm: e.target.value }))}
                   />
                 <div className={styles.searchButton}>
                   <div className={styles.buttonText}>검색</div>
@@ -82,13 +84,16 @@ const Drawer: React.FC<DrawerProps> = ({
               <div className={styles.registerButton}>
                 <div className={styles.buttonText}>상품 등록</div>
               </div>
-              <div className={styles.orderButton}>
+              <div
+                className={`${styles.orderButton} ${drawer.isReorderMode ? styles.active : ''}`}
+                onClick={() => setDrawer(prev => ({ ...prev, isReorderMode: !prev.isReorderMode }))}
+              >
                 <div className={styles.buttonText}>순서 변경</div>
               </div>
               <div className={styles.cancelReasonButton}>
                 <div className={styles.buttonText}>취소사유 관리</div>
               </div>
-              <div className={styles.deleteButton}>
+              <div className={styles.deleteButton} onClick={onDelete}>
                 <div className={styles.buttonText}>삭제</div>
               </div>
             </div>

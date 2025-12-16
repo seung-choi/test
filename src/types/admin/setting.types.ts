@@ -1,7 +1,7 @@
-// 설정 탭 타입
+import {OrderStatus} from "@/types";
+
 export type SettingTab = 'sales' | 'layout';
 
-// 매출 조회 필터 타입
 export interface SalesFilter {
   dateRange: {
     startDate: string;
@@ -12,7 +12,6 @@ export interface SalesFilter {
   searchTerm: string;
 }
 
-// 매출 통계 타입
 export interface SalesStats {
   totalOrders: number;
   completedOrders: number;
@@ -20,17 +19,16 @@ export interface SalesStats {
   totalAmount: number;
 }
 
-// 주문 내역 타입
 export interface OrderRecord {
   id: string;
   orderDate: string;
-  teeOff: string;
+  tO: string;
   caddyName: string;
   customers: string[];
   groupName: string;
   totalItems: number;
   menuDetails: string;
   totalAmount: number;
-  status: '정산 완료' | '취소';
+  status: OrderStatus;
   cancelReason?: string;
 }

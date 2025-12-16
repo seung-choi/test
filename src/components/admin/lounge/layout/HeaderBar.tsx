@@ -2,7 +2,7 @@
 
 import React, { useState, useCallback, useRef } from 'react';
 import { CourseData } from '@/types';
-import { InfoCardData } from '@/types/orderInfoType';
+import { InfoCardData } from '@/types/admin/orderInfo.type';
 import { mockInfoCards } from '@/mock/infocardMockData';
 import { golferPositions } from '@/mock/golferMockData';
 import styles from '@/styles/components/admin/lounge/layout/HeaderBar.module.scss';

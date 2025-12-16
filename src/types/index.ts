@@ -1,3 +1,3 @@
 export * from './holeDataType'
 export * from './messageType'
-export * from './orderInfoType'
+export * from './admin/orderInfo.type'

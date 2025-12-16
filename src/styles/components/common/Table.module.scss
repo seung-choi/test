@@ -113,10 +113,9 @@
 
   .cellText {
     color: #1F1F1F;
-    font-size: 19px;
-    font-family: 'SUIT', sans-serif;
     font-weight: 600;
   }
+  font-size: 19px;
 }
 
 .menuTableContainer .tableBody {
@@ -130,21 +129,38 @@
   }
 }
 
-.checkbox {
-  width: 24px;
-  height: 24px;
-  background: #959595;
-  border: 3px solid white;
-  border-radius: 4px;
+.checkboxContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
 
-  &.checked {
-    background: #3A3C56;
-  }
-
   &:hover {
     opacity: 0.8;
+  }
+
+  svg {
+    display: block;
+  }
+}
+
+.dragHandle {
+  width: 100%;
+  height: 100%;
+  background: #D9D9D9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+
+  svg {
+    display: block;
   }
 }
 
@@ -182,12 +198,40 @@
     background: #FEC738;
   }
 
+  &.best {
+    background: #02B6D1;
+
+    .tagText {
+      color: white;
+    }
+  }
+
   &.signature {
     background: #FF4B4B;
 
     .tagText {
       color: white;
     }
+  }
+
+  &.limited {
+    background: #7000FF;
+
+    .tagText {
+      color: white;
+    }
+  }
+
+  &.lady {
+    background: #FF7575;
+
+    .tagText {
+      color: white;
+    }
+  }
+
+  &.none {
+    background: #F3F3F3;
   }
 }
 

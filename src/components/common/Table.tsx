@@ -1,6 +1,8 @@
 'use client';
 
 import React from 'react';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import styles from '@/styles/components/common/Table.module.scss';
 
 export interface TableColumn {
@@ -17,14 +19,62 @@ export interface TableProps {
   variant?: 'default' | 'menu' | 'sales';
   onSort?: (key: string) => void;
   className?: string;
+  isReorderMode?: boolean;
 }
+
+interface SortableRowProps {
+  row: any;
+  columns: TableColumn[];
+  isReorderMode?: boolean;
+}
+
+const SortableRow: React.FC<SortableRowProps> = ({ row, columns, isReorderMode }) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: row.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={`${styles.tableRow} ${isReorderMode ? styles.reorderMode : ''}`}
+      {...attributes}
+      {...(isReorderMode ? listeners : {})}
+    >
+      {columns.map((column) => (
+        <div
+          key={column.key}
+          className={styles.tableCell}
+          style={{ width: column.width }}
+        >
+          {column.render
+            ? column.render(row[column.key], row)
+            : <span className={styles.cellText}>{row[column.key]}</span>
+          }
+        </div>
+      ))}
+    </div>
+  );
+};
 
 const Table: React.FC<TableProps> = ({
   columns,
   data,
   variant = 'default',
   onSort,
-  className
+  className,
+  isReorderMode = false
 }) => {
   const containerClass = variant === 'menu'
     ? styles.menuTableContainer
@@ -54,20 +104,12 @@ const Table: React.FC<TableProps> = ({
 
       <div className={styles.tableBody}>
         {data.map((row, index) => (
-          <div key={row.id || index} className={styles.tableRow}>
-            {columns.map((column) => (
-              <div
-                key={column.key}
-                className={styles.tableCell}
-                style={{ width: column.width }}
-              >
-                {column.render
-                  ? column.render(row[column.key], row)
-                  : <span className={styles.cellText}>{row[column.key]}</span>
-                }
-              </div>
-            ))}
-          </div>
+          <SortableRow
+            key={row.id || index}
+            row={row}
+            columns={columns}
+            isReorderMode={isReorderMode}
+          />
         ))}
       </div>
     </div>

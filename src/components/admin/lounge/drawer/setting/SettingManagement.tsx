@@ -4,8 +4,8 @@ import styles from '@/styles/components/admin/lounge/drawer/SalesManagement.modu
 import Table from '@/components/common/Table';
 import { SalesMockData } from '@/mock/salesMockData';
 import { drawerState } from '@/lib/recoil';
-import {getSalesTableColumns} from "@/constants/columns/SalesTable";
-import SalesFilterActionBar from "@/components/admin/setting/SalesInquiryActionBar";
+import {getSalesTableColumns} from "@/constants";
+import SalesFilterActionBar from "@/components/admin/lounge/drawer/setting/SalesInquiryActionBar";
 import { SalesFilter } from '@/types/admin/setting.types';
 
 interface SettingManagementProps {
@@ -100,7 +100,6 @@ const SettingManagement: React.FC<SettingManagementProps> = ({ onClose }) => {
             />
 
             <div className={styles.contentArea}>
-                <div className={styles.itemCount}>총 {filteredData.length}개</div>
 
                 <Table
                     columns={columns}

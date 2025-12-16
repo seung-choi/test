@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState } from 'react';
@@ -85,12 +84,10 @@ const SalesFilterActionBar: React.FC<SalesFilterActionBarProps> = ({
               <div className={styles.searchButtonText}>검색</div>
             </div>
           </div>
-          <div className={styles.actionSection}>
-            <button className={styles.excelButton} onClick={onExportExcel}>
-              <img src="/images/admin/excel.png" alt="엑셀" className={styles.excelIcon} />
-              <div className={styles.excelButtonText}>엑셀로 내보내기</div>
-            </button>
-          </div>
+          <button className={styles.excelButton} onClick={onExportExcel}>
+            <img src="/assets/image/admin/excel.svg" alt="엑셀" className={styles.excelIcon} />
+            <div className={styles.excelButtonText}>엑셀로 내보내기</div>
+          </button>
         </div>
 
 

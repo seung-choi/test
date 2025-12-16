@@ -1,8 +1,8 @@
 export const SalesMockData = [
     {
         id: '1',
-        orderDate: '2025-12-25',
-        teeOffTime: '11:24',
+        orderDate: '2025-12-25T11:24:00',
+        tO: '11:24',
         caddyName: '김은숙',
         customerNames: '정철, 박지원, 허근영, 이지원',
         groupName: '행복회',
@@ -10,12 +10,12 @@ export const SalesMockData = [
         orderDetails: '갈비탕(2), 햄버거(1), 한우버거(3)',
         totalAmount: '150,000',
         status: '정산 완료',
-        cancellationReason: '-'
+        cancelReason: '-'
     },
     {
         id: '2',
-        orderDate: '2025-12-25',
-        teeOffTime: '11:24',
+        orderDate: '2025-12-25T11:24:00',
+        tO: '11:24',
         caddyName: '김은숙',
         customerNames: '정철, 박지원, 허근영, 이지원',
         groupName: '행복회',
@@ -23,12 +23,12 @@ export const SalesMockData = [
         orderDetails: '갈비탕(2), 햄버거(1), 한우버거(3)',
         totalAmount: '-',
         status: '취소',
-        cancellationReason: '고객 요청'
+        cancelReason: '고객 요청'
     },
     {
         id: '3',
-        orderDate: '2025-12-25',
-        teeOffTime: '11:24',
+        orderDate: '2025-12-25T11:24:00',
+        tO: '11:24',
         caddyName: '김은숙',
         customerNames: '정철, 박지원, 허근영, 이지원',
         groupName: '행복회',
@@ -36,12 +36,12 @@ export const SalesMockData = [
         orderDetails: '잡채, 탕수육',
         totalAmount: '-',
         status: '취소',
-        cancellationReason: '품절'
+        cancelReason: '품절'
     },
     {
         id: '4',
-        orderDate: '2025-12-24',
-        teeOffTime: '09:30',
+        orderDate: '2025-12-24T09:30:00',
+        tO: '09:30',
         caddyName: '이영희',
         customerNames: '김철수, 박민수',
         groupName: '친목회',
@@ -49,12 +49,12 @@ export const SalesMockData = [
         orderDetails: '불고기정식(2), 냉면(1), 김치찌개(2)',
         totalAmount: '85,000',
         status: '정산 완료',
-        cancellationReason: '-'
+        cancelReason: '-'
     },
     {
         id: '5',
-        orderDate: '2025-12-24',
-        teeOffTime: '14:15',
+        orderDate: '2025-12-24T14:15:00',
+        tO: '14:15',
         caddyName: '최미영',
         customerNames: '홍길동, 임꺽정, 장길산',
         groupName: '골프동우회',
@@ -62,12 +62,12 @@ export const SalesMockData = [
         orderDetails: '삼겹살(3), 된장찌개(2), 공기밥(3)',
         totalAmount: '120,000',
         status: '정산 완료',
-        cancellationReason: '-'
+        cancelReason: '-'
     },
     {
         id: '6',
-        orderDate: '2025-12-23',
-        teeOffTime: '16:45',
+        orderDate: '2025-12-23T16:45:00',
+        tO: '16:45',
         caddyName: '박순자',
         customerNames: '김영수, 이민호, 박서준, 정우성',
         groupName: '회사동료',
@@ -75,12 +75,12 @@ export const SalesMockData = [
         orderDetails: '치킨(2), 맥주(4)',
         totalAmount: '65,000',
         status: '정산 완료',
-        cancellationReason: '-'
+        cancelReason: '-'
     },
     {
         id: '7',
-        orderDate: '2025-12-23',
-        teeOffTime: '13:20',
+        orderDate: '2025-12-23T13:20:00',
+        tO: '13:20',
         caddyName: '김미자',
         customerNames: '윤상현, 김태희',
         groupName: '부부',
@@ -88,12 +88,12 @@ export const SalesMockData = [
         orderDetails: '스테이크(1), 샐러드(2)',
         totalAmount: '-',
         status: '취소',
-        cancellationReason: '시간 부족'
+        cancelReason: '시간 부족'
     },
     {
         id: '8',
-        orderDate: '2025-12-22',
-        teeOffTime: '10:00',
+        orderDate: '2025-12-22T10:00:00',
+        tO: '10:00',
         caddyName: '정선영',
         customerNames: '강호동, 이수근, 은지원',
         groupName: '방송인모임',
@@ -101,6 +101,6 @@ export const SalesMockData = [
         orderDetails: '한우버거(4), 피자(2), 콜라(6)',
         totalAmount: '180,000',
         status: '정산 완료',
-        cancellationReason: '-'
+        cancelReason: '-'
     }
 ];

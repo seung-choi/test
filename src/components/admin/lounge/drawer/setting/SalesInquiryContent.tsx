@@ -8,18 +8,13 @@ import { getSalesTableColumns } from '@/constants/columns/SalesTable';
 interface SalesInquiryContentProps {
   records: OrderRecord[];
   onSort?: (key: string) => void;
-  handleStatusChange?: (itemId: string, status: string) => void;
 }
 
 const SalesInquiryContent: React.FC<SalesInquiryContentProps> = ({
                                                                    records,
                                                                    onSort,
-                                                                   handleStatusChange
                                                                  }) => {
-  const columns = useMemo(
-      () => getSalesTableColumns({ handleStatusChange }),
-      [handleStatusChange]
-  );
+  const columns = getSalesTableColumns()
 
   return <Table columns={columns} data={records} variant="menu" onSort={onSort} />;
 };

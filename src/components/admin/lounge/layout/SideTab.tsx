@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 import styles from '@/styles/components/admin/lounge/layout/SideTab.module.scss';
 import Drawer from '../drawer/Drawer';
-import MenuManagement from '../drawer/MenuManagement';
+import MenuManagement, { MenuManagementRef } from '../drawer/menu/MenuManagement';
 import { drawerState } from '@/lib/recoil';
 import { OrderCounts } from '@/types';
-import SettingManagement from '../drawer/SettingManagement';
+import SettingManagement from '../drawer/setting/SettingManagement';
 
 interface SideTabProps {
   orderCounts: OrderCounts;
@@ -20,6 +20,7 @@ const SideTab: React.FC<SideTabProps> = ({
                                          }) => {
   const [activeFilter, setActiveFilter] = useState('all');
   const [drawer, setDrawer] = useRecoilState(drawerState);
+  const menuManagementRef = useRef<MenuManagementRef>(null);
 
   const handleFilterClick = (filter: string) => {
     setActiveFilter(filter);
@@ -67,7 +68,7 @@ const SideTab: React.FC<SideTabProps> = ({
             <img src="/assets/image/layout/side-bar/menu.svg" alt="logo" />
           </div>
           <div className={styles.menuLabel}>
-            <button onClick={() => setDrawer({ ...drawer, openDrawer: 'menu' })}>
+            <button onClick={() => setDrawer(prev => ({ ...prev, openDrawer: prev.openDrawer === 'menu' ? null : 'menu' }))}>
               메뉴 관리
             </button>
           </div>
@@ -78,7 +79,7 @@ const SideTab: React.FC<SideTabProps> = ({
             <img src="/assets/image/layout/side-bar/setting.svg" alt="logo" />
           </div>
           <div className={styles.menuLabel}>
-            <button onClick={() => setDrawer({ ...drawer, openDrawer: 'setting' })}>
+            <button onClick={() => setDrawer(prev => ({ ...prev, openDrawer: prev.openDrawer === 'setting' ? null : 'setting' }))}>
               설정
             </button>
           </div>
@@ -104,20 +105,21 @@ const SideTab: React.FC<SideTabProps> = ({
 
       <Drawer
         isOpen={drawer.openDrawer === 'menu'}
-        onClose={() => setDrawer({ ...drawer, openDrawer: null })}
+        onClose={() => setDrawer(prev => ({ ...prev, openDrawer: null }))}
         title="메뉴 관리"
         mode='menu'
+        onDelete={() => menuManagementRef.current?.handleDelete()}
       >
-        <MenuManagement onClose={() => setDrawer({ ...drawer, openDrawer: null })} />
+        <MenuManagement ref={menuManagementRef} onClose={() => setDrawer(prev => ({ ...prev, openDrawer: null }))} />
       </Drawer>
 
       <Drawer
         isOpen={drawer.openDrawer === 'setting'}
-        onClose={() => setDrawer({ ...drawer, openDrawer: null })}
+        onClose={() => setDrawer(prev => ({ ...prev, openDrawer: null }))}
         title="설정"
         mode='setting'
       >
-        <SettingManagement onClose={() => setDrawer({ ...drawer, openDrawer: null })} />
+        <SettingManagement onClose={() => setDrawer(prev => ({ ...prev, openDrawer: null }))} />
       </Drawer>
 
     </div>

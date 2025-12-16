@@ -1,5 +1,5 @@
 
-import { InfoCardData } from "@/types/orderInfoType";
+import { InfoCardData } from "@/types/admin/orderInfo.type";
 
 export const mockAvailableTables = ['1번', '2번', '3번', '4번', '5번', '6번', '7번', '8번', '9번', '10번', '11번', '12번', '13번', '14번']
 

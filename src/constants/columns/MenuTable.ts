@@ -6,7 +6,8 @@ import {
     renderImage, renderPrice,
     renderStatusSelector,
     renderTags,
-    renderText
+    renderText,
+    renderDragHandle
 } from "@/utils/tableRenderers";
 
 interface MenuTableColumnsParams {
@@ -14,6 +15,7 @@ interface MenuTableColumnsParams {
     handleItemSelect: (itemId: string, checked: boolean) => void;
     handleStatusChange?: (itemId: string, status: string) => void;
     handleEdit?: (itemId: string) => void;
+    isReorderMode?: boolean;
 }
 
 export const getMenuTableColumns = ({
@@ -21,12 +23,13 @@ export const getMenuTableColumns = ({
                                         handleItemSelect,
                                         handleStatusChange = (itemId, status) => console.log('상태 변경:', itemId, status),
                                         handleEdit = (itemId) => console.log('수정:', itemId),
+                                        isReorderMode = false,
                                     }: MenuTableColumnsParams): TableColumn[] => [
     {
         key: 'select',
         label: '선택',
         width: '3.5%',
-        render: renderCheckbox(selectedItems, handleItemSelect),
+        render: isReorderMode ? renderDragHandle() : renderCheckbox(selectedItems, handleItemSelect),
     },
     {
         key: 'store',
