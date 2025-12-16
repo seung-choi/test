@@ -10,6 +10,7 @@ export interface TableColumn {
   label: string;
   width?: string;
   sortable?: boolean;
+  style?: React.CSSProperties;
   render?: (value: any, row: any) => React.ReactNode;
 }
 
@@ -56,7 +57,7 @@ const SortableRow: React.FC<SortableRowProps> = ({ row, columns, isReorderMode }
         <div
           key={column.key}
           className={styles.tableCell}
-          style={{ width: column.width }}
+          style={{ width: column.width, ...column.style }}
         >
           {column.render
             ? column.render(row[column.key], row)

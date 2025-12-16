@@ -1,29 +1,45 @@
 import { useRecoilState } from 'recoil';
 import { MessageFormData } from '@/types';
-import { alertModalState, messageModalState } from '@/lib/recoil/modalAtom';
+import {
+  cancelModalState,
+  messageModalState,
+  confirmModalState
+} from '@/lib/recoil/modalAtom';
 
 const useUnifiedModal = () => {
-  const [alertModal, setAlertModal] = useRecoilState(alertModalState);
+  const [cancelModal, setCancelModal] = useRecoilState(cancelModalState);
   const [messageModal, setMessageModal] = useRecoilState(messageModalState);
+  const [confirmModal, setConfirmModal] = useRecoilState(confirmModalState);
 
-  const openAlertModal = (modalData: Omit<typeof alertModal, 'isShow'>) => {
-    setAlertModal({
-      ...modalData,
+  // 취소 사유 모달
+  const openCancelModal = (onConfirm: (reason: string) => void, onCancel?: () => void) => {
+    setCancelModal({
       isShow: true,
+      onConfirm,
+      onCancel,
     });
   };
 
-  const closeAlertModal = () => {
-    setAlertModal(prev => ({
+  const closeCancelModal = () => {
+    setCancelModal(prev => ({
       ...prev,
       isShow: false,
     }));
   };
 
-  const openMessageModal = (modalData: Omit<typeof messageModal, 'isShow'>) => {
+  // 메시지 모달
+  const openMessageModal = (
+    title: string,
+    recipients: string[],
+    onSubmit: (data: MessageFormData) => void,
+    onCancel?: () => void
+  ) => {
     setMessageModal({
-      ...modalData,
       isShow: true,
+      title,
+      recipients,
+      onSubmit,
+      onCancel,
     });
   };
 
@@ -34,43 +50,67 @@ const useUnifiedModal = () => {
     }));
   };
 
-  const openCancelOrderModal = (onConfirm: () => void, onCancel?: () => void) => {
-    openMessageModal({
-      mode: 'cancel',
-      title: '주문 취소',
-      desc: '정말로 주문을 취소하시겠습니까?',
-      onSubmit: onConfirm,
-      onCancel: onCancel,
-      okBtnLabel: '예, 취소합니다',
-      cancleBtnLabel: '아니오',
-    });
-  };
-
+  // 편의 함수: 메시지 보내기 모달
   const openSendMessageModal = (
     recipients: string[],
     onSend: (data: MessageFormData) => void,
     onCancel?: () => void
   ) => {
-    openMessageModal({
-      mode: 'message',
-      title: '메시지 보내기',
-      recipients,
-      onSubmit: onSend,
+    openMessageModal('메시지 보내기', recipients, onSend, onCancel);
+  };
+
+  // 편의 함수: 주문 취소 모달 (취소 사유 선택)
+  const openCancelOrderModal = (
+    onConfirm: (reason: string) => void,
+    onCancel?: () => void
+  ) => {
+    openCancelModal(onConfirm, onCancel);
+  };
+
+  // 확인 모달
+  const openConfirmModal = (
+    title: string,
+    desc: string,
+    onConfirm: () => void,
+    onCancel?: () => void,
+    okBtnLabel?: string,
+    cancleBtnLabel?: string
+  ) => {
+    setConfirmModal({
+      isShow: true,
+      title,
+      desc,
+      onConfirm,
       onCancel,
+      okBtnLabel,
+      cancleBtnLabel,
     });
   };
 
-  return {
-    alertModal,
-    openAlertModal,
-    closeAlertModal,
+  const closeConfirmModal = () => {
+    setConfirmModal(prev => ({
+      ...prev,
+      isShow: false,
+    }));
+  };
 
+  return {
+    // 취소 사유 모달
+    cancelModal,
+    openCancelModal,
+    closeCancelModal,
+    openCancelOrderModal,
+
+    // 메시지 모달
     messageModal,
     openMessageModal,
     closeMessageModal,
-
-    openCancelOrderModal,
     openSendMessageModal,
+
+    // 확인 모달
+    confirmModal,
+    openConfirmModal,
+    closeConfirmModal,
   };
 };
 

@@ -110,6 +110,8 @@
   padding: 10px;
   text-align: center;
   word-break: break-word;
+  flex-direction: column;
+  line-height: 24px;
 
   .cellText {
     color: #1F1F1F;

@@ -29,6 +29,7 @@ export const getMenuTableColumns = ({
         key: 'select',
         label: '선택',
         width: '3.5%',
+        style: isReorderMode ? { background: '#D9D9D9' } : undefined,
         render: isReorderMode ? renderDragHandle() : renderCheckbox(selectedItems, handleItemSelect),
     },
     {
