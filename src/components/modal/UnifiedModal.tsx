@@ -6,6 +6,7 @@ import alertStyles from '@/styles/components/AlertModal.module.scss';
 import CancelReasonModalContent from './contents/CancelReasonModalContent';
 import MessageModalContent from './contents/MessageModalContent';
 import ConfirmModalContent from './contents/ConfirmModalContent';
+import ProductModalContent from './contents/ProductModalContent';
 
 const UnifiedModal = () => {
   const {
@@ -15,6 +16,8 @@ const UnifiedModal = () => {
     closeMessageModal,
     confirmModal,
     closeConfirmModal,
+    productModal,
+    closeProductModal,
   } = useUnifiedModal();
 
   const handleCancelConfirm = (reason: string) => {
@@ -45,6 +48,16 @@ const UnifiedModal = () => {
   const handleConfirmCancel = () => {
     confirmModal.onCancel?.();
     closeConfirmModal();
+  };
+
+  const handleProductSubmit = (data: any) => {
+    productModal.onSubmit?.(data);
+    closeProductModal();
+  };
+
+  const handleProductClose = () => {
+    productModal.onCancel?.();
+    closeProductModal();
   };
 
   const handleOverlayClick = (
@@ -93,6 +106,21 @@ const UnifiedModal = () => {
             cancleBtnLabel={confirmModal.cancleBtnLabel}
             onConfirm={handleConfirmOk}
             onCancel={handleConfirmCancel}
+          />
+        </div>
+      )}
+
+      {/* 상품 등록/수정 모달 */}
+      {productModal.isShow && (
+        <div
+          className={alertStyles["alert-popup"]}
+          onClick={(e) => handleOverlayClick(e, handleProductClose)}
+        >
+          <ProductModalContent
+            mode={productModal.mode}
+            initialData={productModal.initialData}
+            onSubmit={handleProductSubmit}
+            onClose={handleProductClose}
           />
         </div>
       )}

@@ -3,13 +3,16 @@ import { MessageFormData } from '@/types';
 import {
   cancelModalState,
   messageModalState,
-  confirmModalState
+  confirmModalState,
+  productModalState,
+  ProductFormData
 } from '@/lib/recoil/modalAtom';
 
 const useUnifiedModal = () => {
   const [cancelModal, setCancelModal] = useRecoilState(cancelModalState);
   const [messageModal, setMessageModal] = useRecoilState(messageModalState);
   const [confirmModal, setConfirmModal] = useRecoilState(confirmModalState);
+  const [productModal, setProductModal] = useRecoilState(productModalState);
 
   // 취소 사유 모달
   const openCancelModal = (onConfirm: (reason: string) => void, onCancel?: () => void) => {
@@ -94,6 +97,46 @@ const useUnifiedModal = () => {
     }));
   };
 
+  // 상품 등록/수정 모달
+  const openProductModal = (
+    mode: 'create' | 'edit',
+    onSubmit: (data: ProductFormData) => void,
+    initialData?: ProductFormData,
+    onCancel?: () => void
+  ) => {
+    setProductModal({
+      isShow: true,
+      mode,
+      initialData,
+      onSubmit,
+      onCancel,
+    });
+  };
+
+  const closeProductModal = () => {
+    setProductModal(prev => ({
+      ...prev,
+      isShow: false,
+    }));
+  };
+
+  // 편의 함수: 상품 등록 모달
+  const openCreateProductModal = (
+    onSubmit: (data: ProductFormData) => void,
+    onCancel?: () => void
+  ) => {
+    openProductModal('create', onSubmit, undefined, onCancel);
+  };
+
+  // 편의 함수: 상품 수정 모달
+  const openEditProductModal = (
+    initialData: ProductFormData,
+    onSubmit: (data: ProductFormData) => void,
+    onCancel?: () => void
+  ) => {
+    openProductModal('edit', onSubmit, initialData, onCancel);
+  };
+
   return {
     // 취소 사유 모달
     cancelModal,
@@ -111,6 +154,13 @@ const useUnifiedModal = () => {
     confirmModal,
     openConfirmModal,
     closeConfirmModal,
+
+    // 상품 모달
+    productModal,
+    openProductModal,
+    closeProductModal,
+    openCreateProductModal,
+    openEditProductModal,
   };
 };
 

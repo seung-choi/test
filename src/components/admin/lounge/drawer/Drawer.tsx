@@ -2,6 +2,7 @@ import React from 'react';
 import { useRecoilState } from 'recoil';
 import styles from '@/styles/components/admin/lounge/drawer/Drawer.module.scss';
 import { drawerState } from '@/lib/recoil';
+import useUnifiedModal from '@/hooks/useUnifiedModal';
 
 type DrawerMode = 'setting' | 'menu';
 
@@ -25,6 +26,19 @@ const Drawer: React.FC<DrawerProps> = ({
                                          onDelete
                                        }) => {
   const [drawer, setDrawer] = useRecoilState(drawerState);
+  const { openCreateProductModal } = useUnifiedModal();
+
+  const handleRegisterProduct = () => {
+    openCreateProductModal(
+      (data) => {
+        console.log('상품 등록:', data);
+        // 여기서 실제 상품 등록 API 호출
+      },
+      () => {
+        console.log('상품 등록 취소');
+      }
+    );
+  };
 
   if (!isOpen) return null;
 
@@ -81,7 +95,7 @@ const Drawer: React.FC<DrawerProps> = ({
               <div className={styles.categoryButton}>
                 <div className={styles.buttonText}>분류 설정</div>
               </div>
-              <div className={styles.registerButton}>
+              <div className={styles.registerButton} onClick={handleRegisterProduct}>
                 <div className={styles.buttonText}>상품 등록</div>
               </div>
               <div

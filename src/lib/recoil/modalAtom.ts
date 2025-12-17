@@ -52,3 +52,36 @@ export const confirmModalState = atom<ConfirmModalState>({
     desc: '',
   },
 });
+
+// 상품 등록/수정 모달
+export interface ProductFormData {
+  status: '판매' | '대기' | '중지';
+  channels: string[];
+  types: string[];
+  image?: File;
+  category: string;
+  store: string;
+  code: string;
+  name: string;
+  price: string;
+  cookingTime: number;
+  tags: string[];
+  registeredDate?: string;
+  updatedDate?: string;
+}
+
+export interface ProductModalState {
+  isShow: boolean;
+  mode: 'create' | 'edit';
+  initialData?: ProductFormData;
+  onSubmit?: (data: ProductFormData) => void;
+  onCancel?: () => void;
+}
+
+export const productModalState = atom<ProductModalState>({
+  key: 'productModalState',
+  default: {
+    isShow: false,
+    mode: 'create',
+  },
+});
