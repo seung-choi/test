@@ -4,10 +4,10 @@ import React, { useState, useMemo } from 'react';
 import SideTab from '@/components/admin/lounge/layout/SideTab';
 import HeaderBar from '@/components/admin/lounge/layout/HeaderBar';
 import InfoCard from '@/components/admin/lounge/contents/InfoCard';
-import { mockInfoCards, mockAvailableTables } from '@/mock/infocardMockData';
-import { mockCourseData } from '@/mock/courseMockData';
+import { mockInfoCards, mockAvailableTables } from '@/mock/admin/infocardMockData';
+import { mockCourseData } from '@/mock/admin/courseMockData';
 import styles from '@/styles/pages/lounge/lounge.module.scss';
-import useUnifiedModal from '@/hooks/useUnifiedModal';
+import useUnifiedModal from '@/hooks/admin/useUnifiedModal';
 import { getOrderCounts } from '@/utils';
 
 const Lounge = () => {

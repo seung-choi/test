@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styles from '@/styles/components/AlertModal.module.scss';
-import { Button } from '@/components/Button';
+import { Button } from '@/components/admin/common/Button';
 
 interface ConfirmModalContentProps {
   title?: string;

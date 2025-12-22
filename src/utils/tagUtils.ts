@@ -1,4 +1,4 @@
-import { DEFAULT_TAG } from '@/constants/tags';
+import { DEFAULT_TAG } from '@/constants/admin/tags/customerTags';
 
 export const getTagImage = (tagCd: string) => {
   const tag = DEFAULT_TAG.find(t => t.tagCd === tagCd);

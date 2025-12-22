@@ -2,7 +2,7 @@ export const MenuMockData = [
     {
         id: 1,
         store: '스타트하우스',
-        image: 'https://placehold.co/117x72',
+        // image: 'https://placehold.co/117x72',
         code: '119002',
         category: '분식',
         name: '한우버거',

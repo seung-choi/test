@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { DEFAULT_TAG } from "@/constants/tags";
+import { DEFAULT_TAG } from "@/constants/admin/tags/customerTags";
 
 /**
  * 이미지 경로를 정규화하는 함수

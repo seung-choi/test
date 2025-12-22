@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import styles from '@/styles/components/modal/ErpSearchModal.module.scss';
 import { ErpProduct, ErpSearchType } from '@/types/erp';
-import CustomSelect from '@/components/common/CustomSelect';
-import { erpMockData } from '@/mock/erpMockData';
+import CustomSelect from '@/components/admin/common/CustomSelect';
+import { erpMockData } from '@/mock/admin/erpMockData';
 import {formatPrice} from "@/utils";
 
 interface ErpSearchModalContentProps {

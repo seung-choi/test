@@ -19,7 +19,7 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import styles from '@/styles/components/modal/CancelReasonManagementModal.module.scss';
-import { CancelReason } from '@/lib/recoil/modalAtom';
+import { CancelReason } from '@/lib/recoil/admin/modalAtom';
 
 interface CancelReasonManagementModalContentProps {
   initialReasons: CancelReason[];

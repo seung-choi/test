@@ -13,7 +13,7 @@ import {
   Category,
   DeleteItem,
   CancelReason
-} from '@/lib/recoil/modalAtom';
+} from '@/lib/recoil/admin/modalAtom';
 import { ErpProduct } from '@/types/erp';
 
 // 공통 close 함수 생성 헬퍼

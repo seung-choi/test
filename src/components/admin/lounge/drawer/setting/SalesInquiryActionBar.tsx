@@ -3,7 +3,7 @@
 import React, { useState, useRef } from 'react';
 import styles from '@/styles/components/admin/lounge/drawer/SalesManagement.module.scss';
 import { SalesFilter, SalesStats } from '@/types/admin/setting.types';
-import DateRangePicker from '@/components/common/DateRangePicker';
+import DateRangePicker from '@/components/admin/common/DateRangePicker';
 
 interface SalesFilterActionBarProps {
   filter: SalesFilter;

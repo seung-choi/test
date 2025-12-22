@@ -2,8 +2,8 @@ import React from 'react';
 import { useRecoilState } from 'recoil';
 import styles from '@/styles/components/admin/lounge/drawer/Drawer.module.scss';
 import { drawerState } from '@/lib/recoil';
-import useUnifiedModal from '@/hooks/useUnifiedModal';
-import { Category, ProductFormData, CancelReason } from '@/lib/recoil/modalAtom';
+import useUnifiedModal from '@/hooks/admin/useUnifiedModal';
+import { Category, ProductFormData, CancelReason } from '@/lib/recoil/admin/modalAtom';
 import { ErpProduct } from '@/types/erp';
 
 type DrawerMode = 'setting' | 'menu';

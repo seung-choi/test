@@ -1,1 +1,1 @@
-export { default as useUnifiedModal } from './useUnifiedModal'
+export { default as useUnifiedModal } from './admin/useUnifiedModal'

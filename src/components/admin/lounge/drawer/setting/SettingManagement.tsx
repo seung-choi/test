@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
 import styles from '@/styles/components/admin/lounge/drawer/SalesManagement.module.scss';
-import Table from '@/components/common/Table';
-import { SalesMockData } from '@/mock/salesMockData';
+import Table from '@/components/admin/common/Table';
+import { SalesMockData } from '@/mock/admin/salesMockData';
 import { drawerState } from '@/lib/recoil';
 import {getSalesTableColumns} from "@/constants";
 import SalesFilterActionBar from "@/components/admin/lounge/drawer/setting/SalesInquiryActionBar";

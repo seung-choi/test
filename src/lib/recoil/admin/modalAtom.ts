@@ -16,7 +16,6 @@ export const cancelModalState = atom<CancelModalState>({
   },
 });
 
-// 메시지 모달
 export interface MessageModalState {
   isShow: boolean;
   title: string;
@@ -33,7 +32,6 @@ export const messageModalState = atom<MessageModalState>({
   },
 });
 
-// 확인 모달 (간단한 확인/취소)
 export interface ConfirmModalState {
   isShow: boolean;
   title: string;
@@ -53,7 +51,6 @@ export const confirmModalState = atom<ConfirmModalState>({
   },
 });
 
-// 상품 등록/수정 모달
 export interface ProductFormData {
   status: '판매' | '대기' | '중지';
   channels: string[];

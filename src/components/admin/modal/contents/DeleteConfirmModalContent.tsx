@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styles from '@/styles/components/modal/DeleteConfirmModal.module.scss';
-import { DeleteItem } from '@/lib/recoil/modalAtom';
+import { DeleteItem } from '@/lib/recoil/admin/modalAtom';
 
 interface DeleteConfirmModalContentProps {
   items: DeleteItem[];

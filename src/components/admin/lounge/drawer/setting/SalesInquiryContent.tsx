@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useMemo } from 'react';
-import Table, { TableColumn } from '@/components/common/Table';
+import Table, { TableColumn } from '@/components/admin/common/Table';
 import { OrderRecord } from '@/types/admin/setting.types';
-import { getSalesTableColumns } from '@/constants/columns/SalesTable';
+import { getSalesTableColumns } from '@/constants/admin/columns/SalesTable';
 
 interface SalesInquiryContentProps {
   records: OrderRecord[];

@@ -1,3 +1,3 @@
-export * from './tags';
-export * from './columns/SalesTable'
-export * from './columns/MenuTable'
+export * from './admin/tags/customerTags';
+export * from './admin/columns/SalesTable'
+export * from './admin/columns/MenuTable'

@@ -6,7 +6,7 @@ import ActionBar from '@/components/admin/lounge/drawer/setting/ActionBar';
 import SalesInquiryActionBar from '@/components/admin/lounge/drawer/setting/SalesInquiryActionBar';
 import SalesInquiryContent from '@/components/admin/lounge/drawer/setting/SalesInquiryContent';
 import { SettingTab, SalesFilter } from '@/types/admin/setting.types';
-import { mockOrderRecords } from '@/mock/orderMockData';
+import { mockOrderRecords } from '@/mock/admin/orderMockData';
 
 const SettingPage = () => {
   const [activeTab, setActiveTab] = useState<SettingTab>('sales');

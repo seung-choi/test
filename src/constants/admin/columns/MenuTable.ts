@@ -1,4 +1,4 @@
-import {TableColumn} from "@/components/common/Table";
+import {TableColumn} from "@/components/admin/common/Table";
 import {
     renderChannelTags,
     renderCheckbox,
@@ -8,7 +8,7 @@ import {
     renderTags,
     renderText,
     renderDragHandle
-} from "@/utils/tableRenderers";
+} from "@/utils/admin/tableRenderers";
 
 interface MenuTableColumnsParams {
     selectedItems: string[];

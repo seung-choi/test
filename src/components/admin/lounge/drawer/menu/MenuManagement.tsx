@@ -11,12 +11,12 @@ import {
 } from '@dnd-kit/core';
 import {arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy,} from '@dnd-kit/sortable';
 import styles from '@/styles/components/admin/lounge/drawer/MenuManagement.module.scss';
-import Table from '@/components/common/Table';
-import {MenuMockData} from '@/mock/menuMockData';
-import {getMenuTableColumns} from "@/constants/columns/MenuTable";
+import Table from '@/components/admin/common/Table';
+import {MenuMockData} from '@/mock/admin/menuMockData';
+import {getMenuTableColumns} from "@/constants/admin/columns/MenuTable";
 import {drawerState} from '@/lib/recoil';
-import useUnifiedModal from '@/hooks/useUnifiedModal';
-import {ProductFormData} from '@/lib/recoil/modalAtom';
+import useUnifiedModal from '@/hooks/admin/useUnifiedModal';
+import {ProductFormData} from '@/lib/recoil/admin/modalAtom';
 import {formatDate, formatPrice} from "@/utils";
 
 interface MenuManagementProps {

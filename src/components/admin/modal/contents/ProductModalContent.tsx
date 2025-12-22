@@ -2,10 +2,10 @@
 
 import React, { useState, useRef } from 'react';
 import styles from '@/styles/components/modal/ProductModal.module.scss';
-import { ProductFormData, Category } from '@/lib/recoil/modalAtom';
-import CustomSelect from '@/components/common/CustomSelect';
-import { MENU_TAGS, getTagClass } from '@/constants/menuTags';
-import useUnifiedModal from '@/hooks/useUnifiedModal';
+import { ProductFormData, Category } from '@/lib/recoil/admin/modalAtom';
+import CustomSelect from '@/components/admin/common/CustomSelect';
+import { MENU_TAGS, getTagClass } from '@/constants/admin/tags/menuTags';
+import useUnifiedModal from '@/hooks/admin/useUnifiedModal';
 import { ErpProduct } from '@/types/erp';
 
 interface ProductModalContentProps {

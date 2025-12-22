@@ -1,9 +1,9 @@
 "use client";
 
 import React from 'react';
-import useUnifiedModal from '@/hooks/useUnifiedModal';
+import useUnifiedModal from '@/hooks/admin/useUnifiedModal';
 import ModalWrapper from './ModalWrapper';
-import { createModalHandlers } from '@/utils/modalHelpers';
+import { createModalHandlers } from '@/utils/admin/modalHelpers';
 import CancelReasonModalContent from './contents/CancelReasonModalContent';
 import MessageModalContent from './contents/MessageModalContent';
 import ConfirmModalContent from './contents/ConfirmModalContent';
@@ -33,8 +33,6 @@ const UnifiedModal = () => {
     closeCancelReasonManagementModal,
   } = useUnifiedModal();
 
-  // 각 모달의 핸들러 생성
-  // cancelModal은 onConfirm이 (reason: string) => void 타입이라 별도 처리
   const handleCancelConfirm = (reason: string) => {
     cancelModal.onConfirm(reason);
     closeCancelModal();
@@ -89,7 +87,6 @@ const UnifiedModal = () => {
 
   return (
     <>
-      {/* 취소 사유 모달 */}
       <ModalWrapper isShow={cancelModal.isShow} onClose={handleCancelClose}>
         <CancelReasonModalContent
           onConfirm={handleCancelConfirm}
@@ -97,7 +94,6 @@ const UnifiedModal = () => {
         />
       </ModalWrapper>
 
-      {/* 메시지 모달 */}
       <ModalWrapper isShow={messageModal.isShow} onClose={messageHandlers.handleClose}>
         <MessageModalContent
           title={messageModal.title}
@@ -107,7 +103,6 @@ const UnifiedModal = () => {
         />
       </ModalWrapper>
 
-      {/* 확인 모달 */}
       <ModalWrapper isShow={confirmModal.isShow} onClose={confirmHandlers.handleClose} enableOverlayClick={false}>
         <ConfirmModalContent
           title={confirmModal.title}
@@ -119,7 +114,6 @@ const UnifiedModal = () => {
         />
       </ModalWrapper>
 
-      {/* 상품 등록/수정 모달 */}
       <ModalWrapper isShow={productModal.isShow} onClose={productHandlers.handleClose}>
         <ProductModalContent
           mode={productModal.mode}
@@ -129,7 +123,6 @@ const UnifiedModal = () => {
         />
       </ModalWrapper>
 
-      {/* 분류 설정 모달 */}
       <ModalWrapper isShow={categoryModal.isShow} onClose={categoryHandlers.handleClose}>
         <CategoryModalContent
           initialCategories={categoryModal.categories}
@@ -138,7 +131,6 @@ const UnifiedModal = () => {
         />
       </ModalWrapper>
 
-      {/* ERP 검색 모달 */}
       <ModalWrapper isShow={erpSearchModal.isShow} onClose={erpSearchHandlers.handleClose}>
         <ErpSearchModalContent
           onSelect={erpSearchHandlers.handleSelect}
@@ -146,7 +138,6 @@ const UnifiedModal = () => {
         />
       </ModalWrapper>
 
-      {/* 삭제 확인 모달 */}
       <ModalWrapper isShow={deleteConfirmModal.isShow} onClose={deleteConfirmHandlers.handleClose}>
         <DeleteConfirmModalContent
           items={deleteConfirmModal.items}
@@ -155,7 +146,6 @@ const UnifiedModal = () => {
         />
       </ModalWrapper>
 
-      {/* 취소 사유 관리 모달 */}
       <ModalWrapper isShow={cancelReasonManagementModal.isShow} onClose={cancelReasonManagementHandlers.handleClose}>
         <CancelReasonManagementModalContent
           initialReasons={cancelReasonManagementModal.reasons}

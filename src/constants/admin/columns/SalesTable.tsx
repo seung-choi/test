@@ -1,10 +1,10 @@
-import {TableColumn} from "@/components/common/Table";
+import {TableColumn} from "@/components/admin/common/Table";
 import {
     renderCustomers,
     renderDate,
     renderPrice,
     renderText
-} from "@/utils/tableRenderers";
+} from "@/utils/admin/tableRenderers";
 
 export const getSalesTableColumns = (): TableColumn[] => [
     {

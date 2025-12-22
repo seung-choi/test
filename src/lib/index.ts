@@ -1,1 +1,1 @@
-export * from './recoil/modalAtom'
+export * from './recoil/admin/modalAtom'
