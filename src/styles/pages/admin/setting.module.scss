@@ -21,7 +21,6 @@
 .title {
   color: black;
   font-size: 40px;
-  font-family: 'SUIT', sans-serif;
   font-weight: 700;
   margin: 0 0 20px 0;
 }
@@ -47,7 +46,6 @@
 .startHouseText {
   color: #444444;
   font-size: 20px;
-  font-family: 'SUIT', sans-serif;
   font-weight: 700;
 }
 
@@ -74,7 +72,6 @@
   cursor: pointer;
   color: #959595;
   font-size: 27px;
-  font-family: 'SUIT', sans-serif;
   font-weight: 700;
   transition: all 0.2s ease;
   border-bottom: 1px solid transparent;
@@ -118,7 +115,6 @@
   text-align: center;
   color: black;
   font-size: 20px;
-  font-family: 'SUIT', sans-serif;
   font-weight: 500;
 }
 
@@ -144,14 +140,12 @@
 .dateText {
   color: black;
   font-size: 20px;
-  font-family: 'SUIT', sans-serif;
   font-weight: 700;
 }
 
 .dateSeparator {
   color: black;
   font-size: 20px;
-  font-family: 'SUIT', sans-serif;
   font-weight: 700;
 }
 
@@ -185,7 +179,6 @@
   border: none;
   color: white;
   font-size: 20px;
-  font-family: 'SUIT', sans-serif;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -195,7 +188,6 @@
   }
 }
 
-// 엑셀 내보내기 버튼
 .excelButton {
   position: absolute;
   right: 0;
@@ -215,7 +207,6 @@
   span {
     color: white;
     font-size: 20px;
-    font-family: 'SUIT', sans-serif;
     font-weight: 700;
   }
 
@@ -224,7 +215,6 @@
   }
 }
 
-// 통계 섹션
 .statsSection {
   display: flex;
   gap: 40px;
@@ -253,7 +243,6 @@
   justify-content: center;
   color: white;
   font-size: 20px;
-  font-family: 'SUIT', sans-serif;
   font-weight: 600;
   flex-shrink: 0;
 }
@@ -265,12 +254,10 @@
   justify-content: center;
   color: black;
   font-size: 20px;
-  font-family: 'SUIT', sans-serif;
   font-weight: 400;
   padding: 0 20px;
 }
 
-// 콘텐츠 영역
 .content {
   position: absolute;
   left: 66px;
@@ -285,7 +272,6 @@
   text-align: center;
   color: #959595;
   font-size: 24px;
-  font-family: 'SUIT', sans-serif;
   font-weight: 600;
 }
 

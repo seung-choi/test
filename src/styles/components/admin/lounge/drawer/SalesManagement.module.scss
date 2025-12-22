@@ -93,7 +93,6 @@ margin-bottom: 20px;
         .searchButtonText {
           color: white;
           font-size: 20px;
-          font-family: 'SUIT', sans-serif;
           font-weight: 700;
           word-wrap: break-word;
         }
@@ -185,6 +184,7 @@ margin-bottom: 20px;
     flex: 1;
     overflow-y: auto;
     background-color: white;
+    border-radius: 10px;
 
     .itemCount {
       font-size: 14px;

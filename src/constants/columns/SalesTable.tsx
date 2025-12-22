@@ -17,7 +17,7 @@ export const getSalesTableColumns = (): TableColumn[] => [
     {
         key: 'tO',
         label: '티오프',
-        width: '11%',
+        width: '9%',
         sortable: false,
         render: renderText,
     },
@@ -31,14 +31,14 @@ export const getSalesTableColumns = (): TableColumn[] => [
     {
         key: 'customerNames',
         label: '내장객(단체명)',
-        width: '12%',
+        width: '18%',
         sortable: true,
         render: renderCustomers,
     },
     {
         key: 'totalMenuCount',
         label: '총 메뉴 수',
-        width: '10%',
+        width: '8%',
         sortable: true,
         render: renderText,
     },

@@ -100,7 +100,6 @@ const SettingManagement: React.FC<SettingManagementProps> = ({ onClose }) => {
             />
 
             <div className={styles.contentArea}>
-
                 <Table
                     columns={columns}
                     data={filteredData}
