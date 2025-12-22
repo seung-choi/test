@@ -9,6 +9,8 @@ import ConfirmModalContent from './contents/ConfirmModalContent';
 import ProductModalContent from './contents/ProductModalContent';
 import CategoryModalContent from './contents/CategoryModalContent';
 import ErpSearchModalContent from './contents/ErpSearchModalContent';
+import DeleteConfirmModalContent from './contents/DeleteConfirmModalContent';
+import CancelReasonManagementModalContent from './contents/CancelReasonManagementModalContent';
 
 const UnifiedModal = () => {
   const {
@@ -24,6 +26,10 @@ const UnifiedModal = () => {
     closeCategoryModal,
     erpSearchModal,
     closeErpSearchModal,
+    deleteConfirmModal,
+    closeDeleteConfirmModal,
+    cancelReasonManagementModal,
+    closeCancelReasonManagementModal,
   } = useUnifiedModal();
 
   const handleCancelConfirm = (reason: string) => {
@@ -86,6 +92,26 @@ const UnifiedModal = () => {
     closeErpSearchModal();
   };
 
+  const handleDeleteConfirm = () => {
+    deleteConfirmModal.onConfirm?.();
+    closeDeleteConfirmModal();
+  };
+
+  const handleDeleteClose = () => {
+    deleteConfirmModal.onCancel?.();
+    closeDeleteConfirmModal();
+  };
+
+  const handleCancelReasonManagementSubmit = (data: any) => {
+    cancelReasonManagementModal.onSubmit?.(data);
+    closeCancelReasonManagementModal();
+  };
+
+  const handleCancelReasonManagementClose = () => {
+    cancelReasonManagementModal.onCancel?.();
+    closeCancelReasonManagementModal();
+  };
+
   const handleOverlayClick = (
     event: React.MouseEvent<HTMLDivElement>,
     onClose: () => void
@@ -129,7 +155,7 @@ const UnifiedModal = () => {
             title={confirmModal.title}
             desc={confirmModal.desc}
             okBtnLabel={confirmModal.okBtnLabel}
-            cancleBtnLabel={confirmModal.cancleBtnLabel}
+            cancelBtnLabel={confirmModal.cancelBtnLabel}
             onConfirm={handleConfirmOk}
             onCancel={handleConfirmCancel}
           />
@@ -174,6 +200,34 @@ const UnifiedModal = () => {
           <ErpSearchModalContent
             onSelect={handleErpProductSelect}
             onClose={handleErpSearchClose}
+          />
+        </div>
+      )}
+
+      {/* 삭제 확인 모달 */}
+      {deleteConfirmModal.isShow && (
+        <div
+          className={alertStyles["alert-popup"]}
+          onClick={(e) => handleOverlayClick(e, handleDeleteClose)}
+        >
+          <DeleteConfirmModalContent
+            items={deleteConfirmModal.items}
+            onConfirm={handleDeleteConfirm}
+            onClose={handleDeleteClose}
+          />
+        </div>
+      )}
+
+      {/* 취소 사유 관리 모달 */}
+      {cancelReasonManagementModal.isShow && (
+        <div
+          className={alertStyles["alert-popup"]}
+          onClick={(e) => handleOverlayClick(e, handleCancelReasonManagementClose)}
+        >
+          <CancelReasonManagementModalContent
+            initialReasons={cancelReasonManagementModal.reasons}
+            onSubmit={handleCancelReasonManagementSubmit}
+            onClose={handleCancelReasonManagementClose}
           />
         </div>
       )}

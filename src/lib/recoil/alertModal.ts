@@ -3,8 +3,8 @@ import { atom } from "recoil";
 export interface AlertModalType {
   isShow?: boolean;
   desc?: string;
-  cancleBtnLabel?: string;
-  cancleCallback?: VoidFunction;
+  cancelBtnLabel?: string;
+  cancelCallback?: VoidFunction;
   okBtnLabel?: string;
   okCallback?: VoidFunction;
   actionUrl?: string;

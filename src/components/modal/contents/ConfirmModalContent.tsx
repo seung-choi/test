@@ -8,7 +8,7 @@ interface ConfirmModalContentProps {
   title?: string;
   desc: string;
   okBtnLabel?: string;
-  cancleBtnLabel?: string;
+  cancelBtnLabel?: string;
   onConfirm: () => void;
   onCancel: () => void;
 }
@@ -17,7 +17,7 @@ const ConfirmModalContent: React.FC<ConfirmModalContentProps> = ({
   title,
   desc,
   okBtnLabel = '확인',
-  cancleBtnLabel = '취소',
+  cancelBtnLabel = '취소',
   onConfirm,
   onCancel,
 }) => {
@@ -28,7 +28,7 @@ const ConfirmModalContent: React.FC<ConfirmModalContentProps> = ({
       <div className={styles["alert-popup-button-container"]}>
         <Button
           type="button"
-          label={cancleBtnLabel}
+          label={cancelBtnLabel}
           onClick={onCancel}
         />
         <Button

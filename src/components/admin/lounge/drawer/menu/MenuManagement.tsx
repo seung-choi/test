@@ -32,7 +32,7 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
   const drawer = useRecoilValue(drawerState);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [menuData, setMenuData] = useState(MenuMockData);
-  const { openEditProductModal } = useUnifiedModal();
+  const { openEditProductModal, openDeleteConfirmModal } = useUnifiedModal();
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -72,12 +72,24 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
       return;
     }
 
-    if (confirm(`선택한 ${selectedItems.length}개의 항목을 삭제하시겠습니까?`)) {
-      const newData = menuData.filter(item => !selectedItems.includes(String(item.id)));
-      setMenuData(newData);
-      setSelectedItems([]);
-      onDelete?.(selectedItems);
-    }
+    const itemsToDelete = menuData
+      .filter(item => selectedItems.includes(String(item.id)))
+      .map(item => ({
+        code: item.code || '',
+        category: item.category || '',
+        name: item.name || '',
+        price: typeof item.price === 'number' ? item.price : parseInt(String(item.price).replace(/[^0-9]/g, '')) || 0
+      }));
+
+    openDeleteConfirmModal(
+      itemsToDelete,
+      () => {
+        const newData = menuData.filter(item => !selectedItems.includes(String(item.id)));
+        setMenuData(newData);
+        setSelectedItems([]);
+        onDelete?.(selectedItems);
+      }
+    );
   };
 
   useImperativeHandle(ref, () => ({
@@ -147,7 +159,7 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
       handleEdit,
       isReorderMode: drawer.isReorderMode
     }),
-    [selectedItems, drawer.isReorderMode, menuData]
+    [selectedItems, drawer.isReorderMode]
   );
 
   const filteredData = useMemo(() => {
@@ -193,8 +205,6 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
           tableContent
         )}
       </div>
-
-      <div className={styles.scrollbar} />
     </div>
   );
 });

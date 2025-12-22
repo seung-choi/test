@@ -108,8 +108,6 @@ const SettingManagement: React.FC<SettingManagementProps> = ({ onClose }) => {
                     onSort={(key) => console.log('정렬:', key)}
                 />
             </div>
-
-            <div className={styles.scrollbar} />
         </div>
     );
 };

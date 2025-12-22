@@ -39,7 +39,7 @@ export interface ConfirmModalState {
   title: string;
   desc: string;
   okBtnLabel?: string;
-  cancleBtnLabel?: string;
+  cancelBtnLabel?: string;
   onConfirm?: () => void;
   onCancel?: () => void;
 }
@@ -119,5 +119,50 @@ export const erpSearchModalState = atom<ErpSearchModalState>({
   key: 'erpSearchModalState',
   default: {
     isShow: false,
+  },
+});
+
+// 삭제 확인 모달
+export interface DeleteItem {
+  code: string;
+  category: string;
+  name: string;
+  price: number;
+}
+
+export interface DeleteConfirmModalState {
+  isShow: boolean;
+  items: DeleteItem[];
+  onConfirm?: () => void;
+  onCancel?: () => void;
+}
+
+export const deleteConfirmModalState = atom<DeleteConfirmModalState>({
+  key: 'deleteConfirmModalState',
+  default: {
+    isShow: false,
+    items: [],
+  },
+});
+
+// 취소 사유 관리 모달
+export interface CancelReason {
+  id: string;
+  content: string;
+  order: number;
+}
+
+export interface CancelReasonManagementModalState {
+  isShow: boolean;
+  reasons: CancelReason[];
+  onSubmit?: (reasons: CancelReason[]) => void;
+  onCancel?: () => void;
+}
+
+export const cancelReasonManagementModalState = atom<CancelReasonManagementModalState>({
+  key: 'cancelReasonManagementModalState',
+  default: {
+    isShow: false,
+    reasons: [],
   },
 });

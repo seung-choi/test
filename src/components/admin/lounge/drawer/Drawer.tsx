@@ -3,7 +3,7 @@ import { useRecoilState } from 'recoil';
 import styles from '@/styles/components/admin/lounge/drawer/Drawer.module.scss';
 import { drawerState } from '@/lib/recoil';
 import useUnifiedModal from '@/hooks/useUnifiedModal';
-import { Category, ProductFormData } from '@/lib/recoil/modalAtom';
+import { Category, ProductFormData, CancelReason } from '@/lib/recoil/modalAtom';
 import { ErpProduct } from '@/types/erp';
 
 type DrawerMode = 'setting' | 'menu';
@@ -28,7 +28,7 @@ const Drawer: React.FC<DrawerProps> = ({
                                          onDelete
                                        }) => {
   const [drawer, setDrawer] = useRecoilState(drawerState);
-  const { openCreateProductModal, openCategoryModal, openErpSearchModal } = useUnifiedModal();
+  const { openCreateProductModal, openCategoryModal, openErpSearchModal, openCancelReasonManagementModal } = useUnifiedModal();
 
   const handleRegisterProduct = () => {
     // 1단계: ERP 검색 모달 열기
@@ -84,6 +84,32 @@ const Drawer: React.FC<DrawerProps> = ({
       },
       () => {
         console.log('분류 설정 취소');
+      }
+    );
+  };
+
+  const handleCancelReasonManagement = () => {
+    // TODO: 실제 취소 사유 데이터를 가져와야 함
+    const initialReasons: CancelReason[] = [
+      { id: '1', content: '매진', order: 0 },
+      { id: '2', content: '품절', order: 1 },
+      { id: '3', content: '고객요청', order: 2 },
+      { id: '4', content: '재료 소진', order: 3 },
+      { id: '5', content: '판매중지', order: 4 },
+      { id: '6', content: '주문 대기 시간 초과', order: 5 },
+      { id: '7', content: '경기팀 요청', order: 6 },
+      { id: '8', content: '기상이변', order: 7 },
+      { id: '9', content: '기타', order: 8 },
+    ];
+
+    openCancelReasonManagementModal(
+      initialReasons,
+      (reasons) => {
+        console.log('취소 사유 저장:', reasons);
+        // 여기서 실제 취소 사유 저장 API 호출
+      },
+      () => {
+        console.log('취소 사유 관리 취소');
       }
     );
   };
@@ -152,7 +178,7 @@ const Drawer: React.FC<DrawerProps> = ({
               >
                 <div className={styles.buttonText}>순서 변경</div>
               </div>
-              <div className={styles.cancelReasonButton}>
+              <div className={styles.cancelReasonButton} onClick={handleCancelReasonManagement}>
                 <div className={styles.buttonText}>취소사유 관리</div>
               </div>
               <div className={styles.deleteButton} onClick={onDelete}>

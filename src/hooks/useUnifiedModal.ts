@@ -7,8 +7,12 @@ import {
   productModalState,
   categoryModalState,
   erpSearchModalState,
+  deleteConfirmModalState,
+  cancelReasonManagementModalState,
   ProductFormData,
-  Category
+  Category,
+  DeleteItem,
+  CancelReason
 } from '@/lib/recoil/modalAtom';
 import { ErpProduct } from '@/types/erp';
 
@@ -19,8 +23,9 @@ const useUnifiedModal = () => {
   const [productModal, setProductModal] = useRecoilState(productModalState);
   const [categoryModal, setCategoryModal] = useRecoilState(categoryModalState);
   const [erpSearchModal, setErpSearchModal] = useRecoilState(erpSearchModalState);
+  const [deleteConfirmModal, setDeleteConfirmModal] = useRecoilState(deleteConfirmModalState);
+  const [cancelReasonManagementModal, setCancelReasonManagementModal] = useRecoilState(cancelReasonManagementModalState);
 
-  // 취소 사유 모달
   const openCancelModal = (onConfirm: (reason: string) => void, onCancel?: () => void) => {
     setCancelModal({
       isShow: true,
@@ -36,7 +41,6 @@ const useUnifiedModal = () => {
     }));
   };
 
-  // 메시지 모달
   const openMessageModal = (
     title: string,
     recipients: string[],
@@ -59,7 +63,6 @@ const useUnifiedModal = () => {
     }));
   };
 
-  // 편의 함수: 메시지 보내기 모달
   const openSendMessageModal = (
     recipients: string[],
     onSend: (data: MessageFormData) => void,
@@ -68,7 +71,6 @@ const useUnifiedModal = () => {
     openMessageModal('메시지 보내기', recipients, onSend, onCancel);
   };
 
-  // 편의 함수: 주문 취소 모달 (취소 사유 선택)
   const openCancelOrderModal = (
     onConfirm: (reason: string) => void,
     onCancel?: () => void
@@ -76,14 +78,13 @@ const useUnifiedModal = () => {
     openCancelModal(onConfirm, onCancel);
   };
 
-  // 확인 모달
   const openConfirmModal = (
     title: string,
     desc: string,
     onConfirm: () => void,
     onCancel?: () => void,
     okBtnLabel?: string,
-    cancleBtnLabel?: string
+    cancelBtnLabel?: string
   ) => {
     setConfirmModal({
       isShow: true,
@@ -92,7 +93,7 @@ const useUnifiedModal = () => {
       onConfirm,
       onCancel,
       okBtnLabel,
-      cancleBtnLabel,
+      cancelBtnLabel,
     });
   };
 
@@ -103,7 +104,6 @@ const useUnifiedModal = () => {
     }));
   };
 
-  // 상품 등록/수정 모달
   const openProductModal = (
     mode: 'create' | 'edit',
     onSubmit: (data: ProductFormData) => void,
@@ -184,6 +184,48 @@ const useUnifiedModal = () => {
     }));
   };
 
+  // 삭제 확인 모달
+  const openDeleteConfirmModal = (
+    items: DeleteItem[],
+    onConfirm: () => void,
+    onCancel?: () => void
+  ) => {
+    setDeleteConfirmModal({
+      isShow: true,
+      items,
+      onConfirm,
+      onCancel,
+    });
+  };
+
+  const closeDeleteConfirmModal = () => {
+    setDeleteConfirmModal(prev => ({
+      ...prev,
+      isShow: false,
+    }));
+  };
+
+  // 취소 사유 관리 모달
+  const openCancelReasonManagementModal = (
+    reasons: CancelReason[],
+    onSubmit: (reasons: CancelReason[]) => void,
+    onCancel?: () => void
+  ) => {
+    setCancelReasonManagementModal({
+      isShow: true,
+      reasons,
+      onSubmit,
+      onCancel,
+    });
+  };
+
+  const closeCancelReasonManagementModal = () => {
+    setCancelReasonManagementModal(prev => ({
+      ...prev,
+      isShow: false,
+    }));
+  };
+
   return {
     // 취소 사유 모달
     cancelModal,
@@ -218,6 +260,16 @@ const useUnifiedModal = () => {
     erpSearchModal,
     openErpSearchModal,
     closeErpSearchModal,
+
+    // 삭제 확인 모달
+    deleteConfirmModal,
+    openDeleteConfirmModal,
+    closeDeleteConfirmModal,
+
+    // 취소 사유 관리 모달
+    cancelReasonManagementModal,
+    openCancelReasonManagementModal,
+    closeCancelReasonManagementModal,
   };
 };
 

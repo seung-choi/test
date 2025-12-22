@@ -17,8 +17,8 @@ const AlertModal = () => {
   };
 
   const handleClickCancle = () => {
-    if(alertModal?.cancleCallback) {
-      alertModal.cancleCallback?.();
+    if(alertModal?.cancelCallback) {
+      alertModal.cancelCallback?.();
       closeAlertModal();
     } else {
       closeAlertModal();
@@ -34,7 +34,7 @@ const AlertModal = () => {
             <div className={styles["alert-popup-button-container"]}>
               <Button
                 type="button"
-                label={alertModal.cancleBtnLabel || t("alertModal.cancel")}
+                label={alertModal.cancelBtnLabel || t("alertModal.cancel")}
                 onClick={handleClickCancle}
               />
               <Button

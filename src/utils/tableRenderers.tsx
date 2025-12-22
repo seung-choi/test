@@ -13,11 +13,11 @@ export const renderCheckbox = (
   selectedItems: string[],
   onItemSelect?: (itemId: string, checked: boolean) => void
 ) => (value: any, row: TableRowData) => {
-  const isChecked = selectedItems.includes(row.id);
+  const isChecked = selectedItems.includes(String(row.id));
   return (
     <div
       className={styles.checkboxContainer}
-      onClick={() => onItemSelect?.(row.id, !isChecked)}
+      onClick={() => onItemSelect?.(String(row.id), !isChecked)}
     >
       {isChecked ? (
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -77,7 +77,7 @@ export const renderStatusSelector = (
 ) => (value: string, row: TableRowData) => (
   <button
     className={styles.statusSelector}
-    onClick={() => onStatusChange?.(row.id, value)}
+    onClick={() => onStatusChange?.(String(row.id), value)}
   >
     <span className={styles.statusText}>{value}</span>
     <img src="/assets/image/global/arrow.svg" alt="arrow" />
@@ -95,7 +95,7 @@ export const renderChannelTags = (value: string[], row: TableRowData) => (
 export const renderEditButton = (
   onEdit?: (itemId: string) => void
 ) => (value: any, row: TableRowData) => (
-  <button className={styles.editButton} onClick={() => onEdit?.(row.id)}>
+  <button className={styles.editButton} onClick={() => onEdit?.(String(row.id))}>
     <img src="/assets/image/global/edit.svg" alt="edit" />
   </button>
 );
