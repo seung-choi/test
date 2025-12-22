@@ -3,6 +3,7 @@
 import React, { useState, useRef } from 'react';
 import styles from '@/styles/components/modal/ProductModal.module.scss';
 import { ProductFormData } from '@/lib/recoil/modalAtom';
+import CustomSelect from '@/components/common/CustomSelect';
 
 interface ProductModalContentProps {
   mode: 'create' | 'edit';
@@ -24,9 +25,9 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
       types: [],
       category: '',
       store: '스타트 하우스',
-      code: '',
-      name: '',
-      price: '',
+      code: '110595',
+      name: '100% 한우 버거',
+      price: '15,000원',
       cookingTime: 0,
       tags: [],
       registeredDate: new Date().toISOString().split('T')[0].replace(/-/g, '.'),
@@ -83,7 +84,7 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
   const handleCookingTimeChange = (delta: number) => {
     setFormData((prev) => ({
       ...prev,
-      cookingTime: Math.max(0, prev.cookingTime + delta),
+      cookingTime: Math.max(0, prev.cookingTime + delta * 10),
     }));
   };
 
@@ -196,7 +197,7 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
         </div>
 
         <div className={styles.formRow}>
-          <div className={styles.label}>사진 등록</div>
+          <div className={styles.label} style={{height: '138px'}}>사진 등록</div>
           <div className={styles.imageUpload} onClick={handleImageSelect}>
             <div className={styles.imagePreview}>
               {formData.image ? (
@@ -229,29 +230,32 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
         <div className={styles.formRow}>
           <div className={styles.label}>분류</div>
           <div className={styles.inputGroup}>
-            <select
-              className={styles.selectInput}
+            <CustomSelect
               value={formData.category}
-              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-            >
-              <option value="">선택해주세요</option>
-              <option value="음식">음식</option>
-              <option value="음료">음료</option>
-              <option value="기타">기타</option>
-            </select>
+              onChange={(value) => setFormData({ ...formData, category: value })}
+              options={[
+                { value: '', label: '선택해주세요' },
+                { value: '음식', label: '음식' },
+                { value: '음료', label: '음료' },
+                { value: '기타', label: '기타' },
+              ]}
+              placeholder="선택해주세요"
+            />
             <button className={styles.settingButton}>분류 설정</button>
           </div>
         </div>
 
         <div className={styles.formRow}>
           <div className={styles.label}>매장</div>
-          <select
-            className={styles.input}
+          <CustomSelect
             value={formData.store}
-            onChange={(e) => setFormData({ ...formData, store: e.target.value })}
-          >
-            <option value="스타트 하우스">스타트 하우스</option>
-          </select>
+            onChange={(value) => setFormData({ ...formData, store: value })}
+            options={[
+              { value: '스타트 하우스', label: '스타트 하우스' },
+            ]}
+            className={styles.input}
+            style={{paddingLeft: 0, borderLeft: 0}}
+          />
         </div>
 
         <div className={styles.formRow}>
@@ -288,8 +292,9 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
           <div className={styles.label}>조리 시간</div>
           <div className={styles.timeControl}>
             <button
-              className={styles.timeButton}
+              className={`${styles.timeButton} ${formData.cookingTime === 0 ? styles.disabled : ''}`}
               onClick={() => handleCookingTimeChange(-1)}
+              disabled={formData.cookingTime === 0}
             >
               <img src="/assets/image/global/minus.svg" alt="minus" />
             </button>
