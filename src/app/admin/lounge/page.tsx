@@ -7,7 +7,6 @@ import InfoCard from '@/components/admin/lounge/contents/InfoCard';
 import { mockInfoCards, mockAvailableTables } from '@/mock/infocardMockData';
 import { mockCourseData } from '@/mock/courseMockData';
 import styles from '@/styles/pages/lounge/lounge.module.scss';
-import UnifiedModal from '@/components/modal/UnifiedModal';
 import useUnifiedModal from '@/hooks/useUnifiedModal';
 import { getOrderCounts } from '@/utils';
 
@@ -115,7 +114,6 @@ const Lounge = () => {
         <div className={styles.emptyContent}>
           <p>표시할 주문이 없습니다.</p>
         </div>
-        <UnifiedModal />
       </div>
     );
   }
@@ -159,8 +157,6 @@ const Lounge = () => {
           ))}
         </div>
       </div>
-
-      <UnifiedModal />
     </div>
   );
 };
