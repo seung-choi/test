@@ -1,25 +1,23 @@
-import React, { useState, useMemo, useImperativeHandle, forwardRef } from 'react';
-import { useRecoilValue } from 'recoil';
+import React, {forwardRef, useImperativeHandle, useMemo, useState} from 'react';
+import {useRecoilValue} from 'recoil';
 import {
-  DndContext,
   closestCenter,
+  DndContext,
+  DragEndEvent,
   KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
-  DragEndEvent,
 } from '@dnd-kit/core';
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
+import {arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy,} from '@dnd-kit/sortable';
 import styles from '@/styles/components/admin/lounge/drawer/MenuManagement.module.scss';
 import Table from '@/components/common/Table';
-import { MenuMockData } from '@/mock/menuMockData';
-import { getMenuTableColumns } from "@/constants/columns/MenuTable";
-import { drawerState } from '@/lib/recoil';
+import {MenuMockData} from '@/mock/menuMockData';
+import {getMenuTableColumns} from "@/constants/columns/MenuTable";
+import {drawerState} from '@/lib/recoil';
+import useUnifiedModal from '@/hooks/useUnifiedModal';
+import {ProductFormData} from '@/lib/recoil/modalAtom';
+import {formatDate, formatPrice} from "@/utils";
 
 interface MenuManagementProps {
   onClose: () => void;
@@ -34,6 +32,7 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
   const drawer = useRecoilValue(drawerState);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [menuData, setMenuData] = useState(MenuMockData);
+  const { openEditProductModal } = useUnifiedModal();
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -74,7 +73,7 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
     }
 
     if (confirm(`선택한 ${selectedItems.length}개의 항목을 삭제하시겠습니까?`)) {
-      const newData = menuData.filter(item => !selectedItems.includes(item.id));
+      const newData = menuData.filter(item => !selectedItems.includes(String(item.id)));
       setMenuData(newData);
       setSelectedItems([]);
       onDelete?.(selectedItems);
@@ -89,13 +88,66 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
     console.log(`${action} 실행:`, selectedItems);
   };
 
+
+  const handleEdit = (itemId: string) => {
+    const menuItem = menuData.find(item => String(item.id) === itemId);
+    if (!menuItem) return;
+
+    const initialData: ProductFormData = {
+      status: menuItem.status === '판매중' ? '판매' : menuItem.status === '중지' ? '중지' : '대기',
+      channels: menuItem.channels || [],
+      types: menuItem.types || [],
+      category: menuItem.category || '',
+      store: menuItem.store,
+      code: menuItem.code || '',
+      name: menuItem.name || '',
+      price: formatPrice(menuItem.price) + '원',
+      cookingTime: menuItem.cookingTime,
+      tags: menuItem.tags || [],
+      registeredDate: formatDate(menuItem.registerDate),
+      // updatedDate: new Date().toISOString().split('T')[0].replace(/-/g, '.'),
+    };
+
+    openEditProductModal(
+        initialData,
+        (data) => {
+          console.log('상품 수정:', data);
+          // TODO: 실제 상품 수정 API 호출
+          setMenuData(prevData => {
+            return prevData.map(item => {
+              if (String(item.id) === itemId) {
+                return {
+                  ...item,
+                  store: data.store,
+                  code: data.code,
+                  category: data.category,
+                  name: data.name,
+                  price: parseInt(data.price.replace(/[^0-9]/g, '')) || 0,
+                  tags: data.tags,
+                  cookingTime: data.cookingTime,
+                  status: data.status === '판매' ? '판매중' : data.status,
+                  channels: data.channels,
+                  types: data.types,
+                };
+              }
+              return item;
+            });
+          });
+        },
+        () => {
+          console.log('상품 수정 취소');
+        }
+    );
+  };
+
   const columns = useMemo(
     () => getMenuTableColumns({
       selectedItems,
       handleItemSelect,
+      handleEdit,
       isReorderMode: drawer.isReorderMode
     }),
-    [selectedItems, drawer.isReorderMode]
+    [selectedItems, drawer.isReorderMode, menuData]
   );
 
   const filteredData = useMemo(() => {

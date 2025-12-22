@@ -1,7 +1,7 @@
 import { atom } from 'recoil';
 import { MessageFormData } from '@/types';
+import { ErpProduct } from '@/types/erp';
 
-// 취소 사유 모달 (기존 alertModal을 cancelModal로 변경)
 export interface CancelModalState {
   isShow: boolean;
   onConfirm: (reason: string) => void;
@@ -83,5 +83,41 @@ export const productModalState = atom<ProductModalState>({
   default: {
     isShow: false,
     mode: 'create',
+  },
+});
+
+// 분류 설정 모달
+export interface Category {
+  id: string;
+  name: string;
+  order: number;
+}
+
+export interface CategoryModalState {
+  isShow: boolean;
+  categories: Category[];
+  onSubmit?: (categories: Category[]) => void;
+  onCancel?: () => void;
+}
+
+export const categoryModalState = atom<CategoryModalState>({
+  key: 'categoryModalState',
+  default: {
+    isShow: false,
+    categories: [],
+  },
+});
+
+// ERP 검색 모달
+export interface ErpSearchModalState {
+  isShow: boolean;
+  onSelect?: (product: ErpProduct) => void;
+  onCancel?: () => void;
+}
+
+export const erpSearchModalState = atom<ErpSearchModalState>({
+  key: 'erpSearchModalState',
+  default: {
+    isShow: false,
   },
 });

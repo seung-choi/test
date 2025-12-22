@@ -3,6 +3,8 @@ import { useRecoilState } from 'recoil';
 import styles from '@/styles/components/admin/lounge/drawer/Drawer.module.scss';
 import { drawerState } from '@/lib/recoil';
 import useUnifiedModal from '@/hooks/useUnifiedModal';
+import { Category, ProductFormData } from '@/lib/recoil/modalAtom';
+import { ErpProduct } from '@/types/erp';
 
 type DrawerMode = 'setting' | 'menu';
 
@@ -26,16 +28,62 @@ const Drawer: React.FC<DrawerProps> = ({
                                          onDelete
                                        }) => {
   const [drawer, setDrawer] = useRecoilState(drawerState);
-  const { openCreateProductModal } = useUnifiedModal();
+  const { openCreateProductModal, openCategoryModal, openErpSearchModal } = useUnifiedModal();
 
   const handleRegisterProduct = () => {
-    openCreateProductModal(
-      (data) => {
-        console.log('상품 등록:', data);
-        // 여기서 실제 상품 등록 API 호출
+    // 1단계: ERP 검색 모달 열기
+    openErpSearchModal(
+      (erpProduct: ErpProduct) => {
+        // 2단계: 선택된 ERP 상품 정보로 상품 등록 모달 열기
+        const initialData: ProductFormData = {
+          status: '판매',
+          channels: [],
+          types: [],
+          category: erpProduct.category,
+          store: '스타트 하우스',
+          code: erpProduct.code,
+          name: erpProduct.name,
+          price: erpProduct.price.toLocaleString('ko-KR') + '원',
+          cookingTime: 0,
+          tags: [],
+          registeredDate: new Date().toISOString().split('T')[0].replace(/-/g, '.'),
+          updatedDate: new Date().toISOString().split('T')[0].replace(/-/g, '.'),
+        };
+
+        openCreateProductModal(
+          (data) => {
+            console.log('상품 등록:', data);
+            // 여기서 실제 상품 등록 API 호출
+          },
+          initialData,
+          () => {
+            console.log('상품 등록 취소');
+          }
+        );
       },
       () => {
-        console.log('상품 등록 취소');
+        console.log('ERP 검색 취소');
+      }
+    );
+  };
+
+  const handleCategorySettings = () => {
+    // TODO: 실제 분류 데이터를 가져와야 함
+    const initialCategories: Category[] = [
+      { id: '1', name: '분식', order: 0 },
+      { id: '2', name: '주류', order: 1 },
+      { id: '3', name: '양식', order: 2 },
+      { id: '4', name: '한식', order: 3 },
+    ];
+
+    openCategoryModal(
+      initialCategories,
+      (categories) => {
+        console.log('분류 저장:', categories);
+        // 여기서 실제 분류 저장 API 호출
+      },
+      () => {
+        console.log('분류 설정 취소');
       }
     );
   };
@@ -92,7 +140,7 @@ const Drawer: React.FC<DrawerProps> = ({
                   <div className={styles.buttonText}>검색</div>
                 </div>
               </div>
-              <div className={styles.categoryButton}>
+              <div className={styles.categoryButton} onClick={handleCategorySettings}>
                 <div className={styles.buttonText}>분류 설정</div>
               </div>
               <div className={styles.registerButton} onClick={handleRegisterProduct}>

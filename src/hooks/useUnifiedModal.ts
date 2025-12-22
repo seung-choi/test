@@ -5,14 +5,20 @@ import {
   messageModalState,
   confirmModalState,
   productModalState,
-  ProductFormData
+  categoryModalState,
+  erpSearchModalState,
+  ProductFormData,
+  Category
 } from '@/lib/recoil/modalAtom';
+import { ErpProduct } from '@/types/erp';
 
 const useUnifiedModal = () => {
   const [cancelModal, setCancelModal] = useRecoilState(cancelModalState);
   const [messageModal, setMessageModal] = useRecoilState(messageModalState);
   const [confirmModal, setConfirmModal] = useRecoilState(confirmModalState);
   const [productModal, setProductModal] = useRecoilState(productModalState);
+  const [categoryModal, setCategoryModal] = useRecoilState(categoryModalState);
+  const [erpSearchModal, setErpSearchModal] = useRecoilState(erpSearchModalState);
 
   // 취소 사유 모달
   const openCancelModal = (onConfirm: (reason: string) => void, onCancel?: () => void) => {
@@ -123,9 +129,10 @@ const useUnifiedModal = () => {
   // 편의 함수: 상품 등록 모달
   const openCreateProductModal = (
     onSubmit: (data: ProductFormData) => void,
+    initialData?: ProductFormData,
     onCancel?: () => void
   ) => {
-    openProductModal('create', onSubmit, undefined, onCancel);
+    openProductModal('create', onSubmit, initialData, onCancel);
   };
 
   // 편의 함수: 상품 수정 모달
@@ -135,6 +142,46 @@ const useUnifiedModal = () => {
     onCancel?: () => void
   ) => {
     openProductModal('edit', onSubmit, initialData, onCancel);
+  };
+
+  // 분류 설정 모달
+  const openCategoryModal = (
+    categories: Category[],
+    onSubmit: (categories: Category[]) => void,
+    onCancel?: () => void
+  ) => {
+    setCategoryModal({
+      isShow: true,
+      categories,
+      onSubmit,
+      onCancel,
+    });
+  };
+
+  const closeCategoryModal = () => {
+    setCategoryModal(prev => ({
+      ...prev,
+      isShow: false,
+    }));
+  };
+
+  // ERP 검색 모달
+  const openErpSearchModal = (
+    onSelect: (product: ErpProduct) => void,
+    onCancel?: () => void
+  ) => {
+    setErpSearchModal({
+      isShow: true,
+      onSelect,
+      onCancel,
+    });
+  };
+
+  const closeErpSearchModal = () => {
+    setErpSearchModal(prev => ({
+      ...prev,
+      isShow: false,
+    }));
   };
 
   return {
@@ -161,6 +208,16 @@ const useUnifiedModal = () => {
     closeProductModal,
     openCreateProductModal,
     openEditProductModal,
+
+    // 분류 설정 모달
+    categoryModal,
+    openCategoryModal,
+    closeCategoryModal,
+
+    // ERP 검색 모달
+    erpSearchModal,
+    openErpSearchModal,
+    closeErpSearchModal,
   };
 };
 

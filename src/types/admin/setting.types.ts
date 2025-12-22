@@ -24,11 +24,11 @@ export interface OrderRecord {
   orderDate: string;
   tO: string;
   caddyName: string;
-  customers: string[];
+  customerNames: string[];
   groupName: string;
-  totalItems: number;
-  menuDetails: string;
+  totalMenuCount: string;
+  orderDetails: string;
   totalAmount: number;
-  status: OrderStatus;
+  status: string;
   cancelReason?: string;
 }

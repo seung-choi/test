@@ -1,5 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from '@/styles/components/common/Table.module.scss';
+import { getTagClass } from '@/constants/menuTags';
+import {formatDate, formatPrice} from "@/utils/formatDataUtils";
 
 export interface TableRowData {
   id: string;
@@ -30,38 +32,39 @@ export const renderCheckbox = (
   );
 };
 
-export const renderImage = (value: string, row: TableRowData) => (
-  <img
-    src={value}
-    alt={row.name || '이미지'}
-    className={styles.menuImage}
-  />
-);
+export const renderImage = (value: string, row: TableRowData) => {
+    const ImageCell = () => {
+        const [imageError, setImageError] = useState(false);
 
-export const renderTags = (value: string[]) => {
-  const getTagClass = (tag: string) => {
-    switch (tag) {
-      case 'NEW':
-        return styles.new;
-      case 'BEST':
-        return styles.best;
-      case '시그니처':
-        return styles.signature;
-      case '한정':
-        return styles.limited;
-      case 'lady':
-        return styles.lady;
-      case 'none':
-        return styles.none;
-      default:
-        return '';
-    }
-  };
+        if (!value || imageError) {
+            return (
+                <div className={styles.menuImage}>
+                    <div className={styles.imagePlaceholder}>
+                        이미지 준비중
+                    </div>
+                </div>
+            );
+        }
 
+        return (
+            <div className={styles.menuImage}>
+                <img
+                    src={value}
+                    alt={row.name || '이미지'}
+                    onError={() => setImageError(true)}
+                />
+            </div>
+        );
+    };
+
+    return <ImageCell />;
+};
+
+export const renderTags = (value: string[], row: TableRowData) => {
   return (
     <div className={styles.tagsContainer}>
       {value?.map((tag, index) => (
-        <div key={index} className={`${styles.tag} ${getTagClass(tag)}`}>
+        <div key={index} className={`${styles.tag} ${styles[getTagClass(tag)]}`}>
           <span className={styles.tagText}>{tag}</span>
         </div>
       ))}
@@ -81,7 +84,7 @@ export const renderStatusSelector = (
   </button>
 );
 
-export const renderChannelTags = (value: string[]) => (
+export const renderChannelTags = (value: string[], row: TableRowData) => (
   <div className={styles.channelTags}>
     {value?.map((item, index) => (
       <span key={index} className={styles.channelTag}>{item}</span>
@@ -97,13 +100,13 @@ export const renderEditButton = (
   </button>
 );
 
-export const renderPrice = (value: string | number) => (
+export const renderPrice = (value: number, row: TableRowData) => (
   <span className={styles.cellText}>
-    {typeof value === 'number' ? value.toLocaleString() : value}
+    {formatPrice(value)}
   </span>
 );
 
-export const renderText = (value: any) => (
+export const renderText = (value: any, row: TableRowData) => (
   <span className={styles.cellText}>{value}</span>
 );
 
@@ -117,13 +120,9 @@ export const renderDragHandle = () => (value: any, row: TableRowData) => {
   );
 };
 
-export const renderDate = (value: string) => {
-  const date = new Date(value);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
+export const renderDate = (value: string, row: TableRowData) => {
   return (
-      <p className={styles.cellText}>{`${year}-${month}-${day}`} </p>
+      <p className={styles.cellText}>{formatDate(value)} </p>
   );
 }
 

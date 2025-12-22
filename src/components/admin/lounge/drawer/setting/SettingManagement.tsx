@@ -42,7 +42,7 @@ const SettingManagement: React.FC<SettingManagementProps> = ({ onClose }) => {
 
         if (filter.dateRange.startDate && filter.dateRange.endDate) {
             result = result.filter(item => {
-                const itemDate = item.orderDate;
+                const itemDate = item.orderDate.split('T')[0];
                 return itemDate >= filter.dateRange.startDate && itemDate <= filter.dateRange.endDate;
             });
         }
@@ -75,8 +75,8 @@ const SettingManagement: React.FC<SettingManagementProps> = ({ onClose }) => {
         const completedOrders = filteredData.filter(item => item.status === '정산 완료').length;
         const canceledOrders = filteredData.filter(item => item.status === '취소').length;
         const totalAmount = filteredData
-            .filter(item => item.totalAmount !== '-')
-            .reduce((sum, item) => sum + parseInt(item.totalAmount.replace(',', '')), 0);
+            .filter(item => true)
+            .reduce((sum, item) => sum + item.totalAmount, 0);
 
         return {
             totalOrders,

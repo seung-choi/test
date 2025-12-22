@@ -53,18 +53,40 @@ const SortableRow: React.FC<SortableRowProps> = ({ row, columns, isReorderMode }
       {...attributes}
       {...(isReorderMode ? listeners : {})}
     >
-      {columns.map((column) => (
-        <div
-          key={column.key}
-          className={styles.tableCell}
-          style={{ width: column.width, ...column.style }}
-        >
-          {column.render
-            ? column.render(row[column.key], row)
-            : <span className={styles.cellText}>{row[column.key]}</span>
+      {columns.map((column) => {
+        const cellValue = row[column.key];
+        let displayValue: React.ReactNode = cellValue;
+
+        // render 함수가 없을 때 안전하게 값 처리
+        if (!column.render) {
+          if (Array.isArray(cellValue)) {
+            // 배열이면 join으로 문자열 변환
+            displayValue = cellValue.join(', ');
+          } else if (cellValue === null || cellValue === undefined) {
+            // null/undefined면 빈 문자열
+            displayValue = '';
+          } else if (typeof cellValue === 'object') {
+            // 객체면 빈 문자열 (또는 JSON.stringify(cellValue))
+            displayValue = '';
+          } else {
+            // 원시값(string, number, boolean)은 그대로
+            displayValue = String(cellValue);
           }
-        </div>
-      ))}
+        }
+
+        return (
+          <div
+            key={column.key}
+            className={styles.tableCell}
+            style={{ width: column.width, ...column.style }}
+          >
+            {column.render
+              ? column.render(cellValue, row)
+              : <span className={styles.cellText}>{displayValue}</span>
+            }
+          </div>
+        );
+      })}
     </div>
   );
 };

@@ -7,6 +7,8 @@ import CancelReasonModalContent from './contents/CancelReasonModalContent';
 import MessageModalContent from './contents/MessageModalContent';
 import ConfirmModalContent from './contents/ConfirmModalContent';
 import ProductModalContent from './contents/ProductModalContent';
+import CategoryModalContent from './contents/CategoryModalContent';
+import ErpSearchModalContent from './contents/ErpSearchModalContent';
 
 const UnifiedModal = () => {
   const {
@@ -18,6 +20,10 @@ const UnifiedModal = () => {
     closeConfirmModal,
     productModal,
     closeProductModal,
+    categoryModal,
+    closeCategoryModal,
+    erpSearchModal,
+    closeErpSearchModal,
   } = useUnifiedModal();
 
   const handleCancelConfirm = (reason: string) => {
@@ -58,6 +64,26 @@ const UnifiedModal = () => {
   const handleProductClose = () => {
     productModal.onCancel?.();
     closeProductModal();
+  };
+
+  const handleCategorySubmit = (data: any) => {
+    categoryModal.onSubmit?.(data);
+    closeCategoryModal();
+  };
+
+  const handleCategoryClose = () => {
+    categoryModal.onCancel?.();
+    closeCategoryModal();
+  };
+
+  const handleErpProductSelect = (data: any) => {
+    erpSearchModal.onSelect?.(data);
+    closeErpSearchModal();
+  };
+
+  const handleErpSearchClose = () => {
+    erpSearchModal.onCancel?.();
+    closeErpSearchModal();
   };
 
   const handleOverlayClick = (
@@ -121,6 +147,33 @@ const UnifiedModal = () => {
             initialData={productModal.initialData}
             onSubmit={handleProductSubmit}
             onClose={handleProductClose}
+          />
+        </div>
+      )}
+
+      {/* 분류 설정 모달 */}
+      {categoryModal.isShow && (
+        <div
+          className={alertStyles["alert-popup"]}
+          onClick={(e) => handleOverlayClick(e, handleCategoryClose)}
+        >
+          <CategoryModalContent
+            initialCategories={categoryModal.categories}
+            onSubmit={handleCategorySubmit}
+            onClose={handleCategoryClose}
+          />
+        </div>
+      )}
+
+      {/* ERP 검색 모달 */}
+      {erpSearchModal.isShow && (
+        <div
+          className={alertStyles["alert-popup"]}
+          onClick={(e) => handleOverlayClick(e, handleErpSearchClose)}
+        >
+          <ErpSearchModalContent
+            onSelect={handleErpProductSelect}
+            onClose={handleErpSearchClose}
           />
         </div>
       )}

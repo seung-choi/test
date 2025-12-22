@@ -2,8 +2,11 @@
 
 import React, { useState, useRef } from 'react';
 import styles from '@/styles/components/modal/ProductModal.module.scss';
-import { ProductFormData } from '@/lib/recoil/modalAtom';
+import { ProductFormData, Category } from '@/lib/recoil/modalAtom';
 import CustomSelect from '@/components/common/CustomSelect';
+import { MENU_TAGS, getTagClass } from '@/constants/menuTags';
+import useUnifiedModal from '@/hooks/useUnifiedModal';
+import { ErpProduct } from '@/types/erp';
 
 interface ProductModalContentProps {
   mode: 'create' | 'edit';
@@ -36,17 +39,11 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
   );
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { openCategoryModal, openErpSearchModal } = useUnifiedModal();
 
   const statusOptions = ['판매', '대기', '중지'] as const;
   const channelOptions = ['코스', '매장'];
   const typeOptions = ['매장', '포장'];
-  const tagOptions = [
-    { label: 'NEW', value: 'NEW' },
-    { label: 'BEST', value: 'BEST' },
-    { label: '시그니처', value: '시그니처' },
-    { label: '한정', value: '한정' },
-    { label: '레이디', value: 'lady' },
-  ];
 
   const handleStatusChange = (status: '판매' | '대기' | '중지') => {
     setFormData((prev) => ({ ...prev, status }));
@@ -107,33 +104,70 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
     onSubmit(formData);
   };
 
-  const getTagClass = (tag: string) => {
+  const getTagClassName = (tag: string) => {
     if (formData.tags.includes(tag)) {
-      switch (tag) {
-        case 'NEW':
-          return styles.tagNew;
-        case 'BEST':
-          return styles.tagBest;
-        case '시그니처':
-          return styles.tagSignature;
-        case '한정':
-          return styles.tagLimited;
-        case 'lady':
-          return styles.tagLady;
-        default:
-          return styles.tagInactive;
-      }
+      return styles[getTagClass(tag)];
     }
     return styles.tagInactive;
+  };
+
+  const handleCategorySettings = () => {
+    // TODO: 실제 분류 데이터를 가져와야 함
+    const initialCategories: Category[] = [
+      { id: '1', name: '분식', order: 0 },
+      { id: '2', name: '주류', order: 1 },
+      { id: '3', name: '양식', order: 2 },
+      { id: '4', name: '한식', order: 3 },
+    ];
+
+    openCategoryModal(
+      initialCategories,
+      (categories) => {
+        console.log('분류 저장:', categories);
+        // 여기서 실제 분류 저장 API 호출
+      },
+      () => {
+        console.log('분류 설정 취소');
+      }
+    );
+  };
+
+  const handleErpUpdate = () => {
+    openErpSearchModal(
+      (erpProduct: ErpProduct) => {
+        // ERP에서 선택한 상품 정보로 폼 데이터 업데이트
+        setFormData(prev => ({
+          ...prev,
+          category: erpProduct.category,
+          code: erpProduct.code,
+          name: erpProduct.name,
+          price: erpProduct.price.toLocaleString('ko-KR') + '원',
+        }));
+      },
+      () => {
+        console.log('ERP 검색 취소');
+      }
+    );
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.title}>{mode === 'create' ? '상품 등록' : '상품 수정'}</div>
-        <button className={styles.closeButton} onClick={onClose}>
-          <img src="/assets/image/global/x.svg" alt="x" />
-        </button>
+        {mode === 'create' ? (
+          <button className={styles.closeButton} onClick={onClose}>
+            <img src="/assets/image/global/x.svg" alt="x" />
+          </button>
+        ) : (
+          <div className={styles.erpUpdateButton} onClick={handleErpUpdate}>
+            <div className={styles.erpUpdateText}>ERP 정보 업데이트</div>
+            <div className={styles.erpUpdateIcon}>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13.6569 2.34315C12.5327 1.21895 11.0139 0.568359 9.41421 0.568359C7.81453 0.568359 6.29575 1.21895 5.17157 2.34315C4.04738 3.46734 3.39679 4.98612 3.39679 6.5858C3.39679 8.18548 4.04738 9.70426 5.17157 10.8284L8 13.6569L10.8284 10.8284C11.9526 9.70426 12.6032 8.18548 12.6032 6.5858C12.6032 4.98612 11.9526 3.46734 10.8284 2.34315M8 8.5858C7.46957 8.5858 6.96086 8.37509 6.58579 8.00001C6.21071 7.62494 6 7.11623 6 6.5858C6 6.05537 6.21071 5.54666 6.58579 5.17159C6.96086 4.79651 7.46957 4.5858 8 4.5858C8.53043 4.5858 9.03914 4.79651 9.41421 5.17159C9.78929 5.54666 10 6.05537 10 6.5858C10 7.11623 9.78929 7.62494 9.41421 8.00001C9.03914 8.37509 8.53043 8.5858 8 8.5858Z" fill="#444444"/>
+              </svg>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className={styles.divider} />
@@ -241,7 +275,7 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
               ]}
               placeholder="선택해주세요"
             />
-            <button className={styles.settingButton}>분류 설정</button>
+            <button className={styles.settingButton} onClick={handleCategorySettings}>분류 설정</button>
           </div>
         </div>
 
@@ -314,10 +348,10 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
             <span className={styles.labelSub}>(최대 2개)</span>
           </div>
           <div className={styles.tagList}>
-            {tagOptions.map((tag) => (
+            {MENU_TAGS.map((tag) => (
               <button
                 key={tag.value}
-                className={`${styles.tag} ${getTagClass(tag.value)}`}
+                className={`${styles.tag} ${getTagClassName(tag.value)}`}
                 onClick={() => handleTagToggle(tag.value)}
               >
                 {tag.label}

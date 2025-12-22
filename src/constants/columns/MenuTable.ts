@@ -42,7 +42,7 @@ export const getMenuTableColumns = ({
     {
         key: 'image',
         label: '이미지',
-        width: '9.7%',
+        width: '9%',
         render: renderImage,
     },
     {
@@ -57,12 +57,14 @@ export const getMenuTableColumns = ({
         label: '분류',
         width: '6%',
         sortable: true,
+        render: renderText,
     },
     {
         key: 'name',
         label: '메뉴명',
         width: '9%',
         sortable: true,
+        render: renderText,
     },
     {
         key: 'price',
@@ -81,8 +83,9 @@ export const getMenuTableColumns = ({
     {
         key: 'cookingTime',
         label: '조리시간',
-        width: '7.5%',
+        width: '8%',
         sortable: true,
+        render: renderText,
     },
     {
         key: 'status',
@@ -108,8 +111,9 @@ export const getMenuTableColumns = ({
     {
         key: 'registerDate',
         label: '등록일',
-        width: '7%',
+        width: '10%',
         sortable: true,
+        render: renderText,
     },
     {
         key: 'edit',

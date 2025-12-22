@@ -1,0 +1,275 @@
+.container {
+  width: 739px;
+  max-height: 90vh;
+  position: relative;
+  background: white;
+  box-shadow: 0px 4px 4px rgba(128, 128, 128, 0.55);
+  overflow: hidden;
+  border-radius: 20px;
+  outline: 1px #666666 solid;
+  outline-offset: -1px;
+  display: flex;
+  flex-direction: column;
+
+  .header {
+    padding: 25px 66px;
+
+    .title {
+      color: black;
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 36px;
+    }
+  }
+
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: #D9D9D9;
+  }
+
+  .content {
+    padding: 25px 66px 30px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    .searchSection {
+      display: flex;
+      margin-bottom: 27px;
+
+      .searchTypeSelect {
+        width: 158px;
+        flex-shrink: 0;
+      }
+
+      .searchInputGroup {
+        position: relative;
+        flex: 1;
+        height: 50px;
+
+        .searchInput {
+          width: 327px;
+          height: 50px;
+          padding-left: 20px;
+          background: white;
+          outline: 1px #D9D9D9 solid;
+          outline-offset: -1px;
+          border: none;
+          color: #1F1F1F;
+          font-size: 22px;
+          font-weight: 300;
+
+          &::placeholder {
+            color: #959595;
+          }
+        }
+
+        .searchButton {
+          position: absolute;
+          right: 0;
+          top: 0;
+          width: 128px;
+          height: 50px;
+          background: #3A3C56;
+          border-top-right-radius: 10px;
+          border-bottom-right-radius: 10px;
+          border: none;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          transition: background 0.2s;
+
+          &:hover {
+            background: #2A2C46;
+          }
+
+          .buttonText {
+            color: white;
+            font-size: 22px;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+
+    .resultLabel {
+      color: #666666;
+      font-size: 24px;
+      line-height: 30px;
+      font-weight: 400;
+      margin-bottom: 12px;
+    }
+
+    .tableContainer {
+      width: 612px;
+      background: #F3F3F3;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+
+      .tableHeader {
+        display: flex;
+        height: 50px;
+        background: #D9D9D9;
+        align-items: center;
+        border-bottom: 1px #959595 solid;
+
+        .categoryColumn,
+        .codeColumn,
+        .nameColumn,
+        .priceColumn,
+        .selectColumn {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .categoryColumn {
+          width: 96px;
+        }
+
+        .codeColumn {
+          width: 130px;
+        }
+
+        .nameColumn {
+          width: 187px;
+        }
+
+        .priceColumn {
+          width: 121px;
+        }
+
+        .selectColumn {
+          width: 79px;
+        }
+
+        .headerText {
+          color: #1F1F1F;
+          font-size: 18px;
+          font-weight: 500;
+        }
+      }
+
+      .tableBody {
+        max-height: 483px;
+        overflow-y: auto;
+
+        &::-webkit-scrollbar {
+          width: 9px;
+        }
+
+        &::-webkit-scrollbar-track {
+          background: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background: #D9D9D9;
+          border-radius: 5px;
+        }
+
+        .tableRow {
+          display: flex;
+          height: 50px;
+          align-items: center;
+          cursor: pointer;
+          transition: background 0.2s;
+
+          &:hover {
+            background: #E3E3E3;
+          }
+
+          .categoryColumn,
+          .codeColumn,
+          .nameColumn,
+          .priceColumn,
+          .selectColumn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+
+          .categoryColumn {
+            width: 96px;
+          }
+
+          .codeColumn {
+            width: 130px;
+          }
+
+          .nameColumn {
+            width: 187px;
+          }
+
+          .priceColumn {
+            width: 121px;
+          }
+
+          .selectColumn {
+            width: 78px;
+          }
+
+          .cellText {
+            color: #444444;
+            font-size: 18px;
+            font-weight: 600;
+          }
+        }
+
+        .emptyState {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 200px;
+          width: 100%;
+
+          .emptyText {
+            color: #959595;
+            font-size: 20px;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+
+    .gradient {
+      position: absolute;
+      width: 15px;
+      height: 610px;
+      left: 67px;
+      bottom: -579px;
+      transform: rotate(-90deg);
+      background: linear-gradient(270deg, rgba(243, 243, 243, 0) 0%, #F3F3F3 100%);
+      pointer-events: none;
+    }
+  }
+
+  .buttonContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0 30px;
+
+    .closeButton {
+      width: 213px;
+      height: 54px;
+      padding: 10px 20px;
+      background: white;
+      border-radius: 5px;
+      outline: 1px #0655F6 solid;
+      outline-offset: -1px;
+      border: none;
+      color: #001A9F;
+      font-size: 22px;
+      font-weight: 400;
+      cursor: pointer;
+      transition: background 0.2s;
+
+      &:hover {
+        background: rgba(6, 85, 246, 0.05);
+      }
+    }
+  }
+}
