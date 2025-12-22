@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from '@/styles/components/modal/ErpSearchModal.module.scss';
 import { ErpProduct, ErpSearchType } from '@/types/erp';
 import CustomSelect from '@/components/common/CustomSelect';
@@ -18,12 +18,17 @@ const ErpSearchModalContent: React.FC<ErpSearchModalContentProps> = ({
 }) => {
   const [searchType, setSearchType] = useState<ErpSearchType>('상품 코드');
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchResults, setSearchResults] = useState<ErpProduct[]>([]);
+  const [searchResults, setSearchResults] = useState<ErpProduct[]>(erpMockData);
   const [hasSearched, setHasSearched] = useState(false);
+
+  useEffect(() => {
+    setSearchResults(erpMockData);
+  }, []);
 
   const handleSearch = () => {
     if (!searchTerm.trim()) {
-      alert('검색어를 입력하세요.');
+      setSearchResults(erpMockData);
+      setHasSearched(false);
       return;
     }
 
@@ -32,6 +37,27 @@ const ErpSearchModalContent: React.FC<ErpSearchModalContentProps> = ({
         return product.code.toLowerCase().includes(searchTerm.toLowerCase());
       } else {
         return product.name.toLowerCase().includes(searchTerm.toLowerCase());
+      }
+    });
+
+    setSearchResults(results);
+    setHasSearched(true);
+  };
+
+  const handleSearchTermChange = (value: string) => {
+    setSearchTerm(value);
+    
+    if (!value.trim()) {
+      setSearchResults(erpMockData);
+      setHasSearched(false);
+      return;
+    }
+
+    const results = erpMockData.filter((product) => {
+      if (searchType === '상품 코드') {
+        return product.code.toLowerCase().includes(value.toLowerCase());
+      } else {
+        return product.name.toLowerCase().includes(value.toLowerCase());
       }
     });
 
@@ -68,7 +94,7 @@ const ErpSearchModalContent: React.FC<ErpSearchModalContentProps> = ({
               className={styles.searchInput}
               placeholder={`${searchType}를 입력하세요`}
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => handleSearchTermChange(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   handleSearch();
@@ -81,7 +107,9 @@ const ErpSearchModalContent: React.FC<ErpSearchModalContentProps> = ({
           </div>
         </div>
 
-        <div className={styles.resultLabel}>검색 결과</div>
+        <div className={styles.resultLabel}>
+          {searchTerm ? '검색 결과' : '전체 상품 목록'}
+        </div>
 
         <div className={styles.tableContainer}>
           <div className={styles.tableHeader}>

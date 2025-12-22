@@ -31,10 +31,8 @@ const Drawer: React.FC<DrawerProps> = ({
   const { openCreateProductModal, openCategoryModal, openErpSearchModal, openCancelReasonManagementModal } = useUnifiedModal();
 
   const handleRegisterProduct = () => {
-    // 1단계: ERP 검색 모달 열기
     openErpSearchModal(
       (erpProduct: ErpProduct) => {
-        // 2단계: 선택된 ERP 상품 정보로 상품 등록 모달 열기
         const initialData: ProductFormData = {
           status: '판매',
           channels: [],
@@ -53,7 +51,6 @@ const Drawer: React.FC<DrawerProps> = ({
         openCreateProductModal(
           (data) => {
             console.log('상품 등록:', data);
-            // 여기서 실제 상품 등록 API 호출
           },
           initialData,
           () => {
@@ -80,7 +77,6 @@ const Drawer: React.FC<DrawerProps> = ({
       initialCategories,
       (categories) => {
         console.log('분류 저장:', categories);
-        // 여기서 실제 분류 저장 API 호출
       },
       () => {
         console.log('분류 설정 취소');

@@ -16,6 +16,13 @@ import {
 } from '@/lib/recoil/modalAtom';
 import { ErpProduct } from '@/types/erp';
 
+// 공통 close 함수 생성 헬퍼
+const createCloseModal = <T extends { isShow: boolean }>(
+  setState: (updater: (prev: T) => T) => void
+) => {
+  return () => setState(prev => ({ ...prev, isShow: false }));
+};
+
 const useUnifiedModal = () => {
   const [cancelModal, setCancelModal] = useRecoilState(cancelModalState);
   const [messageModal, setMessageModal] = useRecoilState(messageModalState);
@@ -26,6 +33,17 @@ const useUnifiedModal = () => {
   const [deleteConfirmModal, setDeleteConfirmModal] = useRecoilState(deleteConfirmModalState);
   const [cancelReasonManagementModal, setCancelReasonManagementModal] = useRecoilState(cancelReasonManagementModalState);
 
+  // Close 함수들
+  const closeCancelModal = createCloseModal(setCancelModal);
+  const closeMessageModal = createCloseModal(setMessageModal);
+  const closeConfirmModal = createCloseModal(setConfirmModal);
+  const closeProductModal = createCloseModal(setProductModal);
+  const closeCategoryModal = createCloseModal(setCategoryModal);
+  const closeErpSearchModal = createCloseModal(setErpSearchModal);
+  const closeDeleteConfirmModal = createCloseModal(setDeleteConfirmModal);
+  const closeCancelReasonManagementModal = createCloseModal(setCancelReasonManagementModal);
+
+  // 취소 사유 모달
   const openCancelModal = (onConfirm: (reason: string) => void, onCancel?: () => void) => {
     setCancelModal({
       isShow: true,
@@ -34,13 +52,7 @@ const useUnifiedModal = () => {
     });
   };
 
-  const closeCancelModal = () => {
-    setCancelModal(prev => ({
-      ...prev,
-      isShow: false,
-    }));
-  };
-
+  // 메시지 모달
   const openMessageModal = (
     title: string,
     recipients: string[],
@@ -54,13 +66,6 @@ const useUnifiedModal = () => {
       onSubmit,
       onCancel,
     });
-  };
-
-  const closeMessageModal = () => {
-    setMessageModal(prev => ({
-      ...prev,
-      isShow: false,
-    }));
   };
 
   const openSendMessageModal = (
@@ -78,6 +83,7 @@ const useUnifiedModal = () => {
     openCancelModal(onConfirm, onCancel);
   };
 
+  // 확인 모달
   const openConfirmModal = (
     title: string,
     desc: string,
@@ -97,13 +103,7 @@ const useUnifiedModal = () => {
     });
   };
 
-  const closeConfirmModal = () => {
-    setConfirmModal(prev => ({
-      ...prev,
-      isShow: false,
-    }));
-  };
-
+  // 상품 등록/수정 모달
   const openProductModal = (
     mode: 'create' | 'edit',
     onSubmit: (data: ProductFormData) => void,
@@ -119,14 +119,6 @@ const useUnifiedModal = () => {
     });
   };
 
-  const closeProductModal = () => {
-    setProductModal(prev => ({
-      ...prev,
-      isShow: false,
-    }));
-  };
-
-  // 편의 함수: 상품 등록 모달
   const openCreateProductModal = (
     onSubmit: (data: ProductFormData) => void,
     initialData?: ProductFormData,
@@ -135,7 +127,6 @@ const useUnifiedModal = () => {
     openProductModal('create', onSubmit, initialData, onCancel);
   };
 
-  // 편의 함수: 상품 수정 모달
   const openEditProductModal = (
     initialData: ProductFormData,
     onSubmit: (data: ProductFormData) => void,
@@ -158,13 +149,6 @@ const useUnifiedModal = () => {
     });
   };
 
-  const closeCategoryModal = () => {
-    setCategoryModal(prev => ({
-      ...prev,
-      isShow: false,
-    }));
-  };
-
   // ERP 검색 모달
   const openErpSearchModal = (
     onSelect: (product: ErpProduct) => void,
@@ -175,13 +159,6 @@ const useUnifiedModal = () => {
       onSelect,
       onCancel,
     });
-  };
-
-  const closeErpSearchModal = () => {
-    setErpSearchModal(prev => ({
-      ...prev,
-      isShow: false,
-    }));
   };
 
   // 삭제 확인 모달
@@ -198,13 +175,6 @@ const useUnifiedModal = () => {
     });
   };
 
-  const closeDeleteConfirmModal = () => {
-    setDeleteConfirmModal(prev => ({
-      ...prev,
-      isShow: false,
-    }));
-  };
-
   // 취소 사유 관리 모달
   const openCancelReasonManagementModal = (
     reasons: CancelReason[],
@@ -217,13 +187,6 @@ const useUnifiedModal = () => {
       onSubmit,
       onCancel,
     });
-  };
-
-  const closeCancelReasonManagementModal = () => {
-    setCancelReasonManagementModal(prev => ({
-      ...prev,
-      isShow: false,
-    }));
   };
 
   return {

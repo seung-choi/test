@@ -86,7 +86,6 @@ export const productModalState = atom<ProductModalState>({
   },
 });
 
-// 분류 설정 모달
 export interface Category {
   id: string;
   name: string;
@@ -108,7 +107,6 @@ export const categoryModalState = atom<CategoryModalState>({
   },
 });
 
-// ERP 검색 모달
 export interface ErpSearchModalState {
   isShow: boolean;
   onSelect?: (product: ErpProduct) => void;
@@ -122,7 +120,6 @@ export const erpSearchModalState = atom<ErpSearchModalState>({
   },
 });
 
-// 삭제 확인 모달
 export interface DeleteItem {
   code: string;
   category: string;
@@ -145,7 +142,6 @@ export const deleteConfirmModalState = atom<DeleteConfirmModalState>({
   },
 });
 
-// 취소 사유 관리 모달
 export interface CancelReason {
   id: string;
   content: string;

@@ -2,7 +2,8 @@
 
 import React from 'react';
 import useUnifiedModal from '@/hooks/useUnifiedModal';
-import alertStyles from '@/styles/components/AlertModal.module.scss';
+import ModalWrapper from './ModalWrapper';
+import { createModalHandlers } from '@/utils/modalHelpers';
 import CancelReasonModalContent from './contents/CancelReasonModalContent';
 import MessageModalContent from './contents/MessageModalContent';
 import ConfirmModalContent from './contents/ConfirmModalContent';
@@ -32,6 +33,8 @@ const UnifiedModal = () => {
     closeCancelReasonManagementModal,
   } = useUnifiedModal();
 
+  // 각 모달의 핸들러 생성
+  // cancelModal은 onConfirm이 (reason: string) => void 타입이라 별도 처리
   const handleCancelConfirm = (reason: string) => {
     cancelModal.onConfirm(reason);
     closeCancelModal();
@@ -42,195 +45,124 @@ const UnifiedModal = () => {
     closeCancelModal();
   };
 
-  const handleMessageSubmit = (data: any) => {
-    messageModal.onSubmit?.(data);
-    closeMessageModal();
-  };
+  const messageHandlers = createModalHandlers({
+    onSubmit: messageModal.onSubmit,
+    onCancel: messageModal.onCancel,
+    closeModal: closeMessageModal,
+  });
 
-  const handleMessageClose = () => {
-    messageModal.onCancel?.();
-    closeMessageModal();
-  };
+  const confirmHandlers = createModalHandlers({
+    onConfirm: confirmModal.onConfirm,
+    onCancel: confirmModal.onCancel,
+    closeModal: closeConfirmModal,
+  });
 
-  const handleConfirmOk = () => {
-    confirmModal.onConfirm?.();
-    closeConfirmModal();
-  };
+  const productHandlers = createModalHandlers({
+    onSubmit: productModal.onSubmit,
+    onCancel: productModal.onCancel,
+    closeModal: closeProductModal,
+  });
 
-  const handleConfirmCancel = () => {
-    confirmModal.onCancel?.();
-    closeConfirmModal();
-  };
+  const categoryHandlers = createModalHandlers({
+    onSubmit: categoryModal.onSubmit,
+    onCancel: categoryModal.onCancel,
+    closeModal: closeCategoryModal,
+  });
 
-  const handleProductSubmit = (data: any) => {
-    productModal.onSubmit?.(data);
-    closeProductModal();
-  };
+  const erpSearchHandlers = createModalHandlers({
+    onSelect: erpSearchModal.onSelect,
+    onCancel: erpSearchModal.onCancel,
+    closeModal: closeErpSearchModal,
+  });
 
-  const handleProductClose = () => {
-    productModal.onCancel?.();
-    closeProductModal();
-  };
+  const deleteConfirmHandlers = createModalHandlers({
+    onConfirm: deleteConfirmModal.onConfirm,
+    onCancel: deleteConfirmModal.onCancel,
+    closeModal: closeDeleteConfirmModal,
+  });
 
-  const handleCategorySubmit = (data: any) => {
-    categoryModal.onSubmit?.(data);
-    closeCategoryModal();
-  };
-
-  const handleCategoryClose = () => {
-    categoryModal.onCancel?.();
-    closeCategoryModal();
-  };
-
-  const handleErpProductSelect = (data: any) => {
-    erpSearchModal.onSelect?.(data);
-    closeErpSearchModal();
-  };
-
-  const handleErpSearchClose = () => {
-    erpSearchModal.onCancel?.();
-    closeErpSearchModal();
-  };
-
-  const handleDeleteConfirm = () => {
-    deleteConfirmModal.onConfirm?.();
-    closeDeleteConfirmModal();
-  };
-
-  const handleDeleteClose = () => {
-    deleteConfirmModal.onCancel?.();
-    closeDeleteConfirmModal();
-  };
-
-  const handleCancelReasonManagementSubmit = (data: any) => {
-    cancelReasonManagementModal.onSubmit?.(data);
-    closeCancelReasonManagementModal();
-  };
-
-  const handleCancelReasonManagementClose = () => {
-    cancelReasonManagementModal.onCancel?.();
-    closeCancelReasonManagementModal();
-  };
-
-  const handleOverlayClick = (
-    event: React.MouseEvent<HTMLDivElement>,
-    onClose: () => void
-  ) => {
-    if (event.target === event.currentTarget) {
-      onClose();
-    }
-  };
+  const cancelReasonManagementHandlers = createModalHandlers({
+    onSubmit: cancelReasonManagementModal.onSubmit,
+    onCancel: cancelReasonManagementModal.onCancel,
+    closeModal: closeCancelReasonManagementModal,
+  });
 
   return (
     <>
-      {cancelModal.isShow && (
-        <div
-          className={alertStyles["alert-popup"]}
-          onClick={(e) => handleOverlayClick(e, handleCancelClose)}
-        >
-          <CancelReasonModalContent
-            onConfirm={handleCancelConfirm}
-            onClose={handleCancelClose}
-          />
-        </div>
-      )}
+      {/* 취소 사유 모달 */}
+      <ModalWrapper isShow={cancelModal.isShow} onClose={handleCancelClose}>
+        <CancelReasonModalContent
+          onConfirm={handleCancelConfirm}
+          onClose={handleCancelClose}
+        />
+      </ModalWrapper>
 
-      {messageModal.isShow && (
-        <div
-          className={alertStyles["alert-popup"]}
-          onClick={(e) => handleOverlayClick(e, handleMessageClose)}
-        >
-          <MessageModalContent
-            title={messageModal.title}
-            recipients={messageModal.recipients}
-            onSubmit={handleMessageSubmit}
-            onClose={handleMessageClose}
-          />
-        </div>
-      )}
+      {/* 메시지 모달 */}
+      <ModalWrapper isShow={messageModal.isShow} onClose={messageHandlers.handleClose}>
+        <MessageModalContent
+          title={messageModal.title}
+          recipients={messageModal.recipients}
+          onSubmit={messageHandlers.handleSubmit}
+          onClose={messageHandlers.handleClose}
+        />
+      </ModalWrapper>
 
-      {confirmModal.isShow && (
-        <div className={alertStyles["alert-popup"]}>
-          <ConfirmModalContent
-            title={confirmModal.title}
-            desc={confirmModal.desc}
-            okBtnLabel={confirmModal.okBtnLabel}
-            cancelBtnLabel={confirmModal.cancelBtnLabel}
-            onConfirm={handleConfirmOk}
-            onCancel={handleConfirmCancel}
-          />
-        </div>
-      )}
+      {/* 확인 모달 */}
+      <ModalWrapper isShow={confirmModal.isShow} onClose={confirmHandlers.handleClose} enableOverlayClick={false}>
+        <ConfirmModalContent
+          title={confirmModal.title}
+          desc={confirmModal.desc}
+          okBtnLabel={confirmModal.okBtnLabel}
+          cancelBtnLabel={confirmModal.cancelBtnLabel}
+          onConfirm={confirmHandlers.handleConfirm}
+          onCancel={confirmHandlers.handleClose}
+        />
+      </ModalWrapper>
 
       {/* 상품 등록/수정 모달 */}
-      {productModal.isShow && (
-        <div
-          className={alertStyles["alert-popup"]}
-          onClick={(e) => handleOverlayClick(e, handleProductClose)}
-        >
-          <ProductModalContent
-            mode={productModal.mode}
-            initialData={productModal.initialData}
-            onSubmit={handleProductSubmit}
-            onClose={handleProductClose}
-          />
-        </div>
-      )}
+      <ModalWrapper isShow={productModal.isShow} onClose={productHandlers.handleClose}>
+        <ProductModalContent
+          mode={productModal.mode}
+          initialData={productModal.initialData}
+          onSubmit={productHandlers.handleSubmit}
+          onClose={productHandlers.handleClose}
+        />
+      </ModalWrapper>
 
       {/* 분류 설정 모달 */}
-      {categoryModal.isShow && (
-        <div
-          className={alertStyles["alert-popup"]}
-          onClick={(e) => handleOverlayClick(e, handleCategoryClose)}
-        >
-          <CategoryModalContent
-            initialCategories={categoryModal.categories}
-            onSubmit={handleCategorySubmit}
-            onClose={handleCategoryClose}
-          />
-        </div>
-      )}
+      <ModalWrapper isShow={categoryModal.isShow} onClose={categoryHandlers.handleClose}>
+        <CategoryModalContent
+          initialCategories={categoryModal.categories}
+          onSubmit={categoryHandlers.handleSubmit}
+          onClose={categoryHandlers.handleClose}
+        />
+      </ModalWrapper>
 
       {/* ERP 검색 모달 */}
-      {erpSearchModal.isShow && (
-        <div
-          className={alertStyles["alert-popup"]}
-          onClick={(e) => handleOverlayClick(e, handleErpSearchClose)}
-        >
-          <ErpSearchModalContent
-            onSelect={handleErpProductSelect}
-            onClose={handleErpSearchClose}
-          />
-        </div>
-      )}
+      <ModalWrapper isShow={erpSearchModal.isShow} onClose={erpSearchHandlers.handleClose}>
+        <ErpSearchModalContent
+          onSelect={erpSearchHandlers.handleSelect}
+          onClose={erpSearchHandlers.handleClose}
+        />
+      </ModalWrapper>
 
       {/* 삭제 확인 모달 */}
-      {deleteConfirmModal.isShow && (
-        <div
-          className={alertStyles["alert-popup"]}
-          onClick={(e) => handleOverlayClick(e, handleDeleteClose)}
-        >
-          <DeleteConfirmModalContent
-            items={deleteConfirmModal.items}
-            onConfirm={handleDeleteConfirm}
-            onClose={handleDeleteClose}
-          />
-        </div>
-      )}
+      <ModalWrapper isShow={deleteConfirmModal.isShow} onClose={deleteConfirmHandlers.handleClose}>
+        <DeleteConfirmModalContent
+          items={deleteConfirmModal.items}
+          onConfirm={deleteConfirmHandlers.handleConfirm}
+          onClose={deleteConfirmHandlers.handleClose}
+        />
+      </ModalWrapper>
 
       {/* 취소 사유 관리 모달 */}
-      {cancelReasonManagementModal.isShow && (
-        <div
-          className={alertStyles["alert-popup"]}
-          onClick={(e) => handleOverlayClick(e, handleCancelReasonManagementClose)}
-        >
-          <CancelReasonManagementModalContent
-            initialReasons={cancelReasonManagementModal.reasons}
-            onSubmit={handleCancelReasonManagementSubmit}
-            onClose={handleCancelReasonManagementClose}
-          />
-        </div>
-      )}
+      <ModalWrapper isShow={cancelReasonManagementModal.isShow} onClose={cancelReasonManagementHandlers.handleClose}>
+        <CancelReasonManagementModalContent
+          initialReasons={cancelReasonManagementModal.reasons}
+          onSubmit={cancelReasonManagementHandlers.handleSubmit}
+          onClose={cancelReasonManagementHandlers.handleClose}
+        />
+      </ModalWrapper>
     </>
   );
 };
