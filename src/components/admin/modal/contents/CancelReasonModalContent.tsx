@@ -14,10 +14,10 @@ const CancelReasonModalContent: React.FC<CancelReasonModalContentProps> = ({
 }) => {
   const [selectedReason, setSelectedReason] = useState<string>('');
 
-  const reasons = ['고객 요청', '품절', '판매중단', '재고소진'];
+  const reasons = ['고객 요청', ];
 
   const handleReasonSelect = (reason: string) => {
-    setSelectedReason(reason);
+    setSelectedReason(selectedReason === reason ? '' : reason);
   };
 
   const handleConfirm = () => {
@@ -32,23 +32,20 @@ const CancelReasonModalContent: React.FC<CancelReasonModalContentProps> = ({
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.title}>주문 취소 사유</div>
-        <button className={styles.closeButton} onClick={onClose}>
-          <img src="/assets/image/global/x.svg" alt="x" />
-        </button>
       </div>
 
       <div className={styles.content}>
-        <div className={styles.reasonList}>
+        <div className={`${styles.reasonList} ${reasons.length === 1 ? styles.singleItem : styles.multipleItems}`}>
           {reasons.map((reason) => (
-            <button
-              key={reason}
-              className={`${styles.reasonButton} ${
-                selectedReason === reason ? styles.selected : ''
-              }`}
-              onClick={() => handleReasonSelect(reason)}
-            >
-              {reason}
-            </button>
+              <button
+                  key={reason}
+                  className={`${styles.reasonButton} ${
+                      selectedReason === reason ? styles.selected : ''
+                  }`}
+                  onClick={() => handleReasonSelect(reason)}
+              >
+                {reason}
+              </button>
           ))}
         </div>
       </div>

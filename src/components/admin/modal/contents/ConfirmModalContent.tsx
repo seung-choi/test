@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import styles from '@/styles/components/AlertModal.module.scss';
+import styles from '@/styles/components/Modal.module.scss';
 import { Button } from '@/components/admin/common/Button';
 
 interface ConfirmModalContentProps {

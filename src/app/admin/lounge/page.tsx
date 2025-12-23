@@ -74,7 +74,6 @@ const Lounge = () => {
     openSendMessageModal(
       availableRecipients,
       (formData) => {
-        // 메시지 전송 로직
         console.log('메시지 전송:', {
           orderId: currentCard?.id,
           recipient: formData.recipient,

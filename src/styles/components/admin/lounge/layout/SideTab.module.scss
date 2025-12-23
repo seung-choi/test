@@ -1,3 +1,5 @@
+@import '@/styles/common/mixins';
+
 .sideTab {
   width: 106px;
   height: 100%;
@@ -7,15 +9,22 @@
   border-right: 1px solid #D9D9D9;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
-  gap: 103px;
+
+  @include tablet {
+    width: 80px;
+  }
 }
 
 .loungeSection {
   align-self: stretch;
   height: 672px;
   position: relative;
+
+  @include tablet {
+    height: auto;
+  }
 }
 
 .loungeHeader {
@@ -30,12 +39,27 @@
   justify-content: center;
   align-items: center;
   gap: 7px;
+
+  @include tablet {
+    width: 80px;
+    height: 145px;
+    gap: 5px;
+
+    img {
+      width: 40px;
+      height: auto;
+    }
+  }
 }
 
 .loungeIcons {
   display: flex;
   flex-direction: column;
   gap: 4px;
+
+  @include tablet {
+    gap: 3px;
+  }
 }
 
 .loungeTitle {
@@ -43,6 +67,10 @@
   font-size: 20px;
   font-weight: 700;
   word-wrap: break-word;
+
+  @include tablet {
+    font-size: 15px;
+  }
 }
 
 .filtersContainer {
@@ -60,6 +88,14 @@
   justify-content: center;
   align-items: center;
   gap: 6px;
+
+  @include tablet {
+    width: 80px;
+    height: auto;
+    padding-top: 10px;
+    top: 145px;
+    gap: 4px;
+  }
 }
 
 .filterButton {
@@ -74,6 +110,12 @@
   cursor: pointer;
   transition: all 0.2s ease;
   gap: 8px;
+
+  @include tablet {
+    width: 55px;
+    height: 55px;
+    gap: 4px;
+  }
 
   &.active {
     background: #6600FF;
@@ -95,6 +137,10 @@
   font-size: 22px;
   font-weight: 700;
   word-wrap: break-word;
+
+  @include tablet {
+    font-size: 15px;
+  }
 }
 
 .filterCount {
@@ -102,6 +148,10 @@
   font-size: 18px;
   font-weight: 700;
   word-wrap: break-word;
+
+  @include tablet {
+    font-size: 12px;
+  }
 }
 
 .notificationDot {
@@ -112,17 +162,30 @@
   top: 127px;
   background: #DC0000;
   border-radius: 50%;
+
+  @include tablet {
+    width: 6px;
+    height: 6px;
+    left: 56px;
+    top: 95px;
+  }
 }
 
 .menuSection {
   width: 86px;
-  height: 292px;
   border-radius: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 10px;
+  margin-bottom: 35px;
+
+  @include tablet {
+    width: 70px;
+    gap: 8px;
+    margin-bottom: 25px;
+  }
 }
 
 .menuItem {
@@ -138,6 +201,12 @@
   cursor: pointer;
   transition: all 0.2s ease;
 
+  @include tablet {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+  }
+
   &:hover {
     background: rgba(102, 0, 255, 0.1);
     border-color: #6600FF;
@@ -152,12 +221,27 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @include tablet {
+    width: 26px;
+    height: 26px;
+
+    img {
+      width: 18px;
+      height: 18px;
+    }
+  }
 }
 
 .menuIconContent {
   width: 22px;
   height: 26px;
   background: #666666;
+
+  @include tablet {
+    width: 16px;
+    height: 20px;
+  }
 }
 
 .menuIconText{
@@ -165,6 +249,10 @@
   font-size: 20px;
   font-weight: 700;
   word-wrap: break-word;
+
+  @include tablet {
+    font-size: 15px;
+  }
 }
 
 .settingsIconContent {
@@ -172,18 +260,35 @@
   height: 28px;
   background: #666666;
   border-radius: 50%;
+
+  @include tablet {
+    width: 22px;
+    height: 22px;
+  }
 }
 
 .notificationIconContent {
   width: 21.67px;
   height: 25px;
   background: #666666;
+
+  @include tablet {
+    width: 16px;
+    height: 19px;
+  }
 }
 
 .notificationBadge {
   position: absolute;
   top: 1px;
   right: 1px;
+
+  @include tablet {
+    img {
+      width: 10px;
+      height: 10px;
+    }
+  }
 }
 
 .notificationSymbol {
@@ -192,6 +297,12 @@
   color: white;
   font-size: 8px;
   font-weight: bold;
+
+  @include tablet {
+    width: 5px;
+    height: 5px;
+    font-size: 6px;
+  }
 }
 
 .viewIconContent {
@@ -199,6 +310,11 @@
   height: 23px;
   background: #666666;
   border-radius: 3px;
+
+  @include tablet {
+    width: 18px;
+    height: 18px;
+  }
 }
 
 .menuLabel {
@@ -208,4 +324,18 @@
   font-weight: 600;
   word-wrap: break-word;
   margin-top: 2px;
+
+  @include tablet {
+    font-size: 11px;
+    margin-top: 1px;
+  }
+
+  button {
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    padding: 0;
+  }
 }

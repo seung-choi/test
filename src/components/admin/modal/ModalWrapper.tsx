@@ -1,5 +1,5 @@
 import React from 'react';
-import alertStyles from '@/styles/components/AlertModal.module.scss';
+import styles from '@/styles/components/Modal.module.scss';
 
 interface ModalWrapperProps {
   isShow: boolean;
@@ -24,7 +24,7 @@ const ModalWrapper: React.FC<ModalWrapperProps> = ({
 
   return (
     <div
-      className={alertStyles["alert-popup"]}
+      className={styles.alertPopup}
       onClick={handleOverlayClick}
     >
       {children}

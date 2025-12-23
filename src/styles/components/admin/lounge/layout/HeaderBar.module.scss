@@ -1,3 +1,5 @@
+@import '@/styles/common/mixins';
+
 .headerContainer {
   width: 100%;
   background: #F3F3F3;
@@ -9,7 +11,7 @@
 .expanded{
   height: 201px;
 
-  @media (max-width: 768px) {
+  @include tablet {
     height: 145px;
   }
 }
@@ -20,6 +22,10 @@
   align-content: center;
   justify-content: center;
   flex-wrap: wrap;
+
+  @include tablet{
+    height: 35px;
+  }
 }
 
 .expandedHeader {
@@ -32,6 +38,10 @@
   transition: opacity 0.3s ease;
   height: 100%;
   overflow: visible;
+
+  @include tablet {
+    padding: 30px 25px 10px 25px;
+  }
 }
 
 .collapsedHeader {
@@ -57,6 +67,11 @@
   justify-content: center;
   transition: all 0.3s ease;
 
+  @include tablet {
+    width: 18px;
+    height: 18px;
+  }
+
   &:hover {
     opacity: 0.7;
   }
@@ -64,6 +79,11 @@
 
 .toggleIcon {
   transition: transform 0.3s ease;
+
+  @include tablet {
+    width: 18px;
+    height: 18px;
+  }
 
   .headerContainer.collapsed & {
     transform: rotate(180deg);
@@ -76,6 +96,12 @@
   justify-content: space-between;
   align-items: center;
   overflow: visible;
+
+  @include mobile {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
 }
 
 .courseSection {
@@ -84,14 +110,26 @@
   align-items: center;
   gap: 20px;
   overflow: visible;
+
+  @include tablet {
+    gap: 12px;
+  }
+
+  @include mobile {
+    justify-content: center;
+  }
 }
 
 .courseSectionWrapper {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
   overflow: visible;
+
+  @include tablet {
+    gap: 8px;
+  }
 }
 
 .holeTag {
@@ -108,12 +146,28 @@
   gap: 10px;
   overflow: visible;
 
+  @include tablet {
+    min-width: 90px;
+    height: 16px;
+    padding: 3px 12px;
+    border-radius: 24px;
+    gap: 8px;
+  }
+
   &:first-child {
     min-width: 187px;
+
+    @include tablet {
+      min-width: 140px;
+    }
   }
 
   &:last-child {
     min-width: 217px;
+
+    @include tablet {
+      min-width: 163px;
+    }
   }
 }
 
@@ -123,6 +177,10 @@
   font-weight: 700;
   text-align: right;
   word-wrap: break-word;
+
+  @include tablet {
+    font-size: 12px;
+  }
 }
 
 .holeDot {
@@ -131,6 +189,10 @@
   justify-content: center;
   align-items: center;
   gap: 10px;
+
+  @include tablet {
+    display: none;
+  }
 
   &::before {
     content: '';
@@ -158,6 +220,12 @@
   align-items: center;
   gap: 2px;
   display: inline-flex;
+
+  @include tablet {
+    min-width: 45px;
+    padding: 4px;
+    gap: 1.5px;
+  }
 }
 
 .golferName {
@@ -174,6 +242,12 @@
   line-height: 20px;
   word-wrap: break-word;
   white-space: nowrap;
+
+  @include tablet {
+    font-size: 14px;
+    line-height: 16px;
+    padding: 1.5px 6px;
+  }
 }
 
 .golferStatusContainer {
@@ -183,6 +257,10 @@
   align-items: center;
   display: flex;
   position: relative;
+
+  @include tablet {
+    height: 20px;
+  }
 }
 
 .golferStatusAlert {
@@ -200,6 +278,14 @@
   outline: 3px solid #DC0000;
   outline-offset: -1.5px;
   position: absolute;
+
+  @include tablet {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    outline: 2px solid #DC0000;
+    outline-offset: -1px;
+  }
 }
 
 .golferStatusIcon {
@@ -209,6 +295,11 @@
   border-radius: 50%;
   position: relative;
   z-index: 1;
+
+  @include tablet {
+    width: 12px;
+    height: 12px;
+  }
 }
 
 .golferStatusNormal {
@@ -216,6 +307,11 @@
   height: 16px;
   background: #FEBA38;
   border-radius: 50%;
+
+  @include tablet {
+    width: 12px;
+    height: 12px;
+  }
 }
 
 .golferTime {
@@ -232,12 +328,22 @@
   line-height: 20px;
   word-wrap: break-word;
   white-space: nowrap;
+
+  @include tablet {
+    font-size: 14px;
+    line-height: 16px;
+    padding: 1.5px 6px;
+  }
 }
 
 .centerSection {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 15px;
+
+  @include tablet {
+    gap: 10px;
+  }
 }
 
 .courseButton {
@@ -257,24 +363,22 @@
   font-weight: 700;
   color: #313246;
 
+  @include tablet {
+    height: 22px;
+    padding: 1.5px 3px;
+    border-radius: 40px;
+    gap: 5px;
+    font-size: 12px;
+  }
+
   &.lakeButton {
     background: rgba(219.94, 0, 0, 0.20);
     border-color: #CE0A0A;
-
-    &.active {
-      background: rgba(219.94, 0, 0, 0.40);
-      border-color: #CE0A0A;
-    }
   }
 
   &.hillButton {
     background: rgba(251.81, 228.94, 23.08, 0.20);
     border-color: #FFCC00;
-
-    &.active {
-      background: rgba(251.81, 228.94, 23.08, 0.40);
-      border-color: #FFCC00;
-    }
   }
 
   &:hover {
@@ -292,6 +396,12 @@
   > img {
     position: absolute;
     top: 40px;
+
+    @include tablet {
+      width: 11px;
+      height: 6px;
+      top: 30px;
+    }
   }
 }
 
@@ -303,6 +413,16 @@
   line-height: 31px;
   word-wrap: break-word;
   margin: 0;
+
+  @include tablet {
+    font-size: 18px;
+    line-height: 24px;
+  }
+
+  @include mobile {
+    font-size: 16px;
+    line-height: 20px;
+  }
 }
 
 .startHouseUnderline {
@@ -311,50 +431,16 @@
   border: 2px solid #1F1F1F;
 }
 
-@media (max-width: 1200px) {
-  .headerContent {
-    max-width: 100%;
-    padding: 0 10px;
-  }
-
-  .courseSection {
-    gap: 15px;
-  }
-
-  .courseSectionWrapper {
-    gap: 15px;
-  }
-
-  .holeTag {
-    min-width: 100px;
-
-    &:first-child,
-    &:last-child {
-      min-width: 150px;
-    }
-  }
-
-  .holeDot {
-    display: none;
-  }
-
-  .centerSection {
-    gap: 20px;
-  }
-
-  .golferName,
-  .golferTime {
-    font-size: 16px;
-    line-height: 16px;
-  }
-}
-
 .scheduleSection {
   width: 100%;
   height: 100%;
   justify-content: space-between;
   align-items: end;
   display: inline-flex;
+
+  @include tablet {
+    gap: 15px;
+  }
 }
 
 .scheduleRow {
@@ -366,6 +452,12 @@
   align-items: center;
   gap: 14px;
   display: flex;
+
+  @include tablet {
+    width: 480px;
+    padding-top: 8px;
+    gap: 10px;
+  }
 }
 
 .scheduleItems {
@@ -377,6 +469,11 @@
   gap: 14px;
   display: flex;
   scroll-behavior: smooth;
+
+  @include tablet {
+    width: 460px;
+    gap: 10px;
+  }
 
   &::-webkit-scrollbar {
     display: none;
@@ -396,8 +493,18 @@
   height: 30px;
   flex-shrink: 0;
 
+  @include tablet {
+    padding: 4px 15px 4px 4px;
+    gap: 4px;
+    height: 24px;
+  }
+
   &:last-child {
     padding-right: 15px;
+
+    @include tablet {
+      padding-right: 12px;
+    }
   }
 }
 
@@ -413,6 +520,11 @@
     height: 16px;
     background: #DC0000;
     border-radius: 50%;
+
+    @include tablet {
+      width: 12px;
+      height: 12px;
+    }
   }
 
   .statusIconLarge {
@@ -424,6 +536,14 @@
     outline-offset: -1.5px;
     position: relative;
 
+    @include tablet {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      outline: 2px solid #DC0000;
+      outline-offset: -1px;
+    }
+
     &::after {
       content: '';
       position: absolute;
@@ -433,6 +553,13 @@
       height: 16px;
       background: #DC0000;
       border-radius: 50%;
+
+      @include tablet {
+        bottom: 4px;
+        left: 4px;
+        width: 12px;
+        height: 12px;
+      }
     }
   }
 }
@@ -445,6 +572,10 @@
   gap: 10px;
   display: inline-flex;
 
+  @include tablet {
+    gap: 8px;
+  }
+
   .userName {
     text-align: center;
     justify-content: center;
@@ -455,6 +586,11 @@
     font-weight: 400;
     line-height: 20px;
     word-wrap: break-word;
+
+    @include tablet {
+      font-size: 14px;
+      line-height: 16px;
+    }
   }
 }
 
@@ -463,6 +599,10 @@
   align-items: center;
   gap: 10px;
   display: flex;
+
+  @include tablet {
+    gap: 8px;
+  }
 
   .timeText {
     text-align: center;
@@ -474,6 +614,11 @@
     font-weight: 400;
     line-height: 20px;
     word-wrap: break-word;
+
+    @include tablet {
+      font-size: 14px;
+      line-height: 16px;
+    }
   }
 }
 
@@ -483,36 +628,19 @@
   transform: rotate(-90deg);
   transform-origin: top left;
   background: #444444;
+
+  @include tablet {
+    width: 9px;
+    height: 5.5px;
+  }
 }
 
 .spacer {
   width: 337px;
   height: 51px;
-}
 
-@media (max-width: 768px) {
-  .headerContainer {
-    &.expanded {
-      height: auto;
-    }
-  }
-
-  .expandedHeader {
-    padding: 30px 10px 15px 10px;
-    gap: 30px;
-  }
-
-  .headerContent {
-    flex-direction: column;
-    gap: 20px;
-    align-items: center;
-  }
-
-  .courseSection {
-    justify-content: center;
-  }
-
-  .startHouseTitle {
-    font-size: 20px;
+  @include tablet {
+    width: 250px;
+    height: 40px;
   }
 }

@@ -1,12 +1,14 @@
 @import '../../../styles/common/mixins';
 
 .container {
-  min-height: 400px;
-  min-width: 800px;
+  min-height: 500px;
+  min-width: 910px;
+  max-height: 785px;
 
   @include tablet {
-    min-width: 90vw;
-    max-width: 750px;
+    min-width: 680px;
+    min-height: 375px;
+    max-height: 590px;
   }
   position: relative;
   background: white;
@@ -27,7 +29,7 @@
     padding: 20px 70px;
 
     @include tablet {
-      padding: 18px 50px;
+      padding: 15px 52px;
     }
 
     .title {
@@ -38,8 +40,8 @@
       line-height: 37px;
 
       @include tablet {
-        font-size: 26px;
-        line-height: 32px;
+        font-size: 22px;
+        line-height: 28px;
       }
     }
 
@@ -52,6 +54,13 @@
       background: transparent;
       border: none;
       cursor: pointer;
+
+      @include tablet {
+        width: 17px;
+        height: 17px;
+        right: 19px;
+        top: 19px;
+      }
     }
   }
 
@@ -59,16 +68,30 @@
     padding: 20px 70px;
 
     @include tablet {
-      padding: 18px 50px;
+      padding: 15px 52px;
     }
 
     .reasonList {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      display: flex;
+      flex-direction: column;
       gap: 16px;
+
+      @include tablet {
+        gap: 12px;
+      }
+
+      &.multipleItems {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      &.singleItem {
+        align-items: center;
+      }
 
       .reasonButton {
         width: 100%;
+        max-width: 300px;
         height: 60px;
         border-radius: 12px;
         outline: 0.80px #959595 solid;
@@ -85,8 +108,17 @@
         transition: all 0.2s;
 
         @include tablet {
-          height: 52px;
-          font-size: 22px;
+          height: 45px;
+          font-size: 18px;
+          border-radius: 9px;
+        }
+
+        .singleItem & {
+          max-width: 300px;
+
+          @include tablet {
+            max-width: 225px;
+          }
         }
 
         &:hover {
@@ -110,7 +142,8 @@
     padding: 30px 70px;
 
     @include tablet {
-      padding: 25px 50px;
+      padding: 22px 52px;
+      gap: 12px;
     }
 
     .cancelButton {
@@ -133,9 +166,10 @@
       transition: background 0.2s;
 
       @include tablet {
-        width: 180px;
-        height: 48px;
-        font-size: 20px;
+        width: 160px;
+        height: 40px;
+        font-size: 16px;
+        padding: 7px 15px;
       }
 
       &:hover {
@@ -161,9 +195,10 @@
       transition: background 0.2s;
 
       @include tablet {
-        width: 180px;
-        height: 48px;
-        font-size: 20px;
+        width: 160px;
+        height: 40px;
+        font-size: 16px;
+        padding: 7px 15px;
       }
 
       &:hover {

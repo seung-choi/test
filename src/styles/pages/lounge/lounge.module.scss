@@ -1,3 +1,5 @@
+@import '../../../styles/common/mixins';
+
 .loungeContainer {
   display: flex;
   height: 100vh;
@@ -21,10 +23,16 @@
 
   &.headerExpanded {
     height: calc(100% - 200px);
+    @include tablet {
+      height: calc(100% - 145px);
+    }
   }
 
   &.headerCollapsed {
     height: calc(100% - 50px);
+    @include tablet{
+      height: calc(100% - 35px);
+    }
   }
 
   > * {

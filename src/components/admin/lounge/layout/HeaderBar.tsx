@@ -67,10 +67,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
         key={golfer.id}
         className={styles.golferPosition}
         style={{
-          position: 'absolute',
           left: golfer.position.left,
-          top: '-35px',
-          zIndex: 10
         }}
       >
         <div className={styles.golferCard}>
