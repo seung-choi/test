@@ -12,6 +12,9 @@
   overflow: hidden;
   width: calc(100% - 106px);
   background: white;
+  @include tablet {
+    width: calc(100% - 80px);
+  }
 }
 
 .infoCardContainer {
