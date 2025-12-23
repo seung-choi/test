@@ -1,0 +1,118 @@
+$breakpoint-mobile: 768px;
+$breakpoint-tablet: 1024px;
+$breakpoint-desktop: 1440px;
+
+@mixin mobile {
+  @media (max-width: #{$breakpoint-mobile - 1px}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: #{$breakpoint-mobile}) and (max-width: #{$breakpoint-tablet - 1px}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: #{$breakpoint-tablet}) {
+    @content;
+  }
+}
+
+@mixin mobile-tablet {
+  @media (max-width: #{$breakpoint-tablet - 1px}) {
+    @content;
+  }
+}
+
+@mixin tablet-desktop {
+  @media (min-width: #{$breakpoint-mobile}) {
+    @content;
+  }
+}
+
+@mixin touch-device {
+  @media (hover: none) and (pointer: coarse) {
+    @content;
+  }
+}
+
+@mixin safe-area-inset($property, $value) {
+  #{$property}: $value;
+  #{$property}: calc(#{$value} + env(safe-area-inset-top, 0px));
+}
+
+@mixin safe-area-inset-bottom($property, $value) {
+  #{$property}: $value;
+  #{$property}: calc(#{$value} + env(safe-area-inset-bottom, 0px));
+}
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin ellipsis($lines: 1) {
+  @if $lines == 1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+@mixin custom-scrollbar($width: 5px, $thumb-color: rgba(123, 123, 123, 0.4), $track-color: transparent) {
+  &::-webkit-scrollbar {
+    width: $width;
+    height: $width;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $thumb-color;
+    border-radius: 15px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: $track-color;
+  }
+
+  scrollbar-width: thin;
+  scrollbar-color: $thumb-color $track-color;
+}
+
+@mixin responsive-font-size($mobile-size, $desktop-size) {
+  font-size: $mobile-size;
+
+  @include desktop {
+    font-size: $desktop-size;
+  }
+}
+
+@mixin touch-target($size: 44px) {
+  min-width: $size;
+  min-height: $size;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin responsive-spacing($property, $mobile-value, $desktop-value) {
+  #{$property}: $mobile-value;
+
+  @include desktop {
+    #{$property}: $desktop-value;
+  }
+}

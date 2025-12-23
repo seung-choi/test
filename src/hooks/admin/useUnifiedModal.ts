@@ -9,12 +9,14 @@ import {
   erpSearchModalState,
   deleteConfirmModalState,
   cancelReasonManagementModalState,
+} from '@/lib/recoil/admin/modalAtom';
+import {
   ProductFormData,
   Category,
   DeleteItem,
   CancelReason
-} from '@/lib/recoil/admin/modalAtom';
-import { ErpProduct } from '@/types/erp';
+} from '@/types/admin/modal.type';
+import { ErpProduct } from '@/types/erp.type';
 
 // 공통 close 함수 생성 헬퍼
 const createCloseModal = <T extends { isShow: boolean }>(

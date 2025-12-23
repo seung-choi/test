@@ -1,6 +1,13 @@
+@import '../../../styles/common/mixins';
+
 .container {
   min-height: 400px;
   min-width: 800px;
+
+  @include tablet {
+    min-width: 90vw;
+    max-width: 750px;
+  }
   position: relative;
   background: white;
   overflow: hidden;
@@ -19,12 +26,21 @@
     border-bottom: 1px solid #D9D9D9;
     padding: 20px 70px;
 
+    @include tablet {
+      padding: 18px 50px;
+    }
+
     .title {
       color: black;
       font-size: 30px;
       font-weight: 700;
       word-wrap: break-word;
       line-height: 37px;
+
+      @include tablet {
+        font-size: 26px;
+        line-height: 32px;
+      }
     }
 
     .closeButton {
@@ -41,6 +57,10 @@
 
   .content {
     padding: 20px 70px;
+
+    @include tablet {
+      padding: 18px 50px;
+    }
 
     .reasonList {
       display: grid;
@@ -64,6 +84,11 @@
         cursor: pointer;
         transition: all 0.2s;
 
+        @include tablet {
+          height: 52px;
+          font-size: 22px;
+        }
+
         &:hover {
           background: rgba(102, 102, 102, 0.05);
         }
@@ -84,6 +109,10 @@
     gap: 16px;
     padding: 30px 70px;
 
+    @include tablet {
+      padding: 25px 50px;
+    }
+
     .cancelButton {
       width: 213px;
       height: 54px;
@@ -102,6 +131,12 @@
       font-weight: 400;
       cursor: pointer;
       transition: background 0.2s;
+
+      @include tablet {
+        width: 180px;
+        height: 48px;
+        font-size: 20px;
+      }
 
       &:hover {
         background: rgba(6, 85, 246, 0.05);
@@ -124,6 +159,12 @@
       font-weight: 700;
       cursor: pointer;
       transition: background 0.2s;
+
+      @include tablet {
+        width: 180px;
+        height: 48px;
+        font-size: 20px;
+      }
 
       &:hover {
         background: #001580;

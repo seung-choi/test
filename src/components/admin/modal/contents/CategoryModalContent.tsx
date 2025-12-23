@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import styles from '@/styles/components/modal/CategoryModal.module.scss';
-import { Category } from '@/lib/recoil/admin/modalAtom';
+import { Category } from '@/types/admin/modal.type';
 
 interface CategoryModalContentProps {
   initialCategories: Category[];

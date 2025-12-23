@@ -1,4 +1,4 @@
-import { ErpProduct } from '@/types/erp';
+import { ErpProduct } from '@/types/erp.type';
 
 export const erpMockData: ErpProduct[] = [
   { id: '1', category: '안주류', code: '11B520', name: '양식 푸라닭 치킨', price: 120000 },

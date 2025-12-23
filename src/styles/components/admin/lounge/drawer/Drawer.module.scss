@@ -1,3 +1,5 @@
+@import '../../../../../styles/common/mixins';
+
 .drawerOverlay {
   position: fixed;
   top: 0;
@@ -21,6 +23,10 @@
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   padding: 0 40px 30px 30px;
+
+  @include tablet {
+    padding: 0 30px 25px 25px;
+  }
 }
 
 .drawerContent {
@@ -38,11 +44,21 @@
   margin-top: 70px;
   margin-bottom: 20px;
 
+  @include tablet {
+    margin-top: 50px;
+    gap: 20px;
+  }
+
   .title {
     color: #1F1F1F;
     font-size: 40px;
     font-weight: 700;
     line-height: 50px;
+
+    @include tablet {
+      font-size: 32px;
+      line-height: 40px;
+    }
   }
 
   .titleContainer {
@@ -72,10 +88,19 @@
   align-items: center;
   gap: 10px;
 
+  @include tablet {
+    width: 160px;
+    height: 48px;
+  }
+
   .storeName {
     color: #444444;
     font-size: 24px;
     font-weight: 600;
+
+    @include tablet {
+      font-size: 20px;
+    }
   }
 }
 

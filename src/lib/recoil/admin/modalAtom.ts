@@ -1,13 +1,16 @@
 import { atom } from 'recoil';
-import { MessageFormData } from '@/types';
-import { ErpProduct } from '@/types/erp';
+import {
+  CancelModalState,
+  MessageModalState,
+  ConfirmModalState,
+  ProductModalState,
+  CategoryModalState,
+  ErpSearchModalState,
+  DeleteConfirmModalState,
+  CancelReasonManagementModalState,
+} from '@/types/admin/modal.type';
 
-export interface CancelModalState {
-  isShow: boolean;
-  onConfirm: (reason: string) => void;
-  onCancel?: () => void;
-}
-
+// 취소 사유 모달
 export const cancelModalState = atom<CancelModalState>({
   key: 'cancelModalState',
   default: {
@@ -16,14 +19,7 @@ export const cancelModalState = atom<CancelModalState>({
   },
 });
 
-export interface MessageModalState {
-  isShow: boolean;
-  title: string;
-  recipients?: string[];
-  onSubmit?: (data: MessageFormData) => void;
-  onCancel?: () => void;
-}
-
+// 메시지 모달
 export const messageModalState = atom<MessageModalState>({
   key: 'messageModalState',
   default: {
@@ -32,16 +28,7 @@ export const messageModalState = atom<MessageModalState>({
   },
 });
 
-export interface ConfirmModalState {
-  isShow: boolean;
-  title: string;
-  desc: string;
-  okBtnLabel?: string;
-  cancelBtnLabel?: string;
-  onConfirm?: () => void;
-  onCancel?: () => void;
-}
-
+// 확인 모달
 export const confirmModalState = atom<ConfirmModalState>({
   key: 'confirmModalState',
   default: {
@@ -51,30 +38,7 @@ export const confirmModalState = atom<ConfirmModalState>({
   },
 });
 
-export interface ProductFormData {
-  status: '판매' | '대기' | '중지';
-  channels: string[];
-  types: string[];
-  image?: File;
-  category: string;
-  store: string;
-  code: string;
-  name: string;
-  price: string;
-  cookingTime: number;
-  tags: string[];
-  registeredDate?: string;
-  updatedDate?: string;
-}
-
-export interface ProductModalState {
-  isShow: boolean;
-  mode: 'create' | 'edit';
-  initialData?: ProductFormData;
-  onSubmit?: (data: ProductFormData) => void;
-  onCancel?: () => void;
-}
-
+// 상품 등록/수정 모달
 export const productModalState = atom<ProductModalState>({
   key: 'productModalState',
   default: {
@@ -83,19 +47,7 @@ export const productModalState = atom<ProductModalState>({
   },
 });
 
-export interface Category {
-  id: string;
-  name: string;
-  order: number;
-}
-
-export interface CategoryModalState {
-  isShow: boolean;
-  categories: Category[];
-  onSubmit?: (categories: Category[]) => void;
-  onCancel?: () => void;
-}
-
+// 분류 설정 모달
 export const categoryModalState = atom<CategoryModalState>({
   key: 'categoryModalState',
   default: {
@@ -104,12 +56,7 @@ export const categoryModalState = atom<CategoryModalState>({
   },
 });
 
-export interface ErpSearchModalState {
-  isShow: boolean;
-  onSelect?: (product: ErpProduct) => void;
-  onCancel?: () => void;
-}
-
+// ERP 검색 모달
 export const erpSearchModalState = atom<ErpSearchModalState>({
   key: 'erpSearchModalState',
   default: {
@@ -117,20 +64,7 @@ export const erpSearchModalState = atom<ErpSearchModalState>({
   },
 });
 
-export interface DeleteItem {
-  code: string;
-  category: string;
-  name: string;
-  price: number;
-}
-
-export interface DeleteConfirmModalState {
-  isShow: boolean;
-  items: DeleteItem[];
-  onConfirm?: () => void;
-  onCancel?: () => void;
-}
-
+// 삭제 확인 모달
 export const deleteConfirmModalState = atom<DeleteConfirmModalState>({
   key: 'deleteConfirmModalState',
   default: {
@@ -139,19 +73,7 @@ export const deleteConfirmModalState = atom<DeleteConfirmModalState>({
   },
 });
 
-export interface CancelReason {
-  id: string;
-  content: string;
-  order: number;
-}
-
-export interface CancelReasonManagementModalState {
-  isShow: boolean;
-  reasons: CancelReason[];
-  onSubmit?: (reasons: CancelReason[]) => void;
-  onCancel?: () => void;
-}
-
+// 취소 사유 관리 모달
 export const cancelReasonManagementModalState = atom<CancelReasonManagementModalState>({
   key: 'cancelReasonManagementModalState',
   default: {
