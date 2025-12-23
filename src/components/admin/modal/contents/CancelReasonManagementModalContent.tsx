@@ -18,6 +18,8 @@ import {
   useSortable,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import CommonModalLayout from '@/components/admin/modal/CommonModalLayout';
+import commonStyles from '@/styles/components/modal/CommonModal.module.scss';
 import styles from '@/styles/components/modal/CancelReasonManagementModal.module.scss';
 import { CancelReason } from '@/types/admin/modal.type';
 
@@ -87,7 +89,6 @@ const SortableRow: React.FC<SortableRowProps> = ({ reason, onDelete }) => {
 const CancelReasonManagementModalContent: React.FC<CancelReasonManagementModalContentProps> = ({
   initialReasons,
   onSubmit,
-  onClose,
 }) => {
   const [reasons, setReasons] = useState<CancelReason[]>(initialReasons);
   const [newReason, setNewReason] = useState('');
@@ -138,7 +139,6 @@ const CancelReasonManagementModalContent: React.FC<CancelReasonManagementModalCo
   };
 
   const handleSubmit = () => {
-    // 순서 재정렬
     const updatedReasons = reasons.map((reason, index) => ({
       ...reason,
       order: index,
@@ -152,75 +152,67 @@ const CancelReasonManagementModalContent: React.FC<CancelReasonManagementModalCo
     }
   };
 
+  const buttons = (
+    <button className={commonStyles.confirmButton} onClick={handleSubmit}>
+      저장
+    </button>
+  );
+
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <div className={styles.title}>취소 관리</div>
-      </div>
-
-      <div className={styles.divider} />
-
-      <div className={styles.content}>
-        <div className={styles.inputGroup}>
-          <input
-            type="text"
-            className={styles.input}
-            placeholder="취소 사유를 작성해주세요"
-            value={newReason}
-            onChange={(e) => setNewReason(e.target.value)}
-            onKeyPress={handleKeyPress}
-          />
-          <button className={styles.addButton} onClick={handleAdd}>
-            추가
-          </button>
-        </div>
-
-        <div className={styles.tableContainer}>
-          <div className={styles.tableHeader}>
-            <div className={styles.orderColumn}>
-              <div className={styles.headerText}>순서</div>
-            </div>
-            <div className={styles.contentColumn}>
-              <div className={styles.headerText}>내용</div>
-            </div>
-            <div className={styles.actionColumn}>
-              <div className={styles.headerText}>관리</div>
-            </div>
-          </div>
-
-          <div className={styles.tableBody}>
-            <DndContext
-              sensors={sensors}
-              collisionDetection={closestCenter}
-              onDragEnd={handleDragEnd}
-            >
-              <SortableContext
-                items={reasons.map(r => r.id)}
-                strategy={verticalListSortingStrategy}
-              >
-                {reasons.map((reason) => (
-                  <SortableRow
-                    key={reason.id}
-                    reason={reason}
-                    onDelete={handleDelete}
-                  />
-                ))}
-              </SortableContext>
-            </DndContext>
-          </div>
-        </div>
-
-        <div className={styles.notice}>
-          취소 사유는 최대 10개까지 등록이 가능합니다.
-        </div>
-      </div>
-
-      <div className={styles.buttonContainer}>
-        <button className={styles.saveButton} onClick={handleSubmit}>
-          저장
+    <CommonModalLayout title="취소 관리" buttons={buttons}>
+      <div className={styles.inputGroup}>
+        <input
+          type="text"
+          className={styles.input}
+          placeholder="취소 사유를 작성해주세요"
+          value={newReason}
+          onChange={(e) => setNewReason(e.target.value)}
+          onKeyDown={handleKeyPress}
+        />
+        <button className={styles.addButton} onClick={handleAdd}>
+          추가
         </button>
       </div>
-    </div>
+
+      <div className={styles.tableContainer}>
+        <div className={styles.tableHeader}>
+          <div className={styles.orderColumn}>
+            <div className={styles.headerText}>순서</div>
+          </div>
+          <div className={styles.contentColumn}>
+            <div className={styles.headerText}>내용</div>
+          </div>
+          <div className={styles.actionColumn}>
+            <div className={styles.headerText}>관리</div>
+          </div>
+        </div>
+
+        <div className={styles.tableBody}>
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext
+              items={reasons.map(r => r.id)}
+              strategy={verticalListSortingStrategy}
+            >
+              {reasons.map((reason) => (
+                <SortableRow
+                  key={reason.id}
+                  reason={reason}
+                  onDelete={handleDelete}
+                />
+              ))}
+            </SortableContext>
+          </DndContext>
+        </div>
+      </div>
+
+      <div className={styles.notice}>
+        취소 사유는 최대 10개까지 등록이 가능합니다.
+      </div>
+    </CommonModalLayout>
   );
 };
 

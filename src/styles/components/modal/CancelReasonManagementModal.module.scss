@@ -1,271 +1,350 @@
 @import '../../../styles/common/mixins';
 
-.container {
-  width: 740px;
-  max-height: 90vh;
+.inputGroup {
+  display: flex;
+  overflow: hidden;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 20px;
 
   @include tablet {
-    width: 90vw;
-    max-width: 700px;
+    margin-bottom: 15px;
   }
-  position: relative;
+
+  .input {
+    flex: 1;
+    height: 45px;
+    padding-left: 20px;
+    background: white;
+    outline: 1px #D9D9D9 solid;
+    outline-offset: -1px;
+    border: none;
+    color: #444444;
+    font-size: 20px;
+    font-weight: 400;
+
+    @include tablet {
+      height: 40px;
+      font-size: 16px;
+      padding-left: 15px;
+    }
+
+    &::placeholder {
+      color: #959595;
+    }
+
+    &:focus {
+      outline: 1px #7B7B7B solid;
+      outline-offset: -1px;
+    }
+  }
+
+  .addButton {
+    width: 129px;
+    height: 45px;
+    background: #7B7B7B;
+    border: none;
+    color: #F3F3F3;
+    font-size: 20px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    @include tablet {
+      width: 100px;
+      height: 40px;
+      font-size: 16px;
+    }
+
+    &:hover {
+      background: #6A6A6A;
+    }
+  }
+}
+
+.tableContainer {
   background: white;
-  box-shadow: 0px 4px 4px rgba(128, 128, 128, 0.55);
   overflow: hidden;
-  border-radius: 20px;
-  outline: 1px #666666 solid;
-  outline-offset: -1px;
   display: flex;
   flex-direction: column;
+  margin-bottom: 15px;
+  height: calc(60vh - 200px);
+  min-height: 300px;
 
-  .header {
-    padding: 25px 66px;
+  @include tablet {
+    margin-bottom: 12px;
+    height: calc(55vh - 180px);
+    min-height: 250px;
+  }
+
+  .tableHeader {
+    display: flex;
+    height: 45px;
+    background: #D9D9D9;
+    border-bottom: 1px #959595 solid;
+    align-items: center;
+    flex-shrink: 0;
 
     @include tablet {
-      padding: 20px 40px;
+      height: 40px;
     }
 
-    .title {
-      color: black;
-      font-size: 30px;
-      font-weight: 700;
-      line-height: 36px;
+    .orderColumn,
+    .contentColumn,
+    .actionColumn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .orderColumn {
+      width: 70px;
 
       @include tablet {
-        font-size: 26px;
-        line-height: 32px;
+        width: 60px;
       }
     }
-  }
 
-  .divider {
-    width: 100%;
-    height: 1px;
-    background: #D9D9D9;
-  }
+    .contentColumn {
+      width: 436px;
 
-  .content {
-    padding: 25px 66px 30px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-
-    @include tablet {
-      padding: 20px 40px 25px;
-    }
-
-    .inputGroup {
-      display: flex;
-      overflow: hidden;
-      justify-content: flex-start;
-      align-items: center;
-
-      .input {
+      @include tablet {
         flex: 1;
-        height: 45px;
-        padding-left: 20px;
-        background: white;
-        outline: 1px #D9D9D9 solid;
-        outline-offset: -1px;
-        border: none;
-        color: #444444;
-        font-size: 20px;
-        font-weight: 400;
-
-        @include tablet {
-          height: 44px;
-          font-size: 18px;
-        }
-
-        &::placeholder {
-          color: #959595;
-        }
-
-        &:focus {
-          outline: 1px #7B7B7B solid;
-          outline-offset: -1px;
-        }
-      }
-
-      .addButton {
-        width: 129px;
-        height: 45px;
-        background: #7B7B7B;
-        border: none;
-        color: #F3F3F3;
-        font-size: 20px;
-        font-weight: 700;
-        cursor: pointer;
-        transition: background 0.2s;
-
-        @include tablet {
-          width: 100px;
-          height: 44px;
-          font-size: 18px;
-        }
-
-        &:hover {
-          background: #6A6A6A;
-        }
       }
     }
 
-    .tableContainer {
-      background: white;
-      border-radius: 10px;
-      overflow: hidden;
+    .actionColumn {
+      flex: 1;
+
+      @include tablet {
+        width: 80px;
+        flex: none;
+      }
+    }
+
+    .headerText {
+      color: #444444;
+      font-size: 18px;
+      font-weight: 500;
+
+      @include tablet {
+        font-size: 16px;
+      }
+    }
+  }
+
+  .tableBody {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 0;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f5f5f5;
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #D9D9D9;
+      border-radius: 4px;
+
+      &:hover {
+        background: #c0c0c0;
+      }
+
+      &:active {
+        background: #a0a0a0;
+      }
+    }
+
+    scrollbar-width: thin;
+    scrollbar-color: #D9D9D9 #f5f5f5;
+
+    .tableRow {
       display: flex;
-      flex-direction: column;
+      height: 45px;
+      background: #F3F3F3;
+      outline: 1px white solid;
+      outline-offset: -1px;
+      align-items: center;
+      flex-shrink: 0;
 
-      .tableHeader {
+      @include tablet {
+        height: 40px;
+      }
+
+      &.dragging {
+        background: rgba(6, 85, 246, 0.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1;
+      }
+
+      .orderColumn,
+      .contentColumn,
+      .actionColumn {
         display: flex;
-        height: 45px;
-        background: #D9D9D9;
-        border-bottom: 1px #959595 solid;
+        justify-content: center;
         align-items: center;
+        height: 100%;
+      }
 
-        .orderColumn,
-        .contentColumn,
-        .actionColumn {
+      .orderColumn {
+        width: 70px;
+        background: #D9D9D9;
+        border-top: 1px white solid;
+        border-bottom: 1px white solid;
+
+        @include tablet {
+          width: 60px;
+        }
+
+        .dragHandle {
           display: flex;
           justify-content: center;
           align-items: center;
-        }
+          cursor: grab;
+          padding: 10px;
+          width: 100%;
+          height: 100%;
+          transition: background-color 0.2s;
 
-        .orderColumn {
-          width: 70px;
-        }
+          @include tablet {
+            padding: 8px;
+          }
 
-        .contentColumn {
-          width: 436px;
-        }
+          &:hover {
+            background: rgba(123, 123, 123, 0.1);
+          }
 
-        .actionColumn {
+          &:active {
+            cursor: grabbing;
+          }
+
+          svg {
+            @include tablet {
+              width: 16px;
+              height: 8px;
+            }
+          }
+        }
+      }
+
+      .contentColumn {
+        width: 436px;
+        padding: 0 15px;
+
+        @include tablet {
           flex: 1;
+          padding: 0 10px;
         }
 
-        .headerText {
+        .contentText {
           color: #444444;
           font-size: 18px;
-          font-weight: 500;
+          font-weight: 700;
+          word-break: break-all;
+          text-align: center;
+          width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+
+          @include tablet {
+            font-size: 16px;
+            text-align: left;
+          }
         }
       }
 
-      .tableBody {
-        max-height: 405px;
-        overflow-y: auto;
+      .actionColumn {
+        flex: 1;
 
-        .tableRow {
+        @include tablet {
+          width: 80px;
+          flex: none;
+        }
+
+        .deleteButton {
           display: flex;
-          height: 45px;
-          background: #F3F3F3;
-          outline: 1px white solid;
-          outline-offset: -1px;
+          justify-content: center;
           align-items: center;
+          gap: 6px;
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 5px 10px;
+          transition: opacity 0.2s;
+          border-radius: 4px;
 
-          .orderColumn,
-          .contentColumn,
-          .actionColumn {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+          @include tablet {
+            padding: 3px 8px;
+            gap: 4px;
           }
 
-          .orderColumn {
-            width: 70px;
-            background: #D9D9D9;
-            height: 100%;
-            border-top: 1px white solid;
-            border-bottom: 1px white solid;
+          &:hover {
+            opacity: 0.7;
+            background: rgba(220, 0, 0, 0.1);
+          }
 
-            .dragHandle {
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              cursor: grab;
-              padding: 10px;
-
-              &:active {
-                cursor: grabbing;
-              }
+          svg {
+            @include tablet {
+              width: 8px;
+              height: 2px;
             }
           }
 
-          .contentColumn {
-            width: 436px;
+          .deleteText {
+            color: #DC0000;
+            font-size: 18px;
+            font-weight: 700;
 
-            .contentText {
-              color: #444444;
-              font-size: 18px;
-              font-weight: 700;
-            }
-          }
-
-          .actionColumn {
-            flex: 1;
-
-            .deleteButton {
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              gap: 6px;
-              background: none;
-              border: none;
-              cursor: pointer;
-              padding: 5px 10px;
-              transition: opacity 0.2s;
-
-              &:hover {
-                opacity: 0.7;
-              }
-
-              .deleteText {
-                color: #DC0000;
-                font-size: 18px;
-                font-weight: 700;
-              }
+            @include tablet {
+              font-size: 14px;
             }
           }
         }
       }
-    }
-
-    .notice {
-      text-align: right;
-      color: #DC0000;
-      font-size: 15px;
-      font-weight: 400;
     }
   }
 
-  .buttonContainer {
+  .emptyState {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px 0 30px;
+    height: 100px;
+    color: #959595;
+    font-size: 16px;
+    font-weight: 400;
 
-    .saveButton {
-      width: 213px;
-      height: 54px;
-      padding: 10px 20px;
-      background: #7B7B7B;
-      border-radius: 5px;
-      border: 1px #959595 solid;
-      color: white;
-      font-size: 25px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.2s;
-
-      @include tablet {
-        width: 180px;
-        height: 48px;
-        font-size: 22px;
-      }
-
-      &:hover {
-        background: #6A6A6A;
-      }
+    @include tablet {
+      height: 80px;
+      font-size: 14px;
     }
   }
+}
+
+.notice {
+  text-align: right;
+  color: #DC0000;
+  font-size: 15px;
+  font-weight: 400;
+  margin-bottom: 20px;
+  line-height: 1.4;
+
+  @include tablet {
+    font-size: 13px;
+    margin-bottom: 15px;
+  }
+}
+
+.sortableGhost {
+  opacity: 0.5;
+}
+
+.sortableChosen {
+  background: rgba(6, 85, 246, 0.1) !important;
 }

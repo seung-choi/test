@@ -57,19 +57,14 @@ const SortableRow: React.FC<SortableRowProps> = ({ row, columns, isReorderMode }
         const cellValue = row[column.key];
         let displayValue: React.ReactNode = cellValue;
 
-        // render 함수가 없을 때 안전하게 값 처리
         if (!column.render) {
           if (Array.isArray(cellValue)) {
-            // 배열이면 join으로 문자열 변환
             displayValue = cellValue.join(', ');
           } else if (cellValue === null || cellValue === undefined) {
-            // null/undefined면 빈 문자열
             displayValue = '';
           } else if (typeof cellValue === 'object') {
-            // 객체면 빈 문자열 (또는 JSON.stringify(cellValue))
             displayValue = '';
           } else {
-            // 원시값(string, number, boolean)은 그대로
             displayValue = String(cellValue);
           }
         }

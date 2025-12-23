@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
+import CommonModalLayout from '@/components/admin/modal/CommonModalLayout';
+import commonStyles from '@/styles/components/modal/CommonModal.module.scss';
 import styles from '@/styles/components/modal/ProductModal.module.scss';
 import { ProductFormData, Category } from '@/types/admin/modal.type';
 import CustomSelect from '@/components/admin/common/CustomSelect';
@@ -150,25 +152,33 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
     );
   };
 
-  return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <div className={styles.title}>{mode === 'create' ? '상품 등록' : '상품 수정'}</div>
-        {mode === 'create' ? (
-          <button className={styles.closeButton} onClick={onClose}>
-            <img src="/assets/image/global/x.svg" alt="x" />
-          </button>
-        ) : (
-          <div className={styles.erpUpdateButton} onClick={handleErpUpdate}>
-            <div className={styles.erpUpdateText}>ERP 정보 업데이트</div>
-            <div className={styles.erpUpdateIcon}>
-              <img src="/assets/image/global/reload.svg" alt="erp_update" />
-            </div>
-          </div>
-        )}
+  const headerRight = mode === 'edit' ? (
+    <div className={styles.erpUpdateButton} onClick={handleErpUpdate}>
+      <div className={styles.erpUpdateText}>ERP 정보 업데이트</div>
+      <div className={styles.erpUpdateIcon}>
+        <img src="/assets/image/global/reload.svg" alt="erp_update" />
       </div>
+    </div>
+  ) : undefined;
 
-      <div className={styles.divider} />
+  const buttons = (
+    <>
+      <button className={commonStyles.cancelButton} onClick={onClose}>
+        닫기
+      </button>
+      <button className={commonStyles.confirmButton} onClick={handleSubmit}>
+        저장
+      </button>
+    </>
+  );
+
+  return (
+    <CommonModalLayout
+      title={mode === 'create' ? '상품 등록' : '상품 수정'}
+      headerRight={headerRight}
+      buttons={buttons}
+      contentClassName={styles.scrollContent}
+    >
 
       <div className={styles.content}>
         <div className={styles.formRow}>
@@ -193,7 +203,7 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
             채널
             <span className={styles.labelSub}>(중복선택 가능)</span>
           </div>
-          <div className={styles.buttonGroup}>
+          <div className={styles.buttonGroup} style={{ height: '55px'}}>
             {channelOptions.map((channel) => (
               <button
                 key={channel}
@@ -213,7 +223,7 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
             유형
             <span className={styles.labelSub}>(중복선택 가능)</span>
           </div>
-          <div className={styles.buttonGroup}>
+          <div className={styles.buttonGroup} style={{ height: '55px'}}>
             {typeOptions.map((type) => (
               <button
                 key={type}
@@ -229,7 +239,7 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
         </div>
 
         <div className={styles.formRow}>
-          <div className={styles.label} style={{height: '138px'}}>사진 등록</div>
+          <div className={styles.label} style={{height: '130px'}}>사진 등록</div>
           <div className={styles.imageUpload} onClick={handleImageSelect}>
             <div className={styles.imagePreview}>
               {formData.image ? (
@@ -321,7 +331,7 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
         </div>
 
         <div className={styles.formRow}>
-          <div className={styles.label}>조리 시간</div>
+          <div className={styles.label} style={{height: '60px'}}>조리 시간</div>
           <div className={styles.timeControl}>
             <button
               className={`${styles.timeButton} ${formData.cookingTime === 0 ? styles.disabled : ''}`}
@@ -341,7 +351,7 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
         </div>
 
         <div className={styles.formRow}>
-          <div className={styles.label}>
+          <div className={styles.label} style={{height: '50px'}}>
             태그 설정
             <span className={styles.labelSub}>(최대 2개)</span>
           </div>
@@ -372,16 +382,7 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
           </div>
         </div>
       </div>
-
-      <div className={styles.buttonContainer}>
-        <button className={styles.cancelButton} onClick={onClose}>
-          닫기
-        </button>
-        <button className={styles.confirmButton} onClick={handleSubmit}>
-          저장
-        </button>
-      </div>
-    </div>
+    </CommonModalLayout>
   );
 };
 

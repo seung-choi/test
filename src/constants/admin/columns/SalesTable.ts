@@ -38,14 +38,14 @@ export const getSalesTableColumns = (): TableColumn[] => [
     {
         key: 'totalMenuCount',
         label: '총 메뉴 수',
-        width: '8%',
+        width: '9%',
         sortable: true,
         render: renderText,
     },
     {
         key: 'orderDetails',
         label: '주문 메뉴 내역',
-        width: '19%',
+        width: '22%',
         sortable: true,
         render: renderText,
     },

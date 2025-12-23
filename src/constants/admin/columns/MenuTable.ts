@@ -28,14 +28,14 @@ export const getMenuTableColumns = ({
     {
         key: 'select',
         label: '선택',
-        width: '3.5%',
+        width: '3.9%',
         style: isReorderMode ? { background: '#D9D9D9' } : undefined,
         render: isReorderMode ? renderDragHandle() : renderCheckbox(selectedItems, handleItemSelect),
     },
     {
         key: 'store',
         label: '매장',
-        width: '8.2%',
+        width: '10%',
         sortable: true,
         render: renderText,
     },
@@ -83,7 +83,7 @@ export const getMenuTableColumns = ({
     {
         key: 'cookingTime',
         label: '조리시간',
-        width: '8%',
+        width: '9%',
         sortable: true,
         render: renderText,
     },
@@ -118,7 +118,7 @@ export const getMenuTableColumns = ({
     {
         key: 'edit',
         label: '수정',
-        width: '3.5%',
+        width: '3.9%',
         render: renderEditButton(handleEdit),
     },
 ];

@@ -78,7 +78,7 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
         code: item.code || '',
         category: item.category || '',
         name: item.name || '',
-        price: typeof item.price === 'number' ? item.price : parseInt(String(item.price).replace(/[^0-9]/g, '')) || 0
+        price: item.price
       }));
 
     openDeleteConfirmModal(
@@ -96,17 +96,13 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
     handleDelete
   }));
 
-  const handleBulkAction = (action: string) => {
-    console.log(`${action} 실행:`, selectedItems);
-  };
-
 
   const handleEdit = (itemId: string) => {
     const menuItem = menuData.find(item => String(item.id) === itemId);
     if (!menuItem) return;
 
     const initialData: ProductFormData = {
-      status: menuItem.status === '판매중' ? '판매' : menuItem.status === '중지' ? '중지' : '대기',
+      status: "판매",
       channels: menuItem.channels || [],
       types: menuItem.types || [],
       category: menuItem.category || '',
@@ -137,7 +133,7 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
                   price: parseInt(data.price.replace(/[^0-9]/g, '')) || 0,
                   tags: data.tags,
                   cookingTime: data.cookingTime,
-                  status: data.status === '판매' ? '판매중' : data.status,
+                  status: data.status === '판매' ? '판매' : data.status,
                   channels: data.channels,
                   types: data.types,
                 };

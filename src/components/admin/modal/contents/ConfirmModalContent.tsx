@@ -1,8 +1,9 @@
 'use client';
 
 import React from 'react';
+import CommonModalLayout from '@/components/admin/modal/CommonModalLayout';
+import commonStyles from '@/styles/components/modal/CommonModal.module.scss';
 import styles from '@/styles/components/Modal.module.scss';
-import { Button } from '@/components/admin/common/Button';
 
 interface ConfirmModalContentProps {
   title?: string;
@@ -14,31 +15,36 @@ interface ConfirmModalContentProps {
 }
 
 const ConfirmModalContent: React.FC<ConfirmModalContentProps> = ({
-  title,
+  title = '확인',
   desc,
   okBtnLabel = '확인',
   cancelBtnLabel = '취소',
   onConfirm,
   onCancel,
 }) => {
+  const buttons = (
+    <>
+      <button
+        type="button"
+        className={commonStyles.cancelButton}
+        onClick={onCancel}
+      >
+        {cancelBtnLabel}
+      </button>
+      <button
+        type="button"
+        className={commonStyles.confirmButton}
+        onClick={onConfirm}
+      >
+        {okBtnLabel}
+      </button>
+    </>
+  );
+
   return (
-    <div className={styles["alert-popup-inner"]}>
-      {title && <h3 className={styles["alert-popup-title"]}>{title}</h3>}
-      <p className={styles["alert-popup-desc"]}>{desc}</p>
-      <div className={styles["alert-popup-button-container"]}>
-        <Button
-          type="button"
-          label={cancelBtnLabel}
-          onClick={onCancel}
-        />
-        <Button
-          type="button"
-          label={okBtnLabel}
-          primary={true}
-          onClick={onConfirm}
-        />
-      </div>
-    </div>
+    <CommonModalLayout title={title} buttons={buttons}>
+      <p className={styles['alert-popup-desc']}>{desc}</p>
+    </CommonModalLayout>
   );
 };
 

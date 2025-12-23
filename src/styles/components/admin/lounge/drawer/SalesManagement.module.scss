@@ -1,10 +1,21 @@
+@import '../../../../../styles/common/mixins';
+
 .salesFilterActionBar {
-margin-bottom: 20px;
+  margin-bottom: 20px;
+
+  @include tablet {
+    margin-bottom: 10px;
+  }
 
   .filterSection {
     margin-bottom: 16px;
     display: flex;
     justify-content: space-between;
+
+    @include tablet {
+      margin-bottom: 10px;
+    }
+
 
     .filterRow {
       height: 100%;
@@ -13,6 +24,11 @@ margin-bottom: 20px;
       justify-content: flex-start;
       align-items: center;
       display: inline-flex;
+
+      @include tablet {
+        height: 40px;
+      }
+
 
       .dateLabel {
         width: 127px;
@@ -24,12 +40,23 @@ margin-bottom: 20px;
         display: flex;
         line-height: 25px;
 
+        @include tablet {
+          border-radius: 10px 10px 0 0;
+          padding: 10px;
+        }
+
         .dateLabelText {
           color: black;
           font-size: 20px;
           font-weight: 500;
           word-wrap: break-word;
           line-height: 25px;
+
+          @include tablet {
+            font-size: 15px;
+            line-height: 20px;
+          }
+
         }
       }
 
@@ -37,6 +64,11 @@ margin-bottom: 20px;
         width: 6px;
         height: 65px;
         background: linear-gradient(270deg, rgba(217, 217, 217, 0) 0%, #D9D9D9 100%);
+
+        @include tablet {
+          height: 40px;
+        }
+
       }
 
       .dateRangeContainer {
@@ -46,6 +78,11 @@ margin-bottom: 20px;
         align-items: center;
         gap: 10px;
         display: flex;
+
+        @include tablet {
+          height: auto;
+          padding: 10px;
+        }
 
         .dateDisplay {
           justify-content: flex-start;
@@ -58,6 +95,10 @@ margin-bottom: 20px;
             font-size: 20px;
             font-weight: 700;
             word-wrap: break-word;
+
+            @include tablet {
+              font-size: 14px;
+            }
           }
         }
 
@@ -70,6 +111,11 @@ margin-bottom: 20px;
           align-items: center;
           justify-content: center;
           cursor: pointer;
+
+          @include tablet {
+            width: 20px;
+            height: 20px;
+          }
         }
       }
 
@@ -86,6 +132,12 @@ margin-bottom: 20px;
         transition: background 0.2s;
         line-height: 25px;
 
+        @include tablet {
+          width: 100px;
+          height: 40px;
+          padding: 0;
+        }
+
         &:hover {
           background: #2f3147;
         }
@@ -95,6 +147,14 @@ margin-bottom: 20px;
           font-size: 20px;
           font-weight: 700;
           word-wrap: break-word;
+
+          @include tablet {
+            font-size: 16px;
+          }
+
+          @include mobile {
+            font-size: 14px;
+          }
         }
       }
     }
@@ -111,18 +171,27 @@ margin-bottom: 20px;
     display: flex;
     height: 47px;
 
-      &:hover {
-        background: #1a5c37;
-      }
+    @include tablet {
+      padding: 10px 10px;
+      height: 40px;
+    }
+
+
+    &:hover {
+      background: #1a5c37;
+    }
 
     .excelButtonText {
       color: white;
       font-size: 20px;
       font-weight: 700;
       word-wrap: break-word;
+
+      @include tablet {
+        font-size: 15px;
+      }
     }
   }
-
 
   .statsSection {
     width: 100%;
@@ -131,15 +200,25 @@ margin-bottom: 20px;
     gap: 40px;
     display: inline-flex;
 
+    @include tablet {
+      gap: 20px;
+    }
+
+
     .statCard {
       width: 100%;
       height: 42px;
       background: white;
       border-radius: 10px;
 
+      @include tablet {
+        height: auto;
+        min-height: 36px;
+      }
+
       .statLabel {
         width: 40%;
-        height: 100%;
+        height: 40px;
         background: #3A3C56;
         border-top-left-radius: 10px;
         border-bottom-left-radius: 10px;
@@ -153,6 +232,10 @@ margin-bottom: 20px;
           font-size: 20px;
           font-weight: 600;
           word-wrap: break-word;
+
+          @include tablet {
+            font-size: 14px;
+          }
         }
       }
 
@@ -169,6 +252,10 @@ margin-bottom: 20px;
           font-size: 20px;
           font-weight: 400;
           word-wrap: break-word;
+
+          @include tablet {
+            font-size: 14px;
+          }
         }
       }
     }
@@ -191,6 +278,12 @@ margin-bottom: 20px;
       font-weight: 600;
       color: #374151;
       margin-bottom: 12px;
+
+      @include tablet {
+        font-size: 12px;
+        margin-bottom: 10px;
+      }
+
     }
   }
 

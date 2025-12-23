@@ -9,7 +9,7 @@ export const MenuMockData = [
         price: 35000,
         tags: ['NEW', '시그니처'],
         cookingTime: 30,
-        status: '판매중',
+        status: '판매',
         channels: ['코스', '매장'],
         types: ['매장', '포장'],
         registerDate: '2025-12-25'
@@ -39,7 +39,7 @@ export const MenuMockData = [
         price: 12000,
         tags: ['BEST'],
         cookingTime: 15,
-        status: '판매중',
+        status: '판매',
         channels: ['매장'],
         types: ['매장', '포장'],
         registerDate: '2025-12-26'
@@ -54,7 +54,7 @@ export const MenuMockData = [
         price: 25000,
         tags: ['NEW'],
         cookingTime: 25,
-        status: '판매중',
+        status: '판매',
         channels: ['코스'],
         types: ['매장'],
         registerDate: '2025-12-27'
@@ -69,7 +69,7 @@ export const MenuMockData = [
         price: 8000,
         tags: ['BEST', '시그니처'],
         cookingTime: 15,
-        status: '판매중',
+        status: '판매',
         channels: ['매장'],
         types: ['매장', '포장'],
         registerDate: '2025-12-28'
@@ -84,7 +84,7 @@ export const MenuMockData = [
         price: 15000,
         tags: ['NEW'],
         cookingTime: 20,
-        status: '판매중',
+        status: '판매',
         channels: ['코스', '매장'],
         types: ['매장'],
         registerDate: '2025-12-29'
@@ -99,7 +99,7 @@ export const MenuMockData = [
         price: 7000,
         tags: ['BEST'],
         cookingTime: 10,
-        status: '판매중',
+        status: '판매',
         channels: ['매장'],
         types: ['매장', '포장'],
         registerDate: '2025-12-30'
@@ -129,7 +129,7 @@ export const MenuMockData = [
         price: 12000,
         tags: ['NEW'],
         cookingTime: 15,
-        status: '판매중',
+        status: '판매',
         channels: ['매장'],
         types: ['매장', '포장'],
         registerDate: '2026-01-01'
@@ -144,7 +144,7 @@ export const MenuMockData = [
         price: 20000,
         tags: ['BEST'],
         cookingTime: 25,
-        status: '판매중',
+        status: '판매',
         channels: ['코스', '매장'],
         types: ['매장'],
         registerDate: '2026-01-02'
@@ -159,7 +159,7 @@ export const MenuMockData = [
         price: 18000,
         tags: ['시그니처'],
         cookingTime: 30,
-        status: '판매중',
+        status: '판매',
         channels: ['매장'],
         types: ['매장', '포장'],
         registerDate: '2026-01-03'
@@ -189,7 +189,7 @@ export const MenuMockData = [
         price: 9000,
         tags: ['BEST'],
         cookingTime: 15,
-        status: '판매중',
+        status: '판매',
         channels: ['매장'],
         types: ['매장'],
         registerDate: '2026-01-05'
@@ -204,7 +204,7 @@ export const MenuMockData = [
         price: 11000,
         tags: ['시그니처'],
         cookingTime: 15,
-        status: '판매중',
+        status: '판매',
         channels: ['코스', '매장'],
         types: ['매장', '포장'],
         registerDate: '2026-01-06'
@@ -219,7 +219,7 @@ export const MenuMockData = [
         price: 13000,
         tags: ['NEW'],
         cookingTime: 20,
-        status: '판매중',
+        status: '판매',
         channels: ['매장'],
         types: ['매장'],
         registerDate: '2026-01-07'
@@ -234,7 +234,7 @@ export const MenuMockData = [
         price: 16000,
         tags: ['BEST'],
         cookingTime: 25,
-        status: '판매중',
+        status: '판매',
         channels: ['코스', '매장'],
         types: ['매장'],
         registerDate: '2026-01-08'
@@ -249,7 +249,7 @@ export const MenuMockData = [
         price: 8000,
         tags: ['시그니처'],
         cookingTime: 15,
-        status: '판매중',
+        status: '판매',
         channels: ['매장'],
         types: ['매장', '포장'],
         registerDate: '2026-01-09'

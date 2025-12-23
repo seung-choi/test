@@ -1,0 +1,156 @@
+@import '@/styles/common/mixins';
+
+.container {
+  min-width: 739px;
+  max-height: 90vh;
+  position: relative;
+  background: white;
+  box-shadow: 0px 4px 4px rgba(128, 128, 128, 0.55);
+  overflow: hidden;
+  border-radius: 20px;
+  outline: 1px #666666 solid;
+  outline-offset: -1px;
+  display: flex;
+  flex-direction: column;
+
+  @include tablet {
+    min-width: 50vw;
+    max-height: 68vh;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px 66px;
+  border-bottom: 1px solid #D9D9D9;
+
+  @include tablet {
+    padding: 19px 50px;
+  }
+
+  .title {
+    color: black;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 36px;
+
+    @include tablet {
+      font-size: 22px;
+      line-height: 27px;
+    }
+  }
+}
+
+.content {
+  padding: 20px 66px;
+  overflow: hidden;
+  flex: 1;
+
+  @include tablet {
+    padding: 15px 50px;
+  }
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  padding: 30px 70px;
+
+  @include tablet {
+    padding: 22px 52px;
+    gap: 12px;
+  }
+}
+
+.cancelButton {
+  width: 213px;
+  height: 54px;
+  padding: 10px 20px;
+  background: white;
+  border-radius: 5px;
+  outline: 1px #0655F6 solid;
+  outline-offset: -1px;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #001A9F;
+  font-size: 22px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  @include tablet {
+    width: 160px;
+    height: 40px;
+    font-size: 16px;
+    padding: 7px 15px;
+  }
+
+  &:hover {
+    background: rgba(6, 85, 246, 0.05);
+  }
+}
+
+.confirmButton {
+  width: 213px;
+  height: 54px;
+  padding: 10px 20px;
+  background: #001A9F;
+  border-radius: 5px;
+  outline: 1px #0655F6 solid;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 22px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  @include tablet {
+    width: 160px;
+    height: 40px;
+    font-size: 16px;
+    padding: 7px 15px;
+  }
+
+  &:hover {
+    background: #001580;
+  }
+}
+
+.deleteButton {
+  width: 213px;
+  height: 54px;
+  padding: 10px 20px;
+  background: #DC0000;
+  border-radius: 5px;
+  outline: 1px #DC0000 solid;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 22px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  @include tablet {
+    width: 160px;
+    height: 40px;
+    font-size: 16px;
+    padding: 7px 15px;
+  }
+
+  &:hover {
+    background: #CC0000;
+  }
+}

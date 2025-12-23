@@ -91,7 +91,7 @@ const Drawer: React.FC<DrawerProps> = ({
       { id: '2', content: '품절', order: 1 },
       { id: '3', content: '고객요청', order: 2 },
       { id: '4', content: '재료 소진', order: 3 },
-      { id: '5', content: '판매중지', order: 4 },
+      { id: '5', content: '판매지', order: 4 },
       { id: '6', content: '주문 대기 시간 초과', order: 5 },
       { id: '7', content: '경기팀 요청', order: 6 },
       { id: '8', content: '기상이변', order: 7 },
@@ -127,7 +127,7 @@ const Drawer: React.FC<DrawerProps> = ({
             <div className={styles.title}>{title}</div>
             <div className={styles.storeSelector}>
               <div className={styles.storeName}>{drawer.selectedStore}</div>
-              <img src="/assets/image/global/arrow.svg" alt="arrow" />
+              <img className={styles.arrow} src="/assets/image/global/arrow.svg" alt="arrow" />
             </div>
           </div>
 
