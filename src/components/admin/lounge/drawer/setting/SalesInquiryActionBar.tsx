@@ -4,6 +4,9 @@ import React, { useState, useRef } from 'react';
 import styles from '@/styles/components/admin/lounge/drawer/SalesManagement.module.scss';
 import { SalesFilter, SalesStats } from '@/types/admin/setting.types';
 import DateRangePicker from '@/components/admin/common/DateRangePicker';
+import ExcelDownloadButton from "@/components/admin/lounge/drawer/setting/ExcelDownloadButton";
+import {CircularProgress} from "@mui/material";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 
 interface SalesFilterActionBarProps {
   filter: SalesFilter;
@@ -30,24 +33,6 @@ const SalesFilterActionBar: React.FC<SalesFilterActionBarProps> = ({
         endDate
       }
     };
-    setLocalFilter(newFilter);
-    onFilterChange(newFilter);
-  };
-
-  const handleStatusChange = (status: string) => {
-    const newFilter = { ...localFilter, status };
-    setLocalFilter(newFilter);
-    onFilterChange(newFilter);
-  };
-
-  const handleCaddyNameChange = (caddyName: string) => {
-    const newFilter = { ...localFilter, caddyName };
-    setLocalFilter(newFilter);
-    onFilterChange(newFilter);
-  };
-
-  const handleSearchTermChange = (searchTerm: string) => {
-    const newFilter = { ...localFilter, searchTerm };
     setLocalFilter(newFilter);
     onFilterChange(newFilter);
   };
@@ -94,10 +79,7 @@ const SalesFilterActionBar: React.FC<SalesFilterActionBarProps> = ({
               <div className={styles.searchButtonText}>검색</div>
             </div>
           </div>
-          <button className={styles.excelButton} onClick={onExportExcel}>
-            <img src="/assets/image/admin/excel.svg" alt="엑셀" className={styles.excelIcon} />
-            <div className={styles.excelButtonText}>엑셀로 내보내기</div>
-          </button>
+          <ExcelDownloadButton onDownload={onExportExcel} />
         </div>
 
 

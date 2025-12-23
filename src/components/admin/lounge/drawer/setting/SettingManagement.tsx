@@ -7,6 +7,7 @@ import { drawerState } from '@/lib/recoil';
 import {getSalesTableColumns} from "@/constants";
 import SalesFilterActionBar from "@/components/admin/lounge/drawer/setting/SalesInquiryActionBar";
 import { SalesFilter } from '@/types/admin/setting.types';
+import { exportSalesToExcel } from '@/utils/admin/excel/salesExcelExporter';
 
 interface SettingManagementProps {
     onClose: () => void;
@@ -86,8 +87,29 @@ const SettingManagement: React.FC<SettingManagementProps> = ({ onClose }) => {
         };
     }, [filteredData]);
 
+
     const handleExportExcel = () => {
         console.log('엑셀 내보내기:', filteredData);
+        try {
+            const orderRecords = filteredData.map(item => ({
+                id: item.id,
+                orderDate: item.orderDate,
+                tO: item.tO,
+                caddyName: item.caddyName,
+                groupName: item.groupName,
+                customerNames: item.customerNames.split(', '),
+                totalMenuCount: item.totalMenuCount,
+                orderDetails: item.orderDetails,
+                totalAmount: item.totalAmount,
+                status: item.status,
+                cancelReason: item.cancelReason || ''
+            }));
+
+            exportSalesToExcel(orderRecords, filter);
+        } catch (error) {
+            console.error('엑셀 export 에러:', error);
+            throw error;
+        }
     };
 
     return (

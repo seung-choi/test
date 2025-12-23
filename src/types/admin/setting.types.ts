@@ -26,7 +26,7 @@ export interface OrderRecord {
   caddyName: string;
   customerNames: string[];
   groupName: string;
-  totalMenuCount: string;
+  totalMenuCount: number;
   orderDetails: string;
   totalAmount: number;
   status: string;

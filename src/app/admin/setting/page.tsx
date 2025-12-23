@@ -7,6 +7,7 @@ import SalesInquiryActionBar from '@/components/admin/lounge/drawer/setting/Sale
 import SalesInquiryContent from '@/components/admin/lounge/drawer/setting/SalesInquiryContent';
 import { SettingTab, SalesFilter } from '@/types/admin/setting.types';
 import { mockOrderRecords } from '@/mock/admin/orderMockData';
+import {exportSalesToExcel} from "@/utils";
 
 const SettingPage = () => {
   const [activeTab, setActiveTab] = useState<SettingTab>('sales');
@@ -43,11 +44,15 @@ const SettingPage = () => {
     // TODO: API 호출하여 데이터 갱신
   };
 
-  const handleExportExcel = () => {
-    console.log('Export to Excel');
-    // TODO: 엑셀 다운로드 로직 구현
-    alert('엑셀 다운로드 준비 중입니다.');
+  const handleExportExcel = async () => {
+    try {
+      await exportSalesToExcel(mockOrderRecords, currentFilter);
+    } catch (error) {
+      console.error('엑셀 다운로드 중 오류 발생:', error);
+      alert('엑셀 다운로드 중 오류가 발생했습니다.');
+    }
   };
+
 
   const handleSort = (key: string) => {
     console.log('Sort by:', key);
