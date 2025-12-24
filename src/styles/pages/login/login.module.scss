@@ -109,7 +109,7 @@
 
   @include tablet {
     background-size: cover;
-    padding: 90px 20px 20px;
+    padding: 90px 15px 15px;
   }
 }
 
@@ -131,7 +131,7 @@
 
   @include tablet {
     width: 100%;
-    max-width: 550px;
+    max-width: 480px;
   }
 }
 
@@ -146,8 +146,8 @@
   gap: 0;
 
   @include tablet {
-    padding: 35px 30px;
-    border-radius: 20px;
+    padding: 25px 20px;
+    border-radius: 18px;
   }
 }
 
@@ -158,8 +158,8 @@
   margin-bottom: 30px;
 
   @include tablet {
-    gap: 12px;
-    margin-bottom: 25px;
+    gap: 10px;
+    margin-bottom: 20px;
   }
 }
 
@@ -176,7 +176,7 @@
   font-weight: 600;
 
   @include tablet {
-    font-size: 20px;
+    font-size: 16px;
   }
 }
 
@@ -189,7 +189,7 @@
   transition: border-color 0.2s ease;
 
   @include tablet {
-    height: 60px;
+    height: 40px;
   }
 
   &.error {
@@ -215,8 +215,8 @@
   color: #1F1F1F;
 
   @include tablet {
-    font-size: 18px;
-    padding: 0 15px;
+    font-size: 16px;
+    padding: 0 12px;
   }
 
   &::placeholder {
@@ -245,11 +245,12 @@
   margin-bottom: 15px;
 
   @include tablet {
-    min-height: 36px;
-    padding: 6px 15px;
-    gap: 12px;
-    margin-top: -12px;
-    margin-bottom: 12px;
+    min-height: 30px;
+    padding: 5px 12px;
+    gap: 8px;
+    margin-top: -10px;
+    margin-bottom: 15px;
+    border-radius: 6px;
   }
 }
 
@@ -258,10 +259,10 @@
   align-items: center;
   flex-shrink: 0;
 
-  svg {
+  img {
     @include tablet {
-      width: 20px;
-      height: 20px;
+      width: 16px;
+      height: 16px;
     }
   }
 }
@@ -274,77 +275,15 @@
   text-align: left;
 
   @include tablet {
-    font-size: 15px;
+    font-size: 13px;
   }
 }
 
-.checkboxWrapper {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 12px;
+.checkboxSection {
   margin-bottom: 35px;
 
   @include tablet {
-    gap: 10px;
-    margin-bottom: 25px;
-  }
-}
-
-.checkbox {
-  width: 34px;
-  height: 34px;
-  background: white;
-  border: 2px solid #7B7B7B;
-  border-radius: 4px;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: all 0.2s ease;
-  flex-shrink: 0;
-
-  @include tablet {
-    width: 28px;
-    height: 28px;
-  }
-
-  &.checked {
-    background: white;
-    border-color: transparent;
-    padding: 0;
-  }
-
-  svg {
-    width: 34px;
-    height: 34px;
-
-    @include tablet {
-      width: 28px;
-      height: 28px;
-    }
-  }
-
-  &:hover {
-    border-color: #6600FF;
-  }
-
-  &:focus-visible {
-    outline: 2px solid #6600FF;
-    outline-offset: 2px;
-  }
-}
-
-.checkboxLabel {
-  color: #1F1F1F;
-  font-size: 29px;
-  font-family: 'SUIT', sans-serif;
-  font-weight: 600;
-  cursor: pointer;
-  user-select: none;
-
-  @include tablet {
-    font-size: 20px;
+    margin-bottom: 15px;
   }
 }
 
@@ -366,8 +305,8 @@
   font-weight: 700;
 
   @include tablet {
-    height: 65px;
-    font-size: 20px;
+    height: 40px;
+    font-size: 18px;
   }
 
   &:hover:not(:disabled) {

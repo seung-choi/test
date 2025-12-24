@@ -338,14 +338,14 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
               onClick={() => handleCookingTimeChange(-1)}
               disabled={formData.cookingTime === 0}
             >
-              <img src="/assets/image/global/minus.svg" alt="minus" />
+              <img src="/assets/image/global/plusminus/minus.svg" alt="minus" />
             </button>
             <div className={styles.timeValue}>{formData.cookingTime}</div>
             <button
               className={styles.timeButton}
               onClick={() => handleCookingTimeChange(1)}
             >
-              <img src="/assets/image/global/plus.svg" alt="plus" />
+              <img src="/assets/image/global/plusminus/plus.svg" alt="plus" />
             </button>
           </div>
         </div>

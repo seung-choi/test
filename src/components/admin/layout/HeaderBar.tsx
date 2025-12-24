@@ -163,7 +163,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
 
             <div className={styles.startHouse}>
               <h2 className={styles.startHouseTitle}>스타트 하우스</h2>
-              <img src="/assets/image/global/arrow.svg" alt="arrow" />
+              <img src="/assets/image/global/arrow/arrow.svg" alt="arrow" />
             </div>
 
             <div className={`${styles.courseButton} ${styles.active} ${styles.hillButton}`}>
@@ -206,7 +206,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
               ))}
             </div>
             <img
-              src="/assets/image/global/arrow-sm.svg"
+              src="/assets/image/global/arrow/arrow-sm.svg"
               alt="arrow"
               onClick={() => handleScroll(lakeScheduleRef, 'right')}
               style={{ cursor: 'pointer' }}
@@ -232,7 +232,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
               ))}
             </div>
             <img
-              src="/assets/image/global/arrow-sm.svg"
+              src="/assets/image/global/arrow/arrow-sm.svg"
               alt="arrow"
               onClick={() => handleScroll(hillScheduleRef, 'right')}
               style={{ cursor: 'pointer' }}

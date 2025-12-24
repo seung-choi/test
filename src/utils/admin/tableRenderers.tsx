@@ -80,7 +80,7 @@ export const renderStatusSelector = (
     onClick={() => onStatusChange?.(String(row.id), value)}
   >
     <span className={styles.statusText}>{value}</span>
-    <img className={styles.dropdownArrow} src="/assets/image/global/arrow.svg" alt="arrow" />
+    <img className={styles.dropdownArrow} src="/assets/image/global/arrow/arrow.svg" alt="arrow" />
   </button>
 );
 

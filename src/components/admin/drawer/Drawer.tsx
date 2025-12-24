@@ -146,7 +146,7 @@ const Drawer: React.FC<DrawerProps> = ({
             <div className={styles.title}>{title}</div>
             <div className={styles.storeSelector}>
               <div className={styles.storeName}>{drawer.selectedStore}</div>
-              <img className={styles.arrow} src="/assets/image/global/arrow.svg" alt="arrow" />
+              <img className={styles.arrow} src="/assets/image/global/arrow/arrow.svg" alt="arrow" />
             </div>
           </div>
 

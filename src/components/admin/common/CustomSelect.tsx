@@ -53,7 +53,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
           {selectedOption?.label || placeholder}
         </span>
         <img
-          src="/assets/image/global/arrow.svg"
+          src="/assets/image/global/arrow/arrow.svg"
           alt="arrow"
           className={`${styles.arrow} ${isOpen ? styles.open : ''}`}
         />

@@ -1,0 +1,59 @@
+@import '../../common/mixins';
+
+.checkboxContainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  @include tablet {
+    gap: 8px;
+  }
+}
+
+.checkboxIcon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  overflow: hidden;
+}
+
+.iconInner {
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  width: 18px;
+  height: 18px;
+  background: #959595;
+  border-radius: 2px;
+  transition: all 0.2s ease;
+
+  @include tablet {
+    left: 2px;
+    top: 2px;
+    width: 14px;
+    height: 14px;
+  }
+
+  &.checked {
+    background: black;
+  }
+}
+
+.checkboxLabel {
+  color: #1F1F1F;
+  font-size: 29px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  line-height: 1.2;
+
+  @include tablet {
+    font-size: 18px;
+  }
+
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

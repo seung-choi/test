@@ -240,7 +240,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
                         <span className={styles.orderLocationText}>({history.orderLocation})</span>
                       </div>
                       <img
-                        src="/assets/image/global/arrow.svg"
+                        src="/assets/image/global/arrow/arrow.svg"
                         alt="펼치기"
                         className={`${styles.expandArrow} ${expandedHistoryIds.has(history.id) ? styles.expanded : ''}`}
                       />
