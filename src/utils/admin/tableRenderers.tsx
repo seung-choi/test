@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import styles from '@/styles/components/common/Table.module.scss';
+import styles from '@/styles/components/admin/common/Table.module.scss';
 import { getTagClass } from '@/constants/admin/tags/menuTags';
 import {formatDate, formatPrice} from "@/utils/common/formatDataUtils";
 

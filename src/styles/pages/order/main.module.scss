@@ -1,0 +1,14 @@
+
+.mainPage {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: #F9F9F9;
+  overflow: hidden;
+}
+
+.contentArea {
+  width: 100%;
+  height: calc(100% - 137px);
+  position: relative;
+}

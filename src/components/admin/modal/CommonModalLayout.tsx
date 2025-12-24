@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import styles from '@/styles/components/modal/CommonModal.module.scss';
+import styles from '@/styles/components/admin/modal/CommonModal.module.scss';
 
 interface CommonModalLayoutProps {
   title: string;

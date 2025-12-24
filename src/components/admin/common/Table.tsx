@@ -3,7 +3,7 @@
 import React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import styles from '@/styles/components/common/Table.module.scss';
+import styles from '@/styles/components/admin/common/Table.module.scss';
 
 export interface TableColumn {
   key: string;

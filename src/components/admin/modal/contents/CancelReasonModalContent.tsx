@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import CommonModalLayout from '@/components/admin/modal/CommonModalLayout';
-import commonStyles from '@/styles/components/modal/CommonModal.module.scss';
-import styles from '@/styles/components/modal/CancelReasonModal.module.scss';
+import commonStyles from '@/styles/components/admin/modal/CommonModal.module.scss';
+import styles from '@/styles/components/admin/modal/CancelReasonModal.module.scss';
 
 interface CancelReasonModalContentProps {
   onConfirm: (reason: string) => void;

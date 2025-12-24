@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import CommonModalLayout from '@/components/admin/modal/CommonModalLayout';
-import commonStyles from '@/styles/components/modal/CommonModal.module.scss';
-import styles from '@/styles/components/modal/CategoryModal.module.scss';
+import commonStyles from '@/styles/components/admin/modal/CommonModal.module.scss';
+import styles from '@/styles/components/admin/modal/CategoryModal.module.scss';
 import { Category } from '@/types/admin/modal.type';
 
 interface CategoryModalContentProps {

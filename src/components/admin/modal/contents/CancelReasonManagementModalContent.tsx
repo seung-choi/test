@@ -19,8 +19,8 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import CommonModalLayout from '@/components/admin/modal/CommonModalLayout';
-import commonStyles from '@/styles/components/modal/CommonModal.module.scss';
-import styles from '@/styles/components/modal/CancelReasonManagementModal.module.scss';
+import commonStyles from '@/styles/components/admin/modal/CommonModal.module.scss';
+import styles from '@/styles/components/admin/modal/CancelReasonManagementModal.module.scss';
 import { CancelReason } from '@/types/admin/modal.type';
 
 interface CancelReasonManagementModalContentProps {

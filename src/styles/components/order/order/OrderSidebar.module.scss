@@ -1,0 +1,371 @@
+@import '../../../common/mixins';
+
+.sidebar {
+  width: 533px;
+  height: 1160px;
+  position: fixed;
+  right: 0;
+  top: 40px;
+  background: #F3F3F3;
+  box-shadow: 0px 0px 10px rgba(18, 18, 18, 0.40);
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+  padding: 24px 30px;
+  display: flex;
+  flex-direction: column;
+
+  @include tablet {
+    width: 380px;
+    height: calc(100vh - 80px);
+    padding: 20px 25px;
+    border-radius: 20px 0 0 20px;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 35px;
+
+  @include tablet {
+    margin-bottom: 25px;
+  }
+}
+
+.title {
+  color: black;
+  font-size: 36px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 700;
+
+  @include tablet {
+    font-size: 28px;
+  }
+}
+
+.detailButton {
+  padding: 7px 22px;
+  background: #313246;
+  border-radius: 30px;
+  border: none;
+  color: white;
+  font-size: 27px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  @include tablet {
+    padding: 5px 18px;
+    font-size: 20px;
+  }
+
+  &:hover {
+    background: #242535;
+  }
+}
+
+.tableInfo {
+  padding-bottom: 15px;
+  border-bottom: 0.5px solid #959595;
+  margin-bottom: 30px;
+
+  @include tablet {
+    padding-bottom: 12px;
+    margin-bottom: 22px;
+  }
+}
+
+.tableNumber {
+  color: #1F1F1F;
+  font-size: 30px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 600;
+  text-align: center;
+
+  @include tablet {
+    font-size: 22px;
+  }
+}
+
+.orderInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 25px;
+
+  @include tablet {
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+}
+
+.groupHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.groupName {
+  flex: 1;
+  color: #1F1F1F;
+  font-size: 25px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 800;
+
+  @include tablet {
+    font-size: 20px;
+  }
+}
+
+.payerBadge {
+  padding: 7px 22px;
+  background: white;
+  box-shadow: 0px 0px 10px rgba(18, 18, 18, 0.40);
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  @include tablet {
+    padding: 5px 16px;
+    gap: 6px;
+  }
+
+  span {
+    color: #1F1F1F;
+    font-size: 20px;
+    font-family: 'SUIT', sans-serif;
+    font-weight: 500;
+
+    @include tablet {
+      font-size: 16px;
+    }
+  }
+}
+
+.arrowDown {
+  width: 14px;
+  height: 7px;
+  background: #1F1F1F;
+  clip-path: polygon(50% 100%, 0 0, 100% 0);
+
+  @include tablet {
+    width: 11px;
+    height: 6px;
+  }
+}
+
+.memberNames {
+  color: #666666;
+  font-size: 25px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 400;
+
+  @include tablet {
+    font-size: 19px;
+  }
+}
+
+.orderCount {
+  padding-bottom: 5px;
+  border-bottom: 1px solid black;
+  color: black;
+  font-size: 21px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 600;
+  margin-bottom: 15px;
+
+  @include tablet {
+    font-size: 17px;
+    margin-bottom: 12px;
+  }
+}
+
+.orderList {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding-right: 10px;
+
+  @include tablet {
+    gap: 12px;
+    padding-right: 8px;
+  }
+
+  @include custom-scrollbar(5px, rgba(149, 149, 149, 0.4));
+}
+
+.emptyMessage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #969595;
+  font-size: 25px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 600;
+  text-align: center;
+
+  @include tablet {
+    font-size: 20px;
+  }
+}
+
+.orderItem {
+  padding: 12px 15px;
+  background: white;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  @include tablet {
+    padding: 10px 12px;
+    gap: 6px;
+  }
+}
+
+.itemName {
+  color: #1F1F1F;
+  font-size: 20px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 600;
+
+  @include tablet {
+    font-size: 17px;
+  }
+}
+
+.itemInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.itemQuantity {
+  color: #666666;
+  font-size: 18px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 500;
+
+  @include tablet {
+    font-size: 15px;
+  }
+}
+
+.itemPrice {
+  color: #1F1F1F;
+  font-size: 19px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 600;
+
+  @include tablet {
+    font-size: 16px;
+  }
+}
+
+.bottomGradient {
+  position: absolute;
+  bottom: 179px;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background: linear-gradient(270deg, white 0%, rgba(255, 255, 255, 0) 100%);
+  pointer-events: none;
+
+  @include tablet {
+    bottom: 140px;
+    height: 40px;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+
+  @include tablet {
+    gap: 12px;
+    margin-top: 15px;
+  }
+}
+
+.memoButton {
+  width: 169px;
+  height: 119px;
+  padding: 15px;
+  background: #959595;
+  border-radius: 30px;
+  border: none;
+  color: white;
+  font-size: 40px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  @include tablet {
+    width: 120px;
+    height: 85px;
+    padding: 12px;
+    font-size: 28px;
+    border-radius: 22px;
+  }
+
+  &:hover {
+    background: #7a7a7a;
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.orderButton {
+  flex: 1;
+  height: 119px;
+  padding: 15px;
+  background: #6600FF;
+  border-radius: 30px;
+  border: none;
+  color: #F3F3F3;
+  font-size: 45px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  @include tablet {
+    height: 85px;
+    padding: 12px;
+    font-size: 32px;
+    border-radius: 22px;
+  }
+
+  &:hover {
+    background: #5500DD;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 0, 255, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    background: #B8B8B8;
+    cursor: not-allowed;
+    opacity: 0.6;
+
+    &:hover {
+      transform: none;
+      box-shadow: none;
+    }
+  }
+}

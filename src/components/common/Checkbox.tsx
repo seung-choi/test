@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import styles from '@/styles/components/common/Checkbox.module.scss';
+import styles from '@/styles/components/admin/common/Checkbox.module.scss';
 
 interface CheckboxProps {
   checked: boolean;

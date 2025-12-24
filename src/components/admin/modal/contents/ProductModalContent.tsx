@@ -2,8 +2,8 @@
 
 import React, { useState, useRef } from 'react';
 import CommonModalLayout from '@/components/admin/modal/CommonModalLayout';
-import commonStyles from '@/styles/components/modal/CommonModal.module.scss';
-import styles from '@/styles/components/modal/ProductModal.module.scss';
+import commonStyles from '@/styles/components/admin/modal/CommonModal.module.scss';
+import styles from '@/styles/components/admin/modal/ProductModal.module.scss';
 import { ProductFormData, Category } from '@/types/admin/modal.type';
 import CustomSelect from '@/components/admin/common/CustomSelect';
 import { MENU_TAGS, getTagClass } from '@/constants/admin/tags/menuTags';

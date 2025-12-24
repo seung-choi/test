@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import styles from '@/styles/components/common/DateRangePicker.module.scss';
+import styles from '@/styles/components/admin/common/DateRangePicker.module.scss';
 
 interface DateRangePickerProps {
   startDate: string;

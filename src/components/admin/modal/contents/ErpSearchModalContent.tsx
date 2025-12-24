@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import CommonModalLayout from '@/components/admin/modal/CommonModalLayout';
-import commonStyles from '@/styles/components/modal/CommonModal.module.scss';
-import styles from '@/styles/components/modal/ErpSearchModal.module.scss';
+import commonStyles from '@/styles/components/admin/modal/CommonModal.module.scss';
+import styles from '@/styles/components/admin/modal/ErpSearchModal.module.scss';
 import { ErpProduct, ErpSearchType } from '@/types/erp.type';
 import CustomSelect from '@/components/admin/common/CustomSelect';
 import { erpMockData } from '@/mock/admin/erpMockData';

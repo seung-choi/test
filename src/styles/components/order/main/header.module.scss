@@ -1,0 +1,129 @@
+.header {
+  width: 100%;
+  height: 137px;
+  padding: 0 50px;
+  background: #270062;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  border-bottom-right-radius: 50px;
+  border-bottom-left-radius: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modeSwitch {
+  width: 340px;
+  height: 70px;
+  background: white;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.25) inset;
+  border-radius: 40px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.modeOption {
+  flex: 1;
+  height: 55px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+  color: #666666;
+  font-size: 26px;
+  font-weight: 700;
+  text-align: center;
+
+  &.active {
+    background: #6600FF;
+    box-shadow: 0 0 10px rgba(18, 18, 18, 0.40);
+    color: white;
+  }
+}
+
+.storeInfo {
+  line-height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.storeName {
+  color: white;
+  font-size: 38px;
+  font-weight: 600;
+}
+
+.statusInfo {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}
+
+.currentTime {
+  text-align: center;
+  color: white;
+  font-size: 27.09px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.35px;
+}
+
+.batterySection {
+  display: flex;
+  align-self: stretch;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}
+
+.batteryIcon {
+  width: 33px;
+  height: 17px;
+  position: relative;
+}
+
+.batteryBody {
+  width: 24px;
+  height: 17px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: white;
+  border-radius: 2px;
+  outline-offset: -1px;
+  transition: outline-color 0.3s ease;
+}
+
+.batteryLevel {
+  height: 11px;
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  border-radius: 1px;
+  transition: all 0.3s ease;
+  min-width: 0;
+}
+
+.batteryTip {
+  width: 3px;
+  height: 9px;
+  position: absolute;
+  left: 26px;
+  top: 4px;
+  border-radius: 1px;
+  transition: background 0.3s ease;
+}
+
+.batteryText {
+  text-align: center;
+  color: white;
+  font-size: 27.09px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.35px;
+}

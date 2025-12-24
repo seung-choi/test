@@ -2,8 +2,8 @@
 
 import React, { useState, useRef } from 'react';
 import CommonModalLayout from '@/components/admin/modal/CommonModalLayout';
-import commonStyles from '@/styles/components/modal/CommonModal.module.scss';
-import styles from '@/styles/components/modal/MessageModal.module.scss';
+import commonStyles from '@/styles/components/admin/modal/CommonModal.module.scss';
+import styles from '@/styles/components/admin/modal/MessageModal.module.scss';
 import { MessageFormData } from '@/types';
 
 interface MessageModalContentProps {
