@@ -1,8 +1,8 @@
-@import '../../../common/mixins';
+@import '../../common/mixins';
 
 .sidebar {
   width: 533px;
-  height: 1160px;
+  height: calc(100vh - 137px);
   position: fixed;
   right: 0;
   top: 40px;
@@ -13,10 +13,12 @@
   padding: 24px 30px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 
   @include tablet {
     width: 380px;
-    height: calc(100vh - 80px);
+    height: calc(100vh - 137px);
+    top: 137px;
     padding: 20px 25px;
     border-radius: 20px 0 0 20px;
   }
@@ -64,6 +66,12 @@
   &:hover {
     background: #242535;
   }
+}
+
+.orderSummary {
+ background-color: white;
+  padding: 20px;
+  height: 100%;
 }
 
 .tableInfo {
@@ -189,11 +197,11 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 30px;
   padding-right: 10px;
 
   @include tablet {
-    gap: 12px;
+    gap: 22px;
     padding-right: 8px;
   }
 
@@ -217,55 +225,118 @@
 }
 
 .orderItem {
-  padding: 12px 15px;
-  background: white;
-  border-radius: 12px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 
   @include tablet {
-    padding: 10px 12px;
-    gap: 6px;
+    gap: 8px;
   }
 }
 
-.itemName {
-  color: #1F1F1F;
-  font-size: 20px;
-  font-family: 'SUIT', sans-serif;
-  font-weight: 600;
-
-  @include tablet {
-    font-size: 17px;
-  }
-}
-
-.itemInfo {
+.itemHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.itemQuantity {
-  color: #666666;
-  font-size: 18px;
+.itemName {
+  color: #1F1F1F;
+  font-size: 25px;
   font-family: 'SUIT', sans-serif;
-  font-weight: 500;
+  font-weight: 600;
 
   @include tablet {
-    font-size: 15px;
+    font-size: 20px;
   }
 }
 
 .itemPrice {
   color: #1F1F1F;
-  font-size: 19px;
+  font-size: 25px;
   font-family: 'SUIT', sans-serif;
   font-weight: 600;
+  text-align: right;
 
   @include tablet {
-    font-size: 16px;
+    font-size: 20px;
+  }
+}
+
+.quantityControl {
+  padding-left: 32px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+
+  @include tablet {
+    padding-left: 24px;
+  }
+}
+
+.quantityButton {
+  width: 30px;
+  height: 43px;
+  background: white;
+  box-shadow: 0px 0px 4.45px rgba(0, 0, 0, 0.25) inset;
+  border-radius: 3.71px;
+  border: none;
+  color: black;
+  font-size: 17.80px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 400;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+
+  @include tablet {
+    width: 24px;
+    height: 36px;
+    font-size: 15px;
+  }
+
+  &:hover:not(:disabled) {
+    background: #f5f5f5;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &:first-child {
+    border-top-left-radius: 3.71px;
+    border-bottom-left-radius: 3.71px;
+  }
+
+  &:last-child {
+    border-top-right-radius: 3.71px;
+    border-bottom-right-radius: 3.71px;
+  }
+}
+
+.quantityDisplay {
+  width: 41.44px;
+  height: 38.78px;
+  background: white;
+  box-shadow: 0px 0px 2.97px rgba(0, 0, 0, 0.25);
+  border-radius: 3.71px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
+  font-size: 25px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 400;
+  margin: 0 7px;
+
+  @include tablet {
+    width: 34px;
+    height: 32px;
+    font-size: 20px;
+    margin: 0 5px;
   }
 }
 
@@ -281,6 +352,42 @@
   @include tablet {
     bottom: 140px;
     height: 40px;
+  }
+}
+
+.totalSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  margin-top: 15px;
+
+  @include tablet {
+    padding: 15px 0;
+    margin-top: 12px;
+  }
+}
+
+.totalLabel {
+  color: #1F1F1F;
+  font-size: 29px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 600;
+
+  @include tablet {
+    font-size: 23px;
+  }
+}
+
+.totalAmount {
+  color: #1F1F1F;
+  font-size: 29px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 600;
+  text-align: right;
+
+  @include tablet {
+    font-size: 23px;
   }
 }
 

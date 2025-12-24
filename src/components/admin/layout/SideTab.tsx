@@ -119,7 +119,7 @@ const SideTab: React.FC<SideTabProps> = ({
         title="설정"
         mode='setting'
       >
-        <SettingManagement onClose={() => setDrawer(prev => ({ ...prev, openDrawer: null }))} />
+        <SettingManagement />
       </Drawer>
 
     </div>

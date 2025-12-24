@@ -1,3 +1,5 @@
+export type CategoryType = '전체메뉴' | '식사' | '주류' | '안주' | '사이드';
+
 export interface MenuItem {
   id: string;
   name: string;
@@ -12,8 +14,7 @@ export interface OrderItem {
 }
 
 export interface TableInfo {
-  tableNumber: string;
+  tableNumber: number;
   groupName: string;
   memberNames: string[];
-  payerName: string;
 }
