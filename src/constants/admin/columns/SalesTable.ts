@@ -32,7 +32,6 @@ export const getSalesTableColumns = (): TableColumn[] => [
         key: 'customerNames',
         label: '내장객(단체명)',
         width: '18%',
-        sortable: true,
         render: renderCustomers,
     },
     {
@@ -46,7 +45,6 @@ export const getSalesTableColumns = (): TableColumn[] => [
         key: 'orderDetails',
         label: '주문 메뉴 내역',
         width: '22%',
-        sortable: true,
         render: renderText,
     },
     {

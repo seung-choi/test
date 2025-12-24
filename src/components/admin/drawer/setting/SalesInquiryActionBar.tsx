@@ -5,8 +5,6 @@ import styles from '@/styles/components/admin/drawer/SalesManagement.module.scss
 import { SalesFilter, SalesStats } from '@/types/admin/setting.types';
 import DateRangePicker from '@/components/admin/common/DateRangePicker';
 import ExcelDownloadButton from "@/components/admin/drawer/setting/ExcelDownloadButton";
-import {CircularProgress} from "@mui/material";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
 
 interface SalesFilterActionBarProps {
   filter: SalesFilter;

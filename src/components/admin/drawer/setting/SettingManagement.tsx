@@ -1,22 +1,13 @@
 import React, { useState, useMemo } from 'react';
-import { useRecoilValue } from 'recoil';
 import styles from '@/styles/components/admin/drawer/SalesManagement.module.scss';
 import Table from '@/components/admin/common/Table';
 import { SalesMockData } from '@/mock/admin/salesMockData';
-import { drawerState } from '@/lib/recoil';
 import {getSalesTableColumns} from "@/constants";
 import SalesFilterActionBar from "@/components/admin/drawer/setting/SalesInquiryActionBar";
 import { SalesFilter } from '@/types/admin/setting.types';
 import { exportSalesToExcel } from '@/utils/admin/excel/salesExcelExporter';
 
-interface SettingManagementProps {
-    onClose: () => void;
-    showActionBar?: boolean;
-}
-
-const SettingManagement: React.FC<SettingManagementProps> = ({ onClose, showActionBar = true }) => {
-    const drawer = useRecoilValue(drawerState);
-    const [selectedItems, setSelectedItems] = useState<string[]>([]);
+const SettingManagement = ({showActionBar = true}) => {
     const [filter, setFilter] = useState<SalesFilter>({
         dateRange: {
             startDate: '2025-12-22',
@@ -27,12 +18,9 @@ const SettingManagement: React.FC<SettingManagementProps> = ({ onClose, showActi
         searchTerm: ''
     });
 
-
-
     const handleFilterChange = (newFilter: SalesFilter) => {
         setFilter(newFilter);
     };
-
 
     const columns = useMemo(
         () => getSalesTableColumns(),
