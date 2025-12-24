@@ -1,94 +1,399 @@
-.login {
-  &-container {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    padding: 52px 25px;
-    background: var(--mode-Background);
+@import '../../common/mixins';
+
+.header {
+  width: 100%;
+  height: 137px;
+  padding: 0 50px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #6600FF;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+
+  @include tablet {
+    height: 90px;
+    padding: 0 30px;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
   }
-  
-  &-title {
-    padding: 0 9px;
-    color: var(--mode-font_key);
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 35px; /* 145.833% */
-    letter-spacing: 0.48px;
+}
+
+.headerContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 20px;
+
+  @include tablet {
+    gap: 15px;
+  }
+}
+
+.logoPlaceholder {
+  background: white;
+  border-radius: 5px;
+
+  &:nth-child(1) {
+    width: 41.83px;
+    height: 32.28px;
   }
 
-  &-helper-text {
-    position: absolute;
-    top: 8px;
-    left: 9px;
-    padding-left: 18px;
-    color: var(--mode-pointred2);
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 15px; /* 125% */
-    word-break: keep-all;
-    
-    &::before {
-      position: absolute;
-      left: 0;
-      top: 2px;
-      content: "!";
-      display: inline-block;
-      width: 12px;
-      height: 12px;
-      background-color: var(--mode-pointred2);
-      border-radius: 50%;
-      color: var(--mode-Background);
-      text-align: center;
-      font-size: 9px;
-      font-style: normal;
-      font-weight: 900;
-      line-height: 12px;
+  &:nth-child(2) {
+    width: 35.42px;
+    height: 22.64px;
+  }
+
+  &:nth-child(3) {
+    width: 22.69px;
+    height: 31.44px;
+  }
+
+  &:nth-child(4) {
+    width: 33.47px;
+    height: 31.45px;
+  }
+
+  &:nth-child(5) {
+    width: 41.49px;
+    height: 33.98px;
+  }
+
+  @include tablet {
+    &:nth-child(1) {
+      width: 28px;
+      height: 22px;
     }
-  }
 
-  &-top-wrap {
-    position: relative;
-    padding: 38px 25px 0;
-
-    .input-id {
-      position: relative;
-      
-      input {
-        font-size: 0;
-      }
-      
-      &-value {
-        position: absolute;
-        left: 8px;
-        bottom: 5px;
-        display: inline-block;
-        padding: 0 10px;
-        color: var(--mode-gray2);
-        font-size: 20px;
-        font-weight: 700;
-        letter-spacing: -0.4px;
-        border-radius: 3px;
-        line-height: 31px;
-        background: var(--mode-gray3);
-      }
+    &:nth-child(2) {
+      width: 24px;
+      height: 15px;
     }
-  }
 
-  &-bottom-wrap {
-    display: flex;
-    flex-direction: column;
-    gap: 14px 0;
-    position: absolute;
-    bottom: 60px;
-    left: 50%;
-    width: calc(100% - 50px);
-    transform: translateX(-50%);
-    
-    & div:first-child {
-      margin-left: 17px;
+    &:nth-child(3) {
+      width: 15px;
+      height: 21px;
+    }
+
+    &:nth-child(4) {
+      width: 22px;
+      height: 21px;
+    }
+
+    &:nth-child(5) {
+      width: 28px;
+      height: 23px;
     }
   }
 }
 
+.loginContainer {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background-image: url('/assets/image/login/vgolf_fnb_order_login.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 137px;
+
+  @include tablet {
+    background-size: cover;
+    padding: 90px 20px 20px;
+  }
+}
+
+.backgroundOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(243, 243, 243, 0.7);
+  z-index: 1;
+}
+
+.formWrapper {
+  position: relative;
+  z-index: 2;
+  width: 713px;
+  max-width: 90vw;
+
+  @include tablet {
+    width: 100%;
+    max-width: 550px;
+  }
+}
+
+.formContainer {
+  background: rgba(243, 243, 243, 0.8);
+  backdrop-filter: blur(7.5px);
+  border-radius: 25px;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.4);
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+
+  @include tablet {
+    padding: 35px 30px;
+    border-radius: 20px;
+  }
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 30px;
+
+  @include tablet {
+    gap: 12px;
+    margin-bottom: 25px;
+  }
+}
+
+.labelWrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.label {
+  color: black;
+  font-size: 29px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 600;
+
+  @include tablet {
+    font-size: 20px;
+  }
+}
+
+.inputWrapper {
+  width: 100%;
+  height: 73px;
+  background: white;
+  border-radius: 5px;
+  border: 1.5px solid #7B7B7B;
+  transition: border-color 0.2s ease;
+
+  @include tablet {
+    height: 60px;
+  }
+
+  &.error {
+    border: 2px solid #DC0000;
+  }
+
+  &:focus-within:not(.error) {
+    border-color: #6600FF;
+    border-width: 2px;
+  }
+}
+
+.input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0 20px;
+  font-size: 24px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 400;
+  color: #1F1F1F;
+
+  @include tablet {
+    font-size: 18px;
+    padding: 0 15px;
+  }
+
+  &::placeholder {
+    color: #959595;
+    opacity: 0.7;
+  }
+
+  &:disabled {
+    background: #F5F5F5;
+    color: #959595;
+    cursor: not-allowed;
+  }
+}
+
+.errorMessage {
+  width: 100%;
+  min-height: 42px;
+  background: #F6D3D3;
+  border-radius: 8.88px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 8px 20px;
+  gap: 15px;
+  margin-top: -15px;
+  margin-bottom: 15px;
+
+  @include tablet {
+    min-height: 36px;
+    padding: 6px 15px;
+    gap: 12px;
+    margin-top: -12px;
+    margin-bottom: 12px;
+  }
+}
+
+.errorIcon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+
+  svg {
+    @include tablet {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+.errorText {
+  color: #DC0000;
+  font-size: 20px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 300;
+  text-align: left;
+
+  @include tablet {
+    font-size: 15px;
+  }
+}
+
+.checkboxWrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 35px;
+
+  @include tablet {
+    gap: 10px;
+    margin-bottom: 25px;
+  }
+}
+
+.checkbox {
+  width: 34px;
+  height: 34px;
+  background: white;
+  border: 2px solid #7B7B7B;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+
+  @include tablet {
+    width: 28px;
+    height: 28px;
+  }
+
+  &.checked {
+    background: white;
+    border-color: transparent;
+    padding: 0;
+  }
+
+  svg {
+    width: 34px;
+    height: 34px;
+
+    @include tablet {
+      width: 28px;
+      height: 28px;
+    }
+  }
+
+  &:hover {
+    border-color: #6600FF;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #6600FF;
+    outline-offset: 2px;
+  }
+}
+
+.checkboxLabel {
+  color: #1F1F1F;
+  font-size: 29px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+
+  @include tablet {
+    font-size: 20px;
+  }
+}
+
+.loginButton {
+  width: 100%;
+  height: 80px;
+  background: #6600FF;
+  border-radius: 5px;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 5px;
+  color: white;
+  font-size: 29px;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 700;
+
+  @include tablet {
+    height: 65px;
+    font-size: 20px;
+  }
+
+  &:hover:not(:disabled) {
+    background: #5500DD;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 0, 255, 0.3);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(102, 0, 255, 0.3);
+  }
+
+  &:disabled {
+    background: #B8B8B8;
+    cursor: not-allowed;
+    opacity: 0.6;
+
+    &:hover {
+      transform: none;
+      box-shadow: none;
+    }
+  }
+
+  &.loading {
+    background: #7B7B7B;
+    cursor: wait;
+  }
+}

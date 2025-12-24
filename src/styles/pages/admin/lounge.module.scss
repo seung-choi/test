@@ -1,0 +1,60 @@
+@import '../../common/mixins';
+
+.loungeContainer {
+  display: flex;
+  height: 100vh;
+  background: #f5f5f5;
+}
+
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  width: calc(100% - 106px);
+  background: white;
+  @include tablet {
+    width: calc(100% - 80px);
+  }
+}
+
+.infoCardContainer {
+  padding: 20px 30px;
+  display: flex;
+  gap: 40px;
+  overflow-x: auto;
+  height: 100%;
+
+  &.headerExpanded {
+    height: calc(100% - 200px);
+    @include tablet {
+      height: calc(100% - 145px);
+    }
+  }
+
+  &.headerCollapsed {
+    height: calc(100% - 50px);
+    @include tablet{
+      height: calc(100% - 35px);
+    }
+  }
+
+  > * {
+    flex-shrink: 0;
+  }
+}
+
+.emptyContent {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  margin: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  p {
+    font-size: 18px;
+    color: #666;
+  }
+}

@@ -3,7 +3,7 @@
 import React from 'react';
 import CommonModalLayout from '@/components/admin/modal/CommonModalLayout';
 import commonStyles from '@/styles/components/modal/CommonModal.module.scss';
-import styles from '@/styles/components/Modal.module.scss';
+import styles from '@/styles/components/modal/Modal.module.scss';
 
 interface ConfirmModalContentProps {
   title?: string;
