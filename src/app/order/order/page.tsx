@@ -11,14 +11,7 @@ import { useScrollToTop } from '@/hooks/common/useScrollManagement';
 
 const OrderPage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<CategoryType>('전체메뉴');
-  const [orderItems, setOrderItems] = useState<OrderItem[]>([
-    { menuItem: mockMenuItems.find(item => item.id === 'meal-2')!, quantity: 2 }, // 치즈돈까스 2개
-    { menuItem: mockMenuItems.find(item => item.id === 'drink-3')!, quantity: 3 }, // 카스 3개
-    { menuItem: mockMenuItems.find(item => item.id === 'drink-1')!, quantity: 2 }, // 참이슬 2개
-    { menuItem: mockMenuItems.find(item => item.id === 'snack-1')!, quantity: 1 }, // 치킨 1개
-    { menuItem: mockMenuItems.find(item => item.id === 'snack-3')!, quantity: 1 }, // 감자튀김 1개
-    { menuItem: mockMenuItems.find(item => item.id === 'side-4')!, quantity: 1 }, // 떡볶이 1개
-  ]);
+  const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
   const menuGridRef = useRef<HTMLDivElement>(null);
 
   // 페이지 진입 시 스크롤 최상단으로 이동

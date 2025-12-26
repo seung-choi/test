@@ -71,6 +71,7 @@ const OrderSidebar: React.FC<OrderSidebarProps> = ({
                                     </div>
                                 </div>
                                 <div className={styles.quantityControl}>
+                                    <div className={styles.quantityDisplay}>{item.quantity}</div>
                                     <button
                                         className={styles.quantityButton}
                                         onClick={() => onQuantityChange(item.menuItem.id, item.quantity - 1)}
@@ -78,7 +79,6 @@ const OrderSidebar: React.FC<OrderSidebarProps> = ({
                                     >
                                         -
                                     </button>
-                                    <div className={styles.quantityDisplay}>{item.quantity}</div>
                                     <button
                                         className={styles.quantityButton}
                                         onClick={() => onQuantityChange(item.menuItem.id, item.quantity + 1)}
