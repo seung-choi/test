@@ -64,29 +64,40 @@ const OrderSidebar: React.FC<OrderSidebarProps> = ({
                     ) : (
                         orderItems.map((item, index) => (
                             <div key={index} className={styles.orderItem}>
-                                <div className={styles.itemHeader}>
-                                    <div className={styles.itemName}>{item.menuItem.name}</div>
-                                    <div className={styles.itemPrice}>
-                                        {(item.menuItem.price * item.quantity).toLocaleString('ko-KR')}원
-                                    </div>
-                                </div>
-                                <div className={styles.quantityControl}>
-                                    <div className={styles.quantityDisplay}>{item.quantity}</div>
-                                    <div className={styles.quantityButton}>
-                                        <button
+                                <div className={styles.itemContent}>
+                                    <button
+                                        className={styles.deleteButton}
+                                        onClick={() => onQuantityChange(item.menuItem.id, 0)}
+                                        aria-label="삭제"
+                                    >
+                                        <img src="/assets/image/global/x/x-sm.svg" alt="삭제" />
+                                    </button>
+                                    <div className={styles.itemDetails}>
+                                        <div className={styles.itemHeader}>
+                                            <div className={styles.itemName}>{item.menuItem.name}</div>
+                                            <div className={styles.itemPrice}>
+                                                {(item.menuItem.price * item.quantity).toLocaleString('ko-KR')}원
+                                            </div>
+                                        </div>
+                                        <div className={styles.quantityControl}>
+                                            <div className={styles.quantityDisplay}>{item.quantity}</div>
+                                            <div className={styles.quantityButton}>
+                                                <button
 
-                                            onClick={() => onQuantityChange(item.menuItem.id, item.quantity - 1)}
-                                            disabled={item.quantity <= 1}
-                                        >
-                                            -
-                                        </button>
-                                        <button
-                                            onClick={() => onQuantityChange(item.menuItem.id, item.quantity + 1)}
-                                        >
-                                            +
-                                        </button>
-                                    </div>
+                                                    onClick={() => onQuantityChange(item.menuItem.id, item.quantity - 1)}
+                                                    disabled={item.quantity <= 1}
+                                                >
+                                                    -
+                                                </button>
+                                                <button
+                                                    onClick={() => onQuantityChange(item.menuItem.id, item.quantity + 1)}
+                                                >
+                                                    +
+                                                </button>
+                                            </div>
 
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         ))

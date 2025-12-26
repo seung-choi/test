@@ -2,10 +2,13 @@
 
 import React, { useState, useCallback, useMemo, useRef } from 'react';
 import styles from '@/styles/pages/OrderPage.module.scss';
-import CategoryTabs from '@/components/order/CategoryTabs';
-import MenuGrid from '@/components/order/MenuGrid';
-import OrderSidebar from '@/components/order/OrderSidebar';
-import { CategoryType, MenuItem, OrderItem, TableInfo } from '@/types/order/order.type';
+import CategoryTabs from '@/components/order/order/CategoryTabs';
+import MenuGrid from '@/components/order/order/MenuGrid';
+import OrderSidebar from '@/components/order/order/OrderSidebar';
+import MemoModal from '@/components/order/modal/MemoModal';
+import OrderDetailModal from '@/components/order/modal/OrderDetailModal';
+import MenuOptionModal from '@/components/order/modal/MenuOptionModal';
+import { CategoryType, MenuItem, OrderItem, TableInfo, MenuOption } from '@/types/order/order.type';
 import { mockMenuItems } from '@/data/mockMenuData';
 import { useScrollToTop } from '@/hooks/common/useScrollManagement';
 
@@ -19,6 +22,10 @@ const OrderPage: React.FC = () => {
     { menuItem: mockMenuItems.find(item => item.id === 'snack-3')!, quantity: 1 }, // 감자튀김 1개
     { menuItem: mockMenuItems.find(item => item.id === 'side-4')!, quantity: 1 }, // 떡볶이 1개
   ]);
+  const [isMemoModalOpen, setIsMemoModalOpen] = useState(false);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [isOptionModalOpen, setIsOptionModalOpen] = useState(false);
+  const [selectedMenuItem, setSelectedMenuItem] = useState<MenuItem | null>(null);
   const menuGridRef = useRef<HTMLDivElement>(null);
 
   // 페이지 진입 시 스크롤 최상단으로 이동
@@ -48,24 +55,60 @@ const OrderPage: React.FC = () => {
   }, []);
 
   const handleMenuClick = useCallback((item: MenuItem) => {
+    // 옵션이 있는 메뉴면 옵션 선택 모달 열기
+    if (item.options && item.options.length > 0) {
+      setSelectedMenuItem(item);
+      setIsOptionModalOpen(true);
+    } else {
+      // 옵션이 없는 메뉴는 바로 주문 목록에 추가
+      setOrderItems((prev) => {
+        const existingItem = prev.find((orderItem) => orderItem.menuItem.id === item.id);
+
+        if (existingItem) {
+          return prev.map((orderItem) =>
+            orderItem.menuItem.id === item.id
+              ? { ...orderItem, quantity: orderItem.quantity + 1 }
+              : orderItem
+          );
+        } else {
+          return [...prev, { menuItem: item, quantity: 1 }];
+        }
+      });
+    }
+  }, []);
+
+  const handleAddToOrder = useCallback((menuItem: MenuItem, selectedOptions: { option: MenuOption; quantity: number }[]) => {
     setOrderItems((prev) => {
-      const existingItem = prev.find((orderItem) => orderItem.menuItem.id === item.id);
+      // 기존에 동일한 메뉴가 있는지 확인
+      const existingItem = prev.find((orderItem) => orderItem.menuItem.id === menuItem.id);
 
       if (existingItem) {
         return prev.map((orderItem) =>
-          orderItem.menuItem.id === item.id
-            ? { ...orderItem, quantity: orderItem.quantity + 1 }
+          orderItem.menuItem.id === menuItem.id
+            ? {
+                ...orderItem,
+                quantity: orderItem.quantity + 1,
+                selectedOptions: selectedOptions.length > 0 ? selectedOptions : undefined
+              }
             : orderItem
         );
       } else {
-        return [...prev, { menuItem: item, quantity: 1 }];
+        return [...prev, {
+          menuItem,
+          quantity: 1,
+          selectedOptions: selectedOptions.length > 0 ? selectedOptions : undefined
+        }];
       }
     });
   }, []);
 
   const handleMemoClick = useCallback(() => {
-    console.log('메모 버튼 클릭');
-    // TODO: 메모 모달 열기
+    setIsMemoModalOpen(true);
+  }, []);
+
+  const handleMemoSave = useCallback((memo: string) => {
+    console.log('메모 저장:', memo);
+    // TODO: 메모 저장 API 호출
   }, []);
 
   const handleOrderClick = useCallback(() => {
@@ -76,8 +119,13 @@ const OrderPage: React.FC = () => {
   }, [orderItems]);
 
   const handleDetailClick = useCallback(() => {
-    console.log('상세 내역 클릭');
-    // TODO: 상세 내역 페이지로 이동
+    setIsDetailModalOpen(true);
+  }, []);
+
+  const handleOrderModify = useCallback(() => {
+    console.log('주문 수정');
+    // TODO: 주문 수정 로직
+    setIsDetailModalOpen(false);
   }, []);
 
   const handleQuantityChange = useCallback((itemId: string, newQuantity: number) => {
@@ -120,6 +168,30 @@ const OrderPage: React.FC = () => {
           onQuantityChange={handleQuantityChange}
         />
       </div>
+
+      <MemoModal
+        isOpen={isMemoModalOpen}
+        onClose={() => setIsMemoModalOpen(false)}
+        onSave={handleMemoSave}
+      />
+
+      <OrderDetailModal
+        isOpen={isDetailModalOpen}
+        onClose={() => setIsDetailModalOpen(false)}
+        orderItems={orderItems}
+        onQuantityChange={handleQuantityChange}
+        onOrderModify={handleOrderModify}
+      />
+
+      <MenuOptionModal
+        isOpen={isOptionModalOpen}
+        onClose={() => {
+          setIsOptionModalOpen(false);
+          setSelectedMenuItem(null);
+        }}
+        menuItem={selectedMenuItem}
+        onAddToOrder={handleAddToOrder}
+      />
     </div>
   );
 };

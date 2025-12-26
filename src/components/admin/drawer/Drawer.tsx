@@ -209,7 +209,7 @@ const Drawer: React.FC<DrawerProps> = ({
           onClick={onClose}
           aria-label="닫기"
         >
-          <img src="/assets/image/global/x.svg" alt="닫기" />
+          <img src="/assets/image/global/x/x.svg" alt="닫기" />
         </button>
 
         <div className={styles.drawerContent}>

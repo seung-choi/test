@@ -1,16 +1,25 @@
 export type CategoryType = '전체메뉴' | '식사' | '주류' | '안주' | '사이드';
 
+export interface MenuOption {
+  id: string;
+  name: string;
+  price: number;
+  imageUrl: string;
+}
+
 export interface MenuItem {
   id: string;
   name: string;
   price: number;
   imageUrl: string;
   category: string;
+  options?: MenuOption[];
 }
 
 export interface OrderItem {
   menuItem: MenuItem;
   quantity: number;
+  selectedOptions?: { option: MenuOption; quantity: number }[];
 }
 
 export interface TableInfo {

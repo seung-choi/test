@@ -1,5 +1,26 @@
 import { MenuItem } from '@/types/order/order.type';
 
+// 공통 옵션 데이터
+const commonOptions = {
+  beef: { id: 'opt-beef', name: '소고기 추가', price: 13000, imageUrl: '/images/menu/placeholder.jpg' },
+  egg: { id: 'opt-egg', name: '계란 후라이', price: 1000, imageUrl: '/images/menu/placeholder.jpg' },
+  salad: { id: 'opt-salad', name: '샐러드', price: 10000, imageUrl: '/images/menu/placeholder.jpg' },
+  chicken: { id: 'opt-chicken', name: '닭고기', price: 20000, imageUrl: '/images/menu/placeholder.jpg' },
+  rice: { id: 'opt-rice', name: '쌀 밥', price: 1000, imageUrl: '/images/menu/placeholder.jpg' },
+  pineapple: { id: 'opt-pineapple', name: '파인애플', price: 8000, imageUrl: '/images/menu/placeholder.jpg' },
+  beansprout: { id: 'opt-beansprout', name: '숙주', price: 4000, imageUrl: '/images/menu/placeholder.jpg' },
+  bokchoy: { id: 'opt-bokchoy', name: '청경채', price: 3000, imageUrl: '/images/menu/placeholder.jpg' },
+  boiledegg: { id: 'opt-boiledegg', name: '삶은 계란', price: 3000, imageUrl: '/images/menu/placeholder.jpg' },
+  potato: { id: 'opt-potato', name: '감자', price: 15000, imageUrl: '/images/menu/placeholder.jpg' },
+  kimchi: { id: 'opt-kimchi', name: '김치', price: 15000, imageUrl: '/images/menu/placeholder.jpg' },
+  udon: { id: 'opt-udon', name: '우동', price: 15000, imageUrl: '/images/menu/placeholder.jpg' },
+  bacon: { id: 'opt-bacon', name: '베이컨', price: 15000, imageUrl: '/images/menu/placeholder.jpg' },
+  cheese: { id: 'opt-cheese', name: '치즈', price: 15000, imageUrl: '/images/menu/placeholder.jpg' },
+  ketchup: { id: 'opt-ketchup', name: '켗핫 소스', price: 15000, imageUrl: '/images/menu/placeholder.jpg' },
+  radish: { id: 'opt-radish', name: '무', price: 15000, imageUrl: '/images/menu/placeholder.jpg' },
+  avocado: { id: 'opt-avocado', name: '아보카도 샐러드', price: 15000, imageUrl: '/images/menu/placeholder.jpg' },
+};
+
 export const mockMenuItems: MenuItem[] = [
   // 식사
   {
@@ -8,6 +29,24 @@ export const mockMenuItems: MenuItem[] = [
     price: 8000,
     imageUrl: '/images/menu/placeholder.jpg',
     category: '식사',
+    options: [
+      commonOptions.beef,
+      commonOptions.egg,
+      commonOptions.salad,
+      commonOptions.chicken,
+      commonOptions.rice,
+      commonOptions.pineapple,
+      commonOptions.beansprout,
+      commonOptions.bokchoy,
+      commonOptions.boiledegg,
+      commonOptions.potato,
+      commonOptions.kimchi,
+      commonOptions.udon,
+      commonOptions.bacon,
+      commonOptions.cheese,
+      commonOptions.ketchup,
+      commonOptions.radish,
+    ],
   },
   {
     id: 'meal-2',
@@ -15,6 +54,24 @@ export const mockMenuItems: MenuItem[] = [
     price: 12000,
     imageUrl: '/images/menu/placeholder.jpg',
     category: '식사',
+    options: [
+      commonOptions.beef,
+      commonOptions.egg,
+      commonOptions.salad,
+      commonOptions.chicken,
+      commonOptions.rice,
+      commonOptions.pineapple,
+      commonOptions.beansprout,
+      commonOptions.bokchoy,
+      commonOptions.boiledegg,
+      commonOptions.potato,
+      commonOptions.kimchi,
+      commonOptions.udon,
+      commonOptions.bacon,
+      commonOptions.cheese,
+      commonOptions.ketchup,
+      commonOptions.radish,
+    ],
   },
   {
     id: 'meal-3',

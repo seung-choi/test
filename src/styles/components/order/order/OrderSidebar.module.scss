@@ -14,6 +14,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  z-index: 30;
 
   @include tablet {
     width: 380px;
@@ -38,7 +39,6 @@
 .title {
   color: black;
   font-size: 36px;
-  font-family: 'SUIT', sans-serif;
   font-weight: 700;
 
   @include tablet {
@@ -53,7 +53,6 @@
   border: none;
   color: white;
   font-size: 27px;
-  font-family: 'SUIT', sans-serif;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s ease;
@@ -75,27 +74,28 @@
   padding: 30px;
   height: 100%;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 
   @include tablet {
     padding: 20px;
+    gap: 20px;
   }
 }
 
 .tableInfo {
   padding-bottom: 15px;
   border-bottom: 0.5px solid #959595;
-  margin-bottom: 30px;
 
   @include tablet {
     padding-bottom: 12px;
-    margin-bottom: 22px;
   }
 }
 
 .tableNumber {
   color: #1F1F1F;
   font-size: 30px;
-  font-family: 'SUIT', sans-serif;
   font-weight: 600;
   text-align: center;
 
@@ -108,7 +108,6 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-bottom: 25px;
 
   @include tablet {
     gap: 8px;
@@ -127,7 +126,6 @@
   flex: 1;
   color: #1F1F1F;
   font-size: 25px;
-  font-family: 'SUIT', sans-serif;
   font-weight: 800;
 
   @include tablet {
@@ -152,7 +150,6 @@
   span {
     color: #1F1F1F;
     font-size: 20px;
-    font-family: 'SUIT', sans-serif;
     font-weight: 500;
 
     @include tablet {
@@ -176,7 +173,6 @@
 .memberNames {
   color: #666666;
   font-size: 25px;
-  font-family: 'SUIT', sans-serif;
   font-weight: 400;
 
   @include tablet {
@@ -189,13 +185,11 @@
   border-bottom: 1px solid black;
   color: black;
   font-size: 21px;
-  font-family: 'SUIT', sans-serif;
   font-weight: 600;
-  margin-bottom: 15px;
+  line-height: 35px;
 
   @include tablet {
     font-size: 17px;
-    margin-bottom: 12px;
   }
 }
 
@@ -220,7 +214,6 @@
   height: 100%;
   color: #969595;
   font-size: 25px;
-  font-family: 'SUIT', sans-serif;
   font-weight: 600;
   text-align: center;
 
@@ -232,10 +225,65 @@
 .orderItem {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
 
   @include tablet {
-    gap: 8px;
+    gap: 10px;
+  }
+}
+
+.itemContent {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+
+  @include tablet {
+    gap: 15px;
+  }
+}
+
+.deleteButton {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease;
+  margin-top: 7px;
+
+  @include tablet {
+    width: 16px;
+    height: 16px;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  &:hover {
+    opacity: 0.6;
+  }
+
+  &:active {
+    opacity: 0.4;
+  }
+}
+
+.itemDetails {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  @include tablet {
+    gap: 10px;
   }
 }
 
@@ -248,7 +296,7 @@
 .itemName {
   color: #1F1F1F;
   font-size: 25px;
-  font-family: 'SUIT', sans-serif;
+  line-height: 32px;
   font-weight: 600;
 
   @include tablet {
@@ -259,7 +307,7 @@
 .itemPrice {
   color: #1F1F1F;
   font-size: 25px;
-  font-family: 'SUIT', sans-serif;
+  line-height: 32px;
   font-weight: 600;
   text-align: right;
 
@@ -280,7 +328,7 @@
 
 .quantityButton {
   width: 140px;
-  height: 55px;
+  height: 50px;
   background: white;
   box-shadow: 0 0 4.45px rgba(0, 0, 0, 0.25) inset;
   border: none;
@@ -297,7 +345,7 @@
 
   @include tablet {
     width: 100px;
-    height: 50px;
+    height: 40px;
     font-size: 16px;
     padding: 0 10px;
   }
@@ -326,7 +374,6 @@
   justify-content: center;
   color: black;
   font-size: 27px;
-  font-family: 'SUIT', sans-serif;
   font-weight: 600;
 
   @include tablet {
@@ -369,7 +416,6 @@
 .totalLabel {
   color: #1F1F1F;
   font-size: 29px;
-  font-family: 'SUIT', sans-serif;
   font-weight: 600;
 
   @include tablet {
@@ -380,7 +426,6 @@
 .totalAmount {
   color: #1F1F1F;
   font-size: 29px;
-  font-family: 'SUIT', sans-serif;
   font-weight: 600;
   text-align: right;
 
@@ -409,7 +454,6 @@
   border: none;
   color: white;
   font-size: 40px;
-  font-family: 'SUIT', sans-serif;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -441,7 +485,6 @@
   border: none;
   color: #F3F3F3;
   font-size: 45px;
-  font-family: 'SUIT', sans-serif;
   font-weight: 800;
   cursor: pointer;
   transition: all 0.2s ease;
