@@ -1,4 +1,4 @@
-@import '../../common/mixins';
+@import '../../../common/mixins';
 
 .categoryWrapper {
   width: calc(100% - 533px);
@@ -7,7 +7,7 @@
   gap: 10px;
 
   @include tablet {
-    width: 100%;
+    width: calc(100% - 380px);
     gap: 8px;
   }
 }

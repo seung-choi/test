@@ -11,7 +11,14 @@ import { useScrollToTop } from '@/hooks/common/useScrollManagement';
 
 const OrderPage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<CategoryType>('전체메뉴');
-  const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
+  const [orderItems, setOrderItems] = useState<OrderItem[]>([
+    { menuItem: mockMenuItems.find(item => item.id === 'meal-2')!, quantity: 2 }, // 치즈돈까스 2개
+    { menuItem: mockMenuItems.find(item => item.id === 'drink-3')!, quantity: 3 }, // 카스 3개
+    { menuItem: mockMenuItems.find(item => item.id === 'drink-1')!, quantity: 2 }, // 참이슬 2개
+    { menuItem: mockMenuItems.find(item => item.id === 'snack-1')!, quantity: 1 }, // 치킨 1개
+    { menuItem: mockMenuItems.find(item => item.id === 'snack-3')!, quantity: 1 }, // 감자튀김 1개
+    { menuItem: mockMenuItems.find(item => item.id === 'side-4')!, quantity: 1 }, // 떡볶이 1개
+  ]);
   const menuGridRef = useRef<HTMLDivElement>(null);
 
   // 페이지 진입 시 스크롤 최상단으로 이동
@@ -75,10 +82,8 @@ const OrderPage: React.FC = () => {
 
   const handleQuantityChange = useCallback((itemId: string, newQuantity: number) => {
     if (newQuantity <= 0) {
-      // 수량이 0 이하면 아이템 삭제
       setOrderItems((prev) => prev.filter((item) => item.menuItem.id !== itemId));
     } else {
-      // 수량 업데이트
       setOrderItems((prev) =>
         prev.map((item) =>
           item.menuItem.id === itemId

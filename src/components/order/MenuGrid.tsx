@@ -1,7 +1,7 @@
 'use client';
 
 import React, { forwardRef } from 'react';
-import styles from '@/styles/components/order/MenuGrid.module.scss';
+import styles from '@/styles/components/order/order/MenuGrid.module.scss';
 import { MenuItem } from '@/types/order/order.type';
 
 interface MenuGridProps {
@@ -9,9 +9,6 @@ interface MenuGridProps {
   onMenuClick: (item: MenuItem) => void;
 }
 
-/**
- * 메뉴 그리드 컴포넌트 (카드 포함)
- */
 const MenuGrid = forwardRef<HTMLDivElement, MenuGridProps>(
   ({ items, onMenuClick }, ref) => {
     return (

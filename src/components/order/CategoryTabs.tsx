@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef } from 'react';
-import styles from '@/styles/components/order/CategoryTabs.module.scss';
+import styles from '@/styles/components/order/order/CategoryTabs.module.scss';
 import { CategoryType } from '@/types/order/order.type';
 import { useHorizontalScroll } from '@/hooks/common/useScrollManagement';
 

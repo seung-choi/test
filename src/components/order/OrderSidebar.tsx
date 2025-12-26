@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import styles from '@/styles/components/order/OrderSidebar.module.scss';
+import styles from '@/styles/components/order/order/OrderSidebar.module.scss';
 import {OrderItem, TableInfo} from '@/types/order/order.type';
 
 interface OrderSidebarProps {

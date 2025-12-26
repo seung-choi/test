@@ -1,4 +1,4 @@
-@import '../../common/mixins';
+@import '../../../common/mixins';
 
 .gridContainer {
   width: calc(100% - 533px);
@@ -11,8 +11,8 @@
   align-content: start;
 
   @include tablet {
-    width: 100%;
-    grid-template-columns: repeat(2, 1fr);
+    width: calc(100% - 380px);
+    grid-template-columns: repeat(3, 1fr);
     gap: 25px;
     padding: 30px 20px;
   }
