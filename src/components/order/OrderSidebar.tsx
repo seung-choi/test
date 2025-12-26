@@ -72,19 +72,21 @@ const OrderSidebar: React.FC<OrderSidebarProps> = ({
                                 </div>
                                 <div className={styles.quantityControl}>
                                     <div className={styles.quantityDisplay}>{item.quantity}</div>
-                                    <button
-                                        className={styles.quantityButton}
-                                        onClick={() => onQuantityChange(item.menuItem.id, item.quantity - 1)}
-                                        disabled={item.quantity <= 1}
-                                    >
-                                        -
-                                    </button>
-                                    <button
-                                        className={styles.quantityButton}
-                                        onClick={() => onQuantityChange(item.menuItem.id, item.quantity + 1)}
-                                    >
-                                        +
-                                    </button>
+                                    <div className={styles.quantityButton}>
+                                        <button
+
+                                            onClick={() => onQuantityChange(item.menuItem.id, item.quantity - 1)}
+                                            disabled={item.quantity <= 1}
+                                        >
+                                            -
+                                        </button>
+                                        <button
+                                            onClick={() => onQuantityChange(item.menuItem.id, item.quantity + 1)}
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+
                                 </div>
                             </div>
                         ))
