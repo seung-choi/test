@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import BaseModal from './BaseModal';
 import styles from '@/styles/components/order/modal/OrderDetailModal.module.scss';
 import { OrderItem } from '@/types/order/order.type';
@@ -28,6 +28,14 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
   onOrderModify,
 }) => {
   const [selectedTime, setSelectedTime] = useState('전체');
+  const initialOrderItemsRef = useRef<OrderItem[]>([]);
+
+  // 모달이 열릴 때 초기 상태 저장
+  useEffect(() => {
+    if (isOpen) {
+      initialOrderItemsRef.current = JSON.parse(JSON.stringify(orderItems));
+    }
+  }, [isOpen, orderItems]);
 
   const orderItemsWithTime: OrderItemWithTime[] = useMemo(() => {
     return orderItems.map((item, index) => ({
@@ -37,6 +45,20 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
       options: index === 0 ? '마라소스 / 계란 후라이 2개' : index === 3 ? '치즈 소스' : undefined,
       memo: index === 0 ? '덜 맵게' : undefined,
     }));
+  }, [orderItems]);
+
+  // 수정사항이 있는지 확인
+  const hasChanges = useMemo(() => {
+    if (initialOrderItemsRef.current.length !== orderItems.length) {
+      return true;
+    }
+
+    return orderItems.some((item, index) => {
+      const initialItem = initialOrderItemsRef.current[index];
+      return !initialItem ||
+             item.menuItem.id !== initialItem.menuItem.id ||
+             item.quantity !== initialItem.quantity;
+    });
   }, [orderItems]);
 
   const groupedByTime = useMemo(() => {
@@ -65,7 +87,11 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
 
   const footer = (
     <>
-      <button className={styles.modifyButton} onClick={onOrderModify}>
+      <button
+        className={styles.modifyButton}
+        onClick={onOrderModify}
+        disabled={!hasChanges}
+      >
         주문 수정
       </button>
       <div className={styles.totalInfo}>
