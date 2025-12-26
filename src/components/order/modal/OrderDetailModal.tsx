@@ -110,7 +110,6 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                 <th className={styles.columnCheck}></th>
                 <th className={styles.columnTime}>시간</th>
                 <th className={styles.columnMenu}>메뉴</th>
-                <th className={styles.columnOptions}>옵션</th>
                 <th className={styles.columnMemo}>메모</th>
                 <th className={styles.columnPayer}>결제자</th>
                 <th className={styles.columnQuantity}>수량</th>
@@ -128,11 +127,6 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                   </td>
                   <td className={styles.columnTime}>{item.orderTime}</td>
                   <td className={styles.columnMenu}>{item.menuItem.name}</td>
-                  <td className={styles.columnOptions}>
-                    {item.options && (
-                      <span className={styles.optionsText}>{item.options}</span>
-                    )}
-                  </td>
                   <td className={styles.columnMemo}>
                     {item.memo && <span className={styles.memoText}>{item.memo}</span>}
                   </td>

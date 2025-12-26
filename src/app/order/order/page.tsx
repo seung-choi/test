@@ -7,28 +7,28 @@ import MenuGrid from '@/components/order/order/MenuGrid';
 import OrderSidebar from '@/components/order/order/OrderSidebar';
 import MemoModal from '@/components/order/modal/MemoModal';
 import OrderDetailModal from '@/components/order/modal/OrderDetailModal';
-import MenuOptionModal from '@/components/order/modal/MenuOptionModal';
+// import MenuOptionModal from '@/components/order/modal/MenuOptionModal'; // 옵션 모달 보류
 import { CategoryType, MenuItem, OrderItem, TableInfo, MenuOption } from '@/types/order/order.type';
 import { mockMenuItems } from '@/data/mockMenuData';
 import { useScrollToTop } from '@/hooks/common/useScrollManagement';
 
 const OrderPage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<CategoryType>('전체메뉴');
+  const [selectedPayer, setSelectedPayer] = useState<string>('');
   const [orderItems, setOrderItems] = useState<OrderItem[]>([
-    { menuItem: mockMenuItems.find(item => item.id === 'meal-2')!, quantity: 2 }, // 치즈돈까스 2개
-    { menuItem: mockMenuItems.find(item => item.id === 'drink-3')!, quantity: 3 }, // 카스 3개
-    { menuItem: mockMenuItems.find(item => item.id === 'drink-1')!, quantity: 2 }, // 참이슬 2개
-    { menuItem: mockMenuItems.find(item => item.id === 'snack-1')!, quantity: 1 }, // 치킨 1개
-    { menuItem: mockMenuItems.find(item => item.id === 'snack-3')!, quantity: 1 }, // 감자튀김 1개
-    { menuItem: mockMenuItems.find(item => item.id === 'side-4')!, quantity: 1 }, // 떡볶이 1개
+    { menuItem: mockMenuItems.find(item => item.id === 'meal-2')!, quantity: 2 },
+    { menuItem: mockMenuItems.find(item => item.id === 'drink-3')!, quantity: 3 },
+    { menuItem: mockMenuItems.find(item => item.id === 'drink-1')!, quantity: 2 },
+    { menuItem: mockMenuItems.find(item => item.id === 'snack-1')!, quantity: 1 },
+    { menuItem: mockMenuItems.find(item => item.id === 'snack-3')!, quantity: 1 },
+    { menuItem: mockMenuItems.find(item => item.id === 'side-4')!, quantity: 1 },
   ]);
   const [isMemoModalOpen, setIsMemoModalOpen] = useState(false);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
-  const [isOptionModalOpen, setIsOptionModalOpen] = useState(false);
-  const [selectedMenuItem, setSelectedMenuItem] = useState<MenuItem | null>(null);
+  // const [isOptionModalOpen, setIsOptionModalOpen] = useState(false); // 옵션 모달 보류
+  // const [selectedMenuItem, setSelectedMenuItem] = useState<MenuItem | null>(null); // 옵션 모달 보류
   const menuGridRef = useRef<HTMLDivElement>(null);
 
-  // 페이지 진입 시 스크롤 최상단으로 이동
   useScrollToTop();
 
   const categories: CategoryType[] = ['전체메뉴', '식사', '주류', '안주', '사이드'];
@@ -48,19 +48,22 @@ const OrderPage: React.FC = () => {
 
   const handleCategoryChange = useCallback((category: CategoryType) => {
     setActiveCategory(category);
-    // 카테고리 변경 시 메뉴 그리드 스크롤 최상단으로
     if (menuGridRef.current) {
       menuGridRef.current.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, []);
 
+  const handlePayerSelect = useCallback((payerName: string) => {
+    setSelectedPayer(payerName);
+    console.log('선택된 결제자:', payerName);
+  }, []);
+
   const handleMenuClick = useCallback((item: MenuItem) => {
-    // 옵션이 있는 메뉴면 옵션 선택 모달 열기
-    if (item.options && item.options.length > 0) {
-      setSelectedMenuItem(item);
-      setIsOptionModalOpen(true);
-    } else {
-      // 옵션이 없는 메뉴는 바로 주문 목록에 추가
+    // 옵션 기능 보류
+    // if (item.options && item.options.length > 0) {
+    //   setSelectedMenuItem(item);
+    //   setIsOptionModalOpen(true);
+    // } else {
       setOrderItems((prev) => {
         const existingItem = prev.find((orderItem) => orderItem.menuItem.id === item.id);
 
@@ -74,33 +77,33 @@ const OrderPage: React.FC = () => {
           return [...prev, { menuItem: item, quantity: 1 }];
         }
       });
-    }
+    // }
   }, []);
 
-  const handleAddToOrder = useCallback((menuItem: MenuItem, selectedOptions: { option: MenuOption; quantity: number }[]) => {
-    setOrderItems((prev) => {
-      // 기존에 동일한 메뉴가 있는지 확인
-      const existingItem = prev.find((orderItem) => orderItem.menuItem.id === menuItem.id);
+  // 옵션 모달 보류
+  // const handleAddToOrder = useCallback((menuItem: MenuItem, selectedOptions: { option: MenuOption; quantity: number }[]) => {
+  //   setOrderItems((prev) => {
+  //     const existingItem = prev.find((orderItem) => orderItem.menuItem.id === menuItem.id);
 
-      if (existingItem) {
-        return prev.map((orderItem) =>
-          orderItem.menuItem.id === menuItem.id
-            ? {
-                ...orderItem,
-                quantity: orderItem.quantity + 1,
-                selectedOptions: selectedOptions.length > 0 ? selectedOptions : undefined
-              }
-            : orderItem
-        );
-      } else {
-        return [...prev, {
-          menuItem,
-          quantity: 1,
-          selectedOptions: selectedOptions.length > 0 ? selectedOptions : undefined
-        }];
-      }
-    });
-  }, []);
+  //     if (existingItem) {
+  //       return prev.map((orderItem) =>
+  //         orderItem.menuItem.id === menuItem.id
+  //           ? {
+  //               ...orderItem,
+  //               quantity: orderItem.quantity + 1,
+  //               selectedOptions: selectedOptions.length > 0 ? selectedOptions : undefined
+  //             }
+  //           : orderItem
+  //       );
+  //     } else {
+  //       return [...prev, {
+  //         menuItem,
+  //         quantity: 1,
+  //         selectedOptions: selectedOptions.length > 0 ? selectedOptions : undefined
+  //       }];
+  //     }
+  //   });
+  // }, []);
 
   const handleMemoClick = useCallback(() => {
     setIsMemoModalOpen(true);
@@ -113,10 +116,11 @@ const OrderPage: React.FC = () => {
 
   const handleOrderClick = useCallback(() => {
     console.log('주문하기:', orderItems);
+    console.log('선택된 결제자:', selectedPayer);
     // TODO: 주문 API 호출
-    alert('주문이 완료되었습니다!');
+    alert(`결제자: ${selectedPayer || '미선택'}\n주문이 완료되었습니다!`);
     setOrderItems([]);
-  }, [orderItems]);
+  }, [orderItems, selectedPayer]);
 
   const handleDetailClick = useCallback(() => {
     setIsDetailModalOpen(true);
@@ -162,6 +166,8 @@ const OrderPage: React.FC = () => {
         <OrderSidebar
           tableInfo={tableInfo}
           orderItems={orderItems}
+          selectedPayer={selectedPayer}
+          onPayerSelect={handlePayerSelect}
           onMemoClick={handleMemoClick}
           onOrderClick={handleOrderClick}
           onDetailClick={handleDetailClick}
@@ -183,7 +189,8 @@ const OrderPage: React.FC = () => {
         onOrderModify={handleOrderModify}
       />
 
-      <MenuOptionModal
+      {/* 옵션 모달 보류 */}
+      {/* <MenuOptionModal
         isOpen={isOptionModalOpen}
         onClose={() => {
           setIsOptionModalOpen(false);
@@ -191,7 +198,7 @@ const OrderPage: React.FC = () => {
         }}
         menuItem={selectedMenuItem}
         onAddToOrder={handleAddToOrder}
-      />
+      /> */}
     </div>
   );
 };

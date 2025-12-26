@@ -35,3 +35,33 @@
     outline: none;
   }
 }
+
+.saveButton {
+  width: 254px;
+  height: 84px;
+  background: #6600FF;
+  border-radius: 30px;
+  border: none;
+  color: white;
+  font-size: 35px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  @include tablet {
+    width: 150px;
+    height: 55px;
+    font-size: 22px;
+    border-radius: 22px;
+  }
+
+  &:hover {
+    background: #5500DD;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 0, 255, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}

@@ -19,8 +19,14 @@ const MemoModal: React.FC<MemoModalProps> = ({ isOpen, onClose, onSave }) => {
     onClose();
   };
 
+  const footer = (
+    <button className={styles.saveButton} onClick={handleSave}>
+      저장하기
+    </button>
+  );
+
   return (
-    <BaseModal isOpen={isOpen} onClose={onClose} title="요청 메모 등록" width={1318}>
+    <BaseModal isOpen={isOpen} onClose={onClose} title="요청 메모 등록" width={1318} footer={footer}>
       <div className={styles.memoContent}>
         <textarea
           className={styles.textarea}

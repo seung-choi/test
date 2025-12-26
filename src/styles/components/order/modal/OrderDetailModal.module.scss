@@ -76,10 +76,10 @@
 .orderTable {
   width: 100%;
   border-collapse: collapse;
-  min-width: 900px;
+  min-width: 800px;
 
   @include tablet {
-    min-width: 700px;
+    min-width: 600px;
   }
 
   thead {
@@ -169,30 +169,11 @@
   }
 }
 
-.columnOptions {
-  width: 326px;
-
-  @include tablet {
-    width: 150px;
-  }
-}
-
-.optionsText {
-  color: #959595;
-  font-size: 27px;
-  font-weight: 600;
-  word-break: keep-all;
-
-  @include tablet {
-    font-size: 14px;
-  }
-}
-
 .columnMemo {
-  width: 330px;
+  width: 656px;
 
   @include tablet {
-    width: 120px;
+    width: 270px;
   }
 }
 

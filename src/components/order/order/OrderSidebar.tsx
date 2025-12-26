@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styles from '@/styles/components/order/order/OrderSidebar.module.scss';
 import {OrderItem, TableInfo} from '@/types/order/order.type';
 
@@ -11,6 +11,8 @@ interface OrderSidebarProps {
     onOrderClick: () => void;
     onDetailClick: () => void;
     onQuantityChange: (itemId: string, newQuantity: number) => void;
+    selectedPayer?: string;
+    onPayerSelect?: (payerName: string) => void;
 }
 
 const OrderSidebar: React.FC<OrderSidebarProps> = ({
@@ -20,12 +22,41 @@ const OrderSidebar: React.FC<OrderSidebarProps> = ({
                                                        onOrderClick,
                                                        onDetailClick,
                                                        onQuantityChange,
+                                                       selectedPayer,
+                                                       onPayerSelect,
                                                    }) => {
+    const [isPayerDropdownOpen, setIsPayerDropdownOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+    
     const totalItems = orderItems.reduce((sum, item) => sum + item.quantity, 0);
     const totalAmount = orderItems.reduce(
         (sum, item) => sum + item.menuItem.price * item.quantity,
         0
     );
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setIsPayerDropdownOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
+    const handlePayerBadgeClick = () => {
+        setIsPayerDropdownOpen(!isPayerDropdownOpen);
+    };
+
+    const handlePayerSelect = (payerName: string) => {
+        onPayerSelect?.(payerName);
+        setIsPayerDropdownOpen(false);
+    };
+
+    const displayedPayer = selectedPayer;
 
     return (
         <div className={styles.sidebar}>
@@ -46,9 +77,28 @@ const OrderSidebar: React.FC<OrderSidebarProps> = ({
                 <div className={styles.orderInfo}>
                     <div className={styles.groupHeader}>
                         <div className={styles.groupName}>{tableInfo.groupName}</div>
-                        <div className={styles.payerBadge}>
-                            <span>결제자</span>
-                            <div className={styles.arrowDown}/>
+                        <div className={styles.payerSection} ref={dropdownRef}>
+                            <button
+                                className={`${styles.payerBadge} ${isPayerDropdownOpen ? styles.active : ''}`}
+                                onClick={handlePayerBadgeClick}
+                            >
+                                <span>{displayedPayer || '결제자'}</span>
+                                <div className={`${styles.arrowDown} ${isPayerDropdownOpen ? styles.rotated : ''}`}/>
+                            </button>
+                            
+                            {isPayerDropdownOpen && (
+                                <div className={styles.payerDropdown}>
+                                    {tableInfo.memberNames.map((memberName, index) => (
+                                        <button
+                                            key={index}
+                                            className={`${styles.payerOption} ${selectedPayer === memberName ? styles.selected : ''}`}
+                                            onClick={() => handlePayerSelect(memberName)}
+                                        >
+                                            {memberName}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div className={styles.memberNames}>
@@ -83,7 +133,6 @@ const OrderSidebar: React.FC<OrderSidebarProps> = ({
                                             <div className={styles.quantityDisplay}>{item.quantity}</div>
                                             <div className={styles.quantityButton}>
                                                 <button
-
                                                     onClick={() => onQuantityChange(item.menuItem.id, item.quantity - 1)}
                                                     disabled={item.quantity <= 1}
                                                 >
