@@ -16,3 +16,9 @@ export interface DragData {
     isNew: boolean;
     tableId?: string;
 }
+
+export interface LayoutPage {
+    id: string;
+    name: string;
+    tables: PlacedTable[];
+}
