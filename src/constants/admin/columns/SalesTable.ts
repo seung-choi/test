@@ -19,6 +19,7 @@ export const getSalesTableColumns = (): TableColumn[] => [
         label: '티오프',
         width: '9%',
         sortable: false,
+
         render: renderText,
     },
     {

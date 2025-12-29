@@ -1,43 +1,47 @@
 'use client';
 
 import React, { useState, useCallback, useMemo, useRef } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import styles from '@/styles/pages/OrderPage.module.scss';
 import CategoryTabs from '@/components/order/order/CategoryTabs';
 import MenuGrid from '@/components/order/order/MenuGrid';
 import OrderSidebar from '@/components/order/order/OrderSidebar';
 import MemoModal from '@/components/order/modal/MemoModal';
 import OrderDetailModal from '@/components/order/modal/OrderDetailModal';
-// import MenuOptionModal from '@/components/order/modal/MenuOptionModal'; // 옵션 모달 보류
 import { CategoryType, MenuItem, OrderItem, TableInfo, MenuOption } from '@/types/order/order.type';
 import { mockMenuItems } from '@/data/mockMenuData';
+import { mockTableInfo, mockOrderItems } from '@/data/mockOrderData';
 import { useScrollToTop } from '@/hooks/common/useScrollManagement';
 
 const OrderPage: React.FC = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [activeCategory, setActiveCategory] = useState<CategoryType>('전체메뉴');
   const [selectedPayer, setSelectedPayer] = useState<string>('');
-  const [orderItems, setOrderItems] = useState<OrderItem[]>([
-    { menuItem: mockMenuItems.find(item => item.id === 'meal-2')!, quantity: 2 },
-    { menuItem: mockMenuItems.find(item => item.id === 'drink-3')!, quantity: 3 },
-    { menuItem: mockMenuItems.find(item => item.id === 'drink-1')!, quantity: 2 },
-    { menuItem: mockMenuItems.find(item => item.id === 'snack-1')!, quantity: 1 },
-    { menuItem: mockMenuItems.find(item => item.id === 'snack-3')!, quantity: 1 },
-    { menuItem: mockMenuItems.find(item => item.id === 'side-4')!, quantity: 1 },
-  ]);
+  const [orderItems, setOrderItems] = useState<OrderItem[]>(mockOrderItems);
   const [isMemoModalOpen, setIsMemoModalOpen] = useState(false);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
-  // const [isOptionModalOpen, setIsOptionModalOpen] = useState(false); // 옵션 모달 보류
-  // const [selectedMenuItem, setSelectedMenuItem] = useState<MenuItem | null>(null); // 옵션 모달 보류
   const menuGridRef = useRef<HTMLDivElement>(null);
 
   useScrollToTop();
 
   const categories: CategoryType[] = ['전체메뉴', '식사', '주류', '안주', '사이드'];
 
-  const tableInfo: TableInfo = {
-    tableNumber: 5,
-    groupName: '개발팀 회식',
-    memberNames: ['홍길동', '김철수', '이영희', '박민수'],
-  };
+  const tableInfo: TableInfo = useMemo(() => {
+    const tableNumber = searchParams.get('tableNumber');
+    const groupName = searchParams.get('groupName');
+    const membersParam = searchParams.get('members');
+
+    if (tableNumber && groupName && membersParam) {
+      return {
+        tableNumber: parseInt(tableNumber.replace('T', '')) || mockTableInfo.tableNumber,
+        groupName: groupName,
+        memberNames: membersParam.split(',').filter(Boolean),
+      };
+    }
+
+    return mockTableInfo;
+  }, [searchParams]);
 
   const filteredMenuItems = useMemo(() => {
     if (activeCategory === '전체메뉴') {
@@ -59,11 +63,6 @@ const OrderPage: React.FC = () => {
   }, []);
 
   const handleMenuClick = useCallback((item: MenuItem) => {
-    // 옵션 기능 보류
-    // if (item.options && item.options.length > 0) {
-    //   setSelectedMenuItem(item);
-    //   setIsOptionModalOpen(true);
-    // } else {
       setOrderItems((prev) => {
         const existingItem = prev.find((orderItem) => orderItem.menuItem.id === item.id);
 
@@ -77,33 +76,7 @@ const OrderPage: React.FC = () => {
           return [...prev, { menuItem: item, quantity: 1 }];
         }
       });
-    // }
   }, []);
-
-  // 옵션 모달 보류
-  // const handleAddToOrder = useCallback((menuItem: MenuItem, selectedOptions: { option: MenuOption; quantity: number }[]) => {
-  //   setOrderItems((prev) => {
-  //     const existingItem = prev.find((orderItem) => orderItem.menuItem.id === menuItem.id);
-
-  //     if (existingItem) {
-  //       return prev.map((orderItem) =>
-  //         orderItem.menuItem.id === menuItem.id
-  //           ? {
-  //               ...orderItem,
-  //               quantity: orderItem.quantity + 1,
-  //               selectedOptions: selectedOptions.length > 0 ? selectedOptions : undefined
-  //             }
-  //           : orderItem
-  //       );
-  //     } else {
-  //       return [...prev, {
-  //         menuItem,
-  //         quantity: 1,
-  //         selectedOptions: selectedOptions.length > 0 ? selectedOptions : undefined
-  //       }];
-  //     }
-  //   });
-  // }, []);
 
   const handleMemoClick = useCallback(() => {
     setIsMemoModalOpen(true);
@@ -146,10 +119,14 @@ const OrderPage: React.FC = () => {
     }
   }, []);
 
+  const handleBackClick = useCallback(() => {
+    router.push('/order/main');
+  }, [router]);
+
   return (
     <div className={styles.pageContainer}>
       <header className={styles.header}>
-        <div className={styles.logo}>
+        <div className={styles.logo} onClick={handleBackClick} style={{ cursor: 'pointer' }}>
           <img src='/assets/image/global/arrow/arrow-back.svg' alt={'뒤로가기'}/>
         </div>
         <div className={styles.menuSection}>
@@ -188,17 +165,6 @@ const OrderPage: React.FC = () => {
         onQuantityChange={handleQuantityChange}
         onOrderModify={handleOrderModify}
       />
-
-      {/* 옵션 모달 보류 */}
-      {/* <MenuOptionModal
-        isOpen={isOptionModalOpen}
-        onClose={() => {
-          setIsOptionModalOpen(false);
-          setSelectedMenuItem(null);
-        }}
-        menuItem={selectedMenuItem}
-        onAddToOrder={handleAddToOrder}
-      /> */}
     </div>
   );
 };
