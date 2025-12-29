@@ -1,4 +1,6 @@
 import React, { useState, useMemo } from 'react';
+import { useRecoilValue } from 'recoil';
+import { drawerState } from '@/lib/recoil';
 import styles from '@/styles/components/admin/drawer/SalesManagement.module.scss';
 import Table from '@/components/admin/common/Table';
 import { SalesMockData } from '@/mock/admin/salesMockData';
@@ -6,8 +8,10 @@ import {getSalesTableColumns} from "@/constants";
 import SalesFilterActionBar from "@/components/admin/drawer/setting/SalesInquiryActionBar";
 import { SalesFilter } from '@/types/admin/setting.types';
 import { exportSalesToExcel } from '@/utils/admin/excel/salesExcelExporter';
+import LayoutManager from '@/components/admin/drawer/setting/canvas/LayoutManager';
 
 const SettingManagement = ({showActionBar = true}) => {
+    const drawer = useRecoilValue(drawerState);
     const [filter, setFilter] = useState<SalesFilter>({
         dateRange: {
             startDate: '2025-12-22',
@@ -100,6 +104,10 @@ const SettingManagement = ({showActionBar = true}) => {
             throw error;
         }
     };
+
+    if (drawer.settingActiveTab === 'layout') {
+        return <LayoutManager />;
+    }
 
     return (
         <div className={styles.salesManagement}>

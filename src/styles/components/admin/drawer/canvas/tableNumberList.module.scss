@@ -1,0 +1,139 @@
+.container {
+    width: 100%;
+    max-width: 280px;
+    height: 100%;
+    position: relative;
+    background: white;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.10);
+    overflow: hidden;
+    border-radius: 10px;
+    padding: 18px 17px;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.title {
+    color: black;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.erpButton {
+    padding: 7px 20px;
+    background: #6600FF;
+    border-radius: 10px;
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+        background: #5500DD;
+    }
+
+    &:active {
+        background: #4400BB;
+    }
+}
+
+.listContainer {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+.list {
+    width: 100%;
+    height: 100%;
+    padding: 5px 15px 5px 5px;
+    overflow-y: auto;
+    border-radius: 5px;
+    outline: 1px #F3F3F3 solid;
+    outline-offset: -1px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    &::-webkit-scrollbar {
+        width: 6.52px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: rgba(149, 149, 149, 0.4);
+        border-radius: 50px;
+    }
+}
+
+.listItem {
+    height: 40px;
+    background: #F3F3F3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #666666;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.scrollbar {
+    width: 6.52px;
+    height: 296.38px;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.40;
+    background: #959595;
+    border-radius: 50px;
+    pointer-events: none;
+}
+
+.addButton {
+    width: 129px;
+    height: 35px;
+    margin: 15px auto 0;
+    background: #666666;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+        background: #555555;
+    }
+
+    &:active {
+        background: #444444;
+    }
+
+    span {
+        color: white;
+        font-size: 20px;
+        font-weight: 400;
+    }
+}
+
+.checkbox {
+    width: 14px;
+    height: 14px;
+    background: white;
+    outline: 2px white solid;
+    outline-offset: -1px;
+}
