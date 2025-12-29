@@ -4,11 +4,14 @@ import React, { useState, useCallback } from 'react';
 import TableSelector from './TableSelector';
 import LayoutCanvas from './LayoutCanvas';
 import TableNumberList from './TableNumberList';
+import LayoutTabs from './LayoutTabs';
+import TableListView from './TableListView';
 import styles from '@/styles/components/admin/drawer/canvas/layoutManager.module.scss';
 import { PlacedTable, TableType } from '@/types/admin/layout.type';
 
 const LayoutManager: React.FC = () => {
     const [placedTables, setPlacedTables] = useState<PlacedTable[]>([]);
+    const [activeTab, setActiveTab] = useState<'table' | 'list'>('table');
 
     const handleAddTable = useCallback((type: TableType, position: { x: number; y: number }) => {
         const newTable: PlacedTable = {
@@ -52,14 +55,21 @@ const LayoutManager: React.FC = () => {
     return (
         <div className={styles.container}>
             <TableSelector />
-            <LayoutCanvas
-                placedTables={placedTables}
-                onAddTable={handleAddTable}
-                onMoveTable={handleMoveTable}
-                onRemoveTable={handleRemoveTable}
-                onSetTableNumber={handleSetTableNumber}
-                onRotateTable={handleRotateTable}
-            />
+            <div className={styles.canvasWrapper}>
+                <LayoutTabs activeTab={activeTab} onTabChange={setActiveTab} />
+                {activeTab === 'table' ? (
+                    <LayoutCanvas
+                        placedTables={placedTables}
+                        onAddTable={handleAddTable}
+                        onMoveTable={handleMoveTable}
+                        onRemoveTable={handleRemoveTable}
+                        onSetTableNumber={handleSetTableNumber}
+                        onRotateTable={handleRotateTable}
+                    />
+                ) : (
+                    <TableListView placedTables={placedTables} />
+                )}
+            </div>
             <TableNumberList />
         </div>
     );

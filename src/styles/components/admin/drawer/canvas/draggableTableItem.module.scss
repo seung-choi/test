@@ -11,52 +11,15 @@
     }
 }
 
-.tableWrapper {
-    position: relative;
-}
-
-.innerContent {
-    position: absolute;
-    background: white;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .tableNumber {
     color: #666666;
     font-size: 16px;
-    font-family: 'SUIT', sans-serif;
     font-weight: 600;
     text-align: center;
-}
-
-.border {
     position: absolute;
-    width: 103px;
-    height: 11px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-}
-
-.borderTop {
-    transform-origin: top left;
-}
-
-.borderBottom {
-    transform: rotate(-180deg);
-    transform-origin: top left;
-}
-
-.borderLeft {
-    transform: rotate(-90deg);
-    transform-origin: top left;
-}
-
-.borderRight {
-    transform: rotate(90deg);
-    transform-origin: top left;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .controlPanel {
@@ -149,7 +112,6 @@
     cursor: pointer;
     color: #666666;
     font-size: 20px;
-    font-family: 'SUIT', sans-serif;
     font-weight: 400;
     text-align: right;
     transition: background 0.2s;
