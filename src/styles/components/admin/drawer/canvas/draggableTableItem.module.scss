@@ -2,12 +2,30 @@
 
 .tableItem {
     position: absolute;
-    cursor: move;
     user-select: none;
     transition: opacity 0.2s;
 
     &.dragging {
         opacity: 0.5;
+
+        .controlPanel,
+        .numberDropdown {
+            opacity: 0;
+            pointer-events: none;
+        }
+    }
+}
+
+.tableWrapper {
+    cursor: grab;
+    user-select: none;
+
+    &:active {
+        cursor: grabbing;
+    }
+
+    .dragging & {
+        cursor: grabbing;
     }
 }
 
@@ -39,6 +57,8 @@
     position: absolute;
     top: 0;
     left: 50%;
+    cursor: default;
+    user-select: none;
 
     button {
         padding: 5px 8px;
@@ -88,6 +108,8 @@
     left: 14px;
     top: 0;
     z-index: 101;
+    cursor: default;
+    user-select: none;
 }
 
 .numberList {

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
+import TableCard from '@/components/common/TableCard';
 import styles from '@/styles/components/order/main/tableSeat.module.scss';
 
 interface SeatData {
@@ -24,7 +25,6 @@ const TableSeat: React.FC<TableSeatProps> = ({seats}) => {
     const handleSeatClick = (seat: SeatData) => {
         if (seat.isEmpty) return;
 
-        // 테이블 정보를 쿼리 파라미터로 전달
         const params = new URLSearchParams({
             tableNumber: seat.tableNumber,
             groupName: seat.groupName || '',
@@ -37,30 +37,17 @@ const TableSeat: React.FC<TableSeatProps> = ({seats}) => {
     return (
         <div className={styles.seatsContainer}>
             {seats.map((seat) => (
-                <div
+                <TableCard
                     key={seat.id}
-                    className={`${styles.seatCard} ${seat.isEmpty ? styles.empty : styles.occupied}`}
+                    id={seat.id}
+                    time={seat.time}
+                    customerName={seat.customerName}
+                    groupName={seat.groupName}
+                    members={seat.members}
+                    tableNumber={seat.tableNumber}
+                    isEmpty={seat.isEmpty}
                     onClick={() => handleSeatClick(seat)}
-                    style={{ cursor: seat.isEmpty ? 'default' : 'pointer' }}
-                >
-                    <div className={styles.timeText}>{seat.time}</div>
-                    {!seat.isEmpty && (
-                        <>
-                            <div className={styles.customerInfo}>
-                                <div className={styles.customerName}>{seat.customerName}</div>
-                                <div className={styles.groupName}>{seat.groupName}</div>
-                            </div>
-
-                            <div className={styles.membersList}>
-                                {seat.members?.join(', ')}
-                            </div>
-                        </>
-                    )}
-
-                    <div className={styles.tableTab}>
-                        <div className={styles.tableNumber}>{seat.tableNumber}</div>
-                    </div>
-                </div>
+                />
             ))}
         </div>
     );

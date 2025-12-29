@@ -1,35 +1,74 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import styles from '@/styles/components/admin/drawer/canvas/tableListView.module.scss';
 import { PlacedTable } from '@/types/admin/layout.type';
 
 interface TableListViewProps {
     placedTables: PlacedTable[];
-    onTableClick?: (table: PlacedTable) => void;
+    onReorder?: (reorderedTables: PlacedTable[]) => void;
 }
 
-const TableListView: React.FC<TableListViewProps> = ({ placedTables, onTableClick }) => {
+const TableListView: React.FC<TableListViewProps> = ({ placedTables, onReorder }) => {
+    const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+    const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
+
+    const handleDragStart = (e: React.DragEvent, index: number) => {
+        setDraggedIndex(index);
+        e.dataTransfer.effectAllowed = 'move';
+    };
+
+    const handleDragOver = (e: React.DragEvent, index: number) => {
+        e.preventDefault();
+        setDragOverIndex(index);
+    };
+
+    const handleDragLeave = () => {
+        setDragOverIndex(null);
+    };
+
+    const handleDrop = (e: React.DragEvent, dropIndex: number) => {
+        e.preventDefault();
+
+        if (draggedIndex === null || draggedIndex === dropIndex) {
+            setDraggedIndex(null);
+            setDragOverIndex(null);
+            return;
+        }
+
+        const reorderedTables = [...placedTables];
+        const [draggedItem] = reorderedTables.splice(draggedIndex, 1);
+        reorderedTables.splice(dropIndex, 0, draggedItem);
+
+        onReorder?.(reorderedTables);
+        setDraggedIndex(null);
+        setDragOverIndex(null);
+    };
+
+    const handleDragEnd = () => {
+        setDraggedIndex(null);
+        setDragOverIndex(null);
+    };
+
     return (
         <div className={styles.listContainer}>
-            {placedTables.map((table) => (
+            {placedTables.map((table, index) => (
                 <div
                     key={table.id}
-                    className={`${styles.tableCard} ${table.tableNumber ? styles.assigned : styles.unassigned}`}
-                    onClick={() => onTableClick?.(table)}
-                    style={{ cursor: onTableClick ? 'pointer' : 'default' }}
+                    className={`${styles.tableCardWrapper} ${draggedIndex === index ? styles.dragging : ''} ${dragOverIndex === index ? styles.dragOver : ''}`}
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, index)}
+                    onDragOver={(e) => handleDragOver(e, index)}
+                    onDragLeave={handleDragLeave}
+                    onDrop={(e) => handleDrop(e, index)}
+                    onDragEnd={handleDragEnd}
                 >
-                    <div className={styles.tableType}>{table.type}</div>
-
-                    {table.tableNumber && (
-                        <div className={styles.tableInfo}>
-                            <div className={styles.assignedLabel}>번호 지정됨</div>
-                        </div>
-                    )}
-
-                    <div className={styles.tableTab}>
-                        <div className={styles.tableNumber}>
-                            {table.tableNumber ? `${table.tableNumber}번` : '미지정'}
+                    <div className={styles.tableCard}>
+                        <div className={styles.tableType}>{table.type}</div>
+                        <div className={styles.tableTab}>
+                            <div className={styles.tableNumber}>
+                                {table.tableNumber ? `${table.tableNumber}번` : '미지정'}
+                            </div>
                         </div>
                     </div>
                 </div>

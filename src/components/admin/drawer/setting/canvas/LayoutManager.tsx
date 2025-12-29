@@ -52,6 +52,10 @@ const LayoutManager: React.FC = () => {
         );
     }, []);
 
+    const handleReorderTables = useCallback((reorderedTables: PlacedTable[]) => {
+        setPlacedTables(reorderedTables);
+    }, []);
+
     return (
         <div className={styles.container}>
             <TableSelector />
@@ -67,7 +71,10 @@ const LayoutManager: React.FC = () => {
                         onRotateTable={handleRotateTable}
                     />
                 ) : (
-                    <TableListView placedTables={placedTables} />
+                    <TableListView
+                        placedTables={placedTables}
+                        onReorder={handleReorderTables}
+                    />
                 )}
             </div>
             <TableNumberList />

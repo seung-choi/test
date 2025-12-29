@@ -4,6 +4,7 @@ import React, { useRef } from 'react';
 import styles from '@/styles/components/admin/drawer/canvas/layoutCanvas.module.scss';
 import { PlacedTable, TableType, DragData } from '@/types/admin/layout.type';
 import DraggableTableItem from './DraggableTableItem';
+import { isPositionValid } from '@/utils/tableCollision';
 
 interface LayoutCanvasProps {
     placedTables: PlacedTable[];
@@ -23,7 +24,6 @@ const LayoutCanvas: React.FC<LayoutCanvasProps> = ({
     onRotateTable
 }) => {
     const canvasRef = useRef<HTMLDivElement>(null);
-    const dragOverTableId = useRef<string | null>(null);
 
     const handleDragOver = (e: React.DragEvent) => {
         e.preventDefault();
@@ -39,14 +39,25 @@ const LayoutCanvas: React.FC<LayoutCanvasProps> = ({
         if (!data) return;
 
         const dragData: DragData = JSON.parse(data);
-        const rect = canvasRef.current.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
 
+        // TableSelector에서 드래그한 새 테이블만 처리
         if (dragData.isNew) {
-            onAddTable(dragData.type, { x, y });
-        } else if (dragData.tableId) {
-            onMoveTable(dragData.tableId, { x, y });
+            const rect = canvasRef.current.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            // 임시 테이블 객체로 충돌 검사
+            const tempTable: PlacedTable = {
+                id: 'temp',
+                type: dragData.type,
+                position: { x, y }
+            };
+
+            // 다른 테이블과 겹치지 않는지 확인
+            if (isPositionValid(tempTable, { x, y }, placedTables)) {
+                onAddTable(dragData.type, { x, y });
+            }
+            // 겹치면 추가하지 않음
         }
     };
 

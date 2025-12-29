@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import styles from '@/styles/components/admin/drawer/canvas/draggableTableItem.module.scss';
 import { PlacedTable, DragData } from '@/types/admin/layout.type';
 import TableShape from '@/components/common/TableShape';
+import { isPositionValid } from '@/utils/tableCollision';
 
 interface DraggableTableItemProps {
     table: PlacedTable;
@@ -26,6 +27,8 @@ const DraggableTableItem: React.FC<DraggableTableItemProps> = ({
     const [showNumberDropdown, setShowNumberDropdown] = useState(false);
     const [isDragging, setIsDragging] = useState(false);
     const itemRef = useRef<HTMLDivElement>(null);
+    const dragStartPos = useRef<{ x: number; y: number } | null>(null);
+    const tableStartPos = useRef<{ x: number; y: number } | null>(null);
 
     const borderColor = '#7B7B7B';
 
@@ -41,22 +44,67 @@ const DraggableTableItem: React.FC<DraggableTableItemProps> = ({
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
-    const handleDragStart = (e: React.DragEvent) => {
-        setIsDragging(true);
-        const dragData: DragData = {
-            type: table.type,
-            isNew: false,
-            tableId: table.id
-        };
-        e.dataTransfer.setData('application/json', JSON.stringify(dragData));
-        e.dataTransfer.effectAllowed = 'move';
-    };
+    useEffect(() => {
+        if (!isDragging) return;
 
-    const handleDragEnd = () => {
-        setIsDragging(false);
+        const handleMouseMove = (e: MouseEvent) => {
+            if (!dragStartPos.current || !tableStartPos.current) return;
+
+            const deltaX = e.clientX - dragStartPos.current.x;
+            const deltaY = e.clientY - dragStartPos.current.y;
+
+            const newX = tableStartPos.current.x + deltaX;
+            const newY = tableStartPos.current.y + deltaY;
+
+            const newPosition = { x: newX, y: newY };
+
+            // 충돌 검사: 다른 테이블과 겹치지 않는지 확인
+            if (isPositionValid(table, newPosition, placedTables)) {
+                onMove(table.id, newPosition);
+            }
+            // 충돌이 발생하면 이동하지 않음 (현재 위치 유지)
+        };
+
+        const handleMouseUp = () => {
+            setIsDragging(false);
+            dragStartPos.current = null;
+            tableStartPos.current = null;
+        };
+
+        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mouseup', handleMouseUp);
+
+        return () => {
+            document.removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('mouseup', handleMouseUp);
+        };
+    }, [isDragging, table, placedTables, onMove]);
+
+    const handleMouseDown = (e: React.MouseEvent) => {
+        // 컨트롤 패널이나 드롭다운을 클릭한 경우 드래그 시작하지 않음
+        const target = e.target as HTMLElement;
+        if (target.closest(`.${styles.controlPanel}`) || target.closest(`.${styles.numberDropdown}`)) {
+            return;
+        }
+
+        e.preventDefault();
+        setIsDragging(true);
+        setShowNumberDropdown(false);
+
+        dragStartPos.current = { x: e.clientX, y: e.clientY };
+        tableStartPos.current = { x: table.position.x, y: table.position.y };
     };
 
     const handleClick = (e: React.MouseEvent) => {
+        // 드래그 중이었으면 클릭 무시
+        if (isDragging) return;
+
+        // 컨트롤 패널이나 드롭다운을 클릭한 경우 무시
+        const target = e.target as HTMLElement;
+        if (target.closest(`.${styles.controlPanel}`) || target.closest(`.${styles.numberDropdown}`)) {
+            return;
+        }
+
         e.stopPropagation();
         setIsSelected(!isSelected);
         setShowNumberDropdown(false);
@@ -100,20 +148,22 @@ const DraggableTableItem: React.FC<DraggableTableItemProps> = ({
                 left: `${table.position.x}px`,
                 top: `${table.position.y}px`,
             }}
-            draggable
-            onDragStart={handleDragStart}
-            onDragEnd={handleDragEnd}
             onClick={handleClick}
         >
-            <TableShape
-                type={table.type}
-                borderColor={borderColor}
-                rotation={table.rotation || 0}
+            <div
+                className={styles.tableWrapper}
+                onMouseDown={handleMouseDown}
             >
-                {table.tableNumber && (
-                    <div className={styles.tableNumber}>{table.tableNumber}번</div>
-                )}
-            </TableShape>
+                <TableShape
+                    type={table.type}
+                    borderColor={borderColor}
+                    rotation={table.rotation || 0}
+                >
+                    {table.tableNumber && (
+                        <div className={styles.tableNumber}>{table.tableNumber}번</div>
+                    )}
+                </TableShape>
+            </div>
 
             {isSelected && !showNumberDropdown && (
                 <div className={styles.controlPanel}>
