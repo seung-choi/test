@@ -34,14 +34,14 @@ const OrderHeader: React.FC<OrderHeaderProps> = ({
         <div className={styles.header}>
             <div className={styles.modeSwitch}>
                 <div
-                    className={`${styles.modeOption} ${!isTableMode ? styles.active : ''}`}
-                    onClick={() => onModeChange(false)}
+                    className={`${styles.modeOption} ${isTableMode ? styles.active : ''}`}
+                    onClick={() => onModeChange(true)}
                 >
                     테이블 모드
                 </div>
                 <div
-                    className={`${styles.modeOption} ${isTableMode ? styles.active : ''}`}
-                    onClick={() => onModeChange(true)}
+                    className={`${styles.modeOption} ${!isTableMode ? styles.active : ''}`}
+                    onClick={() => onModeChange(false)}
                 >
                     목록 모드
                 </div>

@@ -3,9 +3,11 @@
 import React, { useState } from 'react';
 
 import TableSeat from '@/components/order/main/TableSeat';
+import TableItem from '@/components/order/main/TableItem';
 import styles from '@/styles/pages/order/main.module.scss';
 import OrderHeader from "@/components/order/main/Header";
 import { seatsMockData } from '@/mock/order/seatMockData';
+import { tablesMockData } from '@/mock/order/tableMockData';
 
 const OrderMainPage: React.FC = () => {
     const [isTableMode, setIsTableMode] = useState(true);
@@ -25,7 +27,15 @@ const OrderMainPage: React.FC = () => {
             />
 
             <div className={styles.contentArea}>
-                <TableSeat seats={seatsMockData} />
+                {isTableMode ? (
+                    <div className={styles.tableLayoutContainer}>
+                        {tablesMockData.map((table, index) => (
+                            <TableItem key={`${table.id}-${index}`} table={table} />
+                        ))}
+                    </div>
+                ) : (
+                    <TableSeat seats={seatsMockData} />
+                )}
             </div>
         </div>
     );

@@ -1,3 +1,4 @@
+@import '@/styles/common/mixins.scss';
 
 .mainPage {
   width: 100%;
@@ -11,4 +12,16 @@
   width: 100%;
   height: calc(100% - 137px);
   position: relative;
+  padding: 30px;
+
+  @include tablet {
+    height: calc(100% - 100px);
+  }
+}
+
+.tableLayoutContainer {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: auto;
 }
