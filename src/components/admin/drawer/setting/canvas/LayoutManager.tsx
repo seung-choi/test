@@ -74,13 +74,37 @@ const LayoutManager: React.FC = () => {
         updatePageTables(pageId, tables => [...tables, newTable]);
     }, [currentPageId, updatePageTables]);
 
-    const handleMoveTable = useCallback((tableId: string, position: { x: number; y: number }, targetPageId?: string) => {
-        const pageId = targetPageId || currentPageId;
-        updatePageTables(pageId, tables =>
-            tables.map(table =>
-                table.id === tableId ? { ...table, position } : table
-            )
-        );
+    const handleMoveTable = useCallback((tableId: string, position: { x: number; y: number }, sourcePageId?: string, targetPageId?: string) => {
+        const source = sourcePageId || currentPageId;
+        const target = targetPageId || currentPageId;
+
+        // 같은 페이지 내 이동
+        if (source === target) {
+            updatePageTables(target, tables =>
+                tables.map(table =>
+                    table.id === tableId ? { ...table, position } : table
+                )
+            );
+        } else {
+            // 페이지 간 이동
+            setPages(prev => {
+                const sourcePage = prev.find(p => p.id === source);
+                const tableToMove = sourcePage?.tables.find(t => t.id === tableId);
+
+                if (!tableToMove) return prev;
+
+                return prev.map(page => {
+                    if (page.id === source) {
+                        // 원본 페이지에서 제거
+                        return { ...page, tables: page.tables.filter(t => t.id !== tableId) };
+                    } else if (page.id === target) {
+                        // 대상 페이지에 추가
+                        return { ...page, tables: [...page.tables, { ...tableToMove, position }] };
+                    }
+                    return page;
+                });
+            });
+        }
     }, [currentPageId, updatePageTables]);
 
     const handleRemoveTable = useCallback((tableId: string, targetPageId?: string) => {
@@ -301,6 +325,7 @@ const LayoutManager: React.FC = () => {
                             onRemoveTable={handleRemoveTable}
                             onSetTableNumber={handleSetTableNumber}
                             onRotateTable={handleRotateTable}
+                            gridPosition={page.gridPosition}
                         />
                     );
                 }

@@ -4,9 +4,15 @@
     position: absolute;
     user-select: none;
     transition: opacity 0.2s;
+    z-index: 10;
+
+    &.selected {
+        z-index: 100;
+    }
 
     &.dragging {
         opacity: 0.5;
+        z-index: 9999;
 
         .controlPanel,
         .numberDropdown {

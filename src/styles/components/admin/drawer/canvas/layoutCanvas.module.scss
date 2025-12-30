@@ -4,6 +4,7 @@
     background: transparent;
     width: 1248px;
     height: 752px;
+    overflow: visible;
 }
 
 .canvas {
@@ -11,12 +12,18 @@
     display: block;
     width: 100%;
     height: 100%;
+    overflow: visible;
 
     .canvasImage {
         display: block;
         width: 1248px;
         height: 752px;
         object-fit: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        pointer-events: none;
     }
 }
 

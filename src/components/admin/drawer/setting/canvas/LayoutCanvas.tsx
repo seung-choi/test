@@ -10,10 +10,11 @@ interface LayoutCanvasProps {
     pageId?: string;
     placedTables: PlacedTable[];
     onAddTable: (type: TableType, position: { x: number; y: number }, pageId?: string) => void;
-    onMoveTable: (tableId: string, position: { x: number; y: number }, pageId?: string) => void;
+    onMoveTable: (tableId: string, position: { x: number; y: number }, sourcePageId?: string, targetPageId?: string) => void;
     onRemoveTable: (tableId: string, pageId?: string) => void;
     onSetTableNumber: (tableId: string, tableNumber: string, pageId?: string) => void;
     onRotateTable: (tableId: string, pageId?: string) => void;
+    gridPosition?: { row: number; col: number };
 }
 
 const LayoutCanvas: React.FC<LayoutCanvasProps> = ({
@@ -73,11 +74,12 @@ const LayoutCanvas: React.FC<LayoutCanvasProps> = ({
                     <DraggableTableItem
                         key={table.id}
                         table={table}
-                        onMove={(tableId, position) => onMoveTable(tableId, position, pageId)}
+                        onMove={(tableId, position) => onMoveTable(tableId, position, pageId, pageId)}
                         onRemove={(tableId) => onRemoveTable(tableId, pageId)}
                         onSetTableNumber={(tableId, tableNumber) => onSetTableNumber(tableId, tableNumber, pageId)}
                         onRotate={(tableId) => onRotateTable(tableId, pageId)}
                         placedTables={placedTables}
+                        pageId={pageId}
                     />
                 ))}
             </div>

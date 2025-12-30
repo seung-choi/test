@@ -13,6 +13,7 @@ interface DraggableTableItemProps {
     onSetTableNumber: (tableId: string, tableNumber: string) => void;
     onRotate: (tableId: string) => void;
     placedTables: PlacedTable[];
+    pageId?: string;
 }
 
 const DraggableTableItem: React.FC<DraggableTableItemProps> = ({
@@ -139,7 +140,7 @@ const DraggableTableItem: React.FC<DraggableTableItemProps> = ({
     return (
         <div
             ref={itemRef}
-            className={`${styles.tableItem} ${isDragging ? styles.dragging : ''}`}
+            className={`${styles.tableItem} ${isDragging ? styles.dragging : ''} ${isSelected ? styles.selected : ''}`}
             style={{
                 left: `${table.position.x}px`,
                 top: `${table.position.y}px`,
