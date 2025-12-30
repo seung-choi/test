@@ -1,6 +1,6 @@
 export type OrderStatus = 'order' | 'accept' | 'complete' | 'cancel';
 
-export interface OrderItem {
+export interface OrderItemSummary {
   name: string;
   quantity: number;
   price?: number;
@@ -19,7 +19,7 @@ export interface OrderHistory {
   totalItems: number;
   orderTime: string;
   orderLocation: string;
-  items: OrderItem[];
+  items: OrderItemSummary[];
   specialRequest?: string;
   isExpanded?: boolean;
 }
@@ -29,7 +29,7 @@ export interface InfoCardData {
   status: OrderStatus;
   tableNumber: string;
   customerInfo: CustomerInfo;
-  orderItems?: OrderItem[];
+  orderItems?: OrderItemSummary[];
   orderHistory?: OrderHistory[];
   specialRequest?: string;
   totalItems: number;

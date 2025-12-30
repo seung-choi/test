@@ -2,20 +2,22 @@
 
 import React, { useRef } from 'react';
 import styles from '@/styles/components/admin/drawer/canvas/layoutCanvas.module.scss';
-import { PlacedTable, TableType, DragData } from '@/types/admin/layout.type';
+import { PlacedTable, TableType, DragData } from '@/types';
 import DraggableTableItem from './DraggableTableItem';
 import { isPositionValid } from '@/utils/tableCollision';
 
 interface LayoutCanvasProps {
+    pageId?: string;
     placedTables: PlacedTable[];
-    onAddTable: (type: TableType, position: { x: number; y: number }) => void;
-    onMoveTable: (tableId: string, position: { x: number; y: number }) => void;
-    onRemoveTable: (tableId: string) => void;
-    onSetTableNumber: (tableId: string, tableNumber: string) => void;
-    onRotateTable: (tableId: string) => void;
+    onAddTable: (type: TableType, position: { x: number; y: number }, pageId?: string) => void;
+    onMoveTable: (tableId: string, position: { x: number; y: number }, pageId?: string) => void;
+    onRemoveTable: (tableId: string, pageId?: string) => void;
+    onSetTableNumber: (tableId: string, tableNumber: string, pageId?: string) => void;
+    onRotateTable: (tableId: string, pageId?: string) => void;
 }
 
 const LayoutCanvas: React.FC<LayoutCanvasProps> = ({
+    pageId,
     placedTables,
     onAddTable,
     onMoveTable,
@@ -40,24 +42,20 @@ const LayoutCanvas: React.FC<LayoutCanvasProps> = ({
 
         const dragData: DragData = JSON.parse(data);
 
-        // TableSelector에서 드래그한 새 테이블만 처리
         if (dragData.isNew) {
             const rect = canvasRef.current.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
 
-            // 임시 테이블 객체로 충돌 검사
             const tempTable: PlacedTable = {
                 id: 'temp',
                 type: dragData.type,
                 position: { x, y }
             };
 
-            // 다른 테이블과 겹치지 않는지 확인
             if (isPositionValid(tempTable, { x, y }, placedTables)) {
-                onAddTable(dragData.type, { x, y });
+                onAddTable(dragData.type, { x, y }, pageId);
             }
-            // 겹치면 추가하지 않음
         }
     };
 
@@ -69,16 +67,16 @@ const LayoutCanvas: React.FC<LayoutCanvasProps> = ({
                 onDragOver={handleDragOver}
                 onDrop={handleDrop}
             >
-                <img src="/assets/image/admin/canvas.png" alt="canvas" />
+                <img className={styles.canvasImage} src="/assets/image/admin/canvas.png" alt="canvas" />
 
                 {placedTables.map((table) => (
                     <DraggableTableItem
                         key={table.id}
                         table={table}
-                        onMove={onMoveTable}
-                        onRemove={onRemoveTable}
-                        onSetTableNumber={onSetTableNumber}
-                        onRotate={onRotateTable}
+                        onMove={(tableId, position) => onMoveTable(tableId, position, pageId)}
+                        onRemove={(tableId) => onRemoveTable(tableId, pageId)}
+                        onSetTableNumber={(tableId, tableNumber) => onSetTableNumber(tableId, tableNumber, pageId)}
+                        onRotate={(tableId) => onRotateTable(tableId, pageId)}
                         placedTables={placedTables}
                     />
                 ))}

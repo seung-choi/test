@@ -2,13 +2,13 @@
 
 import React, { useState } from 'react';
 import styles from '@/styles/components/admin/contents/InfoCard.module.scss';
-import { CustomerInfo, OrderItem, OrderHistory, OrderStatus } from '@/types';
+import { CustomerInfo, OrderItemSummary, OrderHistory, OrderStatus } from '@/types';
 import { getTagAltText, getTagImage } from '@/utils/tagUtils';
 
 export interface InfoCardProps {
   tableNumber: string;
   customerInfo: CustomerInfo;
-  orderItems?: OrderItem[];
+  orderItems?: OrderItemSummary[];
   orderHistory?: OrderHistory[];
   specialRequest?: string;
   totalItems: number;

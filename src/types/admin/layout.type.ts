@@ -21,4 +21,5 @@ export interface LayoutPage {
     id: string;
     name: string;
     tables: PlacedTable[];
+    gridPosition: { row: number; col: number };
 }

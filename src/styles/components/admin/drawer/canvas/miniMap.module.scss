@@ -1,0 +1,89 @@
+.container {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: white;
+    border-radius: 12px;
+    padding: 14px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1001;
+    min-width: 150px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+}
+
+.pageCount {
+    font-size: 11px;
+    color: #999;
+}
+
+.grid {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.gridRow {
+    display: flex;
+    gap: 4px;
+}
+
+.pageCell {
+    width: 60px;
+    height: 40px;
+    border: 1.5px solid #d0d0d0;
+    border-radius: 6px;
+    background: #fafafa;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    position: relative;
+
+    &:hover {
+        border-color: #999;
+        background: #f0f0f0;
+        transform: scale(1.05);
+    }
+
+    &.active {
+        border-color: #4CAF50;
+        background: #e8f5e9;
+        box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+    }
+}
+
+.pageName {
+    font-size: 10px;
+    font-weight: 600;
+    color: #666;
+}
+
+.tableCount {
+    font-size: 9px;
+    color: #999;
+}
+
+.emptyCell {
+    width: 60px;
+    height: 40px;
+    border: 1px dashed #ddd;
+    border-radius: 6px;
+    background: transparent;
+}

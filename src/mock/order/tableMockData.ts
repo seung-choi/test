@@ -1,4 +1,4 @@
-import { TableData } from '@/types/order/tableSeat.type';
+import { TableData } from '@/types';
 
 export const tablesMockData: TableData[] = [
     {

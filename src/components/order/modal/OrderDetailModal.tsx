@@ -3,7 +3,7 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import BaseModal from './BaseModal';
 import styles from '@/styles/components/order/modal/OrderDetailModal.module.scss';
-import { OrderItem } from '@/types/order/order.type';
+import { OrderItem } from '@/types';
 
 interface OrderDetailModalProps {
   isOpen: boolean;

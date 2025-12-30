@@ -14,9 +14,9 @@ import {
   ProductFormData,
   Category,
   DeleteItem,
-  CancelReason
-} from '@/types/admin/modal.type';
-import { ErpProduct } from '@/types/erp.type';
+  CancelReason,
+  ErpProduct
+} from '@/types';
 
 // 공통 close 함수 생성 헬퍼
 const createCloseModal = <T extends { isShow: boolean }>(

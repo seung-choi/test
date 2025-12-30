@@ -1,4 +1,4 @@
-import { OrderItem, TableInfo } from '@/types/order/order.type';
+import { OrderItem, TableInfo } from '@/types';
 import { mockMenuItems } from './mockMenuData';
 
 // 테이블 정보 더미 데이터

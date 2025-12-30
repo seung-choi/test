@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useCallback, useMemo, useRef, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import styles from '@/styles/pages/OrderPage.module.scss';
 import CategoryTabs from '@/components/order/order/CategoryTabs';
@@ -8,12 +8,12 @@ import MenuGrid from '@/components/order/order/MenuGrid';
 import OrderSidebar from '@/components/order/order/OrderSidebar';
 import MemoModal from '@/components/order/modal/MemoModal';
 import OrderDetailModal from '@/components/order/modal/OrderDetailModal';
-import { CategoryType, MenuItem, OrderItem, TableInfo, MenuOption } from '@/types/order/order.type';
+import { CategoryType, MenuItem, OrderItem, TableInfo, MenuOption } from '@/types';
 import { mockMenuItems } from '@/data/mockMenuData';
 import { mockTableInfo, mockOrderItems } from '@/data/mockOrderData';
 import { useScrollToTop } from '@/hooks/common/useScrollManagement';
 
-const OrderPage: React.FC = () => {
+const OrderPageContent: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [activeCategory, setActiveCategory] = useState<CategoryType>('전체메뉴');
@@ -166,6 +166,14 @@ const OrderPage: React.FC = () => {
         onOrderModify={handleOrderModify}
       />
     </div>
+  );
+};
+
+const OrderPage: React.FC = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <OrderPageContent />
+    </Suspense>
   );
 };
 

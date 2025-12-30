@@ -1,4 +1,4 @@
-import {OrderRecord} from "@/types/admin/setting.types";
+import {OrderRecord} from "@/types";
 
 export const mockOrderRecords: OrderRecord[] = [
     {

@@ -1,7 +1,5 @@
 import {OrderStatus} from "@/types";
 
-export type SettingTab = 'sales' | 'layout';
-
 export interface SalesFilter {
   dateRange: {
     startDate: string;

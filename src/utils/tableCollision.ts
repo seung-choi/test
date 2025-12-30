@@ -1,4 +1,4 @@
-import { PlacedTable, TableType } from '@/types/admin/layout.type';
+import { PlacedTable, TableType } from '@/types';
 
 const baseDimensions: Record<TableType, { width: number; height: number }> = {
     '1x1': { width: 120, height: 120 },

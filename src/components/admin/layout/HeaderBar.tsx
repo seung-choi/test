@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState, useCallback, useRef } from 'react';
-import { CourseData } from '@/types';
-import { InfoCardData } from '@/types/admin/orderInfo.type';
+import { CourseData, InfoCardData } from '@/types';
 import { mockInfoCards } from '@/mock/admin/infocardMockData';
 import { golferPositions } from '@/mock/admin/golferMockData';
 import styles from '@/styles/components/admin/layout/HeaderBar.module.scss';

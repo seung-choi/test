@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { TableData } from '@/types/order/tableSeat.type';
+import { TableData } from '@/types';
 import styles from '@/styles/components/order/main/tableItem.module.scss';
 
 interface TableItemProps {

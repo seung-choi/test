@@ -1,25 +1,21 @@
 .container {
-    flex: 1;
-    height: 100%;
-    background: white;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.10);
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: relative;
+    display: inline-block;
+    background: transparent;
+    width: 1248px;
+    height: 752px;
 }
 
 .canvas {
+    position: relative;
+    display: block;
     width: 100%;
     height: 100%;
-    position: relative;
-    overflow: auto;
 
-    img {
-        width: 100%;
-        height: 100%;
+    .canvasImage {
+        display: block;
+        width: 1248px;
+        height: 752px;
         object-fit: cover;
     }
 }
@@ -31,4 +27,108 @@
     top: 0;
     left: 0;
     pointer-events: none;
+}
+
+.pageAddButtonRight {
+    position: absolute;
+    right: -31.5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    z-index: 1000;
+    padding: 0;
+    width: 63px;
+    height: 64px;
+
+    &:hover {
+        transform: translateY(-50%) scale(1.1);
+    }
+
+    img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.2));
+    }
+}
+
+.pageAddButtonBottom {
+    position: absolute;
+    bottom: -32px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    z-index: 1000;
+    padding: 0;
+    width: 63px;
+    height: 64px;
+
+    &:hover {
+        transform: translateX(-50%) scale(1.1);
+    }
+
+    img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.2));
+    }
+}
+
+.pageDeleteButtonRight {
+    position: absolute;
+    right: -31.5px;
+    top: calc(50% + 80px);
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    z-index: 1000;
+    padding: 0;
+    width: 63px;
+    height: 64px;
+
+    &:hover {
+        transform: translateY(-50%) scale(1.1);
+    }
+
+    img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.2));
+    }
+}
+
+.pageDeleteButtonBottom {
+    position: absolute;
+    bottom: -32px;
+    left: calc(50% + 80px);
+    transform: translateX(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    z-index: 1000;
+    padding: 0;
+    width: 63px;
+    height: 64px;
+
+    &:hover {
+        transform: translateX(-50%) scale(1.1);
+    }
+
+    img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.2));
+    }
 }

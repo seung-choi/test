@@ -9,6 +9,7 @@ interface BaseModalProps {
   title: string;
   children: React.ReactNode;
   footer?: React.ReactNode;
+  width?: number;
 }
 
 const BaseModal: React.FC<BaseModalProps> = ({
@@ -17,6 +18,7 @@ const BaseModal: React.FC<BaseModalProps> = ({
   title,
   children,
   footer,
+  width,
 }) => {
   if (!isOpen) return null;
 
@@ -25,6 +27,7 @@ const BaseModal: React.FC<BaseModalProps> = ({
       <div
         className={styles.modalContainer}
         onClick={(e) => e.stopPropagation()}
+        style={width ? { width: `${width}px` } : undefined}
       >
         <div className={styles.header}>
           <button className={styles.backButton} onClick={onClose}>

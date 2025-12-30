@@ -1,0 +1,72 @@
+.container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: 10px;
+    display: flex;
+    gap: 12px;
+}
+
+.editButton {
+    width: 107px;
+    height: 45px;
+    padding: 20px 50px;
+    background: #3A3C56;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: #4A4D66;
+        transform: translateY(-1px);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+
+    span {
+        color: white;
+        font-size: 20px;
+        font-family: 'SUIT', sans-serif;
+        font-weight: 700;
+        word-wrap: break-word;
+    }
+}
+
+.saveButton {
+    width: 107px;
+    height: 45px;
+    padding: 20px 50px;
+    background: #6600FF;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: #7700FF;
+        transform: translateY(-1px);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+
+    span {
+        color: white;
+        font-size: 20px;
+        font-family: 'SUIT', sans-serif;
+        font-weight: 700;
+        word-wrap: break-word;
+    }
+}

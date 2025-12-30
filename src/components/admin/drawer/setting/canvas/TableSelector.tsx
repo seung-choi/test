@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styles from '@/styles/components/admin/drawer/canvas/tableSelector.module.scss';
-import { TableType, DragData } from '@/types/admin/layout.type';
+import { TableType, DragData } from '@/types';
 import TableShape from '@/components/common/TableShape';
 
 const TableSelector: React.FC = () => {

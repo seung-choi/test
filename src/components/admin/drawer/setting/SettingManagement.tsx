@@ -6,7 +6,7 @@ import Table from '@/components/admin/common/Table';
 import { SalesMockData } from '@/mock/admin/salesMockData';
 import {getSalesTableColumns} from "@/constants";
 import SalesFilterActionBar from "@/components/admin/drawer/setting/SalesInquiryActionBar";
-import { SalesFilter } from '@/types/admin/setting.types';
+import { SalesFilter } from '@/types';
 import { exportSalesToExcel } from '@/utils/admin/excel/salesExcelExporter';
 import LayoutManager from '@/components/admin/drawer/setting/canvas/LayoutManager';
 

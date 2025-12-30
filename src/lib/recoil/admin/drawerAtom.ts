@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { DrawerState } from '@/types/admin/drawer.type';
+import { DrawerState } from '@/types';
 
 export const drawerState = atom<DrawerState>({
   key: 'drawerState',

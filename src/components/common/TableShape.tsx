@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styles from '@/styles/components/common/tableShape.module.scss';
-import { TableType } from '@/types/order/tableSeat.type';
+import { TableType } from '@/types';
 
 interface TableShapeProps {
     type: TableType;

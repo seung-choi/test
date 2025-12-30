@@ -1,4 +1,4 @@
-import { MenuItem } from '@/types/order/order.type';
+import { MenuItem } from '@/types';
 
 // 공통 옵션 데이터
 const commonOptions = {

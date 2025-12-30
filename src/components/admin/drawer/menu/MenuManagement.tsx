@@ -16,7 +16,7 @@ import {MenuMockData} from '@/mock/admin/menuMockData';
 import {getMenuTableColumns} from "@/constants/admin/columns/MenuTable";
 import {drawerState} from '@/lib/recoil';
 import useUnifiedModal from '@/hooks/admin/useUnifiedModal';
-import {ProductFormData} from '@/types/admin/modal.type';
+import {ProductFormData} from '@/types';
 import {formatDate, formatPrice} from "@/utils";
 
 interface MenuManagementProps {

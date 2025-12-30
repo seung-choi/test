@@ -2,7 +2,7 @@
 
 import React, { forwardRef, useMemo } from 'react';
 import styles from '@/styles/components/order/order/MenuGrid.module.scss';
-import { MenuItem } from '@/types/order/order.type';
+import { MenuItem } from '@/types';
 
 interface MenuGridProps {
   items: MenuItem[];

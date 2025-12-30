@@ -2,10 +2,14 @@
 
 import React, { useState } from 'react';
 import styles from '@/styles/components/admin/drawer/canvas/tableListView.module.scss';
-import { PlacedTable } from '@/types/admin/layout.type';
+import { PlacedTable } from '@/types';
+
+interface TableWithPage extends PlacedTable {
+    pageName?: string;
+}
 
 interface TableListViewProps {
-    placedTables: PlacedTable[];
+    placedTables: TableWithPage[];
     onReorder?: (reorderedTables: PlacedTable[]) => void;
 }
 

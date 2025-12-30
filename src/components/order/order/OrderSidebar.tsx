@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import styles from '@/styles/components/order/order/OrderSidebar.module.scss';
-import {OrderItem, TableInfo} from '@/types/order/order.type';
+import {OrderItem, TableInfo} from '@/types';
 
 interface OrderSidebarProps {
     tableInfo: TableInfo;

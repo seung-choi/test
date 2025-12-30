@@ -4,7 +4,7 @@ import React from 'react';
 import CommonModalLayout from '@/components/admin/modal/CommonModalLayout';
 import commonStyles from '@/styles/components/admin/modal/CommonModal.module.scss';
 import styles from '@/styles/components/admin/modal/DeleteConfirmModal.module.scss';
-import { DeleteItem } from '@/types/admin/modal.type';
+import { DeleteItem } from '@/types';
 
 interface DeleteConfirmModalContentProps {
   items: DeleteItem[];

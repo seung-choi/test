@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from 'react';
 import styles from '@/styles/components/admin/drawer/SalesManagement.module.scss';
-import { SalesFilter, SalesStats } from '@/types/admin/setting.types';
+import { SalesFilter, SalesStats } from '@/types';
 import DateRangePicker from '@/components/admin/common/DateRangePicker';
 import ExcelDownloadButton from "@/components/admin/drawer/setting/ExcelDownloadButton";
 

@@ -8,7 +8,7 @@ import {
   ErpSearchModalState,
   DeleteConfirmModalState,
   CancelReasonManagementModalState,
-} from '@/types/admin/modal.type';
+} from '@/types';
 
 // 취소 사유 모달
 export const cancelModalState = atom<CancelModalState>({

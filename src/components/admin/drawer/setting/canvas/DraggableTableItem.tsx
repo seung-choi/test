@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import styles from '@/styles/components/admin/drawer/canvas/draggableTableItem.module.scss';
-import { PlacedTable, DragData } from '@/types/admin/layout.type';
+import { PlacedTable } from '@/types';
 import TableShape from '@/components/common/TableShape';
 import { isPositionValid } from '@/utils/tableCollision';
 
@@ -58,11 +58,9 @@ const DraggableTableItem: React.FC<DraggableTableItemProps> = ({
 
             const newPosition = { x: newX, y: newY };
 
-            // 충돌 검사: 다른 테이블과 겹치지 않는지 확인
             if (isPositionValid(table, newPosition, placedTables)) {
                 onMove(table.id, newPosition);
             }
-            // 충돌이 발생하면 이동하지 않음 (현재 위치 유지)
         };
 
         const handleMouseUp = () => {
@@ -81,13 +79,13 @@ const DraggableTableItem: React.FC<DraggableTableItemProps> = ({
     }, [isDragging, table, placedTables, onMove]);
 
     const handleMouseDown = (e: React.MouseEvent) => {
-        // 컨트롤 패널이나 드롭다운을 클릭한 경우 드래그 시작하지 않음
         const target = e.target as HTMLElement;
         if (target.closest(`.${styles.controlPanel}`) || target.closest(`.${styles.numberDropdown}`)) {
             return;
         }
 
         e.preventDefault();
+        e.stopPropagation();
         setIsDragging(true);
         setShowNumberDropdown(false);
 
@@ -96,10 +94,8 @@ const DraggableTableItem: React.FC<DraggableTableItemProps> = ({
     };
 
     const handleClick = (e: React.MouseEvent) => {
-        // 드래그 중이었으면 클릭 무시
         if (isDragging) return;
 
-        // 컨트롤 패널이나 드롭다운을 클릭한 경우 무시
         const target = e.target as HTMLElement;
         if (target.closest(`.${styles.controlPanel}`) || target.closest(`.${styles.numberDropdown}`)) {
             return;
@@ -149,10 +145,12 @@ const DraggableTableItem: React.FC<DraggableTableItemProps> = ({
                 top: `${table.position.y}px`,
             }}
             onClick={handleClick}
+            data-table-item="true"
         >
             <div
                 className={styles.tableWrapper}
                 onMouseDown={handleMouseDown}
+                data-table-item="true"
             >
                 <TableShape
                     type={table.type}
@@ -168,15 +166,15 @@ const DraggableTableItem: React.FC<DraggableTableItemProps> = ({
             {isSelected && !showNumberDropdown && (
                 <div className={styles.controlPanel}>
                     <button className={styles.assignButton} onClick={handleNumberAssign}>
-                        <img src="/assets/image/admin/setting/assign.svg" alt="assign" />
+                        <img src="/assets/image/admin/setting/assign.svg" alt="assign" width={17} height={17} />
                         <span>번호 지정</span>
                     </button>
                     <button className={styles.rotateButton} onClick={handleRotate}>
-                        <img src="/assets/image/admin/setting/rotate.svg" alt="rotate" />
+                        <img src="/assets/image/admin/setting/rotate.svg" alt="rotate" width={17} height={17} />
                         <span>회전</span>
                     </button>
                     <button className={styles.deleteButton} onClick={handleDelete}>
-                        <img src="/assets/image/admin/setting/delete.svg" alt="delete" />
+                        <img src="/assets/image/admin/setting/delete.svg" alt="delete" width={10} height={2} />
                         <span>삭제</span>
                     </button>
                 </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import { exportToExcel } from './excelExport';
-import { OrderRecord, SalesFilter } from '@/types/admin/setting.types';
+import { OrderRecord, SalesFilter } from '@/types';
 
 export const exportSalesToExcel = async (
     records: OrderRecord[],

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import BaseModal from './BaseModal';
 import styles from '@/styles/components/order/modal/MenuOptionModal.module.scss';
-import { MenuItem, MenuOption } from '@/types/order/order.type';
+import { MenuItem, MenuOption } from '@/types';
 
 interface MenuOptionModalProps {
   isOpen: boolean;

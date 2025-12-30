@@ -1,5 +1,4 @@
-import { MessageFormData } from '@/types';
-import { ErpProduct } from '@/types/erp.type';
+import { MessageFormData, ErpProduct } from '@/types';
 
 export interface CancelModalState {
   isShow: boolean;

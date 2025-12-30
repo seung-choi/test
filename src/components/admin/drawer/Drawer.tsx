@@ -3,8 +3,7 @@ import { useRecoilState } from 'recoil';
 import styles from '@/styles/components/admin/drawer/Drawer.module.scss';
 import { drawerState } from '@/lib/recoil';
 import useUnifiedModal from '@/hooks/admin/useUnifiedModal';
-import { Category, ProductFormData, CancelReason } from '@/types/admin/modal.type';
-import { ErpProduct } from '@/types/erp.type';
+import { Category, ProductFormData, CancelReason, ErpProduct } from '@/types';
 import { useScrollLock } from '@/hooks/common/useScrollManagement';
 
 type DrawerMode = 'setting' | 'menu';
