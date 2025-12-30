@@ -1,3 +1,5 @@
+@import '@/styles/common/mixins.scss';
+
 .header {
   width: 100%;
   height: 100px;
@@ -9,6 +11,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @include tablet {
+    height: 80px;
+    padding: 0 30px;
+    border-bottom-right-radius: 30px;
+    border-bottom-left-radius: 30px;
+  }
 }
 
 .modeSwitch {
@@ -20,6 +29,13 @@
   display: flex;
   align-items: center;
   padding: 0 10px;
+
+  @include tablet {
+    width: 280px;
+    height: 55px;
+    border-radius: 30px;
+    padding: 0 8px;
+  }
 }
 
 .modeOption {
@@ -36,6 +52,12 @@
   font-weight: 700;
   text-align: center;
 
+  @include tablet {
+    height: 42px;
+    font-size: 20px;
+    border-radius: 25px;
+  }
+
   &.active {
     background: #6600FF;
     box-shadow: 0 0 10px rgba(18, 18, 18, 0.40);
@@ -49,12 +71,21 @@
   justify-content: center;
   align-items: center;
   gap: 10px;
+
+  @include tablet {
+    line-height: 40px;
+    gap: 8px;
+  }
 }
 
 .storeName {
   color: white;
   font-size: 38px;
   font-weight: 600;
+
+  @include tablet {
+    font-size: 28px;
+  }
 }
 
 .statusInfo {
@@ -62,6 +93,10 @@
   justify-content: flex-end;
   align-items: center;
   gap: 10px;
+
+  @include tablet {
+    gap: 8px;
+  }
 }
 
 .currentTime {
@@ -70,6 +105,11 @@
   font-size: 27.09px;
   font-weight: 700;
   letter-spacing: 0.35px;
+
+  @include tablet {
+    font-size: 22px;
+    letter-spacing: 0.25px;
+  }
 }
 
 .batterySection {
@@ -78,12 +118,21 @@
   justify-content: flex-end;
   align-items: center;
   gap: 10px;
+
+  @include tablet {
+    gap: 8px;
+  }
 }
 
 .batteryIcon {
   width: 33px;
   height: 17px;
   position: relative;
+
+  @include tablet {
+    width: 28px;
+    height: 14px;
+  }
 }
 
 .batteryBody {
@@ -96,6 +145,11 @@
   border-radius: 2px;
   outline-offset: -1px;
   transition: outline-color 0.3s ease;
+
+  @include tablet {
+    width: 20px;
+    height: 14px;
+  }
 }
 
 .batteryLevel {
@@ -106,6 +160,12 @@
   border-radius: 1px;
   transition: all 0.3s ease;
   min-width: 0;
+
+  @include tablet {
+    height: 8px;
+    left: 2.5px;
+    top: 3px;
+  }
 }
 
 .batteryTip {
@@ -116,6 +176,13 @@
   top: 4px;
   border-radius: 1px;
   transition: background 0.3s ease;
+
+  @include tablet {
+    width: 2.5px;
+    height: 7px;
+    left: 22px;
+    top: 3.5px;
+  }
 }
 
 .batteryText {
@@ -124,4 +191,9 @@
   font-size: 27.09px;
   font-weight: 700;
   letter-spacing: 0.35px;
+
+  @include tablet {
+    font-size: 22px;
+    letter-spacing: 0.25px;
+  }
 }

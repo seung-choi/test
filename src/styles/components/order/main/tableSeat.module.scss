@@ -6,12 +6,12 @@
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 30px;
-  padding: 60px;
+  padding: 40px;
   overflow-y: auto;
 
   @include tablet {
     grid-template-columns: repeat(4, 1fr);
     gap: 25px;
-    padding: 50px;
+    padding: 30px;
   }
 }
