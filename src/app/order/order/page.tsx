@@ -9,7 +9,7 @@ import OrderSidebar from '@/components/order/order/OrderSidebar';
 import MemoModal from '@/components/order/modal/MemoModal';
 import OrderDetailModal from '@/components/order/modal/OrderDetailModal';
 import { CategoryType, MenuItem, OrderItem, TableInfo, MenuOption } from '@/types';
-import { mockMenuItems } from '@/data/mockMenuData';
+import { mockMenuItems, categories } from '@/data/mockMenuData';
 import { mockTableInfo, mockOrderItems } from '@/data/mockOrderData';
 import { useScrollToTop } from '@/hooks/common/useScrollManagement';
 
@@ -24,8 +24,6 @@ const OrderPageContent: React.FC = () => {
   const menuGridRef = useRef<HTMLDivElement>(null);
 
   useScrollToTop();
-
-  const categories: CategoryType[] = ['전체메뉴', '식사', '주류', '안주', '사이드'];
 
   const tableInfo: TableInfo = useMemo(() => {
     const tableNumber = searchParams.get('tableNumber');
@@ -43,17 +41,22 @@ const OrderPageContent: React.FC = () => {
     return mockTableInfo;
   }, [searchParams]);
 
-  const filteredMenuItems = useMemo(() => {
-    if (activeCategory === '전체메뉴') {
-      return mockMenuItems;
-    }
-    return mockMenuItems.filter((item) => item.category === activeCategory);
-  }, [activeCategory]);
-
   const handleCategoryChange = useCallback((category: CategoryType) => {
     setActiveCategory(category);
-    if (menuGridRef.current) {
-      menuGridRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (category === '전체메뉴' || category === categories[1]) {
+      if (menuGridRef.current) {
+        menuGridRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    } else {
+      const categoryElement = document.getElementById(`category-${category}`);
+      if (categoryElement && menuGridRef.current) {
+        const containerTop = menuGridRef.current.getBoundingClientRect().top;
+        const elementTop = categoryElement.getBoundingClientRect().top;
+        const scrollOffset = elementTop - containerTop + menuGridRef.current.scrollTop - 30;
+
+        menuGridRef.current.scrollTo({ top: scrollOffset, behavior: 'smooth' });
+      }
     }
   }, []);
 
@@ -139,7 +142,7 @@ const OrderPageContent: React.FC = () => {
       </header>
 
       <div className={styles.mainContent}>
-        <MenuGrid items={filteredMenuItems} onMenuClick={handleMenuClick} ref={menuGridRef} />
+        <MenuGrid items={mockMenuItems} onMenuClick={handleMenuClick} ref={menuGridRef} />
         <OrderSidebar
           tableInfo={tableInfo}
           orderItems={orderItems}

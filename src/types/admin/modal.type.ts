@@ -1,4 +1,5 @@
 import { MessageFormData, ErpProduct } from '@/types';
+import { MenuStatus } from '@/constants/admin/menuStatus';
 
 export interface CancelModalState {
   isShow: boolean;
@@ -25,7 +26,7 @@ export interface ConfirmModalState {
 }
 
 export interface ProductFormData {
-  status: '판매' | '대기' | '중지';
+  status: MenuStatus;
   channels: string[];
   types: string[];
   image?: File;

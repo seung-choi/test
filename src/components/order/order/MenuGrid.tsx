@@ -26,7 +26,7 @@ const MenuGrid = forwardRef<HTMLDivElement, MenuGridProps>(
     return (
       <div className={styles.gridContainer} ref={ref}>
         {Object.entries(groupedItems).map(([category, categoryItems]) => (
-          <div key={category} className={styles.categorySection}>
+          <div key={category} id={`category-${category}`} className={styles.categorySection}>
             <div className={styles.categoryTitle}>{category}</div>
             <div className={styles.menuCards}>
               {categoryItems.map((item) => (

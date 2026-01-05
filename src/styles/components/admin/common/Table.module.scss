@@ -319,38 +319,55 @@
   background: white;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   border: none;
   cursor: pointer;
   transition: all 0.2s ease;
+  color: #1F1F1F;
+  font-size: 20px;
+  font-weight: 400;
+  appearance: none;
+  background-image: url('/assets/image/global/arrow/arrow.svg');
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 14px 7px;
+  padding-right: 35px;
 
   &:hover {
     box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.35);
   }
 
-  .statusText {
-    color: #1F1F1F;
-    font-size: 20px;
-    font-weight: 400;
+  &:focus {
+    outline: none;
+    box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.35);
   }
 
-  .dropdownArrow {
-    width: 14px;
-    height: 7px;
+  option {
+    padding: 10px;
+    background: white;
+    color: #1F1F1F;
   }
+
   @include tablet {
     width: 70px;
     height: 30px;
     padding: 0 10px;
-    .statusText {
-      font-size: 13px;
-    }
-    .dropdownArrow {
-      width: 12px;
-      height: 6px;
-    }
+    padding-right: 30px;
+    font-size: 13px;
+    background-size: 12px 6px;
+    background-position: right 10px center;
+  }
+
+  // Status-specific styles
+  &.onSale {
+    // Default white background for 판매
+  }
+
+  &.suspended {
+    background-color: #FFE5E5;
+  }
+
+  &.pending {
+    background-color: #FFF4E5;
   }
 }
 

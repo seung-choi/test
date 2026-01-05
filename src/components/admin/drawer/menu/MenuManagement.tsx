@@ -18,6 +18,7 @@ import {drawerState} from '@/lib/recoil';
 import useUnifiedModal from '@/hooks/admin/useUnifiedModal';
 import {ProductFormData} from '@/types';
 import {formatDate, formatPrice} from "@/utils";
+import { MenuStatus } from '@/constants/admin/menuStatus';
 
 interface MenuManagementProps {
   onClose: () => void;
@@ -102,7 +103,7 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
     if (!menuItem) return;
 
     const initialData: ProductFormData = {
-      status: "판매",
+      status: menuItem.status as MenuStatus,
       channels: menuItem.channels || [],
       types: menuItem.types || [],
       category: menuItem.category || '',
@@ -133,7 +134,7 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
                   price: parseInt(data.price.replace(/[^0-9]/g, '')) || 0,
                   tags: data.tags,
                   cookingTime: data.cookingTime,
-                  status: data.status === '판매' ? '판매' : data.status,
+                  status: data.status,
                   channels: data.channels,
                   types: data.types,
                 };
@@ -148,14 +149,30 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
     );
   };
 
+  const handleStatusChange = (itemId: string, status: MenuStatus) => {
+    console.log('상태 변경:', itemId, status);
+    setMenuData(prevData => {
+      return prevData.map(item => {
+        if (String(item.id) === itemId) {
+          return {
+            ...item,
+            status: status
+          };
+        }
+        return item;
+      });
+    });
+  };
+
   const columns = useMemo(
     () => getMenuTableColumns({
       selectedItems,
       handleItemSelect,
+      handleStatusChange,
       handleEdit,
       isReorderMode: drawer.isReorderMode
     }),
-    [selectedItems, drawer.isReorderMode]
+    [selectedItems, menuData, drawer.isReorderMode]
   );
 
   const filteredData = useMemo(() => {

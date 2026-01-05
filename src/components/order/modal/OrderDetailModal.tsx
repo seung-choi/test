@@ -4,6 +4,7 @@ import React, { useState, useMemo, useEffect, useRef } from 'react';
 import BaseModal from './BaseModal';
 import styles from '@/styles/components/order/modal/OrderDetailModal.module.scss';
 import { OrderItem } from '@/types';
+import { mockOrderItemDetails } from '@/data/mockOrderData';
 
 interface OrderDetailModalProps {
   isOpen: boolean;
@@ -28,27 +29,31 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
   onOrderModify,
 }) => {
   const [selectedTime, setSelectedTime] = useState('전체');
+  const [deletedItems, setDeletedItems] = useState<Set<string>>(new Set());
   const initialOrderItemsRef = useRef<OrderItem[]>([]);
 
-  // 모달이 열릴 때 초기 상태 저장
   useEffect(() => {
     if (isOpen) {
       initialOrderItemsRef.current = JSON.parse(JSON.stringify(orderItems));
+      setDeletedItems(new Set());
     }
-  }, [isOpen, orderItems]);
+  }, [isOpen]);
 
   const orderItemsWithTime: OrderItemWithTime[] = useMemo(() => {
     return orderItems.map((item, index) => ({
       ...item,
-      orderTime: index < 2 ? '11:45' : index < 3 ? '13:14' : '16:35',
-      payer: index % 2 === 0 ? '김지원' : '김수영',
-      options: index === 0 ? '마라소스 / 계란 후라이 2개' : index === 3 ? '치즈 소스' : undefined,
-      memo: index === 0 ? '덜 맵게' : undefined,
+      orderTime: mockOrderItemDetails[index]?.orderTime || '00:00',
+      payer: mockOrderItemDetails[index]?.payer,
+      options: mockOrderItemDetails[index]?.options,
+      memo: mockOrderItemDetails[index]?.memo,
     }));
   }, [orderItems]);
 
-  // 수정사항이 있는지 확인
   const hasChanges = useMemo(() => {
+    if (deletedItems.size > 0) {
+      return true;
+    }
+
     if (initialOrderItemsRef.current.length !== orderItems.length) {
       return true;
     }
@@ -59,7 +64,19 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
              item.menuItem.id !== initialItem.menuItem.id ||
              item.quantity !== initialItem.quantity;
     });
-  }, [orderItems]);
+  }, [orderItems, deletedItems]);
+
+  const handleDelete = (itemId: string) => {
+    setDeletedItems(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(itemId)) {
+        newSet.delete(itemId);
+      } else {
+        newSet.add(itemId);
+      }
+      return newSet;
+    });
+  };
 
   const groupedByTime = useMemo(() => {
     const groups: Record<string, OrderItemWithTime[]> = {};
@@ -143,41 +160,58 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
               </tr>
             </thead>
             <tbody>
-              {filteredItems.map((item, index) => (
-                <tr
-                  key={index}
-                  className={`${index > 0 && filteredItems[index - 1].orderTime !== item.orderTime ? styles.borderTop : ''}`}
-                >
-                  <td className={styles.columnCheck}>
-                    <img src='/assets/image/global/x/x-sm.svg' alt="삭제"/>
-                  </td>
-                  <td className={styles.columnTime}>{item.orderTime}</td>
-                  <td className={styles.columnMenu}>{item.menuItem.name}</td>
-                  <td className={styles.columnMemo}>
-                    {item.memo && <span className={styles.memoText}>{item.memo}</span>}
-                  </td>
-                  <td className={styles.columnPayer}>
-                    {item.payer || '-'}
-                  </td>
-                  <td className={styles.columnQuantity}>
-                    <div className={styles.quantityControl}>
-                      <button
-                        onClick={() => onQuantityChange(item.menuItem.id, item.quantity - 1)}
-                        disabled={item.quantity <= 1}
-                      >
-                        -
-                      </button>
-                      <div className={styles.quantityDisplay}>{item.quantity}</div>
-                      <button onClick={() => onQuantityChange(item.menuItem.id, item.quantity + 1)}>
-                        +
-                      </button>
-                    </div>
-                  </td>
-                  <td className={styles.columnPrice}>
-                    {(item.menuItem.price * item.quantity).toLocaleString('ko-KR')} 원
-                  </td>
-                </tr>
-              ))}
+              {filteredItems.map((item, index) => {
+                const isDeleted = deletedItems.has(item.menuItem.id);
+                const deletedStyle = isDeleted ? {
+                  color: '#6600FF',
+                  fontWeight: '600',
+                  textDecoration: 'line-through'
+                } : {};
+
+                return (
+                  <tr
+                    key={index}
+                    className={`${index > 0 && filteredItems[index - 1].orderTime !== item.orderTime ? styles.borderTop : ''}`}
+                  >
+                    <td className={styles.columnCheck}>
+                      <img
+                        src='/assets/image/global/x/x-sm.svg'
+                        alt="삭제"
+                        onClick={() => handleDelete(item.menuItem.id)}
+                        style={{ cursor: 'pointer' }}
+                      />
+                    </td>
+                    <td className={styles.columnTime} style={deletedStyle}>{item.orderTime}</td>
+                    <td className={styles.columnMenu} style={deletedStyle}>{item.menuItem.name}</td>
+                    <td className={styles.columnMemo}>
+                      {item.memo && <span className={styles.memoText} style={deletedStyle}>{item.memo}</span>}
+                    </td>
+                    <td className={styles.columnPayer} style={deletedStyle}>
+                      {item.payer || '-'}
+                    </td>
+                    <td className={styles.columnQuantity}>
+                      <div className={styles.quantityControl}>
+                        <button
+                          onClick={() => onQuantityChange(item.menuItem.id, item.quantity - 1)}
+                          disabled={item.quantity <= 1 || isDeleted}
+                        >
+                          -
+                        </button>
+                        <div className={styles.quantityDisplay} style={deletedStyle}>{item.quantity}</div>
+                        <button
+                          onClick={() => onQuantityChange(item.menuItem.id, item.quantity + 1)}
+                          disabled={isDeleted}
+                        >
+                          +
+                        </button>
+                      </div>
+                    </td>
+                    <td className={styles.columnPrice} style={deletedStyle}>
+                      {(item.menuItem.price * item.quantity).toLocaleString('ko-KR')} 원
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

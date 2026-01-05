@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import styles from '@/styles/components/admin/common/Table.module.scss';
 import { getTagClass } from '@/constants/admin/tags/menuTags';
 import {formatDate, formatPrice} from "@/utils/common/formatDataUtils";
+import { MENU_STATUS_OPTIONS, MENU_STATUS_STYLES, MenuStatus } from '@/constants/admin/menuStatus';
 
 export interface TableRowData {
   id: string;
@@ -73,15 +74,19 @@ export const renderTags = (value: string[], row: TableRowData) => {
 };
 
 export const renderStatusSelector = (
-  onStatusChange?: (itemId: string, status: string) => void
-) => (value: string, row: TableRowData) => (
-  <button
-    className={styles.statusSelector}
-    onClick={() => onStatusChange?.(String(row.id), value)}
+  onStatusChange?: (itemId: string, status: MenuStatus) => void
+) => (value: MenuStatus, row: TableRowData) => (
+  <select
+    className={`${styles.statusSelector} ${styles[MENU_STATUS_STYLES[value]]}`}
+    value={value}
+    onChange={(e) => onStatusChange?.(String(row.id), e.target.value as MenuStatus)}
   >
-    <span className={styles.statusText}>{value}</span>
-    <img className={styles.dropdownArrow} src="/assets/image/global/arrow/arrow.svg" alt="arrow" />
-  </button>
+    {MENU_STATUS_OPTIONS.map((status) => (
+      <option key={status} value={status}>
+        {status}
+      </option>
+    ))}
+  </select>
 );
 
 export const renderChannelTags = (value: string[], row: TableRowData) => (

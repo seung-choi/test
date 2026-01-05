@@ -9,11 +9,12 @@ import {
     renderText,
     renderDragHandle
 } from "@/utils/admin/tableRenderers";
+import { MenuStatus } from '@/constants/admin/menuStatus';
 
 interface MenuTableColumnsParams {
     selectedItems: string[];
     handleItemSelect: (itemId: string, checked: boolean) => void;
-    handleStatusChange?: (itemId: string, status: string) => void;
+    handleStatusChange?: (itemId: string, status: MenuStatus) => void;
     handleEdit?: (itemId: string) => void;
     isReorderMode?: boolean;
 }
