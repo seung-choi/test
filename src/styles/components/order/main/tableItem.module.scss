@@ -18,10 +18,6 @@
     background: white;
     overflow: hidden;
     border-radius: 5px;
-
-    @include desktop {
-        border-radius: 7px;
-    }
 }
 
 .table1x1 {
@@ -30,13 +26,6 @@
         height: 97px;
         left: 12px;
         top: 12px;
-
-        @include desktop {
-            width: 133px;
-            height: 133px;
-            left: 16px;
-            top: 16px;
-        }
     }
 
     .time {
@@ -47,27 +36,14 @@
         font-size: 12px;
         font-weight: 900;
         word-wrap: break-word;
-
-        @include desktop {
-            top: 14px;
-            font-size: 16px;
-        }
     }
 
     .timeWithReservation {
         left: 32px;
-
-        @include desktop {
-            left: 44px;
-        }
     }
 
     .timeWithoutReservation {
         left: 30px;
-
-        @include desktop {
-            left: 42px;
-        }
     }
 
     .name {
@@ -79,12 +55,6 @@
         font-size: 15px;
         font-weight: 800;
         word-wrap: break-word;
-
-        @include desktop {
-            left: 40px;
-            top: 38px;
-            font-size: 20px;
-        }
     }
 
     .group {
@@ -96,12 +66,6 @@
         font-size: 10px;
         font-weight: 500;
         word-wrap: break-word;
-
-        @include desktop {
-            left: 37px;
-            top: 65px;
-            font-size: 14px;
-        }
     }
 
     .footer {
@@ -113,14 +77,6 @@
         border-top-left-radius: 15px;
         border-top-right-radius: 15px;
 
-        @include desktop {
-            width: 133px;
-            height: 31px;
-            top: 102px;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-        }
-
         .tableNumber {
             top: 4px;
             position: absolute;
@@ -129,27 +85,14 @@
             font-size: 13px;
             font-weight: 800;
             word-wrap: break-word;
-
-            @include desktop {
-                top: 5px;
-                font-size: 18px;
-            }
         }
 
         .tableNumberLong {
             left: 37px;
-
-            @include desktop {
-                left: 51px;
-            }
         }
 
         .tableNumberShort {
             left: 40px;
-
-            @include desktop {
-                left: 55px;
-            }
         }
     }
 }
@@ -160,13 +103,6 @@
         height: 183px;
         left: 12px;
         top: 12px;
-
-        @include desktop {
-            width: 133px;
-            height: 251px;
-            left: 16px;
-            top: 16px;
-        }
     }
 
     .time {
@@ -178,12 +114,6 @@
         font-size: 12px;
         font-weight: 900;
         word-wrap: break-word;
-
-        @include desktop {
-            left: 46px;
-            top: 48px;
-            font-size: 16px;
-        }
     }
 
     .name {
@@ -195,12 +125,6 @@
         font-size: 15px;
         font-weight: 800;
         word-wrap: break-word;
-
-        @include desktop {
-            left: 41px;
-            top: 104px;
-            font-size: 20px;
-        }
     }
 
     .group {
@@ -212,12 +136,6 @@
         font-size: 10px;
         font-weight: 500;
         word-wrap: break-word;
-
-        @include desktop {
-            left: 36px;
-            top: 131px;
-            font-size: 14px;
-        }
     }
 
     .footer {
@@ -229,14 +147,6 @@
         border-top-left-radius: 15px;
         border-top-right-radius: 15px;
 
-        @include desktop {
-            width: 133px;
-            height: 31px;
-            top: 220px;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-        }
-
         .tableNumber {
             left: 39px;
             top: 3px;
@@ -246,12 +156,6 @@
             font-size: 13px;
             font-weight: 800;
             word-wrap: break-word;
-
-            @include desktop {
-                left: 53px;
-                top: 4px;
-                font-size: 18px;
-            }
         }
     }
 }
@@ -262,13 +166,6 @@
         height: 269px;
         left: 12px;
         top: 12px;
-
-        @include desktop {
-            width: 133px;
-            height: 369px;
-            left: 16px;
-            top: 16px;
-        }
     }
 
     .time {
@@ -280,12 +177,6 @@
         font-size: 12px;
         font-weight: 900;
         word-wrap: break-word;
-
-        @include desktop {
-            left: 46px;
-            top: 88px;
-            font-size: 16px;
-        }
     }
 
     .name {
@@ -297,12 +188,6 @@
         font-size: 15px;
         font-weight: 800;
         word-wrap: break-word;
-
-        @include desktop {
-            left: 41px;
-            top: 144px;
-            font-size: 20px;
-        }
     }
 
     .group {
@@ -314,12 +199,6 @@
         font-size: 10px;
         font-weight: 500;
         word-wrap: break-word;
-
-        @include desktop {
-            left: 36px;
-            top: 171px;
-            font-size: 14px;
-        }
     }
 
     .footer {
@@ -331,14 +210,6 @@
         border-top-left-radius: 15px;
         border-top-right-radius: 15px;
 
-        @include desktop {
-            width: 133px;
-            height: 31px;
-            top: 338px;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-        }
-
         .tableNumber {
             left: 39px;
             top: 3px;
@@ -348,12 +219,6 @@
             font-size: 13px;
             font-weight: 800;
             word-wrap: break-word;
-
-            @include desktop {
-                left: 53px;
-                top: 4px;
-                font-size: 18px;
-            }
         }
     }
 }
@@ -364,13 +229,6 @@
         height: 358px;
         left: 12px;
         top: 12px;
-
-        @include desktop {
-            width: 132px;
-            height: 491px;
-            left: 16px;
-            top: 16px;
-        }
     }
 
     .time {
@@ -382,12 +240,6 @@
         font-size: 12px;
         font-weight: 900;
         word-wrap: break-word;
-
-        @include desktop {
-            left: 44px;
-            top: 164px;
-            font-size: 16px;
-        }
     }
 
     .footer {
@@ -399,14 +251,6 @@
         border-top-left-radius: 15px;
         border-top-right-radius: 15px;
 
-        @include desktop {
-            width: 133px;
-            height: 31px;
-            top: 460px;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-        }
-
         .tableNumber {
             left: 37px;
             top: 3px;
@@ -416,12 +260,6 @@
             font-size: 13px;
             font-weight: 800;
             word-wrap: break-word;
-
-            @include desktop {
-                left: 51px;
-                top: 4px;
-                font-size: 18px;
-            }
         }
     }
 }
@@ -432,13 +270,6 @@
         height: 447px;
         left: 12px;
         top: 12px;
-
-        @include desktop {
-            width: 132px;
-            height: 612px;
-            left: 16px;
-            top: 16px;
-        }
     }
 
     .time {
@@ -450,12 +281,6 @@
         font-size: 12px;
         font-weight: 900;
         word-wrap: break-word;
-
-        @include desktop {
-            left: 44px;
-            top: 205px;
-            font-size: 16px;
-        }
     }
 
     .footer {
@@ -467,14 +292,6 @@
         border-top-left-radius: 15px;
         border-top-right-radius: 15px;
 
-        @include desktop {
-            width: 133px;
-            height: 31px;
-            top: 581px;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-        }
-
         .tableNumber {
             left: 37px;
             top: 3px;
@@ -484,12 +301,6 @@
             font-size: 13px;
             font-weight: 800;
             word-wrap: break-word;
-
-            @include desktop {
-                left: 51px;
-                top: 4px;
-                font-size: 18px;
-            }
         }
     }
 }
@@ -500,13 +311,6 @@
         height: 97px;
         left: 12px;
         top: 12px;
-
-        @include desktop {
-            width: 251px;
-            height: 133px;
-            left: 16px;
-            top: 16px;
-        }
     }
 
     .time {
@@ -518,12 +322,6 @@
         font-size: 12px;
         font-weight: 900;
         word-wrap: break-word;
-
-        @include desktop {
-            left: 104px;
-            top: 14px;
-            font-size: 16px;
-        }
     }
 
     .name {
@@ -535,12 +333,6 @@
         font-size: 15px;
         font-weight: 800;
         word-wrap: break-word;
-
-        @include desktop {
-            left: 99px;
-            top: 38px;
-            font-size: 20px;
-        }
     }
 
     .group {
@@ -552,12 +344,6 @@
         font-size: 10px;
         font-weight: 500;
         word-wrap: break-word;
-
-        @include desktop {
-            left: 93px;
-            top: 65px;
-            font-size: 14px;
-        }
     }
 
     .footer {
@@ -569,14 +355,6 @@
         border-top-left-radius: 15px;
         border-top-right-radius: 15px;
 
-        @include desktop {
-            width: 251px;
-            height: 31px;
-            top: 102px;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-        }
-
         .tableNumber {
             left: 81px;
             top: 4px;
@@ -586,12 +364,6 @@
             font-size: 13px;
             font-weight: 800;
             word-wrap: break-word;
-
-            @include desktop {
-                left: 111px;
-                top: 5px;
-                font-size: 18px;
-            }
         }
     }
 }
@@ -602,13 +374,6 @@
         height: 183px;
         left: 12px;
         top: 12px;
-
-        @include desktop {
-            width: 251px;
-            height: 251px;
-            left: 16px;
-            top: 16px;
-        }
     }
 
     .time {
@@ -620,12 +385,6 @@
         font-size: 12px;
         font-weight: 900;
         word-wrap: break-word;
-
-        @include desktop {
-            left: 104px;
-            top: 48px;
-            font-size: 16px;
-        }
     }
 
     .name {
@@ -637,12 +396,6 @@
         font-size: 15px;
         font-weight: 800;
         word-wrap: break-word;
-
-        @include desktop {
-            left: 98px;
-            top: 104px;
-            font-size: 20px;
-        }
     }
 
     .group {
@@ -654,12 +407,6 @@
         font-size: 10px;
         font-weight: 500;
         word-wrap: break-word;
-
-        @include desktop {
-            left: 93px;
-            top: 131px;
-            font-size: 14px;
-        }
     }
 
     .footer {
@@ -671,14 +418,6 @@
         border-top-left-radius: 15px;
         border-top-right-radius: 15px;
 
-        @include desktop {
-            width: 251px;
-            height: 31px;
-            top: 220px;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-        }
-
         .tableNumber {
             left: 81px;
             top: 3px;
@@ -688,12 +427,6 @@
             font-size: 13px;
             font-weight: 800;
             word-wrap: break-word;
-
-            @include desktop {
-                left: 111px;
-                top: 4px;
-                font-size: 18px;
-            }
         }
     }
 }
@@ -704,13 +437,6 @@
         height: 97px;
         left: 12px;
         top: 12px;
-
-        @include desktop {
-            width: 369px;
-            height: 133px;
-            left: 16px;
-            top: 16px;
-        }
     }
 
     .time {
@@ -722,12 +448,6 @@
         font-size: 12px;
         font-weight: 900;
         word-wrap: break-word;
-
-        @include desktop {
-            left: 163px;
-            top: 14px;
-            font-size: 16px;
-        }
     }
 
     .name {
@@ -739,12 +459,6 @@
         font-size: 15px;
         font-weight: 800;
         word-wrap: break-word;
-
-        @include desktop {
-            left: 158px;
-            top: 38px;
-            font-size: 20px;
-        }
     }
 
     .group {
@@ -756,12 +470,6 @@
         font-size: 10px;
         font-weight: 500;
         word-wrap: break-word;
-
-        @include desktop {
-            left: 152px;
-            top: 65px;
-            font-size: 14px;
-        }
     }
 
     .footer {
@@ -776,24 +484,12 @@
         justify-content: center;
         align-items: center;
 
-        @include desktop {
-            width: 369px;
-            height: 31px;
-            top: 102px;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-        }
-
         .tableNumber {
             text-align: center;
             color: white;
             font-size: 13px;
             font-weight: 800;
             word-wrap: break-word;
-
-            @include desktop {
-                font-size: 18px;
-            }
         }
     }
 }
@@ -805,13 +501,6 @@
         left: 12px;
         top: 12px;
         transform-origin: top left;
-
-        @include desktop {
-            width: 132px;
-            height: 488px;
-            left: 504px;
-            top: 16px;
-        }
     }
 
     .time {
@@ -823,12 +512,6 @@
         font-size: 12px;
         font-weight: 900;
         word-wrap: break-word;
-
-        @include desktop {
-            left: 222px;
-            top: 14px;
-            font-size: 16px;
-        }
     }
 
     .name {
@@ -840,12 +523,6 @@
         font-size: 15px;
         font-weight: 800;
         word-wrap: break-word;
-
-        @include desktop {
-            left: 217px;
-            top: 38px;
-            font-size: 20px;
-        }
     }
 
     .group {
@@ -857,12 +534,6 @@
         font-size: 10px;
         font-weight: 500;
         word-wrap: break-word;
-
-        @include desktop {
-            left: 213px;
-            top: 65px;
-            font-size: 14px;
-        }
     }
 
     .footer {
@@ -877,26 +548,12 @@
         justify-content: center;
         align-items: center;
 
-        @include desktop {
-            width: 488px;
-            height: 31px;
-            top: 101px;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-        }
-
         .tableNumber {
             text-align: center;
             color: white;
             font-size: 13px;
             font-weight: 800;
             word-wrap: break-word;
-
-            @include desktop {
-                left: 258px;
-                top: 5px;
-                font-size: 18px;
-            }
         }
     }
 }
@@ -908,13 +565,6 @@
         left: 12px;
         top: 12px;
         transform-origin: top left;
-
-        @include desktop {
-            width: 132px;
-            height: 612px;
-            left: 634px;
-            top: 16px;
-        }
     }
 
     .time {
@@ -926,12 +576,6 @@
         font-size: 12px;
         font-weight: 900;
         word-wrap: break-word;
-
-        @include desktop {
-            left: 278px;
-            top: 14px;
-            font-size: 16px;
-        }
     }
 
     .name {
@@ -943,12 +587,6 @@
         font-size: 15px;
         font-weight: 800;
         word-wrap: break-word;
-
-        @include desktop {
-            left: 273px;
-            top: 38px;
-            font-size: 20px;
-        }
     }
 
     .group {
@@ -960,12 +598,6 @@
         font-size: 10px;
         font-weight: 500;
         word-wrap: break-word;
-
-        @include desktop {
-            left: 269px;
-            top: 65px;
-            font-size: 14px;
-        }
     }
 
     .footer {
@@ -980,26 +612,12 @@
         justify-content: center;
         align-items: center;
 
-        @include desktop {
-            width: 612px;
-            height: 31px;
-            top: 101px;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-        }
-
         .tableNumber {
             text-align: center;
             color: white;
             font-size: 13px;
             font-weight: 800;
             word-wrap: break-word;
-
-            @include desktop {
-                left: 320px;
-                top: 5px;
-                font-size: 18px;
-            }
         }
     }
 }
@@ -1010,13 +628,6 @@
     height: 9px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-
-    @include desktop {
-        width: 104px;
-        height: 12px;
-        border-top-left-radius: 7px;
-        border-top-right-radius: 7px;
-    }
 }
 
 .borderTop {
