@@ -5,6 +5,7 @@ import BaseModal from './BaseModal';
 import styles from '@/styles/components/order/modal/OrderDetailModal.module.scss';
 import { OrderItem } from '@/types';
 import { mockOrderItemDetails } from '@/data/mockOrderData';
+import QuantityControl from '@/components/order/common/QuantityControl';
 
 interface OrderDetailModalProps {
   isOpen: boolean;
@@ -190,21 +191,13 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                       {item.payer || '-'}
                     </td>
                     <td className={styles.columnQuantity}>
-                      <div className={styles.quantityControl}>
-                        <button
-                          onClick={() => onQuantityChange(item.menuItem.id, item.quantity - 1)}
-                          disabled={item.quantity <= 1 || isDeleted}
-                        >
-                          -
-                        </button>
-                        <div className={styles.quantityDisplay} style={deletedStyle}>{item.quantity}</div>
-                        <button
-                          onClick={() => onQuantityChange(item.menuItem.id, item.quantity + 1)}
-                          disabled={isDeleted}
-                        >
-                          +
-                        </button>
-                      </div>
+                      <QuantityControl
+                        quantity={item.quantity}
+                        onIncrease={() => onQuantityChange(item.menuItem.id, item.quantity + 1)}
+                        onDecrease={() => onQuantityChange(item.menuItem.id, item.quantity - 1)}
+                        disabled={isDeleted}
+                        variant="default"
+                      />
                     </td>
                     <td className={styles.columnPrice} style={deletedStyle}>
                       {(item.menuItem.price * item.quantity).toLocaleString('ko-KR')} 원

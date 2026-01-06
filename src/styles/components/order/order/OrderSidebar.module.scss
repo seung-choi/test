@@ -1,7 +1,7 @@
 @import '../../../common/mixins';
 
 .sidebar {
-  width: 533px;
+  width: 450px;
   height: calc(100vh - 40px);
   position: fixed;
   right: 0;
@@ -10,7 +10,7 @@
   box-shadow: 0 0 10px rgba(18, 18, 18, 0.40);
   border-top-left-radius: 30px;
   border-bottom-left-radius: 30px;
-  padding: 24px 30px;
+  padding: 20px 30px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -18,9 +18,6 @@
 
   @include tablet {
     width: 380px;
-    height: calc(100vh - 40px);
-    top: 40px;
-    padding: 20px 20px;
     border-radius: 20px 0 0 20px;
   }
 }
@@ -29,16 +26,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 35px;
-
-  @include tablet {
-    margin-bottom: 25px;
-  }
+  margin-bottom: 20px;
 }
 
 .title {
   color: black;
-  font-size: 36px;
+  font-size: 30px;
   font-weight: 700;
 
   @include tablet {
@@ -47,20 +40,16 @@
 }
 
 .detailButton {
-  padding: 7px 22px;
+  height: 30px;
+  padding: 0 20px;
   background: #313246;
   border-radius: 30px;
   border: none;
   color: white;
-  font-size: 27px;
+  font-size: 20px;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s ease;
-
-  @include tablet {
-    padding: 5px 18px;
-    font-size: 20px;
-  }
 
   &:hover {
     background: #242535;
@@ -71,17 +60,12 @@
   border-radius: 0 0 5px 5px;
   background: white;
   box-shadow: 4px 4px 8px 0 rgba(0, 0, 0, 0.25), 0 4px 4px 0 rgba(0, 0, 0, 0.25) inset;
-  padding: 30px;
+  padding: 20px;
   height: 100%;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 30px;
-
-  @include tablet {
-    padding: 20px;
-    gap: 20px;
-  }
+  gap: 20px;
 }
 
 .tableInfo {
@@ -95,24 +79,15 @@
 
 .tableNumber {
   color: #1F1F1F;
-  font-size: 30px;
+  font-size: 20px;
   font-weight: 600;
   text-align: center;
-
-  @include tablet {
-    font-size: 22px;
-  }
 }
 
 .orderInfo {
   display: flex;
   flex-direction: column;
   gap: 10px;
-
-  @include tablet {
-    gap: 8px;
-    margin-bottom: 20px;
-  }
 }
 
 .groupHeader {
@@ -125,12 +100,8 @@
 .groupName {
   flex: 1;
   color: #1F1F1F;
-  font-size: 25px;
-  font-weight: 800;
-
-  @include tablet {
-    font-size: 20px;
-  }
+  font-size: 20px;
+  font-weight: 600;
 }
 
 .payerSection {
@@ -138,31 +109,21 @@
 }
 
 .payerBadge {
-  padding: 7px 22px;
+  padding: 5px 20px;
   background: white;
-  box-shadow: 0px 0px 10px rgba(18, 18, 18, 0.40);
-  border-radius: 30px;
+  box-shadow: 0 0 10px rgba(18, 18, 18, 0.40);
+  border-radius: 25px;
   border: none;
-  gap: 8px;
+  gap: 10px;
   display: inline-flex;
   align-items: center;
   cursor: pointer;
   transition: all 0.2s ease;
 
-  @include tablet {
-    padding: 5px 18px;
-    border-radius: 22px;
-    gap: 6px;
-  }
-
   span {
     color: #1F1F1F;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 500;
-
-    @include tablet {
-      font-size: 16px;
-    }
   }
 
   &:hover {
@@ -179,21 +140,16 @@
   top: calc(100% + 8px);
   right: 0;
   background: white;
-  border-radius: 15px;
+  border-radius: 10px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.25);
   z-index: 1000;
-  min-width: 150px;
-
-  @include tablet {
-    min-width: 120px;
-    border-radius: 12px;
-  }
+  min-width: 120px;
 }
 
 .payerOption {
   display: block;
   width: 100%;
-  padding: 12px 20px;
+  padding: 10px 15px;
   text-align: center;
   background: none;
   border: none;
@@ -202,11 +158,6 @@
   color: #1F1F1F;
   font-size: 18px;
   font-weight: 500;
-
-  @include tablet {
-    padding: 10px 16px;
-    font-size: 15px;
-  }
 
   &:hover {
     background-color: #F3F3F3;
@@ -219,19 +170,12 @@
   }
 
   &:first-child {
-    border-radius: 15px 15px 0 0;
-
-    @include tablet {
       border-radius: 12px 12px 0 0;
-    }
   }
 
   &:last-child {
-    border-radius: 0 0 15px 15px;
-
-    @include tablet {
       border-radius: 0 0 12px 12px;
-    }
+
   }
 }
 
@@ -241,46 +185,27 @@
   height: 7px;
   background: #1F1F1F;
   clip-path: polygon(50% 100%, 0 0, 100% 0);
-
-  @include tablet {
-    width: 11px;
-    height: 6px;
-  }
 }
 
 .memberNames {
   color: #666666;
-  font-size: 25px;
-  font-weight: 400;
-
-  @include tablet {
-    font-size: 19px;
-  }
+  font-size: 18px;
 }
 
 .orderCount {
   padding-bottom: 5px;
   border-bottom: 1px solid black;
   color: black;
-  font-size: 21px;
+  font-size: 18px;
   font-weight: 600;
   line-height: 35px;
-
-  @include tablet {
-    font-size: 17px;
-  }
 }
 
 .orderList {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 10px;
   padding-right: 10px;
-
-  @include tablet {
-    gap: 22px;
-    padding-right: 8px;
-  }
 
   @include custom-scrollbar(5px, rgba(149, 149, 149, 0.4));
 }
@@ -291,53 +216,28 @@
   justify-content: center;
   height: 100%;
   color: #969595;
-  font-size: 25px;
+  font-size: 20px;
   font-weight: 600;
   text-align: center;
-
-  @include tablet {
-    font-size: 20px;
-  }
 }
 
 .orderItem {
   display: flex;
   flex-direction: column;
   gap: 15px;
-
-  @include tablet {
-    gap: 10px;
-  }
 }
 
 .itemContent {
   display: flex;
-  gap: 20px;
   align-items: flex-start;
-
-  @include tablet {
     gap: 15px;
-  }
 }
 
 .deleteButton {
-  flex-shrink: 0;
-  width: 24px;
-  height: 24px;
-  padding: 0;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   transition: opacity 0.2s ease;
   margin-top: 7px;
-
-  @include tablet {
     width: 16px;
     height: 16px;
-  }
 
   img {
     width: 100%;
@@ -358,11 +258,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-
-  @include tablet {
-    gap: 10px;
-  }
+  gap: 10px;
 }
 
 .itemHeader {
@@ -373,25 +269,17 @@
 
 .itemName {
   color: #1F1F1F;
-  font-size: 25px;
+  font-size: 20px;
   line-height: 32px;
   font-weight: 600;
-
-  @include tablet {
-    font-size: 20px;
-  }
 }
 
 .itemPrice {
   color: #1F1F1F;
-  font-size: 25px;
+  font-size: 20px;
   line-height: 32px;
   font-weight: 600;
   text-align: right;
-
-  @include tablet {
-    font-size: 20px;
-  }
 }
 
 .quantityControl {
@@ -399,34 +287,24 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-
-  @include tablet {
-  }
 }
 
 .quantityButton {
-  width: 140px;
-  height: 50px;
+  width: 100px;
+  height: 40px;
+  font-size: 16px;
+  padding: 0 10px;
   background: white;
   box-shadow: 0 0 4.45px rgba(0, 0, 0, 0.25) inset;
   border: none;
   color: black;
-  font-size: 18px;
   font-weight: 400;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
   transition: background 0.2s ease;
   border-radius: 3.71px;
-
-  @include tablet {
-    width: 100px;
-    height: 40px;
-    font-size: 16px;
-    padding: 0 10px;
-  }
 
   &:hover:not(:disabled) {
     background: #f5f5f5;
@@ -440,10 +318,11 @@
 
 .quantityDisplay {
   position: absolute;
-  left: 45px;
-  top: 4px;
-  width: 50px;
-  height: 45px;
+  width: 35px;
+  height: 35px;
+  font-size: 22px;
+  left: 33px;
+  top: 3px;
   background: white;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
   border-radius: 5px;
@@ -451,65 +330,38 @@
   align-items: center;
   justify-content: center;
   color: black;
-  font-size: 27px;
   font-weight: 600;
-
-  @include tablet {
-    width: 35px;
-    height: 35px;
-    font-size: 22px;
-    left: 33px;
-    top: 3px;
-  }
 }
 
 .bottomGradient {
   position: absolute;
-  bottom: 179px;
+  bottom: 140px;
+  height: 40px;
   left: 0;
   width: 100%;
-  height: 50px;
   background: linear-gradient(270deg, white 0%, rgba(255, 255, 255, 0) 100%);
   pointer-events: none;
-
-  @include tablet {
-    bottom: 140px;
-    height: 40px;
-  }
 }
 
 .totalSection {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 0;
+  padding: 10px 0;
   margin-top: 15px;
-
-  @include tablet {
-    padding: 15px 0;
-    margin-top: 0px;
-  }
 }
 
 .totalLabel {
   color: #1F1F1F;
-  font-size: 29px;
+  font-size: 20px;
   font-weight: 600;
-
-  @include tablet {
-    font-size: 23px;
-  }
 }
 
 .totalAmount {
   color: #1F1F1F;
-  font-size: 29px;
-  font-weight: 600;
+  font-size: 24px;
+  font-weight: 700;
   text-align: right;
-
-  @include tablet {
-    font-size: 23px;
-  }
 }
 
 .actions {
@@ -524,14 +376,13 @@
 }
 
 .memoButton {
-  width: 169px;
-  height: 119px;
-  padding: 15px;
+  width: 120px;
+  height: 60px;
+  font-size: 25px;
+  border-radius: 22px;
   background: #959595;
-  border-radius: 30px;
   border: none;
   color: white;
-  font-size: 40px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -556,23 +407,15 @@
 
 .orderButton {
   flex: 1;
-  height: 119px;
-  padding: 15px;
+  height: 60px;
+  font-size: 25px;
+  border-radius: 20px;
   background: #6600FF;
-  border-radius: 30px;
   border: none;
   color: #F3F3F3;
-  font-size: 45px;
   font-weight: 800;
   cursor: pointer;
   transition: all 0.2s ease;
-
-  @include tablet {
-    height: 60px;
-    padding: 12px;
-    font-size: 25px;
-    border-radius: 22px;
-  }
 
   &:hover {
     background: #5500DD;

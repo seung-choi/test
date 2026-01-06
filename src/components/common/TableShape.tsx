@@ -4,6 +4,12 @@ import React from 'react';
 import styles from '@/styles/components/common/tableShape.module.scss';
 import { TableType } from '@/types';
 
+interface Reservation {
+    time: string;
+    name?: string;
+    group?: string;
+}
+
 interface TableShapeProps {
     type: TableType;
     scale?: number;
@@ -13,6 +19,11 @@ interface TableShapeProps {
     className?: string;
     style?: React.CSSProperties;
     onClick?: () => void;
+    variant?: 'order' | 'admin';
+    reservation?: Reservation;
+    status?: 'empty' | 'occupied';
+    tableNumber?: string;
+    tableId?: string;
 }
 
 const baseDimensions: Record<TableType, { width: number; height: number }> = {
@@ -31,16 +42,30 @@ const baseDimensions: Record<TableType, { width: number; height: number }> = {
 const TableShape: React.FC<TableShapeProps> = ({
     type,
     scale = 1,
-    borderColor = '#959595',
+    borderColor: customBorderColor,
     rotation = 0,
     children,
     className = '',
     style = {},
-    onClick
+    onClick,
+    variant = 'admin',
+    reservation,
+    status = 'empty',
+    tableNumber,
+    tableId
 }) => {
     const baseDim = baseDimensions[type];
     const width = baseDim.width * scale;
     const height = baseDim.height * scale;
+
+    // order variant에서는 status에 따라 색상 변경
+    const isOccupied = status === 'occupied';
+    const borderColor = variant === 'order'
+        ? (isOccupied ? '#9081D8' : '#959595')
+        : (customBorderColor || '#959595');
+    const footerColor = variant === 'order'
+        ? (isOccupied ? '#6600FF' : '#D9D9D9')
+        : undefined;
 
     const renderBorders = () => {
         const borders = [];
@@ -189,17 +214,47 @@ const TableShape: React.FC<TableShapeProps> = ({
     const displayWidth = isVertical ? height : width;
     const displayHeight = isVertical ? width : height;
 
+    const renderOrderContent = () => {
+        if (variant !== 'order') return null;
+
+        return (
+            <>
+                <div className={`${styles.time} ${styles[`time${type}`]} ${reservation ? styles.timeWithReservation : styles.timeWithoutReservation}`}>
+                    {reservation?.time || '00:00'}
+                </div>
+                {reservation?.name && (
+                    <div className={`${styles.name} ${styles[`name${type}`]}`}>
+                        {reservation.name}
+                    </div>
+                )}
+                {reservation?.group && (
+                    <div className={`${styles.group} ${styles[`group${type}`]}`}>
+                        {reservation.group}
+                    </div>
+                )}
+                <div className={`${styles.footer} ${styles[`footer${type}`]}`} style={{ background: footerColor }}>
+                    <div className={`${styles.tableNumber} ${tableId && tableId.length > 2 ? styles.tableNumberLong : styles.tableNumberShort}`}>
+                        {tableId}
+                    </div>
+                </div>
+            </>
+        );
+    };
+
     return (
         <div
-            className={`${styles.tableShape} ${className}`}
+            className={`${styles.tableShape} ${variant === 'order' ? styles.orderVariant : ''} ${className}`}
             style={{
                 width: displayWidth,
                 height: displayHeight,
                 transform: `rotate(${rotation}deg)`,
                 transformOrigin: 'center',
+                cursor: variant === 'order' && status === 'empty' ? 'default' : (onClick ? 'pointer' : 'default'),
+                transition: variant === 'order' ? 'transform 0.2s ease' : undefined,
                 ...style
             }}
             onClick={onClick}
+            data-테이블={variant === 'order' ? type : undefined}
         >
             <div
                 className={styles.innerContent}
@@ -210,7 +265,7 @@ const TableShape: React.FC<TableShapeProps> = ({
                     top: 12 * scale
                 }}
             >
-                {children}
+                {variant === 'order' ? renderOrderContent() : children}
             </div>
             {renderBorders()}
         </div>

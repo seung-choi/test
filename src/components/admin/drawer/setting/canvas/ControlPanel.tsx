@@ -6,7 +6,7 @@ import { LayoutPage } from '@/types';
 
 interface ControlPanelProps {
     pages: LayoutPage[];
-    onPageAdd: (direction: 'horizontal' | 'vertical') => void;
+    onPageAdd: () => void;
     onPageDelete: () => void;
 }
 
@@ -22,28 +22,15 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
             <div className={styles.controls}>
                 <button
                     className={styles.addButton}
-                    onClick={() => onPageAdd('horizontal')}
-                    title="가로 페이지 추가"
+                    onClick={onPageAdd}
+                    title="페이지 추가"
                 >
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                         <rect x="3" y="3" width="6" height="14" stroke="currentColor" strokeWidth="1.5" fill="none"/>
                         <rect x="11" y="3" width="6" height="14" stroke="currentColor" strokeWidth="1.5" fill="none" strokeDasharray="2 2"/>
                         <path d="M14 10h-1m-1 0h1m0 0v-1m0 1v1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
                     </svg>
-                    <span>가로 추가</span>
-                </button>
-
-                <button
-                    className={styles.addButton}
-                    onClick={() => onPageAdd('vertical')}
-                    title="세로 페이지 추가"
-                >
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <rect x="3" y="3" width="14" height="6" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-                        <rect x="3" y="11" width="14" height="6" stroke="currentColor" strokeWidth="1.5" fill="none" strokeDasharray="2 2"/>
-                        <path d="M10 14v-1m0-1v1m0 0h-1m1 0h1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                    </svg>
-                    <span>세로 추가</span>
+                    <span>페이지 추가</span>
                 </button>
 
                 <button

@@ -5,7 +5,7 @@ import CommonModalLayout from '@/components/admin/modal/CommonModalLayout';
 import commonStyles from '@/styles/components/admin/modal/CommonModal.module.scss';
 import styles from '@/styles/components/admin/modal/ErpSearchModal.module.scss';
 import { ErpProduct, ErpSearchType } from '@/types/erp.type';
-import CustomSelect from '@/components/admin/common/CustomSelect';
+import CustomSelect from '@/components/common/CustomSelect';
 import { erpMockData } from '@/mock/admin/erpMockData';
 import {formatPrice} from "@/utils";
 

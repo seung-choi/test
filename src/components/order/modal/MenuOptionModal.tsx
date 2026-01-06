@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import BaseModal from './BaseModal';
 import styles from '@/styles/components/order/modal/MenuOptionModal.module.scss';
 import { MenuItem, MenuOption } from '@/types';
+import QuantityControl from '@/components/order/common/QuantityControl';
 
 interface MenuOptionModalProps {
   isOpen: boolean;
@@ -93,24 +94,13 @@ const MenuOptionModal: React.FC<MenuOptionModalProps> = ({
                     <div className={styles.optionPrice}>
                       ₩{option.price.toLocaleString('ko-KR')}
                     </div>
-                    <div className={styles.quantityControl}>
-                      <div className={styles.quantityWrapper}>
-                        <button
-                            className={styles.quantityButton}
-                            onClick={() => handleQuantityChange(option.id, -1)}
-                            disabled={quantity === 0}
-                        >
-                          -
-                        </button>
-                        <div className={styles.quantityDisplay}>{quantity}</div>
-                        <button
-                            className={styles.quantityButton}
-                            onClick={() => handleQuantityChange(option.id, 1)}
-                        >
-                          +
-                        </button>
-                      </div>
-                    </div>
+                    <QuantityControl
+                      quantity={quantity}
+                      onIncrease={() => handleQuantityChange(option.id, 1)}
+                      onDecrease={() => handleQuantityChange(option.id, -1)}
+                      minQuantity={0}
+                      variant="modal"
+                    />
                   </div>
 
                 </div>

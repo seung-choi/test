@@ -1,3 +1,5 @@
+@import '@/styles/common/mixins';
+
 .tableShape {
     position: relative;
 }
@@ -7,6 +9,29 @@
     background: white;
     border-radius: 10px;
     overflow: hidden;
+}
+
+// Order variant specific styles
+.orderVariant {
+    position: absolute;
+
+    @include touch-device {
+        @include touch-target(44px);
+    }
+
+    &:active {
+        transform: scale(0.98);
+    }
+
+    .innerContent {
+        border-radius: 5px;
+    }
+
+    .border {
+        height: 9px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
 }
 
 .border {
@@ -34,4 +59,327 @@
 .borderRight {
     transform: rotate(90deg);
     transform-origin: top left;
+}
+
+// Order variant content styles
+.time {
+    position: absolute;
+    text-align: center;
+    color: black;
+    font-size: 12px;
+    font-weight: 900;
+    word-wrap: break-word;
+}
+
+.name {
+    position: absolute;
+    text-align: center;
+    color: black;
+    font-size: 15px;
+    font-weight: 800;
+    word-wrap: break-word;
+}
+
+.group {
+    position: absolute;
+    text-align: center;
+    color: black;
+    font-size: 10px;
+    font-weight: 500;
+    word-wrap: break-word;
+}
+
+.footer {
+    position: absolute;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+
+    .tableNumber {
+        position: absolute;
+        text-align: center;
+        color: white;
+        font-size: 13px;
+        font-weight: 800;
+        word-wrap: break-word;
+    }
+}
+
+// Table type specific positioning - 1x1
+.time1x1 {
+    top: 10px;
+}
+
+.time1x1.timeWithReservation {
+    left: 32px;
+}
+
+.time1x1.timeWithoutReservation {
+    left: 30px;
+}
+
+.name1x1 {
+    left: 29px;
+    top: 28px;
+}
+
+.group1x1 {
+    left: 27px;
+    top: 48px;
+}
+
+.footer1x1 {
+    width: 97px;
+    height: 23px;
+    left: 0;
+    top: 74px;
+
+    .tableNumber {
+        top: 4px;
+    }
+
+    .tableNumberLong {
+        left: 37px;
+    }
+
+    .tableNumberShort {
+        left: 40px;
+    }
+}
+
+// 1x2
+.time1x2 {
+    left: 34px;
+    top: 35px;
+}
+
+.name1x2 {
+    left: 30px;
+    top: 76px;
+}
+
+.group1x2 {
+    left: 26px;
+    top: 96px;
+}
+
+.footer1x2 {
+    width: 97px;
+    height: 23px;
+    left: 0;
+    top: 160px;
+
+    .tableNumber {
+        left: 39px;
+        top: 3px;
+    }
+}
+
+// 1x3
+.time1x3 {
+    left: 34px;
+    top: 64px;
+}
+
+.name1x3 {
+    left: 30px;
+    top: 105px;
+}
+
+.group1x3 {
+    left: 26px;
+    top: 125px;
+}
+
+.footer1x3 {
+    width: 97px;
+    height: 23px;
+    left: 0;
+    top: 246px;
+
+    .tableNumber {
+        left: 39px;
+        top: 3px;
+    }
+}
+
+// 1x4
+.time1x4 {
+    left: 32px;
+    top: 120px;
+}
+
+.footer1x4 {
+    width: 97px;
+    height: 23px;
+    left: 0;
+    top: 335px;
+
+    .tableNumber {
+        left: 37px;
+        top: 3px;
+    }
+}
+
+// 1x5
+.time1x5 {
+    left: 32px;
+    top: 150px;
+}
+
+.footer1x5 {
+    width: 97px;
+    height: 23px;
+    left: 0;
+    top: 424px;
+
+    .tableNumber {
+        left: 37px;
+        top: 3px;
+    }
+}
+
+// 2x1
+.time2x1 {
+    left: 76px;
+    top: 10px;
+}
+
+.name2x1 {
+    left: 72px;
+    top: 28px;
+}
+
+.group2x1 {
+    left: 68px;
+    top: 48px;
+}
+
+.footer2x1 {
+    width: 183px;
+    height: 23px;
+    left: 0;
+    top: 74px;
+
+    .tableNumber {
+        left: 81px;
+        top: 4px;
+    }
+}
+
+// 2x2
+.time2x2 {
+    left: 76px;
+    top: 35px;
+}
+
+.name2x2 {
+    left: 72px;
+    top: 76px;
+}
+
+.group2x2 {
+    left: 68px;
+    top: 96px;
+}
+
+.footer2x2 {
+    width: 183px;
+    height: 23px;
+    left: 0;
+    top: 160px;
+
+    .tableNumber {
+        left: 81px;
+        top: 3px;
+    }
+}
+
+// 3x1
+.time3x1 {
+    left: 119px;
+    top: 10px;
+}
+
+.name3x1 {
+    left: 115px;
+    top: 28px;
+}
+
+.group3x1 {
+    left: 111px;
+    top: 48px;
+}
+
+.footer3x1 {
+    width: 269px;
+    height: 23px;
+    left: 0;
+    top: 74px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .tableNumber {
+        text-align: center;
+    }
+}
+
+// 4x1
+.time4x1 {
+    left: 162px;
+    top: 10px;
+}
+
+.name4x1 {
+    left: 158px;
+    top: 28px;
+}
+
+.group4x1 {
+    left: 155px;
+    top: 48px;
+}
+
+.footer4x1 {
+    width: 356px;
+    height: 23px;
+    left: 0;
+    top: 73px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .tableNumber {
+        text-align: center;
+    }
+}
+
+// 5x1
+.time5x1 {
+    left: 203px;
+    top: 10px;
+}
+
+.name5x1 {
+    left: 199px;
+    top: 28px;
+}
+
+.group5x1 {
+    left: 196px;
+    top: 48px;
+}
+
+.footer5x1 {
+    width: 447px;
+    height: 23px;
+    left: 0;
+    top: 73px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .tableNumber {
+        text-align: center;
+    }
 }

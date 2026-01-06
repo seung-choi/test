@@ -32,7 +32,7 @@ const BaseModal: React.FC<BaseModalProps> = ({
       const timer = setTimeout(() => {
         setShouldRender(false);
         setIsClosing(false);
-      }, 200); // fadeOut 애니메이션 시간과 동일
+      }, 200);
       return () => clearTimeout(timer);
     }
   }, [isOpen, shouldRender]);

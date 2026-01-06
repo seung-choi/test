@@ -1,0 +1,145 @@
+@import '../../../common/mixins';
+
+.quantityControl {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.25) inset;
+  border-radius: 5px;
+
+  button {
+    background: transparent;
+    border: none;
+    color: black;
+    font-size: 18px;
+    font-weight: 400;
+    cursor: pointer;
+    width: 20px;
+    text-align: center;
+    transition: opacity 0.2s ease;
+
+    &:hover:not(:disabled) {
+      opacity: 0.7;
+    }
+
+    &:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// Default variant (OrderDetailModal용)
+.quantityControl.default {
+  width: 100px;
+  height: 40px;
+  padding: 0 8px;
+
+  .quantityDisplay {
+    position: absolute;
+    left: 50%;
+    top: 3px;
+    transform: translateX(-50%);
+    width: 32px;
+    height: 34px;
+    background: white;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    font-size: 18px;
+    font-weight: 500;
+  }
+}
+
+// Sidebar variant
+.quantityControl.sidebar {
+  width: 115px;
+  height: 40px;
+  padding: 0 8px;
+
+  @include tablet {
+    width: 100px;
+    height: 35px;
+  }
+
+  .quantityDisplay {
+    position: absolute;
+    left: 50%;
+    top: 3px;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 34px;
+    background: white;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    font-size: 18px;
+    font-weight: 500;
+
+    @include tablet {
+      width: 35px;
+      height: 29px;
+      font-size: 16px;
+    }
+  }
+
+  button {
+    font-size: 20px;
+
+    @include tablet {
+      font-size: 18px;
+    }
+  }
+}
+
+// Modal variant (MenuOptionModal용)
+.quantityControl.modal {
+  width: 115px;
+  height: 40px;
+  padding: 0 8px;
+
+  @include tablet {
+    width: 100px;
+    height: 35px;
+  }
+
+  .quantityDisplay {
+    position: absolute;
+    left: 50%;
+    top: 3px;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 34px;
+    background: white;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    font-size: 18px;
+    font-weight: 500;
+
+    @include tablet {
+      width: 35px;
+      height: 29px;
+      font-size: 16px;
+    }
+  }
+
+  button {
+    font-size: 20px;
+
+    @include tablet {
+      font-size: 18px;
+    }
+  }
+}

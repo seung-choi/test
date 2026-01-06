@@ -1,31 +1,24 @@
 @import '../../../common/mixins';
 
 .detailContent {
-  padding: 20px 46px 60px 46px;
+  padding: 15px 10px 40px 10px;
   min-height: 600px;
 
   @include tablet {
-    padding: 15px 10px 40px 10px;
     min-height: 500px;
   }
 }
 
 .timeTabs {
   background: #F3F3F3;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25) inset;
-  border-radius: 40px;
-  padding: 4.5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25) inset;
+  border-radius: 30px;
+  padding: 3px;
   display: flex;
   gap: 0;
-  margin-bottom: 35px;
+  margin-bottom: 20px;
   overflow-x: auto;
   scrollbar-width: none;
-
-  @include tablet {
-    margin-bottom: 20px;
-    border-radius: 30px;
-    padding: 3px;
-  }
 
   &::-webkit-scrollbar {
     display: none;
@@ -35,11 +28,11 @@
 .timeTab {
   flex: 1;
   min-width: 120px;
-  height: 60px;
+  height: 50px;
   background: transparent;
   border: none;
   color: #444444;
-  font-size: 30px;
+  font-size: 20px;
   font-weight: 600;
   cursor: pointer;
   border-radius: 30px;
@@ -61,7 +54,7 @@
 
   &.active {
     background: white;
-    box-shadow: 0px 0px 10px rgba(18, 18, 18, 0.40);
+    box-shadow: 0 0 10px rgba(18, 18, 18, 0.40);
   }
 }
 
@@ -88,15 +81,14 @@
     }
 
     th {
-      padding: 15px 10px;
+      height: 45px;
       color: #444444;
-      font-size: 26px;
+      font-size: 20px;
       font-weight: 400;
       text-align: center;
       vertical-align: middle;
 
       @include tablet {
-        padding: 10px 5px;
         font-size: 16px;
       }
     }
@@ -105,20 +97,17 @@
   tbody {
     tr {
       border: none;
-      min-height: 94px;
-
-      @include tablet {
         min-height: 70px;
-      }
+
 
       &.borderTop {
         border-top: 1px solid #959595;
       }
 
       td {
-        padding: 15px 10px;
+        padding: 15px 0;
         color: #1F1F1F;
-        font-size: 28px;
+        font-size: 20px;
         font-weight: 600;
         text-align: center;
         vertical-align: middle;
@@ -152,7 +141,7 @@
 }
 
 .columnTime {
-  width: 116px;
+  width: 100px;
 
   @include tablet {
     width: 70px;
@@ -160,7 +149,7 @@
 }
 
 .columnMenu {
-  width: 280px;
+  width: 150px;
   word-break: keep-all;
 
   @include tablet {
@@ -170,7 +159,7 @@
 }
 
 .columnMemo {
-  width: 656px;
+  width: 200px;
 
   @include tablet {
     width: 270px;
@@ -179,7 +168,6 @@
 
 .memoText {
   color: #959595;
-  font-size: 27px;
   font-weight: 600;
   word-break: keep-all;
 
@@ -189,7 +177,7 @@
 }
 
 .columnPayer {
-  width: 150px;
+  width: 120px;
 
   @include tablet {
     width: 80px;
@@ -197,7 +185,7 @@
 }
 
 .columnQuantity {
-  width: 180px;
+  width: 120px;
 
   @include tablet {
     width: 120px;
@@ -205,38 +193,27 @@
 }
 
 .quantityControl {
-  width: 150px;
-  height: 54px;
+  width: 100px;
+  height: 40px;
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
   background: white;
-  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.25) inset;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.25) inset;
   border-radius: 5px;
-  padding: 0 13.64px;
-
-  @include tablet {
-    width: 100px;
-    height: 40px;
-    padding: 0 8px;
-  }
+  padding: 0 8px;
 
   button {
     background: transparent;
     border: none;
     color: black;
-    font-size: 24px;
+    font-size: 18px;
     font-weight: 400;
     cursor: pointer;
-    width: 27px;
+    width: 20px;
     text-align: center;
     transition: opacity 0.2s ease;
-
-    @include tablet {
-      font-size: 18px;
-      width: 20px;
-    }
 
     &:hover:not(:disabled) {
       opacity: 0.6;
@@ -254,53 +231,35 @@
   left: 50%;
   top: 3px;
   transform: translateX(-50%);
-  width: 47px;
-  height: 47px;
+  width: 32px;
+  height: 34px;
   background: white;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
   border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: black;
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 500;
-
-  @include tablet {
-    width: 32px;
-    height: 34px;
-    font-size: 16px;
-    top: 3px;
-  }
 }
 
 .columnPrice {
-  width: 180px;
+  width: 150px;
   text-align: right;
-
-  @include tablet {
-    width: 100px;
-  }
 }
 
 .modifyButton {
-  width: 254px;
-  height: 84px;
+  width: 150px;
+  height: 55px;
+  font-size: 22px;
+  border-radius: 22px;
   background: #6600FF;
-  border-radius: 30px;
   border: none;
   color: white;
-  font-size: 35px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
-
-  @include tablet {
-    width: 150px;
-    height: 55px;
-    font-size: 22px;
-    border-radius: 22px;
-  }
 
   &:hover:not(:disabled) {
     background: #5500DD;
@@ -327,28 +286,16 @@
 .totalInfo {
   display: flex;
   align-items: baseline;
-  gap: 20px;
+  gap: 10px;
   color: white;
-
-  @include tablet {
-    gap: 10px;
-  }
 }
 
 .totalCount {
-  font-size: 45px;
+  font-size: 26px;
   font-weight: 400;
-
-  @include tablet {
-    font-size: 26px;
-  }
 }
 
 .totalAmount {
-  font-size: 60px;
+  font-size: 32px;
   font-weight: 600;
-
-  @include tablet {
-    font-size: 32px;
-  }
 }

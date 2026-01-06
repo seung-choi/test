@@ -3,6 +3,7 @@ import styles from '@/styles/components/admin/common/Table.module.scss';
 import { getTagClass } from '@/constants/admin/tags/menuTags';
 import {formatDate, formatPrice} from "@/utils/common/formatDataUtils";
 import { MENU_STATUS_OPTIONS, MENU_STATUS_STYLES, MenuStatus } from '@/constants/admin/menuStatus';
+import CustomSelect from '@/components/common/CustomSelect';
 
 export interface TableRowData {
   id: string;
@@ -76,17 +77,12 @@ export const renderTags = (value: string[], row: TableRowData) => {
 export const renderStatusSelector = (
   onStatusChange?: (itemId: string, status: MenuStatus) => void
 ) => (value: MenuStatus, row: TableRowData) => (
-  <select
-    className={`${styles.statusSelector} ${styles[MENU_STATUS_STYLES[value]]}`}
+  <CustomSelect
     value={value}
-    onChange={(e) => onStatusChange?.(String(row.id), e.target.value as MenuStatus)}
-  >
-    {MENU_STATUS_OPTIONS.map((status) => (
-      <option key={status} value={status}>
-        {status}
-      </option>
-    ))}
-  </select>
+    onChange={(newValue) => onStatusChange?.(String(row.id), newValue as MenuStatus)}
+    options={MENU_STATUS_OPTIONS.map((status) => ({ value: status, label: status }))}
+    className={`${styles.statusSelector} ${styles[MENU_STATUS_STYLES[value]]}`}
+  />
 );
 
 export const renderChannelTags = (value: string[], row: TableRowData) => (

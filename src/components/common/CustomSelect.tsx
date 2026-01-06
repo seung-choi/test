@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import styles from '@/styles/components/admin/common/CustomSelect.module.scss';
+import styles from '@/styles/components/common/CustomSelect.module.scss';
 
 interface CustomSelectProps {
   value: string;
