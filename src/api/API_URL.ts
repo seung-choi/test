@@ -10,5 +10,5 @@ export const getOriginURL = (subdomain: string, path = "/fnb/v1/"): string | und
       ? origin.replace("m", subdomain === "gps" ? "gps" : "api")
       : origin.replace(":7010", subdomain === "gps" ? ":7120" : ":7110")) + path
   );
-  // return subdomain === "gps" ? `https://gps.vgolf.kr${path}` : `https://api.vgolf.kr${path}`;
+  return subdomain === "gps" ? `https://gps.vgolf.kr${path}` : `https://api.vgolf.kr${path}`;
 };

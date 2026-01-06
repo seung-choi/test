@@ -1,6 +1,6 @@
 export interface HoleData {
   id: string;
-  holeNumber: string;
+  holeNo: number;
   distance?: number;
   par?: number;
 }

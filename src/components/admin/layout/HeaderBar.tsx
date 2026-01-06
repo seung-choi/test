@@ -3,9 +3,9 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { CourseData, InfoCardData } from '@/types';
 import { mockInfoCards } from '@/mock/admin/infocardMockData';
-import { golferPositions } from '@/mock/admin/golferMockData';
 import styles from '@/styles/components/admin/layout/HeaderBar.module.scss';
 import { useHorizontalScroll } from '@/hooks/common/useScrollManagement';
+import { useGolferPositions } from '@/hooks/api/useBookingList';
 
 interface HeaderBarProps {
   courseData: CourseData;
@@ -20,6 +20,11 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
   const lakeScheduleRef = useRef<HTMLDivElement>(null);
   const hillScheduleRef = useRef<HTMLDivElement>(null);
   const { handleScroll } = useHorizontalScroll();
+
+  // API에서 골퍼 위치 정보 가져오기 (5초마다 자동 갱신)
+  const { golferPositions, isLoading, error } = useGolferPositions({
+    refetchInterval: 5000,
+  });
 
   const toggleExpanded = useCallback(() => {
     if (isAnimating) return;
@@ -51,7 +56,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
   const renderGolferCard = (golfer: any) => {
     return (
       <div
-        key={golfer.id}
+        key={golfer.bookingId}
         className={styles.golferPosition}
         style={{
           left: golfer.position.left,
@@ -59,7 +64,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
       >
         <div className={styles.golferCard}>
           <div className={styles.golferName}>
-            {golfer.name}
+            {golfer.bookingNm}
           </div>
           <div className={styles.golferStatusContainer}>
             {golfer.isGroup ? (
@@ -72,16 +77,18 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
             )}
           </div>
           <div className={styles.golferTime}>
-            {golfer.time}
+            {golfer.bookingTm}
           </div>
         </div>
       </div>
     );
   };
 
-  const getGolfersForHole = (holeNumber: string, courseType: 'lake' | 'hill') => {
+  const getGolfersForHole = (holeNumber: number, courseType: 'lake' | 'hill') => {
+    if (!golferPositions || golferPositions.length === 0) return [];
+
     return golferPositions.filter(golfer =>
-      golfer.hole === holeNumber &&
+      golfer.holeNo === holeNumber &&
       golfer.course.toUpperCase() === courseType.toUpperCase()
     );
   };
@@ -144,8 +151,8 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
               {courseData.lakeCourse.map((hole, index) => (
                 <React.Fragment key={hole.id}>
                   <div className={styles.holeTag} style={{ position: 'relative' }}>
-                    <span className={styles.holeText}>{hole.holeNumber}</span>
-                    {getGolfersForHole(hole.holeNumber, 'lake').map(renderGolferCard)}
+                    <span className={styles.holeText}>{hole.holeNo}H</span>
+                    {getGolfersForHole(hole.holeNo, 'lake').map(renderGolferCard)}
                   </div>
                   {index < courseData.lakeCourse.length - 1 && (
                     <div className={styles.holeDot}></div>
@@ -162,7 +169,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
 
             <div className={styles.startHouse}>
               <h2 className={styles.startHouseTitle}>스타트 하우스</h2>
-              <img src="/assets/image/global/arrow/arrow.svg" alt="arrow" />
+              {/*<img src="/assets/image/global/arrow/arrow.svg" alt="arrow" />*/}
             </div>
 
             <div className={`${styles.courseButton} ${styles.active} ${styles.hillButton}`}>
@@ -175,8 +182,8 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
               {courseData.hillCourse.map((hole, index) => (
                 <React.Fragment key={hole.id}>
                   <div className={styles.holeTag} style={{ position:'relative' }}>
-                    <span className={styles.holeText}>{hole.holeNumber}</span>
-                    {getGolfersForHole(hole.holeNumber, 'hill').map(renderGolferCard)}
+                    <span className={styles.holeText}>{hole.holeNo}H</span>
+                    {getGolfersForHole(hole.holeNo, 'hill').map(renderGolferCard)}
                   </div>
                   {index < courseData.hillCourse.length - 1 && (
                     <div className={styles.holeDot}></div>
