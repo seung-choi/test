@@ -12,7 +12,7 @@ import { getOrderCounts } from '@/utils';
 const Lounge = () => {
   const [activeFilter, setActiveFilter] = useState<string>('all');
   const [selectedCardIndex, setSelectedCardIndex] = useState<number>(0);
-  const [selectedCourse, setSelectedCourse] = useState<'lake' | 'hill'>('lake');
+  const [selectedCourse, setSelectedCourse] = useState<string>('');
   const [isHeaderExpanded, setIsHeaderExpanded] = useState(true);
 
   const { openCancelOrderModal, openSendMessageModal } = useUnifiedModal();
@@ -37,7 +37,7 @@ const Lounge = () => {
     setIsHeaderExpanded(expanded);
   };
 
-  const handleCourseChange = (courseType: 'lake' | 'hill') => {
+  const handleCourseChange = (courseType: string) => {
     setSelectedCourse(courseType);
   };
 

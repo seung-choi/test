@@ -13,6 +13,7 @@ export interface GolferPositionData {
     left: string;
   };
   isGroup: boolean;
+  bookingsCol: string | null;
 }
 
 const calculatePosition = (booking: GpsBookingType): string => {
@@ -52,7 +53,8 @@ const transformBookingToGolferPosition = (booking: GpsBookingType): GolferPositi
     position: {
       left: calculatePosition(booking),
     },
-    isGroup: booking.bookingsSt === 'Y',
+    isGroup: booking.bookingsSt === 'Y' && !!booking.bookingsNo,
+    bookingsCol: booking.bookingsCol,
   };
 };
 

@@ -4,10 +4,10 @@ import React, { useState, useCallback, useRef } from 'react';
 import styles from '@/styles/components/admin/layout/HeaderBar.module.scss';
 import { useHorizontalScroll } from '@/hooks/common/useScrollManagement';
 import { useGolferPositions, type GolferPositionData } from '@/hooks/api/useBookingList';
-import { useClubInfo } from '@/hooks/api/useClubInfo';
+import { useClubInfo, type CourseWithHoles } from '@/hooks/api/useClubInfo';
 
 interface HeaderBarProps {
-  onCourseChange?: (courseType: 'lake' | 'hill') => void;
+  onCourseChange?: (courseType: string) => void;
   onExpandedChange?: (isExpanded: boolean) => void;
 }
 
@@ -38,12 +38,20 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onCourseChange, onExpandedChange 
     }, 300);
   }, [isAnimating, isExpanded, onExpandedChange]);
 
-  const lakeScheduleData = golferPositions.filter(
-    (golfer) => golfer.outCourse.toUpperCase() === 'LAKE'
-  );
-  const hillScheduleData = golferPositions.filter(
-    (golfer) => golfer.outCourse.toUpperCase() === 'HILL'
-  );
+  const firstCourse = courses[0];
+  const secondCourse = courses[1];
+
+  const firstCourseScheduleData = firstCourse
+    ? golferPositions.filter(
+        (golfer) => golfer.outCourse.toUpperCase() === firstCourse.courseNm.toUpperCase()
+      )
+    : [];
+
+  const secondCourseScheduleData = secondCourse
+    ? golferPositions.filter(
+        (golfer) => golfer.outCourse.toUpperCase() === secondCourse.courseNm.toUpperCase()
+      )
+    : [];
 
   const renderStatusIndicator = (isGroup: boolean) => {
     if (isGroup) {
@@ -52,8 +60,14 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onCourseChange, onExpandedChange 
     return <div className={styles.statusIcon} />;
   };
 
+  const getCourseColor = (courseName: string): string => {
+    const course = courses.find(c => c.courseNm.toUpperCase() === courseName.toUpperCase());
+    return course?.courseCol || '#9081D8';
+  };
+
   const renderGolferCard = (golfer: GolferPositionData) => {
-    const courseClass = golfer.outCourse.toLowerCase();
+    const courseColor = getCourseColor(golfer.outCourse);
+    const borderColor = golfer.bookingsCol || courseColor;
 
     return (
       <div
@@ -63,18 +77,35 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onCourseChange, onExpandedChange 
           left: golfer.position.left,
         }}
       >
-        <div className={`${styles.golferCard} ${styles[`golferCard${golfer.outCourse}`]}`}>
+        <div
+          className={styles.golferCard}
+          style={{
+            border: golfer.isGroup ? `2px solid ${borderColor}` : 'none',
+          }}
+        >
           <div className={styles.golferName}>
             {golfer.bookingNm}
           </div>
           <div className={styles.golferStatusContainer}>
             {golfer.isGroup ? (
-              <div className={`${styles.golferStatusAlert} ${styles[`golferStatusAlert${golfer.outCourse}`]}`}>
-                <div className={styles.golferStatusBackground} />
-                <div className={styles.golferStatusIcon} />
+              <div className={styles.golferStatusAlert}>
+                <div
+                  className={styles.golferStatusBackground}
+                  style={{
+                    backgroundColor: `${courseColor}80`,
+                    outlineColor: courseColor,
+                  }}
+                />
+                <div
+                  className={styles.golferStatusIcon}
+                  style={{ backgroundColor: courseColor }}
+                />
               </div>
             ) : (
-              <div className={`${styles.golferStatusNormal} ${styles[`golferStatusNormal${golfer.outCourse}`]}`} />
+              <div
+                className={styles.golferStatusNormal}
+                style={{ backgroundColor: courseColor }}
+              />
             )}
           </div>
           <div className={styles.golferTime}>
@@ -85,19 +116,12 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onCourseChange, onExpandedChange 
     );
   };
 
-  const lakeCourse = courses.find((course) =>
-    course.courseNm.toUpperCase().includes('LAKE')
-  );
-  const hillCourse = courses.find((course) =>
-    course.courseNm.toUpperCase().includes('HILL')
-  );
-
-  const getGolfersForHole = (holeNumber: number, courseType: string) => {
+  const getGolfersForHole = (holeNumber: number, courseNm: string) => {
     if (!golferPositions || golferPositions.length === 0) return [];
 
     return golferPositions.filter(golfer =>
       golfer.holeNo === holeNumber &&
-      golfer.course.toUpperCase() === courseType.toUpperCase()
+      golfer.course.toUpperCase() === courseNm.toUpperCase()
     );
   };
 
@@ -156,16 +180,18 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onCourseChange, onExpandedChange 
         <div className={styles.headerContent}>
           <div className={styles.courseSection}>
             <div className={styles.courseSectionWrapper}>
-              {lakeCourse?.holes.map((hole, index) => (
-                <React.Fragment key={hole.holeId}>
-                  <div className={styles.holeTag} style={{ position: 'relative' }}>
-                    <span className={styles.holeText}>{hole.holeNo}H</span>
-                    {getGolfersForHole(hole.holeNo, lakeCourse.courseNm).map(renderGolferCard)}
-                  </div>
-                  {lakeCourse.holes && index < lakeCourse.holes.length - 1 && (
-                    <div className={styles.holeDot}></div>
-                  )}
-                </React.Fragment>
+              {firstCourse?.holes.map((hole) => (
+                <div
+                  key={hole.holeId}
+                  className={styles.holeTag}
+                  style={{
+                    position: 'relative',
+                    width: `${hole.holeWth}px`,
+                  }}
+                >
+                  <span className={styles.holeText}>{hole.holeNo}H</span>
+                  {getGolfersForHole(hole.holeNo, firstCourse.courseNm).map(renderGolferCard)}
+                </div>
               ))}
             </div>
           </div>
@@ -174,45 +200,46 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onCourseChange, onExpandedChange 
             <div
               className={styles.courseButton}
               style={{
-                backgroundColor: lakeCourse?.courseCol
-                  ? `${lakeCourse.courseCol}33`
+                backgroundColor: firstCourse?.courseCol
+                  ? `${firstCourse.courseCol}33`
                   : 'rgba(212, 43, 43, 0.20)',
-                borderColor: lakeCourse?.courseCol || '#D42B2B',
+                borderColor: firstCourse?.courseCol || '#D42B2B',
               }}
             >
-              {lakeCourse?.courseNm || 'LAKE'}
+              {firstCourse?.courseNm || 'Course 1'}
             </div>
 
             <div className={styles.startHouse}>
-              <h2 className={styles.startHouseTitle}>스타트 하우스</h2>
-              {/*<img src="/assets/image/global/arrow/arrow.svg" alt="arrow" />*/}
+              <h2 className={styles.startHouseTitle}>홈</h2>
             </div>
 
             <div
               className={styles.courseButton}
               style={{
-                backgroundColor: hillCourse?.courseCol
-                  ? `${hillCourse.courseCol}33`
+                backgroundColor: secondCourse?.courseCol
+                  ? `${secondCourse.courseCol}33`
                   : 'rgba(255, 213, 0, 0.20)',
-                borderColor: hillCourse?.courseCol || '#FFD500',
+                borderColor: secondCourse?.courseCol || '#FFD500',
               }}
             >
-              {hillCourse?.courseNm || 'HILL'}
+              {secondCourse?.courseNm || 'Course 2'}
             </div>
           </div>
 
           <div className={styles.courseSection}>
             <div className={styles.courseSectionWrapper}>
-              {hillCourse?.holes.map((hole, index) => (
-                <React.Fragment key={hole.holeId}>
-                  <div className={styles.holeTag} style={{ position:'relative' }}>
-                    <span className={styles.holeText}>{hole.holeNo}H</span>
-                    {getGolfersForHole(hole.holeNo, hillCourse.courseNm).map(renderGolferCard)}
-                  </div>
-                  {hillCourse.holes && index < hillCourse.holes.length - 1 && (
-                    <div className={styles.holeDot}></div>
-                  )}
-                </React.Fragment>
+              {secondCourse?.holes.map((hole) => (
+                <div
+                  key={hole.holeId}
+                  className={styles.holeTag}
+                  style={{
+                    position: 'relative',
+                    width: `${hole.holeWth}px`,
+                  }}
+                >
+                  <span className={styles.holeText}>{hole.holeNo}H</span>
+                  {getGolfersForHole(hole.holeNo, secondCourse.courseNm).map(renderGolferCard)}
+                </div>
               ))}
             </div>
           </div>
@@ -221,8 +248,8 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onCourseChange, onExpandedChange 
         <div className={styles.scheduleSection}>
           <div className={styles.scheduleRow}>
             <div className={styles.scheduleItems} ref={lakeScheduleRef}>
-              {lakeScheduleData.length > 0 ? (
-                  lakeScheduleData.map((schedule) => (
+              {firstCourseScheduleData.length > 0 ? (
+                  firstCourseScheduleData.map((schedule) => (
                     <div key={schedule.bookingId} className={styles.scheduleItem}>
                       <div className={styles.statusIndicator}>
                         {renderStatusIndicator(schedule.isGroup)}
@@ -241,7 +268,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onCourseChange, onExpandedChange 
                   </div>
               )}
             </div>
-            {lakeScheduleData.length > 0 &&(
+            {firstCourseScheduleData.length > 0 &&(
                 <img
                 src="/assets/image/global/arrow/arrow-sm.svg"
                 alt="arrow"
@@ -255,8 +282,8 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onCourseChange, onExpandedChange 
 
           <div className={styles.scheduleRow}>
             <div className={styles.scheduleItems} ref={hillScheduleRef}>
-              {hillScheduleData.length > 0 ? (
-                  hillScheduleData.map((schedule) => (
+              {secondCourseScheduleData.length > 0 ? (
+                  secondCourseScheduleData.map((schedule) => (
                       <div key={schedule.bookingId} className={styles.scheduleItem}>
                         <div className={styles.statusIndicator}>
                           {renderStatusIndicator(schedule.isGroup)}
@@ -275,7 +302,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onCourseChange, onExpandedChange 
                   </div>
               )}
             </div>
-            {hillScheduleData.length > 0 && (
+            {secondCourseScheduleData.length > 0 && (
                 <img
                     src="/assets/image/global/arrow/arrow-sm.svg"
                     alt="arrow"

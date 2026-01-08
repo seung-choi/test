@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getClubInfo } from '@/api/monitoring';
 import { ApiCourseType, ApiHoleType } from '@/types/club.type';
 
-interface CourseWithHoles {
+export interface CourseWithHoles {
   courseId: number;
   courseNm: string;
   courseCol: string | null;
