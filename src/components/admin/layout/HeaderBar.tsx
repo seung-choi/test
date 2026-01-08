@@ -4,14 +4,13 @@ import React, { useState, useCallback, useRef } from 'react';
 import styles from '@/styles/components/admin/layout/HeaderBar.module.scss';
 import { useHorizontalScroll } from '@/hooks/common/useScrollManagement';
 import { useGolferPositions, type GolferPositionData } from '@/hooks/api/useBookingList';
-import { useClubInfo, type CourseWithHoles } from '@/hooks/api/useClubInfo';
+import { useClubInfo } from '@/hooks/api/useClubInfo';
 
 interface HeaderBarProps {
-  onCourseChange?: (courseType: string) => void;
   onExpandedChange?: (isExpanded: boolean) => void;
 }
 
-const HeaderBar: React.FC<HeaderBarProps> = ({ onCourseChange, onExpandedChange }) => {
+const HeaderBar: React.FC<HeaderBarProps> = ({ onExpandedChange }) => {
   const [isExpanded, setIsExpanded] = useState(true);
   const [isAnimating, setIsAnimating] = useState(false);
 
@@ -40,6 +39,13 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onCourseChange, onExpandedChange 
 
   const firstCourse = courses[0];
   const secondCourse = courses[1];
+
+  const calculateHoleWidthPercentage = (holeWth: number, totalWth: number): number => {
+    return (holeWth / totalWth) * 100;
+  };
+
+  const firstCourseTotalWth = firstCourse?.holes.reduce((sum, hole) => sum + hole.holeWth, 0) || 1;
+  const secondCourseTotalWth = secondCourse?.holes.reduce((sum, hole) => sum + hole.holeWth, 0) || 1;
 
   const firstCourseScheduleData = firstCourse
     ? golferPositions.filter(
@@ -80,7 +86,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onCourseChange, onExpandedChange 
         <div
           className={styles.golferCard}
           style={{
-            border: golfer.isGroup ? `2px solid ${borderColor}` : 'none',
+            border: golfer.isGroup ? `0.125rem solid ${borderColor}` : 'none',
           }}
         >
           <div className={styles.golferName}>
@@ -186,7 +192,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onCourseChange, onExpandedChange 
                   className={styles.holeTag}
                   style={{
                     position: 'relative',
-                    width: `${hole.holeWth}px`,
+                    width: `${calculateHoleWidthPercentage(hole.holeWth, firstCourseTotalWth)}%`,
                   }}
                 >
                   <span className={styles.holeText}>{hole.holeNo}H</span>
@@ -210,7 +216,9 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onCourseChange, onExpandedChange 
             </div>
 
             <div className={styles.startHouse}>
-              <h2 className={styles.startHouseTitle}>홈</h2>
+              <div className={styles.startHouseTitle}>
+                <img src='/assets/image/layout/header/home.svg' alt="start-house" />
+              </div>
             </div>
 
             <div
@@ -228,13 +236,13 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onCourseChange, onExpandedChange 
 
           <div className={styles.courseSection}>
             <div className={styles.courseSectionWrapper}>
-              {secondCourse?.holes.map((hole) => (
+              {secondCourse?.holes.slice().reverse().map((hole) => (
                 <div
                   key={hole.holeId}
                   className={styles.holeTag}
                   style={{
                     position: 'relative',
-                    width: `${hole.holeWth}px`,
+                    width: `${calculateHoleWidthPercentage(hole.holeWth, secondCourseTotalWth)}%`,
                   }}
                 >
                   <span className={styles.holeText}>{hole.holeNo}H</span>
@@ -247,6 +255,14 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onCourseChange, onExpandedChange 
 
         <div className={styles.scheduleSection}>
           <div className={styles.scheduleRow}>
+            {firstCourseScheduleData.length > 0 && (
+              <img
+                src="/assets/image/global/arrow/arrow-sm.svg"
+                alt="arrow-left"
+                onClick={() => handleScroll(lakeScheduleRef, 'left')}
+                style={{cursor: 'pointer', transform: 'rotate(180deg)'}}
+              />
+            )}
             <div className={styles.scheduleItems} ref={lakeScheduleRef}>
               {firstCourseScheduleData.length > 0 ? (
                   firstCourseScheduleData.map((schedule) => (
@@ -271,7 +287,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onCourseChange, onExpandedChange 
             {firstCourseScheduleData.length > 0 &&(
                 <img
                 src="/assets/image/global/arrow/arrow-sm.svg"
-                alt="arrow"
+                alt="arrow-right"
                 onClick={() => handleScroll(lakeScheduleRef, 'right')}
                 style={{cursor: 'pointer'}}
               />
@@ -281,6 +297,14 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onCourseChange, onExpandedChange 
           <div className={styles.spacer} />
 
           <div className={styles.scheduleRow}>
+            {secondCourseScheduleData.length > 0 && (
+              <img
+                src="/assets/image/global/arrow/arrow-sm.svg"
+                alt="arrow-left"
+                onClick={() => handleScroll(hillScheduleRef, 'left')}
+                style={{cursor: 'pointer', transform: 'rotate(180deg)'}}
+              />
+            )}
             <div className={styles.scheduleItems} ref={hillScheduleRef}>
               {secondCourseScheduleData.length > 0 ? (
                   secondCourseScheduleData.map((schedule) => (
@@ -305,7 +329,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onCourseChange, onExpandedChange 
             {secondCourseScheduleData.length > 0 && (
                 <img
                     src="/assets/image/global/arrow/arrow-sm.svg"
-                    alt="arrow"
+                    alt="arrow-right"
                     onClick={() => handleScroll(hillScheduleRef, 'right')}
                     style={{cursor: 'pointer'}}
                 />
