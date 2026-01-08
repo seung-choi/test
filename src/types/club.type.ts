@@ -1,21 +1,16 @@
-// ==================== Club API Response Types ====================
-
-// Club Type: 클럽 데이터
-
 export interface CourseMapListType {
-  mapMode: "PORTRAIT" | "LANDSCAPE" | "ORIENTATION"; // 모드
-  mapType: "DOM" | "GPS" | "IMG"; // 타입
-  mapCd: string; // 코드
-  mapX: string; // x값
-  mapY: string; // y값
-  mapZ: string | null; // z값
-  mapUrl: string | null; // 이미지 url
+  mapMode: 'PORTRAIT' | 'LANDSCAPE' | 'ORIENTATION';
+  mapType: 'DOM' | 'GPS' | 'IMG';
+  mapCd: string;
+  mapX: string;
+  mapY: string;
+  mapZ: string | null;
+  mapUrl: string | null;
 }
 
-// API 서버용 응답 타입들
 export interface ApiMapType {
-  mapMode: "PORTRAIT" | "LANDSCAPE"; // 세로 | 가로
-  mapType: "DOM" | "GPS" | "IMG"; // DOM 기준 좌표 | 카카오/구글 지도 | 디자인 이미지
+  mapMode: 'PORTRAIT' | 'LANDSCAPE';
+  mapType: 'DOM' | 'GPS' | 'IMG';
   mapCd: string;
   mapX: string | null;
   mapY: string | null;
@@ -29,9 +24,9 @@ export interface ApiHoleType {
   holePar: number | null;
   holeHdc: number | null;
   holeAlt: number | null;
-  holePer: "N" | "Y"; // 미사용 | 사용
-  holeWth: number; // 홀 너비
-  holeGap: number; // 홀간 거리
+  holePer: 'N' | 'Y';
+  holeWth: number;
+  holeGap: number;
   mapList: ApiMapType[];
 }
 
@@ -47,8 +42,8 @@ export interface ApiCourseType {
 
 export interface ApiClubType {
   clubId: string;
-  clubType: "FRONT" | "BACK" | "NONE"; // 현장 | 운영 | 없음
-  clubMode: "PORTRAIT" | "LANDSCAPE"; // 세로 | 가로
+  clubType: 'FRONT' | 'BACK' | 'NONE';
+  clubMode: 'PORTRAIT' | 'LANDSCAPE';
   clubNm: string;
   clubAddr: string;
   clubTel: string;
@@ -56,11 +51,11 @@ export interface ApiClubType {
   clubLon: number;
   clubLogo: string | null;
   clubImg: string | null;
-  clubDt: string; // "yyyy-MM-dd" 형식
+  clubDt: string;
   zoneCd: string;
   zoneNm: string;
   zoneId: string;
-  greenSpd: number; // BigDecimal (소수점 1자리)
+  greenSpd: number;
   frontDist: number;
   courseList: ApiCourseType[];
   courseMapList: CourseMapListType[];

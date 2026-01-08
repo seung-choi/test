@@ -113,7 +113,6 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
   };
 
   const handleCategorySettings = () => {
-    // TODO: 실제 분류 데이터를 가져와야 함
     const initialCategories: Category[] = [
       { id: '1', name: '분식', order: 0 },
       { id: '2', name: '주류', order: 1 },
@@ -123,20 +122,14 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
 
     openCategoryModal(
       initialCategories,
-      (categories) => {
-        console.log('분류 저장:', categories);
-        // 여기서 실제 분류 저장 API 호출
-      },
-      () => {
-        console.log('분류 설정 취소');
-      }
+      (categories) => {},
+      () => {}
     );
   };
 
   const handleErpUpdate = () => {
     openErpSearchModal(
       (erpProduct: ErpProduct) => {
-        // ERP에서 선택한 상품 정보로 폼 데이터 업데이트
         setFormData(prev => ({
           ...prev,
           category: erpProduct.category,
@@ -145,9 +138,7 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
           price: erpProduct.price.toLocaleString('ko-KR') + '원',
         }));
       },
-      () => {
-        console.log('ERP 검색 취소');
-      }
+      () => {}
     );
   };
 

@@ -55,9 +55,7 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
     }
   };
 
-  const handleSearch = () => {
-    console.log('검색:', drawer.menuSearchTerm);
-  };
+  const handleSearch = () => {};
 
   const handleItemSelect = (itemId: string, checked: boolean) => {
     if (checked) {
@@ -120,8 +118,6 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
     openEditProductModal(
         initialData,
         (data) => {
-          console.log('상품 수정:', data);
-          // TODO: 실제 상품 수정 API 호출
           setMenuData(prevData => {
             return prevData.map(item => {
               if (String(item.id) === itemId) {
@@ -143,14 +139,11 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
             });
           });
         },
-        () => {
-          console.log('상품 수정 취소');
-        }
+        () => {}
     );
   };
 
   const handleStatusChange = (itemId: string, status: MenuStatus) => {
-    console.log('상태 변경:', itemId, status);
     setMenuData(prevData => {
       return prevData.map(item => {
         if (String(item.id) === itemId) {
@@ -191,7 +184,7 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
       columns={columns}
       data={filteredData}
       variant="menu"
-      onSort={(key) => console.log('정렬:', key)}
+      onSort={() => {}}
       isReorderMode={drawer.isReorderMode}
     />
   );

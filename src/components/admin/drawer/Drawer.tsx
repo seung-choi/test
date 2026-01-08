@@ -77,7 +77,6 @@ const Drawer: React.FC<DrawerProps> = ({
   };
 
   const handleCategorySettings = () => {
-    // TODO: 실제 분류 데이터를 가져와야 함
     const initialCategories: Category[] = [
       { id: '1', name: '분식', order: 0 },
       { id: '2', name: '주류', order: 1 },
@@ -93,7 +92,6 @@ const Drawer: React.FC<DrawerProps> = ({
   };
 
   const handleCancelReasonManagement = () => {
-    // TODO: 실제 취소 사유 데이터를 가져와야 함
     const initialReasons: CancelReason[] = [
       { id: '1', content: '매진', order: 0 },
       { id: '2', content: '품절', order: 1 },

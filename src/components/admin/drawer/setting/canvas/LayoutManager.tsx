@@ -55,12 +55,9 @@ const LayoutManager: React.FC = () => {
         }))
     );
 
-    const handleEdit = useCallback(() => {
-        console.log('수정 모드 활성화');
-    }, []);
+    const handleEdit = useCallback(() => {}, []);
 
     const handleSave = useCallback(() => {
-        console.log('저장:', pages);
         alert('테이블 배치가 저장되었습니다.');
     }, [pages]);
 

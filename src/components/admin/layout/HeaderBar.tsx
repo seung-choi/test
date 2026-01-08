@@ -21,7 +21,6 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
   const hillScheduleRef = useRef<HTMLDivElement>(null);
   const { handleScroll } = useHorizontalScroll();
 
-  // API에서 골퍼 위치 정보 가져오기 (5초마다 자동 갱신)
   const { golferPositions, isLoading, error } = useGolferPositions({
     refetchInterval: 5000,
   });

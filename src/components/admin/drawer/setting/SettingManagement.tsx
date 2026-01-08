@@ -82,27 +82,21 @@ const SettingManagement = ({showActionBar = true}) => {
 
 
     const handleExportExcel = () => {
-        console.log('엑셀 내보내기:', filteredData);
-        try {
-            const orderRecords = filteredData.map(item => ({
-                id: item.id,
-                orderDate: item.orderDate,
-                tO: item.tO,
-                caddyName: item.caddyName,
-                groupName: item.groupName,
-                customerNames: item.customerNames.split(', '),
-                totalMenuCount: item.totalMenuCount,
-                orderDetails: item.orderDetails,
-                totalAmount: item.totalAmount,
-                status: item.status,
-                cancelReason: item.cancelReason || ''
-            }));
+        const orderRecords = filteredData.map(item => ({
+            id: item.id,
+            orderDate: item.orderDate,
+            tO: item.tO,
+            caddyName: item.caddyName,
+            groupName: item.groupName,
+            customerNames: item.customerNames.split(', '),
+            totalMenuCount: item.totalMenuCount,
+            orderDetails: item.orderDetails,
+            totalAmount: item.totalAmount,
+            status: item.status,
+            cancelReason: item.cancelReason || ''
+        }));
 
-            exportSalesToExcel(orderRecords, filter);
-        } catch (error) {
-            console.error('엑셀 export 에러:', error);
-            throw error;
-        }
+        exportSalesToExcel(orderRecords, filter);
     };
 
     if (drawer.settingActiveTab === 'layout') {
@@ -125,7 +119,7 @@ const SettingManagement = ({showActionBar = true}) => {
                     columns={columns}
                     data={filteredData}
                     variant="sales"
-                    onSort={(key) => console.log('정렬:', key)}
+                    onSort={() => {}}
                 />
             </div>
         </div>
