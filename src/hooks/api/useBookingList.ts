@@ -8,6 +8,7 @@ export interface GolferPositionData {
   bookingTm: string | null;
   holeNo: number | null;
   course: string;
+  outCourse: string;
   position: {
     left: string;
   };
@@ -36,16 +37,18 @@ const extractCourseType = (courseNm: string | null): string => {
 };
 
 const transformBookingToGolferPosition = (booking: GpsBookingType): GolferPositionData => {
+  const isInFrontNine = booking.status === 'OP' || booking.status === 'OW';
+  const currentCourse = isInFrontNine
+    ? booking.outCourseNm
+    : booking.inCourseNm || booking.outCourseNm || booking.courseNm;
+
   return {
     bookingId: booking.bookingId,
     bookingNm: booking.bookingNm,
     bookingTm: booking.bookingTm,
     holeNo: booking.holeNo,
-    course: extractCourseType(
-      booking.status === 'OP' || booking.status === 'OW'
-        ? booking.outCourseNm
-        : booking.inCourseNm || booking.courseNm
-    ),
+    course: extractCourseType(currentCourse),
+    outCourse: extractCourseType(booking.outCourseNm),
     position: {
       left: calculatePosition(booking),
     },

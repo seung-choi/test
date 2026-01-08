@@ -5,7 +5,6 @@ import SideTab from '@/components/admin/layout/SideTab';
 import HeaderBar from '@/components/admin/layout/HeaderBar';
 import InfoCard from '@/components/admin/contents/InfoCard';
 import { mockInfoCards, mockAvailableTables } from '@/mock/admin/infocardMockData';
-import { mockCourseData } from '@/mock/admin/courseMockData';
 import styles from '@/styles/pages/admin/lounge.module.scss';
 import useUnifiedModal from '@/hooks/admin/useUnifiedModal';
 import { getOrderCounts } from '@/utils';
@@ -40,24 +39,17 @@ const Lounge = () => {
 
   const handleCourseChange = (courseType: 'lake' | 'hill') => {
     setSelectedCourse(courseType);
-    console.log('선택된 코스:', courseType);
   };
 
   const handleAcceptOrder = () => {
-    console.log('주문 수락:', currentCard?.id);
   };
 
   const handleCancelOrder = () => {
     openCancelOrderModal(
       () => {
-        console.log('주문 취소 확인됨:', currentCard?.id);
-        // 실제 API 호출
-        // cancelOrderAPI(currentCard?.id);
         alert('주문이 취소되었습니다.');
       },
       () => {
-        // 취소 시 로직 (선택사항)
-        console.log('주문 취소 안함');
       }
     );
   };
@@ -74,32 +66,14 @@ const Lounge = () => {
     openSendMessageModal(
       availableRecipients,
       (formData) => {
-        console.log('메시지 전송:', {
-          orderId: currentCard?.id,
-          recipient: formData.recipient,
-          content: formData.content,
-          image: formData.image,
-          tableNumber: currentCard?.tableNumber
-        });
-
-        // 실제 API 호출
-        // sendMessageAPI({
-        //   orderId: currentCard?.id,
-        //   recipient: formData.recipient,
-        //   content: formData.content,
-        //   image: formData.image
-        // });
-
         alert(`메시지가 ${formData.recipient}에게 전송되었습니다.`);
       },
       () => {
-        console.log('메시지 전송 취소됨');
       }
     );
   };
 
   const handleCompleteOrder = () => {
-    console.log('정산 완료:', currentCard?.id);
   };
 
   if (!currentCard) {
@@ -127,7 +101,6 @@ const Lounge = () => {
 
       <div className={styles.mainContent}>
         <HeaderBar
-          courseData={mockCourseData}
           onCourseChange={handleCourseChange}
           onExpandedChange={handleHeaderExpandedChange}
         />

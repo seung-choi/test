@@ -1,25 +1,25 @@
 'use client';
 
 import React, { useState, useCallback, useRef } from 'react';
-import { CourseData, InfoCardData } from '@/types';
-import { mockInfoCards } from '@/mock/admin/infocardMockData';
 import styles from '@/styles/components/admin/layout/HeaderBar.module.scss';
 import { useHorizontalScroll } from '@/hooks/common/useScrollManagement';
 import { useGolferPositions, type GolferPositionData } from '@/hooks/api/useBookingList';
+import { useClubInfo } from '@/hooks/api/useClubInfo';
 
 interface HeaderBarProps {
-  courseData: CourseData;
   onCourseChange?: (courseType: 'lake' | 'hill') => void;
   onExpandedChange?: (isExpanded: boolean) => void;
 }
 
-const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExpandedChange }) => {
+const HeaderBar: React.FC<HeaderBarProps> = ({ onCourseChange, onExpandedChange }) => {
   const [isExpanded, setIsExpanded] = useState(true);
   const [isAnimating, setIsAnimating] = useState(false);
 
   const lakeScheduleRef = useRef<HTMLDivElement>(null);
   const hillScheduleRef = useRef<HTMLDivElement>(null);
   const { handleScroll } = useHorizontalScroll();
+
+  const { courses, isLoading: isClubLoading } = useClubInfo();
 
   const { golferPositions, isLoading, error } = useGolferPositions({
     refetchInterval: 5000,
@@ -38,21 +38,23 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
     }, 300);
   }, [isAnimating, isExpanded, onExpandedChange]);
 
-  const lakeScheduleData = mockInfoCards.filter(
-    (card) => card.orderLocation.toUpperCase().includes('LAKE')
+  const lakeScheduleData = golferPositions.filter(
+    (golfer) => golfer.outCourse.toUpperCase() === 'LAKE'
   );
-  const hillScheduleData = mockInfoCards.filter(
-    (card) => card.orderLocation.toUpperCase().includes('HILL')
+  const hillScheduleData = golferPositions.filter(
+    (golfer) => golfer.outCourse.toUpperCase() === 'HILL'
   );
 
-  const renderStatusIndicator = (status: InfoCardData['status']) => {
-    if (status === 'order') {
+  const renderStatusIndicator = (isGroup: boolean) => {
+    if (isGroup) {
       return <div className={styles.statusIconLarge} />;
     }
     return <div className={styles.statusIcon} />;
   };
 
   const renderGolferCard = (golfer: GolferPositionData) => {
+    const courseClass = golfer.outCourse.toLowerCase();
+
     return (
       <div
         key={golfer.bookingId}
@@ -61,18 +63,18 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
           left: golfer.position.left,
         }}
       >
-        <div className={styles.golferCard}>
+        <div className={`${styles.golferCard} ${styles[`golferCard${golfer.outCourse}`]}`}>
           <div className={styles.golferName}>
             {golfer.bookingNm}
           </div>
           <div className={styles.golferStatusContainer}>
             {golfer.isGroup ? (
-              <div className={styles.golferStatusAlert}>
+              <div className={`${styles.golferStatusAlert} ${styles[`golferStatusAlert${golfer.outCourse}`]}`}>
                 <div className={styles.golferStatusBackground} />
                 <div className={styles.golferStatusIcon} />
               </div>
             ) : (
-              <div className={styles.golferStatusNormal} />
+              <div className={`${styles.golferStatusNormal} ${styles[`golferStatusNormal${golfer.outCourse}`]}`} />
             )}
           </div>
           <div className={styles.golferTime}>
@@ -83,7 +85,14 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
     );
   };
 
-  const getGolfersForHole = (holeNumber: number, courseType: 'lake' | 'hill') => {
+  const lakeCourse = courses.find((course) =>
+    course.courseNm.toUpperCase().includes('LAKE')
+  );
+  const hillCourse = courses.find((course) =>
+    course.courseNm.toUpperCase().includes('HILL')
+  );
+
+  const getGolfersForHole = (holeNumber: number, courseType: string) => {
     if (!golferPositions || golferPositions.length === 0) return [];
 
     return golferPositions.filter(golfer =>
@@ -147,13 +156,13 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
         <div className={styles.headerContent}>
           <div className={styles.courseSection}>
             <div className={styles.courseSectionWrapper}>
-              {courseData.lakeCourse.map((hole, index) => (
-                <React.Fragment key={hole.id}>
+              {lakeCourse?.holes.map((hole, index) => (
+                <React.Fragment key={hole.holeId}>
                   <div className={styles.holeTag} style={{ position: 'relative' }}>
                     <span className={styles.holeText}>{hole.holeNo}H</span>
-                    {getGolfersForHole(hole.holeNo, 'lake').map(renderGolferCard)}
+                    {getGolfersForHole(hole.holeNo, lakeCourse.courseNm).map(renderGolferCard)}
                   </div>
-                  {index < courseData.lakeCourse.length - 1 && (
+                  {lakeCourse.holes && index < lakeCourse.holes.length - 1 && (
                     <div className={styles.holeDot}></div>
                   )}
                 </React.Fragment>
@@ -162,8 +171,16 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
           </div>
 
           <div className={styles.centerSection}>
-            <div className={`${styles.courseButton} ${styles.active} ${styles.lakeButton}`}>
-              LAKE
+            <div
+              className={styles.courseButton}
+              style={{
+                backgroundColor: lakeCourse?.courseCol
+                  ? `${lakeCourse.courseCol}33`
+                  : 'rgba(212, 43, 43, 0.20)',
+                borderColor: lakeCourse?.courseCol || '#D42B2B',
+              }}
+            >
+              {lakeCourse?.courseNm || 'LAKE'}
             </div>
 
             <div className={styles.startHouse}>
@@ -171,20 +188,28 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
               {/*<img src="/assets/image/global/arrow/arrow.svg" alt="arrow" />*/}
             </div>
 
-            <div className={`${styles.courseButton} ${styles.active} ${styles.hillButton}`}>
-              HILL
+            <div
+              className={styles.courseButton}
+              style={{
+                backgroundColor: hillCourse?.courseCol
+                  ? `${hillCourse.courseCol}33`
+                  : 'rgba(255, 213, 0, 0.20)',
+                borderColor: hillCourse?.courseCol || '#FFD500',
+              }}
+            >
+              {hillCourse?.courseNm || 'HILL'}
             </div>
           </div>
 
           <div className={styles.courseSection}>
             <div className={styles.courseSectionWrapper}>
-              {courseData.hillCourse.map((hole, index) => (
-                <React.Fragment key={hole.id}>
+              {hillCourse?.holes.map((hole, index) => (
+                <React.Fragment key={hole.holeId}>
                   <div className={styles.holeTag} style={{ position:'relative' }}>
                     <span className={styles.holeText}>{hole.holeNo}H</span>
-                    {getGolfersForHole(hole.holeNo, 'hill').map(renderGolferCard)}
+                    {getGolfersForHole(hole.holeNo, hillCourse.courseNm).map(renderGolferCard)}
                   </div>
-                  {index < courseData.hillCourse.length - 1 && (
+                  {hillCourse.holes && index < hillCourse.holes.length - 1 && (
                     <div className={styles.holeDot}></div>
                   )}
                 </React.Fragment>
@@ -196,52 +221,68 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
         <div className={styles.scheduleSection}>
           <div className={styles.scheduleRow}>
             <div className={styles.scheduleItems} ref={lakeScheduleRef}>
-              {lakeScheduleData.map((schedule) => (
-                <div key={schedule.id} className={styles.scheduleItem}>
-                  <div className={styles.statusIndicator}>
-                    {renderStatusIndicator(schedule.status)}
+              {lakeScheduleData.length > 0 ? (
+                  lakeScheduleData.map((schedule) => (
+                    <div key={schedule.bookingId} className={styles.scheduleItem}>
+                      <div className={styles.statusIndicator}>
+                        {renderStatusIndicator(schedule.isGroup)}
+                      </div>
+                      <div className={styles.userInfo}>
+                        <div className={styles.userName}>{schedule.bookingNm}</div>
+                      </div>
+                      <div className={styles.timeInfo}>
+                        <div className={styles.timeText}>{schedule.bookingTm}</div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className={styles.scheduleItem}>
+                    <div className={styles.userName}>대기 인원이 없습니다</div>
                   </div>
-                  <div className={styles.userInfo}>
-                    <div className={styles.userName}>{schedule.customerInfo.name}</div>
-                  </div>
-                  <div className={styles.timeInfo}>
-                    <div className={styles.timeText}>{schedule.customerInfo.time}</div>
-                  </div>
-                </div>
-              ))}
+              )}
             </div>
-            <img
-              src="/assets/image/global/arrow/arrow-sm.svg"
-              alt="arrow"
-              onClick={() => handleScroll(lakeScheduleRef, 'right')}
-              style={{ cursor: 'pointer' }}
-            />
+            {lakeScheduleData.length > 0 &&(
+                <img
+                src="/assets/image/global/arrow/arrow-sm.svg"
+                alt="arrow"
+                onClick={() => handleScroll(lakeScheduleRef, 'right')}
+                style={{cursor: 'pointer'}}
+              />
+            )}
           </div>
 
           <div className={styles.spacer} />
 
           <div className={styles.scheduleRow}>
             <div className={styles.scheduleItems} ref={hillScheduleRef}>
-              {hillScheduleData.map((schedule) => (
-                <div key={schedule.id} className={styles.scheduleItem}>
-                  <div className={styles.statusIndicator}>
-                    {renderStatusIndicator(schedule.status)}
+              {hillScheduleData.length > 0 ? (
+                  hillScheduleData.map((schedule) => (
+                      <div key={schedule.bookingId} className={styles.scheduleItem}>
+                        <div className={styles.statusIndicator}>
+                          {renderStatusIndicator(schedule.isGroup)}
+                        </div>
+                        <div className={styles.userInfo}>
+                          <div className={styles.userName}>{schedule.bookingNm}</div>
+                        </div>
+                        <div className={styles.timeInfo}>
+                          <div className={styles.timeText}>{schedule.bookingTm}</div>
+                        </div>
+                      </div>
+                  ))
+              ) : (
+                  <div className={styles.scheduleItem}>
+                    <div className={styles.userName}>대기 인원이 없습니다</div>
                   </div>
-                  <div className={styles.userInfo}>
-                    <div className={styles.userName}>{schedule.customerInfo.name}</div>
-                  </div>
-                  <div className={styles.timeInfo}>
-                    <div className={styles.timeText}>{schedule.customerInfo.time}</div>
-                  </div>
-                </div>
-              ))}
+              )}
             </div>
-            <img
-              src="/assets/image/global/arrow/arrow-sm.svg"
-              alt="arrow"
-              onClick={() => handleScroll(hillScheduleRef, 'right')}
-              style={{ cursor: 'pointer' }}
-            />
+            {hillScheduleData.length > 0 && (
+                <img
+                    src="/assets/image/global/arrow/arrow-sm.svg"
+                    alt="arrow"
+                    onClick={() => handleScroll(hillScheduleRef, 'right')}
+                    style={{cursor: 'pointer'}}
+                />
+            )}
           </div>
         </div>
 

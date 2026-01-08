@@ -314,8 +314,28 @@
   }
 }
 
+.golferStatusAlertLAKE {
+  .golferStatusIcon {
+    background: #d42b2b;
+  }
+}
+
+.golferStatusAlertHILL {
+
+  .golferStatusIcon {
+    background: #ffd500;
+  }
+}
+
+.golferStatusNormalLAKE {
+  background: #d42b2b;
+}
+
+.golferStatusNormalHILL {
+  background: #ffd500;
+}
+
 .golferTime {
-  background: rgba(243, 243, 243, 0.80);
   padding: 2px 8px;
   border-radius: 4px;
   text-align: center;
@@ -485,7 +505,6 @@
 
 .scheduleItem {
   padding: 5px 20px 5px 5px;
-  border-right: 0.5px solid black;
   justify-content: flex-start;
   align-items: center;
   gap: 5px;
