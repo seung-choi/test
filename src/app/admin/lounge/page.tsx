@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useCallback } from 'react';
 import SideTab from '@/components/admin/layout/SideTab';
 import HeaderBar from '@/components/admin/layout/HeaderBar';
 import InfoCard from '@/components/admin/contents/InfoCard';
@@ -8,14 +8,17 @@ import { mockInfoCards, mockAvailableTables } from '@/mock/admin/infocardMockDat
 import styles from '@/styles/pages/admin/lounge.module.scss';
 import useUnifiedModal from '@/hooks/admin/useUnifiedModal';
 import { getOrderCounts } from '@/utils';
+import { useHorizontalScroll } from '@/hooks/common/useScrollManagement';
 
 const Lounge = () => {
   const [activeFilter, setActiveFilter] = useState<string>('all');
   const [selectedCardIndex, setSelectedCardIndex] = useState<number>(0);
-  const [selectedCourse, setSelectedCourse] = useState<string>('');
   const [isHeaderExpanded, setIsHeaderExpanded] = useState(true);
+  const [isCardScrolled, setIsCardScrolled] = useState(false);
 
+  const cardContainerRef = useRef<HTMLDivElement>(null);
   const { openCancelOrderModal, openSendMessageModal } = useUnifiedModal();
+  const { handleScroll } = useHorizontalScroll();
 
   const filteredCards = useMemo(() => {
     if (activeFilter === 'all') {
@@ -37,9 +40,11 @@ const Lounge = () => {
     setIsHeaderExpanded(expanded);
   };
 
-  const handleCourseChange = (courseType: string) => {
-    setSelectedCourse(courseType);
-  };
+  const handleCardScroll = useCallback(() => {
+    if (cardContainerRef.current) {
+      setIsCardScrolled(cardContainerRef.current.scrollLeft > 0);
+    }
+  }, []);
 
   const handleAcceptOrder = () => {
   };
@@ -76,6 +81,14 @@ const Lounge = () => {
   const handleCompleteOrder = () => {
   };
 
+  const renderScrollButton = (direction: 'left' | 'right', isVisible: boolean) => (
+    <div className={`${styles.scrollButton} ${styles[direction]} ${isVisible ? styles.visible : styles.hidden}`}>
+      <button className={styles.scrollButtonBackground} onClick={() => handleScroll(cardContainerRef, direction)}>
+          <img src="/assets/image/global/arrow/scroll-arrow.svg" alt={`scroll-${direction}`} />
+      </button>
+    </div>
+  );
+
   if (!currentCard) {
     return (
       <div className={styles.loungeContainer}>
@@ -101,32 +114,39 @@ const Lounge = () => {
 
       <div className={styles.mainContent}>
         <HeaderBar
-          onCourseChange={handleCourseChange}
           onExpandedChange={handleHeaderExpandedChange}
         />
-        <div className={`${styles.infoCardContainer} ${isHeaderExpanded ? styles.headerExpanded : styles.headerCollapsed}`}>
-          {filteredCards.map((card, index) => (
-            <InfoCard
-              key={card.id || index}
-              tableNumber={card.tableNumber}
-              customerInfo={card.customerInfo}
-              orderItems={card.orderItems}
-              orderHistory={card.orderHistory}
-              specialRequest={card.specialRequest}
-              totalItems={card.totalItems}
-              orderTime={card.orderTime}
-              orderLocation={card.orderLocation}
-              tags={card.tags}
-              status={card.status}
-              cancelReason={card.cancelReason}
-              totalAmount={card.totalAmount}
-              onAcceptOrder={handleAcceptOrder}
-              onCancelOrder={handleCancelOrder}
-              onCompleteOrder={handleCompleteOrder}
-              onMessageOrder={handleMessageOrder}
-              availableTables={mockAvailableTables}
-            />
-          ))}
+        <div className={styles.scrollButtonWrapper}>
+          {filteredCards.length > 0 && renderScrollButton('left', isCardScrolled)}
+          <div
+            className={`${styles.infoCardContainer} ${isHeaderExpanded ? styles.headerExpanded : styles.headerCollapsed}`}
+            ref={cardContainerRef}
+            onScroll={handleCardScroll}
+          >
+            {filteredCards.map((card, index) => (
+              <InfoCard
+                key={card.id || index}
+                tableNumber={card.tableNumber}
+                customerInfo={card.customerInfo}
+                orderItems={card.orderItems}
+                orderHistory={card.orderHistory}
+                specialRequest={card.specialRequest}
+                totalItems={card.totalItems}
+                orderTime={card.orderTime}
+                orderLocation={card.orderLocation}
+                tags={card.tags}
+                status={card.status}
+                cancelReason={card.cancelReason}
+                totalAmount={card.totalAmount}
+                onAcceptOrder={handleAcceptOrder}
+                onCancelOrder={handleCancelOrder}
+                onCompleteOrder={handleCompleteOrder}
+                onMessageOrder={handleMessageOrder}
+                availableTables={mockAvailableTables}
+              />
+            ))}
+          </div>
+          {filteredCards.length > 0 && renderScrollButton('right', true)}
         </div>
       </div>
     </div>

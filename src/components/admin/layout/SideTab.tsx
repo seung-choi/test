@@ -37,71 +37,80 @@ const SideTab: React.FC<SideTabProps> = ({
 
   return (
     <div className={styles.sideTab}>
-      <div className={styles.loungeSection}>
-        <div className={styles.loungeHeader}>
-          <img src="/assets/image/layout/side-bar/lounge_logo.svg" alt="logo" />
-          <div className={styles.loungeTitle}>라운지</div>
-        </div>
+      <div className={styles.loungeHeader}>
+        <img src="/assets/image/layout/side-bar/lounge_logo.svg" alt="logo" />
+        <div className={styles.loungeTitle}>라운지</div>
+      </div>
 
+      <div className={styles.sideSelection}>
         <div className={styles.filtersContainer}>
           {filterItems.map((item) => (
-            <div
-              key={item.key}
-              className={`${styles.filterButton} ${
-                activeFilter === item.key ? styles.active : ''
-              }`}
-              onClick={() => handleFilterClick(item.key)}
-            >
-              <div className={styles.filterLabel}>{item.label}</div>
-              <div className={styles.filterCount}>({item.count})</div>
-            </div>
+              <div
+                  key={item.key}
+                  className={`${styles.filterButton} ${
+                      activeFilter === item.key ? styles.active : ''
+                  }`}
+                  onClick={() => handleFilterClick(item.key)}
+              >
+                <div className={styles.filterLabel}>
+                  {item.label}
+                  {hasNotification && (
+                      <div className={styles.notificationDot}></div>
+                  )}
+                </div>
+                <div className={styles.filterCount}>({item.count})</div>
+              </div>
           ))}
-          {hasNotification && (
-            <div className={styles.notificationDot}></div>
-          )}
         </div>
-      </div>
+        <div className={styles.menuSection}>
+          <div className={styles.menuItem} style={{ backgroundColor: '#9081D8'}}>
+            <div className={styles.menuIcon}>
+              <img src="/assets/image/layout/side-bar/order.svg" alt="logo" />
+            </div>
+            <div className={styles.menuLabel} style={{ color:"white" }}>오더</div>
+          </div>
 
-      <div className={styles.menuSection}>
-        <div className={styles.menuItem}>
-          <div className={styles.menuIcon}>
-            <img src="/assets/image/layout/side-bar/menu.svg" alt="logo" />
-          </div>
-          <div className={styles.menuLabel}>
-            <button onClick={() => setDrawer(prev => ({ ...prev, openDrawer: prev.openDrawer === 'menu' ? null : 'menu' }))}>
-              메뉴 관리
-            </button>
-          </div>
-        </div>
-
-        <div className={styles.menuItem}>
-          <div className={styles.menuIcon}>
-            <img src="/assets/image/layout/side-bar/setting.svg" alt="logo" />
-          </div>
-          <div className={styles.menuLabel}>
-            <button onClick={() => setDrawer(prev => ({ ...prev, openDrawer: prev.openDrawer === 'setting' ? null : 'setting' }))}>
-              설정
-            </button>
-          </div>
-        </div>
-
-        <div className={styles.menuItem}>
-          <div className={styles.menuIcon}>
-            <img src="/assets/image/layout/side-bar/notification.svg" alt="logo" />
-            <div className={styles.notificationBadge}>
-              <img src="/assets/image/layout/side-bar/repeat.svg" alt="logo" />
+          <div className={styles.menuItem}>
+            <div className={styles.menuIcon}>
+              <img src="/assets/image/layout/side-bar/menu.svg" alt="logo" />
+            </div>
+            <div className={styles.menuLabel}>
+              <button onClick={() => setDrawer(prev => ({ ...prev, openDrawer: prev.openDrawer === 'menu' ? null : 'menu' }))}>
+                메뉴 관리
+              </button>
             </div>
           </div>
-          <div className={styles.menuLabel}>알림음</div>
-        </div>
 
-        <div className={styles.menuItem}>
-          <div className={styles.menuIcon}>
-            <img src="/assets/image/layout/side-bar/view.svg" alt="logo" />
+          <div className={styles.menuItem}>
+            <div className={styles.menuIcon}>
+              <img src="/assets/image/layout/side-bar/setting.svg" alt="logo" />
+            </div>
+            <div className={styles.menuLabel}>
+              <button onClick={() => setDrawer(prev => ({ ...prev, openDrawer: prev.openDrawer === 'setting' ? null : 'setting' }))}>
+                설정
+              </button>
+            </div>
           </div>
-          <div className={styles.menuLabel}>보기설정</div>
+
+          <div className={styles.menuItem}>
+            <div className={styles.menuIcon}>
+              <img src="/assets/image/layout/side-bar/notification.svg" alt="logo" />
+              <div className={styles.notificationBadge}>
+                <img src="/assets/image/layout/side-bar/repeat.svg" alt="logo" />
+              </div>
+            </div>
+            <div className={styles.menuLabel}>알림음</div>
+          </div>
+
+          <div className={styles.menuItem}>
+            <div className={styles.menuIcon}>
+              <img src="/assets/image/layout/side-bar/view.svg" alt="logo" />
+            </div>
+            <div className={styles.menuLabel}>보기설정</div>
+          </div>
         </div>
       </div>
+
 
       <Drawer
         isOpen={drawer.openDrawer === 'menu'}

@@ -13,9 +13,11 @@ interface HeaderBarProps {
 const HeaderBar: React.FC<HeaderBarProps> = ({ onExpandedChange }) => {
   const [isExpanded, setIsExpanded] = useState(true);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [firstCourseScrolled, setFirstCourseScrolled] = useState(false);
+  const [secondCourseScrolled, setSecondCourseScrolled] = useState(false);
 
-  const lakeScheduleRef = useRef<HTMLDivElement>(null);
-  const hillScheduleRef = useRef<HTMLDivElement>(null);
+  const firstCourseScheduleRef = useRef<HTMLDivElement>(null);
+  const secondCourseScheduleRef = useRef<HTMLDivElement>(null);
   const { handleScroll } = useHorizontalScroll();
 
   const { courses, isLoading: isClubLoading } = useClubInfo();
@@ -36,6 +38,18 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onExpandedChange }) => {
       setIsAnimating(false);
     }, 300);
   }, [isAnimating, isExpanded, onExpandedChange]);
+
+  const handleFirstCourseScroll = useCallback(() => {
+    if (firstCourseScheduleRef.current) {
+      setFirstCourseScrolled(firstCourseScheduleRef.current.scrollLeft > 0);
+    }
+  }, []);
+
+  const handleSecondCourseScroll = useCallback(() => {
+    if (secondCourseScheduleRef.current) {
+      setSecondCourseScrolled(secondCourseScheduleRef.current.scrollLeft > 0);
+    }
+  }, []);
 
   const firstCourse = courses[0];
   const secondCourse = courses[1];
@@ -155,6 +169,63 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onExpandedChange }) => {
     return classes.join(' ');
   };
 
+  const renderScheduleRow = (
+    scheduleData: GolferPositionData[],
+    scrollRef: React.RefObject<HTMLDivElement>,
+    isScrolled: boolean,
+    onScroll: () => void
+  ) => (
+    <div className={styles.scheduleRow}>
+      {scheduleData.length > 0 && (
+        <img
+          src="/assets/image/global/arrow/arrow-sm.svg"
+          alt="arrow-left"
+          onClick={() => handleScroll(scrollRef, 'left')}
+          style={{
+            cursor: 'pointer',
+            transform: 'rotate(180deg)',
+            opacity: isScrolled ? 1 : 0,
+            pointerEvents: isScrolled ? 'auto' : 'none',
+            transition: 'opacity 0.3s ease',
+          }}
+        />
+      )}
+      <div
+        className={styles.scheduleItems}
+        ref={scrollRef}
+        onScroll={onScroll}
+      >
+        {scheduleData.length > 0 ? (
+          scheduleData.map((schedule) => (
+            <div key={schedule.bookingId} className={styles.scheduleItem}>
+              <div className={styles.statusIndicator}>
+                {renderStatusIndicator(schedule.isGroup)}
+              </div>
+              <div className={styles.userInfo}>
+                <div className={styles.userName}>{schedule.bookingNm}</div>
+              </div>
+              <div className={styles.timeInfo}>
+                <div className={styles.timeText}>{schedule.bookingTm}</div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className={styles.scheduleItem}>
+            <div className={styles.userName}>대기 인원이 없습니다</div>
+          </div>
+        )}
+      </div>
+      {scheduleData.length > 0 && (
+        <img
+          src="/assets/image/global/arrow/arrow-sm.svg"
+          alt="arrow-right"
+          onClick={() => handleScroll(scrollRef, 'right')}
+          style={{ cursor: 'pointer' }}
+        />
+      )}
+    </div>
+  );
+
   const ToggleIcon = ({ isExpanded }: { isExpanded: boolean }) => (
     <svg
       width="22"
@@ -262,87 +333,21 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onExpandedChange }) => {
         </div>
 
         <div className={styles.scheduleSection}>
-          <div className={styles.scheduleRow}>
-            {firstCourseScheduleData.length > 0 && (
-              <img
-                src="/assets/image/global/arrow/arrow-sm.svg"
-                alt="arrow-left"
-                onClick={() => handleScroll(lakeScheduleRef, 'left')}
-                style={{cursor: 'pointer', transform: 'rotate(180deg)'}}
-              />
-            )}
-            <div className={styles.scheduleItems} ref={lakeScheduleRef}>
-              {firstCourseScheduleData.length > 0 ? (
-                  firstCourseScheduleData.map((schedule) => (
-                    <div key={schedule.bookingId} className={styles.scheduleItem}>
-                      <div className={styles.statusIndicator}>
-                        {renderStatusIndicator(schedule.isGroup)}
-                      </div>
-                      <div className={styles.userInfo}>
-                        <div className={styles.userName}>{schedule.bookingNm}</div>
-                      </div>
-                      <div className={styles.timeInfo}>
-                        <div className={styles.timeText}>{schedule.bookingTm}</div>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <div className={styles.scheduleItem}>
-                    <div className={styles.userName}>대기 인원이 없습니다</div>
-                  </div>
-              )}
-            </div>
-            {firstCourseScheduleData.length > 0 &&(
-                <img
-                src="/assets/image/global/arrow/arrow-sm.svg"
-                alt="arrow-right"
-                onClick={() => handleScroll(lakeScheduleRef, 'right')}
-                style={{cursor: 'pointer'}}
-              />
-            )}
-          </div>
+          {renderScheduleRow(
+            firstCourseScheduleData,
+            firstCourseScheduleRef,
+            firstCourseScrolled,
+            handleFirstCourseScroll
+          )}
 
           <div className={styles.spacer} />
 
-          <div className={styles.scheduleRow}>
-            {secondCourseScheduleData.length > 0 && (
-              <img
-                src="/assets/image/global/arrow/arrow-sm.svg"
-                alt="arrow-left"
-                onClick={() => handleScroll(hillScheduleRef, 'left')}
-                style={{cursor: 'pointer', transform: 'rotate(180deg)'}}
-              />
-            )}
-            <div className={styles.scheduleItems} ref={hillScheduleRef}>
-              {secondCourseScheduleData.length > 0 ? (
-                  secondCourseScheduleData.map((schedule) => (
-                      <div key={schedule.bookingId} className={styles.scheduleItem}>
-                        <div className={styles.statusIndicator}>
-                          {renderStatusIndicator(schedule.isGroup)}
-                        </div>
-                        <div className={styles.userInfo}>
-                          <div className={styles.userName}>{schedule.bookingNm}</div>
-                        </div>
-                        <div className={styles.timeInfo}>
-                          <div className={styles.timeText}>{schedule.bookingTm}</div>
-                        </div>
-                      </div>
-                  ))
-              ) : (
-                  <div className={styles.scheduleItem}>
-                    <div className={styles.userName}>대기 인원이 없습니다</div>
-                  </div>
-              )}
-            </div>
-            {secondCourseScheduleData.length > 0 && (
-                <img
-                    src="/assets/image/global/arrow/arrow-sm.svg"
-                    alt="arrow-right"
-                    onClick={() => handleScroll(hillScheduleRef, 'right')}
-                    style={{cursor: 'pointer'}}
-                />
-            )}
-          </div>
+          {renderScheduleRow(
+            secondCourseScheduleData,
+            secondCourseScheduleRef,
+            secondCourseScrolled,
+            handleSecondCourseScroll
+          )}
         </div>
 
         <button

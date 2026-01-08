@@ -9,7 +9,7 @@
 }
 
 .expanded{
-  height: 12.5625rem;
+  height: 12.5rem;
 
   @include tablet {
     height: 9.0625rem;
@@ -36,7 +36,7 @@
   align-items: center;
   opacity: 1;
   transition: opacity 0.3s ease;
-  height: 100%;
+  height: 12.5rem;
   overflow: visible;
 
   @include tablet {
@@ -291,27 +291,6 @@
   }
 }
 
-.golferStatusAlertLAKE {
-  .golferStatusIcon {
-    background: #d42b2b;
-  }
-}
-
-.golferStatusAlertHILL {
-
-  .golferStatusIcon {
-    background: #ffd500;
-  }
-}
-
-.golferStatusNormalLAKE {
-  background: #d42b2b;
-}
-
-.golferStatusNormalHILL {
-  background: #ffd500;
-}
-
 .golferTime {
   padding: 0.125rem 0.5rem;
   border-radius: 0.25rem;
@@ -369,16 +348,6 @@
     border-radius: 2.5rem;
     gap: 0.3125rem;
     font-size: 0.75rem;
-  }
-
-  &.lakeButton {
-    background: rgba(219.94, 0, 0, 0.20);
-    border-color: #CE0A0A;
-  }
-
-  &.hillButton {
-    background: rgba(251.81, 228.94, 23.08, 0.20);
-    border-color: #FFCC00;
   }
 
   &:hover {

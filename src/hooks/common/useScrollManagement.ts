@@ -22,7 +22,7 @@ export const useHorizontalScroll = () => {
   const handleScroll = (
     ref: RefObject<HTMLDivElement>,
     direction: 'left' | 'right',
-    scrollAmount: number = 300
+    scrollAmount: number = 500
   ) => {
     if (ref.current) {
       const newScrollLeft = direction === 'left'
