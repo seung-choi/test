@@ -67,18 +67,12 @@ const Drawer: React.FC<DrawerProps> = ({
         };
 
         openCreateProductModal(
-          (data) => {
-            console.log('상품 등록:', data);
-          },
+          (data) => {},
           initialData,
-          () => {
-            console.log('상품 등록 취소');
-          }
+          () => {}
         );
       },
-      () => {
-        console.log('ERP 검색 취소');
-      }
+      () => {}
     );
   };
 
@@ -93,12 +87,8 @@ const Drawer: React.FC<DrawerProps> = ({
 
     openCategoryModal(
       initialCategories,
-      (categories) => {
-        console.log('분류 저장:', categories);
-      },
-      () => {
-        console.log('분류 설정 취소');
-      }
+      (categories) => {},
+      () => {}
     );
   };
 
@@ -118,13 +108,8 @@ const Drawer: React.FC<DrawerProps> = ({
 
     openCancelReasonManagementModal(
       initialReasons,
-      (reasons) => {
-        console.log('취소 사유 저장:', reasons);
-        // 여기서 실제 취소 사유 저장 API 호출
-      },
-      () => {
-        console.log('취소 사유 관리 취소');
-      }
+      (reasons) => {},
+      () => {}
     );
   };
 

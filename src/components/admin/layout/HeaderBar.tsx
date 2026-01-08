@@ -5,7 +5,7 @@ import { CourseData, InfoCardData } from '@/types';
 import { mockInfoCards } from '@/mock/admin/infocardMockData';
 import styles from '@/styles/components/admin/layout/HeaderBar.module.scss';
 import { useHorizontalScroll } from '@/hooks/common/useScrollManagement';
-import { useGolferPositions } from '@/hooks/api/useBookingList';
+import { useGolferPositions, type GolferPositionData } from '@/hooks/api/useBookingList';
 
 interface HeaderBarProps {
   courseData: CourseData;
@@ -53,7 +53,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ courseData, onCourseChange, onExp
     return <div className={styles.statusIcon} />;
   };
 
-  const renderGolferCard = (golfer: any) => {
+  const renderGolferCard = (golfer: GolferPositionData) => {
     return (
       <div
         key={golfer.bookingId}

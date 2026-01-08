@@ -32,13 +32,6 @@ export const useTableManagement = ({ pages, setPages, currentPageId }: UseTableM
         const source = sourcePageId || currentPageId;
         const target = targetPageId || currentPageId;
 
-        // 페이지 번호 계산 (1-based)
-        const targetPage = pages.find(p => p.id === target);
-        const pageNumber = targetPage ? pages.indexOf(targetPage) + 1 : 0;
-
-        // 좌표 출력
-        console.log(`${pageNumber}p (${Math.round(position.x)}, ${Math.round(position.y)})`);
-
         if (source === target) {
             updatePageTables(target, tables =>
                 tables.map(table =>

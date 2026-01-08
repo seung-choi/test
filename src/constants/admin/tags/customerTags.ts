@@ -1,4 +1,4 @@
-import { TagType } from "@/types/Tag.type";
+import { TagType } from '@/types/tag.type';
 
 export const TAG_ORDER = [
   "FIRSTTEAMF1",
