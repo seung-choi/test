@@ -96,13 +96,6 @@
   justify-content: space-between;
   align-items: center;
   overflow: visible;
-  gap: 1rem;
-
-  @include mobile {
-    flex-direction: column;
-    gap: 1.25rem;
-    align-items: center;
-  }
 }
 
 .courseSection {
@@ -116,11 +109,6 @@
   @include tablet {
     gap: 0.75rem;
   }
-
-  @include mobile {
-    justify-content: center;
-    width: 100%;
-  }
 }
 
 .courseSectionWrapper {
@@ -130,9 +118,11 @@
   gap: 1.875rem;
   overflow: visible;
   width: 100%;
+  --hole-gap: 1.875rem;
 
   @include tablet {
     gap: 0.5rem;
+    --hole-gap: 0.5rem;
   }
 }
 
@@ -348,7 +338,7 @@
   align-items: center;
   gap: 1rem;
   flex-shrink: 0;
-  width: 10rem;
+  width: 20rem;
   justify-content: center;
 
   @include tablet {

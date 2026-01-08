@@ -40,8 +40,16 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onExpandedChange }) => {
   const firstCourse = courses[0];
   const secondCourse = courses[1];
 
-  const calculateHoleWidthPercentage = (holeWth: number, totalWth: number): number => {
-    return (holeWth / totalWth) * 100;
+  const HOLE_GAP_REM = 1.875;
+
+  const calculateHoleWidth = (
+    holeWth: number,
+    totalWth: number,
+    holesCount: number
+  ): string => {
+    const percentage = (holeWth / totalWth) * 100;
+    const gapPerHole = (HOLE_GAP_REM * (holesCount - 1)) / holesCount;
+    return `calc(${percentage.toFixed(4)}% - ${gapPerHole.toFixed(4)}rem)`;
   };
 
   const firstCourseTotalWth = firstCourse?.holes.reduce((sum, hole) => sum + hole.holeWth, 0) || 1;
@@ -192,7 +200,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onExpandedChange }) => {
                   className={styles.holeTag}
                   style={{
                     position: 'relative',
-                    width: `${calculateHoleWidthPercentage(hole.holeWth, firstCourseTotalWth)}%`,
+                    width: calculateHoleWidth(hole.holeWth, firstCourseTotalWth, firstCourse.holes.length),
                   }}
                 >
                   <span className={styles.holeText}>{hole.holeNo}H</span>
@@ -242,7 +250,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onExpandedChange }) => {
                   className={styles.holeTag}
                   style={{
                     position: 'relative',
-                    width: `${calculateHoleWidthPercentage(hole.holeWth, secondCourseTotalWth)}%`,
+                    width: calculateHoleWidth(hole.holeWth, secondCourseTotalWth, secondCourse.holes.length),
                   }}
                 >
                   <span className={styles.holeText}>{hole.holeNo}H</span>
