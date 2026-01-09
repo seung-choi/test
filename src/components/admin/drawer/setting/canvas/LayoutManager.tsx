@@ -9,14 +9,13 @@ import TableListView from './TableListView';
 import ControlPanel from './ControlPanel';
 import SaveButtons from './SaveButtons';
 import styles from '@/styles/components/admin/drawer/canvas/layoutManager.module.scss';
-import { usePanZoom } from '@/hooks/usePanZoom';
-import { usePageManagement } from '@/hooks/usePageManagement';
-import { useTableManagement } from '@/hooks/useTableManagement';
+import { usePanZoom } from '@/hooks/tableCanvas/usePanZoom';
+import { usePageManagement } from '@/hooks/tableCanvas/usePageManagement';
+import { useTableManagement } from '@/hooks/tableCanvas/useTableManagement';
 
 const LayoutManager: React.FC = () => {
     const [activeTab, setActiveTab] = useState<'table' | 'list'>('table');
 
-    // 커스텀 훅들 사용
     const {
         zoom,
         pan,

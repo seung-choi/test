@@ -27,17 +27,14 @@ export interface ApiHoleType {
   holePer: 'N' | 'Y';
   holeWth: number;
   holeGap: number;
-  mapList: ApiMapType[];
+  mapList?: ApiMapType[];
 }
 
-export interface ApiCourseType {
-  courseId: number;
-  courseNm: string;
-  courseCol: string | null;
-  courseCnt: number | null;
-  coursePar: number | null;
-  courseErp: string | null;
-  holeList: ApiHoleType[];
+export interface ApiShopType {
+  shopId: number;
+  shopNm: string;
+  shopErp: string | null;
+  club: ApiClubType;
 }
 
 export interface ApiClubType {
@@ -57,6 +54,23 @@ export interface ApiClubType {
   zoneId: string;
   greenSpd: number;
   frontDist: number;
-  courseList: ApiCourseType[];
-  courseMapList: CourseMapListType[];
+  courseList: CourseType[];
+  courseMapList?: CourseMapListType[];
+}
+
+export interface CourseType {
+  courseId: number;
+  courseNm: string;
+  courseCol: string;
+  courseCnt: number;
+  coursePar: number;
+  courseErp: string | null;
+  holeList: ApiHoleType[];
+}
+
+export interface CourseWithHoles {
+  courseId: number;
+  courseNm: string;
+  courseCol: string | null;
+  holes: ApiHoleType[];
 }

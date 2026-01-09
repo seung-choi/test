@@ -95,13 +95,11 @@
   align-items: center;
   cursor: pointer;
   transition: all 0.2s ease;
-  gap: 0.5rem;
-
+  gap: 0.25rem;
 
   @include tablet {
     width: 3.4375rem;
     height: 3.4375rem;
-    gap: 0.25rem;
   }
 
   &.active {
@@ -121,7 +119,7 @@
 
 .filterLabel {
   color: #666666;
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 700;
   word-wrap: break-word;
   position: relative;
@@ -133,7 +131,7 @@
 
 .filterCount {
   color: #666666;
-  font-size: 1rem;
+  font-size: 0.865rem;
   font-weight: 700;
   word-wrap: break-word;
 

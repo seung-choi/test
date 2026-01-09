@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import styles from '@/styles/components/admin/layout/HeaderBar.module.scss';
 import { useHorizontalScroll } from '@/hooks/common/useScrollManagement';
 import { useGolferPositions, type GolferPositionData } from '@/hooks/api/useBookingList';
-import { useClubInfo } from '@/hooks/api/useClubInfo';
+import { useShopInfo } from '@/hooks/api/useShopInfo';
 
 interface HeaderBarProps {
   onExpandedChange?: (isExpanded: boolean) => void;
@@ -15,13 +15,15 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onExpandedChange }) => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [firstCourseScrolled, setFirstCourseScrolled] = useState(false);
   const [secondCourseScrolled, setSecondCourseScrolled] = useState(false);
+  const [firstCourseCanScrollRight, setFirstCourseCanScrollRight] = useState(false);
+  const [secondCourseCanScrollRight, setSecondCourseCanScrollRight] = useState(false);
   const [hoveredCourse, setHoveredCourse] = useState<string | null>(null);
 
   const firstCourseScheduleRef = useRef<HTMLDivElement>(null);
   const secondCourseScheduleRef = useRef<HTMLDivElement>(null);
   const { handleScroll } = useHorizontalScroll();
 
-  const { courses, isLoading: isClubLoading } = useClubInfo();
+  const { courses, isLoading: isClubLoading } = useShopInfo();
 
   const { golferPositions, isLoading, error } = useGolferPositions({
     refetchInterval: 5000,
@@ -42,13 +44,17 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onExpandedChange }) => {
 
   const handleFirstCourseScroll = useCallback(() => {
     if (firstCourseScheduleRef.current) {
-      setFirstCourseScrolled(firstCourseScheduleRef.current.scrollLeft > 0);
+      const { scrollLeft, scrollWidth, clientWidth } = firstCourseScheduleRef.current;
+      setFirstCourseScrolled(scrollLeft > 0);
+      setFirstCourseCanScrollRight(scrollLeft + clientWidth < scrollWidth);
     }
   }, []);
 
   const handleSecondCourseScroll = useCallback(() => {
     if (secondCourseScheduleRef.current) {
-      setSecondCourseScrolled(secondCourseScheduleRef.current.scrollLeft > 0);
+      const { scrollLeft, scrollWidth, clientWidth } = secondCourseScheduleRef.current;
+      setSecondCourseScrolled(scrollLeft > 0);
+      setSecondCourseCanScrollRight(scrollLeft + clientWidth < scrollWidth);
     }
   }, []);
 
@@ -81,6 +87,14 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onExpandedChange }) => {
         (golfer) => golfer.outCourse.toUpperCase() === secondCourse.courseNm.toUpperCase()
       )
     : [];
+
+  useEffect(() => {
+    handleFirstCourseScroll();
+  }, [firstCourseScheduleData.length, handleFirstCourseScroll]);
+
+  useEffect(() => {
+    handleSecondCourseScroll();
+  }, [secondCourseScheduleData.length, handleSecondCourseScroll]);
 
   const renderStatusIndicator = (isGroup: boolean, courseColor: string) => {
     if (isGroup) {
@@ -253,10 +267,11 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onExpandedChange }) => {
     scheduleData: GolferPositionData[],
     scrollRef: React.RefObject<HTMLDivElement>,
     isScrolled: boolean,
+    canScrollRight: boolean,
     onScroll: () => void
   ) => (
     <div className={styles.scheduleRow}>
-      {scheduleData.length > 0 && (
+      {scheduleData.length > 0 && isScrolled && (
         <img
           src="/assets/image/global/arrow/arrow-sm.svg"
           alt="arrow-left"
@@ -264,9 +279,6 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onExpandedChange }) => {
           style={{
             cursor: 'pointer',
             transform: 'rotate(180deg)',
-            opacity: isScrolled ? 1 : 0,
-            pointerEvents: isScrolled ? 'auto' : 'none',
-            transition: 'opacity 0.3s ease',
           }}
         />
       )}
@@ -295,7 +307,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onExpandedChange }) => {
           </div>
         )}
       </div>
-      {scheduleData.length > 0 && (
+      {scheduleData.length > 0 && canScrollRight && (
         <img
           src="/assets/image/global/arrow/arrow-sm.svg"
           alt="arrow-right"
@@ -422,6 +434,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onExpandedChange }) => {
               firstCourseScheduleData,
               firstCourseScheduleRef,
               firstCourseScrolled,
+              firstCourseCanScrollRight,
               handleFirstCourseScroll
             )}
 
@@ -431,6 +444,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onExpandedChange }) => {
               secondCourseScheduleData,
               secondCourseScheduleRef,
               secondCourseScrolled,
+              secondCourseCanScrollRight,
               handleSecondCourseScroll
             )}
           </div>

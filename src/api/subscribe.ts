@@ -1,5 +1,4 @@
-import $axios from '@/api/axios';
-import { getOriginURL } from '@/api/API_URL';
+import {getOriginURL} from '@/api/API_URL';
 
 export const getSubscribePage = async (
   clubId: string,
@@ -10,6 +9,5 @@ export const getSubscribePage = async (
     lastEventId ? `?lastEventId=${lastEventId}` : ''
   }`;
 
-  const eventSource = new EventSource(url);
-  return eventSource;
+  return new EventSource(url);
 };

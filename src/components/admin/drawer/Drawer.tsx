@@ -5,6 +5,7 @@ import { drawerState } from '@/lib/recoil';
 import useUnifiedModal from '@/hooks/admin/useUnifiedModal';
 import { Category, ProductFormData, CancelReason, ErpProduct } from '@/types';
 import { useScrollLock } from '@/hooks/common/useScrollManagement';
+import { usePutGoodsErpList } from '@/hooks/api';
 
 type DrawerMode = 'setting' | 'menu';
 
@@ -31,6 +32,7 @@ const Drawer: React.FC<DrawerProps> = ({
   const { openCreateProductModal, openCategoryModal, openErpSearchModal, openCancelReasonManagementModal } = useUnifiedModal();
   const [isVisible, setIsVisible] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const { mutate: updateErpGoods, isPending: isUpdatingErp } = usePutGoodsErpList();
 
   useScrollLock(isVisible);
 
@@ -48,6 +50,11 @@ const Drawer: React.FC<DrawerProps> = ({
     }
   }, [isOpen, isVisible]);
 
+  const handleERPUpdate = () => {
+    if (isUpdatingErp) return;
+    updateErpGoods();
+  }
+
   const handleRegisterProduct = () => {
     openErpSearchModal(
       (erpProduct: ErpProduct) => {
@@ -55,11 +62,11 @@ const Drawer: React.FC<DrawerProps> = ({
           status: '판매',
           channels: [],
           types: [],
-          category: erpProduct.category,
+          category: '미분류',
           store: '스타트 하우스',
-          code: erpProduct.code,
-          name: erpProduct.name,
-          price: erpProduct.price.toLocaleString('ko-KR') + '원',
+          code: erpProduct.goodsErp,
+          name: erpProduct.goodsNm,
+          price: Number(erpProduct.goodsAmt).toLocaleString('ko-KR') + '원',
           cookingTime: 0,
           tags: [],
           registeredDate: new Date().toISOString().split('T')[0].replace(/-/g, '.'),
@@ -162,6 +169,9 @@ const Drawer: React.FC<DrawerProps> = ({
                 <div className={styles.searchButton}>
                   <div className={styles.buttonText}>검색</div>
                 </div>
+              </div>
+              <div className={styles.categoryButton} onClick={handleERPUpdate}>
+                <div className={styles.buttonText}>ERP 업데이트</div>
               </div>
               <div className={styles.categoryButton} onClick={handleCategorySettings}>
                 <div className={styles.buttonText}>분류 설정</div>

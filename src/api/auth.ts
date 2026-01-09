@@ -6,12 +6,18 @@ export interface LoginFormAPI {
     password: string;
 }
 
-export interface UpdateAuthFormAPI {
+export interface LoginResponseAPI {
+    groupId: number;
+    groupNm: string;
+    groupType: string;
+    userId: string;
+    userNm: string;
+    initSt: string;
     clubId: string;
-    zoneId: string;
+    clubLogo: string;
 }
 
-export const postLogin = async (data: LoginFormAPI) => {
+export const postLogin = async (data: LoginFormAPI): Promise<LoginResponseAPI> => {
     const res = await $axios({
         url: `${getOriginURL('api', '/auth/login')}`,
         method: 'post',
@@ -20,11 +26,19 @@ export const postLogin = async (data: LoginFormAPI) => {
     return res.data;
 };
 
-export const patchLogin = async (data: UpdateAuthFormAPI) => {
+export const getMenuHisList = async (): Promise<string[]> => {
+    const res = await $axios({
+        url: `${getOriginURL('api', '/fnb/v1/menu/his')}`,
+        method: 'get',
+    });
+    return res.data;
+};
+
+export const patchLogin = async () => {
     const res = await $axios({
         url: `${getOriginURL('api', '/auth/login')}`,
         method: 'patch',
-        data,
+        data: {},
     });
     return res.data;
 };

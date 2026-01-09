@@ -6,8 +6,8 @@ import commonStyles from '@/styles/components/admin/modal/CommonModal.module.scs
 import styles from '@/styles/components/admin/modal/ErpSearchModal.module.scss';
 import { ErpProduct, ErpSearchType } from '@/types/erp.type';
 import CustomSelect from '@/components/common/CustomSelect';
-import { erpMockData } from '@/mock/admin/erpMockData';
-import {formatPrice} from "@/utils";
+import { formatPrice } from '@/utils';
+import { useGoodsErpList } from '@/hooks/api';
 
 interface ErpSearchModalContentProps {
   onSelect: (product: ErpProduct) => void;
@@ -20,25 +20,27 @@ const ErpSearchModalContent: React.FC<ErpSearchModalContentProps> = ({
 }) => {
   const [searchType, setSearchType] = useState<ErpSearchType>('상품 코드');
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchResults, setSearchResults] = useState<ErpProduct[]>(erpMockData);
+  const [searchResults, setSearchResults] = useState<ErpProduct[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
+  const { data: erpList = [] } = useGoodsErpList();
 
   useEffect(() => {
-    setSearchResults(erpMockData);
-  }, []);
+    setSearchResults(erpList);
+    setHasSearched(false);
+  }, [erpList]);
 
   const handleSearch = () => {
     if (!searchTerm.trim()) {
-      setSearchResults(erpMockData);
+      setSearchResults(erpList);
       setHasSearched(false);
       return;
     }
 
-    const results = erpMockData.filter((product) => {
+    const results = erpList.filter((product) => {
       if (searchType === '상품 코드') {
-        return product.code.toLowerCase().includes(searchTerm.toLowerCase());
+        return product.goodsErp.toLowerCase().includes(searchTerm.toLowerCase());
       } else {
-        return product.name.toLowerCase().includes(searchTerm.toLowerCase());
+        return product.goodsNm.toLowerCase().includes(searchTerm.toLowerCase());
       }
     });
 
@@ -50,16 +52,16 @@ const ErpSearchModalContent: React.FC<ErpSearchModalContentProps> = ({
     setSearchTerm(value);
 
     if (!value.trim()) {
-      setSearchResults(erpMockData);
+      setSearchResults(erpList);
       setHasSearched(false);
       return;
     }
 
-    const results = erpMockData.filter((product) => {
+    const results = erpList.filter((product) => {
       if (searchType === '상품 코드') {
-        return product.code.toLowerCase().includes(value.toLowerCase());
+        return product.goodsErp.toLowerCase().includes(value.toLowerCase());
       } else {
-        return product.name.toLowerCase().includes(value.toLowerCase());
+        return product.goodsNm.toLowerCase().includes(value.toLowerCase());
       }
     });
 
@@ -115,21 +117,21 @@ const ErpSearchModalContent: React.FC<ErpSearchModalContentProps> = ({
       <div className={styles.tableContainer}>
         <div className={styles.tableHeader}>
           <div className={styles.categoryColumn}>
-            <div className={styles.headerText}>분류</div>
-          </div>
-          <div className={styles.codeColumn}>
-            <div className={styles.headerText}>상품 코드</div>
-          </div>
-          <div className={styles.nameColumn}>
-            <div className={styles.headerText}>상품명</div>
-          </div>
-          <div className={styles.priceColumn}>
-            <div className={styles.headerText}>금액</div>
-          </div>
-          <div className={styles.selectColumn}>
-            <div className={styles.headerText}>선택</div>
-          </div>
+          <div className={styles.headerText}>수량</div>
         </div>
+        <div className={styles.codeColumn}>
+          <div className={styles.headerText}>상품 코드</div>
+        </div>
+        <div className={styles.nameColumn}>
+          <div className={styles.headerText}>상품명</div>
+        </div>
+        <div className={styles.priceColumn}>
+          <div className={styles.headerText}>금액</div>
+        </div>
+        <div className={styles.selectColumn}>
+          <div className={styles.headerText}>선택</div>
+        </div>
+      </div>
 
         <div className={styles.tableBody}>
           {hasSearched && searchResults.length === 0 ? (
@@ -139,21 +141,21 @@ const ErpSearchModalContent: React.FC<ErpSearchModalContentProps> = ({
           ) : (
             searchResults.map((product) => (
               <div
-                key={product.id}
+                key={product.goodsErp}
                 className={styles.tableRow}
                 onClick={() => handleSelectProduct(product)}
               >
                 <div className={styles.categoryColumn}>
-                  <div className={styles.cellText}>{product.category}</div>
+                  <div className={styles.cellText}>{product.goodsCnt}</div>
                 </div>
                 <div className={styles.codeColumn}>
-                  <div className={styles.cellText}>{product.code}</div>
+                  <div className={styles.cellText}>{product.goodsErp}</div>
                 </div>
                 <div className={styles.nameColumn}>
-                  <div className={styles.cellText}>{product.name}</div>
+                  <div className={styles.cellText}>{product.goodsNm}</div>
                 </div>
                 <div className={styles.priceColumn}>
-                  <div className={styles.cellText}>{formatPrice(product.price)}</div>
+                  <div className={styles.cellText}>{formatPrice(Number(product.goodsAmt))}</div>
                 </div>
                 <div className={styles.selectColumn}>
                   <div className={styles.cellText}>선택</div>

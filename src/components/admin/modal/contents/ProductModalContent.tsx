@@ -132,10 +132,10 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
       (erpProduct: ErpProduct) => {
         setFormData(prev => ({
           ...prev,
-          category: erpProduct.category,
-          code: erpProduct.code,
-          name: erpProduct.name,
-          price: erpProduct.price.toLocaleString('ko-KR') + '원',
+          category: prev.category || '미분류',
+          code: erpProduct.goodsErp,
+          name: erpProduct.goodsNm,
+          price: Number(erpProduct.goodsAmt).toLocaleString('ko-KR') + '원',
         }));
       },
       () => {}

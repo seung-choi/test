@@ -1,5 +1,6 @@
 export * from './drawer.type'
 export * from './layout.type'
+export * from './menu.type'
 export * from './modal.type'
 export * from './orderInfo.type'
 export * from './setting.types'

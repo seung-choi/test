@@ -10,113 +10,81 @@ import {
     validateLoginForm,
     hasErrors
 } from '@/utils/validation/loginValidation';
+import { useLogin, useMenuHisList } from '@/hooks/api';
+import { LoginResponseAPI } from '@/api/auth';
 
-/**
- * 로그인 페이지
- * - 비즈니스 로직 처리
- * - API 호출
- * - 라우팅
- * - localStorage 관리
- */
 const LoginPage: React.FC = () => {
     const router = useRouter();
     const [errors, setErrors] = useState<FormErrors>({});
     const [isLoading, setIsLoading] = useState(false);
 
-    /**
-     * 로그인 API 호출 (현재는 목업)
-     */
-    const loginAPI = async (credentials: LoginFormData): Promise<void> => {
-        // 실제 환경에서는 여기서 API 호출
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                // 클럽코드 검증
-                if (credentials.clubCode !== 'VGOLF') {
-                    reject(new Error('CLUBCODE_INVALID'));
-                    return;
-                }
+    const loginMutation = useLogin();
+    const { data: menuList, refetch: fetchMenuList } = useMenuHisList({ enabled: false });
 
-                // 아이디 검증
-                if (credentials.username !== 'admin') {
-                    reject(new Error('USERNAME_INVALID'));
-                    return;
-                }
-
-                // 비밀번호 검증
-                if (credentials.password !== 'password') {
-                    reject(new Error('PASSWORD_INVALID'));
-                    return;
-                }
-
-                // 로그인 성공
-                resolve();
-            }, 800); // 네트워크 딜레이 시뮬레이션
-        });
-    };
-
-    /**
-     * 로그인 처리 핸들러
-     */
     const handleLogin = useCallback(async (formData: LoginFormData) => {
         try {
-            // 에러 초기화
             setErrors({});
 
-            // 1. 클라이언트 측 validation
             const validationErrors = validateLoginForm(formData);
             if (hasErrors(validationErrors)) {
                 setErrors(validationErrors);
                 return;
             }
 
-            // 2. 로딩 시작
             setIsLoading(true);
 
-            // 3. API 호출
-            await loginAPI(formData);
+            const loginResponse = await loginMutation.mutateAsync({
+                username: `${formData.username}@${formData.clubCode}`,
+                password: formData.password,
+            });
 
-            // 4. 로그인 성공 처리
-            handleLoginSuccess(formData);
+            await handleLoginSuccess(formData, loginResponse);
         } catch (error: any) {
-            // 5. 에러 처리
             handleLoginError(error);
         } finally {
-            // 6. 로딩 종료
             setIsLoading(false);
         }
-    }, []);
+    }, [loginMutation]);
 
-    /**
-     * 로그인 성공 처리
-     */
-    const handleLoginSuccess = (formData: LoginFormData) => {
-        // localStorage에 저장
-        localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('clubCode', formData.clubCode);
+    const handleLoginSuccess = async (formData: LoginFormData, loginResponse: LoginResponseAPI) => {
+        sessionStorage.setItem('isLoggedIn', 'true');
+        sessionStorage.setItem('clubCode', formData.clubCode);
+        sessionStorage.setItem('groupId', String(loginResponse.groupId));
+        sessionStorage.setItem('groupNm', loginResponse.groupNm);
+        sessionStorage.setItem('groupType', loginResponse.groupType);
+        sessionStorage.setItem('userId', loginResponse.userId);
+        sessionStorage.setItem('userNm', loginResponse.userNm);
+        sessionStorage.setItem('initSt', loginResponse.initSt);
+        sessionStorage.setItem('clubId', loginResponse.clubId);
+        sessionStorage.setItem('clubLogo', loginResponse.clubLogo);
 
-        // 로그인 정보 저장 옵션이 체크되어 있으면
-        if (formData.rememberMe) {
-            localStorage.setItem('rememberedUser', formData.username);
-            localStorage.setItem('rememberedClubCode', formData.clubCode);
-        } else {
-            // 체크 해제 시 저장된 정보 삭제
-            localStorage.removeItem('rememberedUser');
-            localStorage.removeItem('rememberedClubCode');
+        const { data: menuPermissions } = await fetchMenuList();
+
+        if (!menuPermissions || menuPermissions.length === 0) {
+            setErrors({ clubCode: '메뉴 권한이 없습니다' });
+            return;
         }
 
-        // 관리자 페이지로 이동
-        router.push('/admin/lounge');
+        const hasAllAccess = menuPermissions.some((menu: string) => menu.includes('FNB'));
+        const hasLoungeAccess = menuPermissions.some((menu: string) => menu.includes('LOUNGE'));
+        const hasOrderAccess = menuPermissions.some((menu: string) => menu.includes('ORDER'));
+
+        if (hasAllAccess) {
+            router.push('/admin/lounge');
+        } else if (hasLoungeAccess) {
+            router.push('/admin/lounge');
+        } else if (hasOrderAccess) {
+            router.push('/order/main')
+        } else {
+            setErrors({ clubCode: '접근 권한이 없습니다' });
+        }
     };
 
-    /**
-     * 로그인 에러 처리
-     */
     const handleLoginError = (error: any) => {
         console.error('Login failed:', error);
 
-        const errorCode = error?.message || 'UNKNOWN_ERROR';
+        const errorCode = error?.response?.data?.code || error?.message || 'UNKNOWN_ERROR';
 
-        // 에러 코드에 따른 메시지 설정
         switch (errorCode) {
             case 'CLUBCODE_INVALID':
                 setErrors({ clubCode: '존재하지 않는 코드입니다' });
@@ -128,6 +96,7 @@ const LoginPage: React.FC = () => {
                 setErrors({ password: '비밀번호가 일치하지 않습니다' });
                 break;
             case 'NETWORK_ERROR':
+            case 'ECONNABORTED':
                 setErrors({ clubCode: '네트워크 오류가 발생했습니다' });
                 break;
             default:
@@ -137,14 +106,12 @@ const LoginPage: React.FC = () => {
 
     return (
         <>
-            {/* 헤더 */}
             <div className={styles.header}>
                 <div className={styles.headerContent}>
                     <img src='/assets/image/login/logo.svg' alt='vgolf'/>
                 </div>
             </div>
 
-            {/* 로그인 폼 */}
             <LoginForm
                 onSubmit={handleLogin}
                 errors={errors}

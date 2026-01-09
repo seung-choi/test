@@ -1,6 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import { getOriginURL } from '@/api/API_URL';
-import storage from '@/utils/storage';
 
 interface ErrorResponse {
   status: number;
@@ -16,7 +15,6 @@ const $axios = axios.create({
   baseURL: isClient ? getOriginURL('api') : '',
   timeout: 50000,
   headers: {
-    'Content-Type': 'application/json',
     'accept': 'application/json',
   },
   withCredentials: true,
@@ -24,29 +22,46 @@ const $axios = axios.create({
 
 const tokens = {
   get access() {
-    return (storage.local.get('accessToken') as string) ?? '';
+    if (!isClient) return '';
+    return window.sessionStorage.getItem('accessToken') ?? '';
   },
   set access(token: string) {
-    storage.local.set({ accessToken: token });
+    if (!isClient) return;
+    window.sessionStorage.setItem('accessToken', token);
   },
   get refresh() {
-    return (storage.local.get('refreshToken') as string) ?? '';
+    if (!isClient) return '';
+    return window.sessionStorage.getItem('refreshToken') ?? '';
   },
   set refresh(token: string) {
-    storage.local.set({ refreshToken: token });
+    if (!isClient) return;
+    window.sessionStorage.setItem('refreshToken', token);
+  },
+};
+
+const event = {
+  get id() {
+    if (!isClient) return '';
+    return window.sessionStorage.getItem('eventId') ?? '';
+  },
+  set id(id: string) {
+    if (!isClient) return;
+    window.sessionStorage.setItem('eventId', id);
   },
 };
 
 const logoutAndRedirect = () => {
   if (!isClient) return;
-  storage.local.clear();
+  window.sessionStorage.clear();
   window.location.href = '/login';
 };
 
 $axios.interceptors.request.use(
   (config) => {
-    const { headers } = config;
-    headers['Authorization'] = tokens.access;
+    const isFormData = config.data instanceof FormData;
+    config.headers['Content-Type'] = isFormData ? 'multipart/form-data' : 'application/json';
+    config.headers['Authorization'] = tokens.access;
+    if (event.id) config.headers['Event-ID'] = event.id;
     return config;
   },
   (error) => Promise.reject(error)
@@ -69,7 +84,7 @@ $axios.interceptors.response.use(
   async (error: AxiosError<ErrorResponse>) => {
     if (error?.status && error.status > 500) {
       if (isClient) location.reload();
-      return Promise.reject(error);
+      return;
     }
 
     if (
@@ -78,22 +93,20 @@ $axios.interceptors.response.use(
       error.response?.data?.code === 'JWT_EXPIRED_TOKEN'
     ) {
       tokens.access = tokens.refresh;
-      await $axios({
-        url: `${getOriginURL('api', '/auth/login')}`,
-        method: 'patch',
-        data: {},
-      });
+      await $axios.patch(`${getOriginURL('api', '/auth/login')}`, {});
       return $axios(error.config as AxiosRequestConfig);
     }
 
     if (error.code === 'ECONNABORTED' || error.message === 'Network Error') {
-      return Promise.reject(error);
+      console.error('ECONNABORTED Error || Network Error: ', error.code);
+      return 'TIMEOUT';
     }
 
     if (error.status === 401) {
       errorCount++;
       if (errorCount >= MAX_401_ERRORS) {
         logoutAndRedirect();
+        return Promise.reject(error);
       }
     }
 

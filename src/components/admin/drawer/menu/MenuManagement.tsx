@@ -1,4 +1,4 @@
-import React, {forwardRef, useImperativeHandle, useMemo, useState} from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from 'react';
 import {useRecoilValue} from 'recoil';
 import {
   closestCenter,
@@ -12,13 +12,14 @@ import {
 import {arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy,} from '@dnd-kit/sortable';
 import styles from '@/styles/components/admin/drawer/MenuManagement.module.scss';
 import Table from '@/components/admin/common/Table';
-import {MenuMockData} from '@/mock/admin/menuMockData';
-import {getMenuTableColumns} from "@/constants/admin/columns/MenuTable";
-import {drawerState} from '@/lib/recoil';
+import { getMenuTableColumns } from '@/constants/admin/columns/MenuTable';
+import { drawerState } from '@/lib/recoil';
 import useUnifiedModal from '@/hooks/admin/useUnifiedModal';
-import {ProductFormData} from '@/types';
-import {formatDate, formatPrice} from "@/utils";
+import { MenuTableRow, ProductFormData } from '@/types';
+import { formatDate, formatPrice } from '@/utils';
 import { MenuStatus } from '@/constants/admin/menuStatus';
+import { useGoodsList } from '@/hooks/api';
+import { GetGoodsResponse } from '@/api/goods';
 
 interface MenuManagementProps {
   onClose: () => void;
@@ -29,11 +30,82 @@ export interface MenuManagementRef {
   handleDelete: () => void;
 }
 
+const mapGoodsStatus = (status: GetGoodsResponse['goodsSt']): MenuStatus => {
+  switch (status) {
+    case 'Y':
+      return '판매';
+    case 'S':
+      return '대기';
+    case 'N':
+    case 'D':
+    default:
+      return '중지';
+  }
+};
+
+const mapGoodsChannels = (channel: GetGoodsResponse['goodsCh']): string[] => {
+  switch (channel) {
+    case 'COS':
+      return ['코스'];
+    case 'HUS':
+      return ['매장'];
+    case 'BOTH':
+    default:
+      return ['코스', '매장'];
+  }
+};
+
+const mapGoodsTypes = (option: GetGoodsResponse['goodsOp']): string[] => {
+  switch (option) {
+    case 'DINE':
+      return ['매장'];
+    case 'TAKE':
+      return ['포장'];
+    case 'BOTH':
+    default:
+      return ['매장', '포장'];
+  }
+};
+
+const mapGoodsTags = (tags: string): string[] => {
+  if (!tags) return [];
+  return tags
+    .split(',')
+    .map((tag) => tag.trim())
+    .filter(Boolean)
+    .map((tag) => tag.replace(/^#/, ''));
+};
+
 const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onClose, onDelete }, ref) => {
   const drawer = useRecoilValue(drawerState);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
-  const [menuData, setMenuData] = useState(MenuMockData);
+  const [menuData, setMenuData] = useState<MenuTableRow[]>([]);
   const { openEditProductModal, openDeleteConfirmModal } = useUnifiedModal();
+  const { data: goodsList = [] } = useGoodsList();
+
+  const mappedMenuData = useMemo<MenuTableRow[]>(
+    () =>
+      goodsList.map((goods) => ({
+        id: goods.goodsId,
+        store: '-',
+        image: goods.goodsImg || '',
+        code: goods.goodsErp || '',
+        category: goods.categoryNm || '',
+        name: goods.goodsNm || '',
+        price: goods.goodsAmt ?? 0,
+        tags: mapGoodsTags(goods.goodsTag),
+        cookingTime: goods.goodsTm ?? 0,
+        status: mapGoodsStatus(goods.goodsSt),
+        channels: mapGoodsChannels(goods.goodsCh),
+        types: mapGoodsTypes(goods.goodsOp),
+        registerDate: goods.createdDt,
+      })),
+    [goodsList]
+  );
+
+  useEffect(() => {
+    setMenuData(mappedMenuData);
+  }, [mappedMenuData]);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -179,7 +251,7 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
     );
   }, [drawer.menuSearchTerm, menuData]);
 
-  const tableContent = (
+  const tableContent = filteredData.length > 0 ? (
     <Table
       columns={columns}
       data={filteredData}
@@ -187,6 +259,8 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
       onSort={() => {}}
       isReorderMode={drawer.isReorderMode}
     />
+  ) : (
+    <div className={styles.emptyState}>등록된 메뉴가 없습니다</div>
   );
 
   return (

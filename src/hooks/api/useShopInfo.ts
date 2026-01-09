@@ -1,20 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { getShopInfo } from '@/api/shop';
-import { ApiCourseType, ApiHoleType } from '@/types/club.type';
-
-export interface CourseWithHoles {
-  courseId: number;
-  courseNm: string;
-  courseCol: string | null;
-  holes: ApiHoleType[];
-}
+import { ApiHoleType, CourseType, CourseWithHoles } from '@/types/shop.type';
 
 const getLastThreeHoles = (holeList: ApiHoleType[]): ApiHoleType[] => {
   const sorted = [...holeList].sort((a, b) => a.holeNo - b.holeNo);
   return sorted.slice(-3);
 };
 
-const transformCourseData = (courseList: ApiCourseType[]): CourseWithHoles[] => {
+const transformCourseData = (courseList: CourseType[]): CourseWithHoles[] => {
   return courseList.map((course) => ({
     courseId: course.courseId,
     courseNm: course.courseNm,
@@ -23,12 +16,12 @@ const transformCourseData = (courseList: ApiCourseType[]): CourseWithHoles[] => 
   }));
 };
 
-export const useClubInfo = (options?: {
+export const useShopInfo = (options?: {
   refetchInterval?: number;
   enabled?: boolean;
 }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: ['clubInfo'],
+    queryKey: ['shopInfo'],
     queryFn: getShopInfo,
     refetchInterval: options?.refetchInterval,
     enabled: options?.enabled ?? true,
@@ -36,12 +29,12 @@ export const useClubInfo = (options?: {
     staleTime: 60000,
   });
 
-  const courses: CourseWithHoles[] = data?.courseList
-    ? transformCourseData(data.courseList)
+  const courses: CourseWithHoles[] = data?.club?.courseList
+    ? transformCourseData(data.club.courseList)
     : [];
 
   return {
-    clubInfo: data,
+    shopInfo: data,
     courses,
     isLoading,
     error,
