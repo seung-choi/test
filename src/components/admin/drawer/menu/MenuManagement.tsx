@@ -16,10 +16,9 @@ import { getMenuTableColumns } from '@/constants/admin/columns/MenuTable';
 import { drawerState } from '@/lib/recoil';
 import useUnifiedModal from '@/hooks/admin/useUnifiedModal';
 import { MenuTableRow, ProductFormData } from '@/types';
-import { formatDate, formatPrice } from '@/utils';
 import { MenuStatus } from '@/constants/admin/menuStatus';
 import { useGoodsList } from '@/hooks/api';
-import { GetGoodsResponse } from '@/api/goods';
+import type { GetGoodsResponse, GoodsChannel, GoodsOption, GoodsStatus } from '@/api/goods';
 
 interface MenuManagementProps {
   onClose: () => void;
@@ -74,6 +73,43 @@ const mapGoodsTags = (tags: string): string[] => {
     .map((tag) => tag.trim())
     .filter(Boolean)
     .map((tag) => tag.replace(/^#/, ''));
+};
+
+const mapMenuStatusToGoods = (status?: MenuStatus): GoodsStatus => {
+  switch (status) {
+    case '판매':
+      return 'Y';
+    case '대기':
+      return 'S';
+    case '중지':
+    default:
+      return 'N';
+  }
+};
+
+const mapMenuChannelsToGoods = (channels?: string[]): GoodsChannel => {
+  const list = channels ?? [];
+  const hasCos = list.includes('코스');
+  const hasHus = list.includes('매장');
+  if (hasCos && hasHus) return 'BOTH';
+  if (hasCos) return 'COS';
+  if (hasHus) return 'HUS';
+  return 'BOTH';
+};
+
+const mapMenuTypesToGoods = (types?: string[]): GoodsOption => {
+  const list = types ?? [];
+  const hasDine = list.includes('매장');
+  const hasTake = list.includes('포장');
+  if (hasDine && hasTake) return 'BOTH';
+  if (hasDine) return 'DINE';
+  if (hasTake) return 'TAKE';
+  return 'BOTH';
+};
+
+const mapMenuTagsToGoods = (tags?: string[]): string => {
+  if (!tags || tags.length === 0) return '';
+  return tags.map((tag) => `#${tag}`).join(',');
 };
 
 const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onClose, onDelete }, ref) => {
@@ -173,18 +209,20 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
     if (!menuItem) return;
 
     const initialData: ProductFormData = {
-      status: menuItem.status as MenuStatus,
-      channels: menuItem.channels || [],
-      types: menuItem.types || [],
-      category: menuItem.category || '',
-      store: menuItem.store,
-      code: menuItem.code || '',
-      name: menuItem.name || '',
-      price: formatPrice(menuItem.price) + '원',
-      cookingTime: menuItem.cookingTime,
-      tags: menuItem.tags || [],
-      registeredDate: formatDate(menuItem.registerDate),
-      // updatedDate: new Date().toISOString().split('T')[0].replace(/-/g, '.'),
+      goodsId: menuItem.id,
+      categoryId: 0,
+      categoryNm: menuItem.category || '',
+      goodsNm: menuItem.name || '',
+      goodsAmt: menuItem.price || 0,
+      goodsCnt: '1',
+      goodsCh: mapMenuChannelsToGoods(menuItem.channels),
+      goodsOp: mapMenuTypesToGoods(menuItem.types),
+      goodsTm: menuItem.cookingTime || 0,
+      goodsImg: menuItem.image || '',
+      goodsTag: mapMenuTagsToGoods(menuItem.tags),
+      goodsSt: mapMenuStatusToGoods(menuItem.status as MenuStatus),
+      goodsErp: menuItem.code || '',
+      createdDt: menuItem?.registerDate || '',
     };
 
     openEditProductModal(
@@ -195,16 +233,17 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
               if (String(item.id) === itemId) {
                 return {
                   ...item,
-                  store: data.store,
-                  code: data.code,
-                  category: data.category,
-                  name: data.name,
-                  price: parseInt(data.price.replace(/[^0-9]/g, '')) || 0,
-                  tags: data.tags,
-                  cookingTime: data.cookingTime,
-                  status: data.status,
-                  channels: data.channels,
-                  types: data.types,
+                  code: data.goodsErp,
+                  category: data.categoryNm,
+                  name: data.goodsNm,
+                  price: data.goodsAmt,
+                  tags: data.goodsTag
+                    ? data.goodsTag.split(',').map((tag) => tag.replace(/^#/, ''))
+                    : [],
+                  cookingTime: data.goodsTm,
+                  status: mapGoodsStatus(data.goodsSt),
+                  channels: mapGoodsChannels(data.goodsCh),
+                  types: mapGoodsTypes(data.goodsOp),
                 };
               }
               return item;

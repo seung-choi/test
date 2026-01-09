@@ -5,7 +5,8 @@ import { drawerState } from '@/lib/recoil';
 import useUnifiedModal from '@/hooks/admin/useUnifiedModal';
 import { Category, ProductFormData, CancelReason, ErpProduct } from '@/types';
 import { useScrollLock } from '@/hooks/common/useScrollManagement';
-import { usePutGoodsErpList } from '@/hooks/api';
+import { usePostGoods, usePutGoodsErpList } from '@/hooks/api';
+import { PostGoodsRequest } from '@/api/goods';
 
 type DrawerMode = 'setting' | 'menu';
 
@@ -33,6 +34,7 @@ const Drawer: React.FC<DrawerProps> = ({
   const [isVisible, setIsVisible] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const { mutate: updateErpGoods, isPending: isUpdatingErp } = usePutGoodsErpList();
+  const { mutate: postGoods } = usePostGoods();
 
   useScrollLock(isVisible);
 
@@ -59,22 +61,37 @@ const Drawer: React.FC<DrawerProps> = ({
     openErpSearchModal(
       (erpProduct: ErpProduct) => {
         const initialData: ProductFormData = {
-          status: '판매',
-          channels: [],
-          types: [],
-          category: '미분류',
-          store: '스타트 하우스',
-          code: erpProduct.goodsErp,
-          name: erpProduct.goodsNm,
-          price: Number(erpProduct.goodsAmt).toLocaleString('ko-KR') + '원',
-          cookingTime: 0,
-          tags: [],
-          registeredDate: new Date().toISOString().split('T')[0].replace(/-/g, '.'),
-          updatedDate: new Date().toISOString().split('T')[0].replace(/-/g, '.'),
+          goodsSt: 'Y',
+          goodsCh: 'BOTH',
+          goodsOp: 'BOTH',
+          categoryId: 0,
+          categoryNm: '미분류',
+          goodsNm: erpProduct.goodsNm,
+          goodsAmt: Number(erpProduct.goodsAmt),
+          goodsCnt: erpProduct.goodsCnt || '1',
+          goodsTm: 0,
+          goodsTag: '',
+          goodsErp: erpProduct.goodsErp,
+          createdDt: new Date().toISOString(),
+          modifiedDt: new Date().toISOString(),
         };
 
         openCreateProductModal(
-          (data) => {},
+          (data) => {
+            const payload: PostGoodsRequest = {
+              categoryId: data.categoryId ?? 0,
+              goodsNm: data.goodsNm,
+              goodsAmt: data.goodsAmt,
+              goodsCnt: data.goodsCnt,
+              goodsCh: data.goodsCh,
+              goodsOp: data.goodsOp,
+              goodsTm: data.goodsTm,
+              goodsImg: data.goodsImg instanceof File ? data.goodsImg : undefined,
+              goodsTag: data.goodsTag || undefined,
+              goodsErp: data.goodsErp || undefined,
+            };
+            postGoods(payload);
+          },
           initialData,
           () => {}
         );

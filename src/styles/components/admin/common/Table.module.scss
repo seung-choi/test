@@ -199,13 +199,15 @@
 }
 
 .menuImage {
-  width: 117px;
-  height: 72px;
+  width: 120px;
+  height: 70px;
   border-radius: 20px;
   object-fit: cover;
 
   img {
     border-radius: 20px;
+    width: 120px;
+    height: 70px;
 
     @include tablet {
       width: 78px;

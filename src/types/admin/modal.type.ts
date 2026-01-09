@@ -1,5 +1,5 @@
 import { MessageFormData, ErpProduct } from '@/types';
-import { MenuStatus } from '@/constants/admin/menuStatus';
+import type { GoodsChannel, GoodsOption, GoodsStatus } from '@/api/goods';
 
 export interface CancelModalState {
   isShow: boolean;
@@ -26,19 +26,22 @@ export interface ConfirmModalState {
 }
 
 export interface ProductFormData {
-  status: MenuStatus;
-  channels: string[];
-  types: string[];
-  image?: File;
-  category: string;
-  store: string;
-  code: string;
-  name: string;
-  price: string;
-  cookingTime: number;
-  tags: string[];
-  registeredDate?: string;
-  updatedDate?: string;
+  goodsId?: number;
+  categoryId?: number;
+  categoryNm: string;
+  goodsNm: string;
+  goodsAmt: number;
+  goodsCnt: string;
+  goodsCh: GoodsChannel;
+  goodsOp: GoodsOption;
+  goodsTm: number;
+  goodsImg?: File | string;
+  goodsOrd?: number;
+  goodsTag?: string;
+  goodsSt: GoodsStatus;
+  goodsErp?: string;
+  createdDt?: string;
+  modifiedDt?: string;
 }
 
 export interface ProductModalState {

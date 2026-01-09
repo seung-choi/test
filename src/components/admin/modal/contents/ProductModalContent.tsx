@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import CommonModalLayout from '@/components/admin/modal/CommonModalLayout';
 import commonStyles from '@/styles/components/admin/modal/CommonModal.module.scss';
 import styles from '@/styles/components/admin/modal/ProductModal.module.scss';
@@ -8,6 +8,8 @@ import { ProductFormData, Category, ErpProduct } from '@/types';
 import CustomSelect from '@/components/common/CustomSelect';
 import { MENU_TAGS, getTagClass } from '@/constants/admin/tags/menuTags';
 import useUnifiedModal from '@/hooks/admin/useUnifiedModal';
+import { formatDate, formatPrice } from '@/utils';
+import type { GoodsChannel, GoodsOption, GoodsStatus } from '@/api/goods';
 
 interface ProductModalContentProps {
   mode: 'create' | 'edit';
@@ -24,65 +26,124 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
 }) => {
   const [formData, setFormData] = useState<ProductFormData>(
     initialData || {
-      status: '판매',
-      channels: [],
-      types: [],
-      category: '',
-      store: '스타트 하우스',
-      code: '110595',
-      name: '100% 한우 버거',
-      price: '15,000원',
-      cookingTime: 0,
-      tags: [],
-      registeredDate: new Date().toISOString().split('T')[0].replace(/-/g, '.'),
-      updatedDate: new Date().toISOString().split('T')[0].replace(/-/g, '.'),
+      goodsSt: 'Y',
+      goodsCh: 'BOTH',
+      goodsOp: 'BOTH',
+      categoryId: 0,
+      categoryNm: '',
+      goodsNm: '100% 한우 버거',
+      goodsAmt: 15000,
+      goodsCnt: '1',
+      goodsTm: 0,
+      goodsTag: '',
+      goodsErp: '110595',
+      createdDt: new Date().toISOString(),
+      modifiedDt: new Date().toISOString(),
     }
   );
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { openCategoryModal, openErpSearchModal } = useUnifiedModal();
 
-  const statusOptions = ['판매', '대기', '중지'] as const;
-  const channelOptions = ['코스', '매장'];
-  const typeOptions = ['매장', '포장'];
+  const statusOptions: { value: GoodsStatus; label: string }[] = [
+    { value: 'Y', label: '판매' },
+    { value: 'S', label: '대기' },
+    { value: 'N', label: '중지' },
+  ];
+  const channelOptions: { value: GoodsChannel; label: string }[] = [
+    { value: 'COS', label: '코스' },
+    { value: 'HUS', label: '매장' },
+  ];
+  const typeOptions: { value: GoodsOption; label: string }[] = [
+    { value: 'DINE', label: '매장' },
+    { value: 'TAKE', label: '포장' },
+  ];
+  const categoryOptions = [
+    { value: '1', label: '음식' },
+    { value: '2', label: '음료' },
+    { value: '3', label: '기타' },
+  ];
 
-  const handleStatusChange = (status: '판매' | '대기' | '중지') => {
-    setFormData((prev) => ({ ...prev, status }));
+  const handleStatusChange = (status: GoodsStatus) => {
+    setFormData((prev) => ({ ...prev, goodsSt: status }));
   };
 
-  const handleChannelToggle = (channel: string) => {
+  const getSelectedChannels = (channel: GoodsChannel): GoodsChannel[] => {
+    return channel === 'BOTH' ? ['COS', 'HUS'] : [channel];
+  };
+
+  const getSelectedTypes = (option: GoodsOption): GoodsOption[] => {
+    return option === 'BOTH' ? ['DINE', 'TAKE'] : [option];
+  };
+
+  const getSelectedTags = useMemo(() => {
+    if (!formData.goodsTag) return [];
+    return formData.goodsTag
+      .split(',')
+      .map((tag) => tag.trim())
+      .filter(Boolean)
+      .map((tag) => tag.replace(/^#/, ''));
+  }, [formData.goodsTag]);
+
+  const getChannelValue = (channels: GoodsChannel[]): GoodsChannel => {
+    const hasCos = channels.includes('COS');
+    const hasHus = channels.includes('HUS');
+    if (hasCos && hasHus) return 'BOTH';
+    if (hasCos) return 'COS';
+    if (hasHus) return 'HUS';
+    return 'BOTH';
+  };
+
+  const getTypeValue = (types: GoodsOption[]): GoodsOption => {
+    const hasDine = types.includes('DINE');
+    const hasTake = types.includes('TAKE');
+    if (hasDine && hasTake) return 'BOTH';
+    if (hasDine) return 'DINE';
+    if (hasTake) return 'TAKE';
+    return 'BOTH';
+  };
+
+  const handleChannelToggle = (channel: GoodsChannel) => {
+    const selected = getSelectedChannels(formData.goodsCh);
+    const nextSelected = selected.includes(channel)
+      ? selected.filter((c) => c !== channel)
+      : [...selected, channel];
+
     setFormData((prev) => ({
       ...prev,
-      channels: prev.channels.includes(channel)
-        ? prev.channels.filter((c) => c !== channel)
-        : [...prev.channels, channel],
+      goodsCh: getChannelValue(nextSelected),
     }));
   };
 
-  const handleTypeToggle = (type: string) => {
+  const handleTypeToggle = (type: GoodsOption) => {
+    const selected = getSelectedTypes(formData.goodsOp);
+    const nextSelected = selected.includes(type)
+      ? selected.filter((t) => t !== type)
+      : [...selected, type];
+
     setFormData((prev) => ({
       ...prev,
-      types: prev.types.includes(type)
-        ? prev.types.filter((t) => t !== type)
-        : [...prev.types, type],
+      goodsOp: getTypeValue(nextSelected),
     }));
   };
 
   const handleTagToggle = (tag: string) => {
-    setFormData((prev) => {
-      const newTags = prev.tags.includes(tag)
-        ? prev.tags.filter((t) => t !== tag)
-        : prev.tags.length < 2
-        ? [...prev.tags, tag]
-        : prev.tags;
-      return { ...prev, tags: newTags };
-    });
+    const nextTags = getSelectedTags.includes(tag)
+      ? getSelectedTags.filter((t) => t !== tag)
+      : getSelectedTags.length < 2
+      ? [...getSelectedTags, tag]
+      : getSelectedTags;
+
+    setFormData((prev) => ({
+      ...prev,
+      goodsTag: nextTags.map((value) => `#${value}`).join(','),
+    }));
   };
 
   const handleCookingTimeChange = (delta: number) => {
     setFormData((prev) => ({
       ...prev,
-      cookingTime: Math.max(0, prev.cookingTime + delta * 10),
+      goodsTm: Math.max(0, prev.goodsTm + delta * 10),
     }));
   };
 
@@ -93,12 +154,12 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file && file.type.startsWith('image/')) {
-      setFormData((prev) => ({ ...prev, image: file }));
+      setFormData((prev) => ({ ...prev, goodsImg: file }));
     }
   };
 
   const handleSubmit = () => {
-    if (!formData.name || !formData.price || !formData.code) {
+    if (!formData.goodsNm || !formData.goodsAmt || !formData.goodsErp) {
       alert('필수 항목을 입력해주세요.');
       return;
     }
@@ -106,7 +167,7 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
   };
 
   const getTagClassName = (tag: string) => {
-    if (formData.tags.includes(tag)) {
+    if (getSelectedTags.includes(tag)) {
       return styles[getTagClass(tag)];
     }
     return styles.tagInactive;
@@ -132,10 +193,11 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
       (erpProduct: ErpProduct) => {
         setFormData(prev => ({
           ...prev,
-          category: prev.category || '미분류',
-          code: erpProduct.goodsErp,
-          name: erpProduct.goodsNm,
-          price: Number(erpProduct.goodsAmt).toLocaleString('ko-KR') + '원',
+          categoryNm: prev.categoryNm || '미분류',
+          goodsErp: erpProduct.goodsErp,
+          goodsNm: erpProduct.goodsNm,
+          goodsAmt: Number(erpProduct.goodsAmt),
+          goodsCnt: erpProduct.goodsCnt || prev.goodsCnt,
         }));
       },
       () => {}
@@ -176,13 +238,13 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
           <div className={styles.buttonGroup}>
             {statusOptions.map((status) => (
               <button
-                key={status}
+                key={status.value}
                 className={`${styles.optionButton} ${
-                  formData.status === status ? styles.active : ''
+                  formData.goodsSt === status.value ? styles.active : ''
                 }`}
-                onClick={() => handleStatusChange(status)}
+                onClick={() => handleStatusChange(status.value)}
               >
-                {status}
+                {status.label}
               </button>
             ))}
           </div>
@@ -196,13 +258,13 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
           <div className={styles.buttonGroup} style={{ height: '55px'}}>
             {channelOptions.map((channel) => (
               <button
-                key={channel}
+                key={channel.value}
                 className={`${styles.optionButton} ${styles.wide} ${
-                  formData.channels.includes(channel) ? styles.active : ''
+                  getSelectedChannels(formData.goodsCh).includes(channel.value) ? styles.active : ''
                 }`}
-                onClick={() => handleChannelToggle(channel)}
+                onClick={() => handleChannelToggle(channel.value)}
               >
-                {channel}
+                {channel.label}
               </button>
             ))}
           </div>
@@ -216,13 +278,13 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
           <div className={styles.buttonGroup} style={{ height: '55px'}}>
             {typeOptions.map((type) => (
               <button
-                key={type}
+                key={type.value}
                 className={`${styles.optionButton} ${styles.wide} ${
-                  formData.types.includes(type) ? styles.active : ''
+                  getSelectedTypes(formData.goodsOp).includes(type.value) ? styles.active : ''
                 }`}
-                onClick={() => handleTypeToggle(type)}
+                onClick={() => handleTypeToggle(type.value)}
               >
-                {type}
+                {type.label}
               </button>
             ))}
           </div>
@@ -232,9 +294,13 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
           <div className={styles.label} style={{height: '130px'}}>사진 등록</div>
           <div className={styles.imageUpload} onClick={handleImageSelect}>
             <div className={styles.imagePreview}>
-              {formData.image ? (
+              {formData.goodsImg ? (
                 <img
-                  src={URL.createObjectURL(formData.image)}
+                  src={
+                    formData.goodsImg instanceof File
+                      ? URL.createObjectURL(formData.goodsImg)
+                      : formData.goodsImg
+                  }
                   alt="preview"
                   className={styles.previewImage}
                 />
@@ -244,7 +310,7 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
                 </div>
               )}
               <div className={styles.imageCount}>
-                <span className={styles.current}>{formData.image ? 1 : 0}</span>
+                <span className={styles.current}>{formData.goodsImg ? 1 : 0}</span>
                 <span className={styles.separator}> / </span>
                 <span className={styles.max}>1</span>
               </div>
@@ -263,13 +329,18 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
           <div className={styles.label}>분류</div>
           <div className={styles.inputGroup}>
             <CustomSelect
-              value={formData.category}
-              onChange={(value) => setFormData({ ...formData, category: value })}
+              value={formData.categoryId ? String(formData.categoryId) : ''}
+              onChange={(value) => {
+                const selected = categoryOptions.find((option) => option.value === value);
+                setFormData({
+                  ...formData,
+                  categoryId: selected ? Number(selected.value) : 0,
+                  categoryNm: selected?.label || '',
+                });
+              }}
               options={[
                 { value: '', label: '선택해주세요' },
-                { value: '음식', label: '음식' },
-                { value: '음료', label: '음료' },
-                { value: '기타', label: '기타' },
+                ...categoryOptions,
               ]}
               placeholder="선택해주세요"
             />
@@ -278,25 +349,12 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
         </div>
 
         <div className={styles.formRow}>
-          <div className={styles.label}>매장</div>
-          <CustomSelect
-            value={formData.store}
-            onChange={(value) => setFormData({ ...formData, store: value })}
-            options={[
-              { value: '스타트 하우스', label: '스타트 하우스' },
-            ]}
-            className={styles.input}
-            style={{paddingLeft: 0, borderLeft: 0}}
-          />
-        </div>
-
-        <div className={styles.formRow}>
           <div className={styles.label}>상품 코드</div>
           <input
             type="text"
             className={styles.input}
-            value={formData.code}
-            onChange={(e) => setFormData({ ...formData, code: e.target.value })}
+            value={formData.goodsErp || ''}
+            onChange={(e) => setFormData({ ...formData, goodsErp: e.target.value })}
           />
         </div>
 
@@ -305,8 +363,8 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
           <input
             type="text"
             className={styles.input}
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            value={formData.goodsNm}
+            onChange={(e) => setFormData({ ...formData, goodsNm: e.target.value })}
           />
         </div>
 
@@ -315,22 +373,25 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
           <input
             type="text"
             className={styles.input}
-            value={formData.price}
-            onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+            value={formData.goodsAmt ? formatPrice(formData.goodsAmt) : ''}
+            onChange={(e) => {
+              const nextValue = e.target.value.replace(/[^0-9]/g, '');
+              setFormData({ ...formData, goodsAmt: nextValue ? Number(nextValue) : 0 });
+            }}
           />
         </div>
 
         <div className={styles.formRow}>
-          <div className={styles.label} style={{height: '60px'}}>조리 시간</div>
+          <div className={styles.label} style={{height: '80px'}}>조리 시간</div>
           <div className={styles.timeControl}>
             <button
-              className={`${styles.timeButton} ${formData.cookingTime === 0 ? styles.disabled : ''}`}
+              className={`${styles.timeButton} ${formData.goodsTm === 0 ? styles.disabled : ''}`}
               onClick={() => handleCookingTimeChange(-1)}
-              disabled={formData.cookingTime === 0}
+              disabled={formData.goodsTm === 0}
             >
               <img src="/assets/image/global/plusminus/minus.svg" alt="minus" />
             </button>
-            <div className={styles.timeValue}>{formData.cookingTime}</div>
+            <div className={styles.timeValue}>{formData.goodsTm}</div>
             <button
               className={styles.timeButton}
               onClick={() => handleCookingTimeChange(1)}
@@ -341,7 +402,7 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
         </div>
 
         <div className={styles.formRow}>
-          <div className={styles.label} style={{height: '50px'}}>
+          <div className={styles.label} style={{height: '60px'}}>
             태그 설정
             <span className={styles.labelSub}>(최대 2개)</span>
           </div>
@@ -358,19 +419,27 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
           </div>
         </div>
 
-        <div className={styles.formRow}>
-          <div className={styles.label}>등록 정보</div>
-          <div className={styles.infoGroup}>
-            <div className={styles.infoItem}>
-              <span className={styles.infoLabel}>등록 일자</span>
-              <span className={styles.infoValue}>{formData.registeredDate}</span>
-            </div>
-            <div className={styles.infoItem}>
-              <span className={styles.infoLabel}>업데이트 일자</span>
-              <span className={styles.infoValue}>{formData.updatedDate}</span>
+        {mode === 'edit' && (
+          <div className={styles.formRow}>
+            <div className={styles.label} style={{height: '55px'}}>등록 정보</div>
+            <div className={styles.infoGroup}>
+              <div className={styles.infoItem}>
+                <span className={styles.infoLabel}>등록 일자</span>
+                <span className={styles.infoValue}>
+                  {formData.createdDt ? formatDate(formData.createdDt) : '-'}
+                </span>
+              </div>
+              {formData.modifiedDt && (
+                <div className={styles.infoItem}>
+                  <span className={styles.infoLabel}>업데이트 일자</span>
+                  <span className={styles.infoValue}>
+                    {formatDate(formData.modifiedDt)}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
-        </div>
+        )}
       </div>
     </CommonModalLayout>
   );
