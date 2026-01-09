@@ -15,6 +15,7 @@ const Lounge = () => {
   const [selectedCardIndex, setSelectedCardIndex] = useState<number>(0);
   const [isHeaderExpanded, setIsHeaderExpanded] = useState(true);
   const [isCardScrolled, setIsCardScrolled] = useState(false);
+  const [isCardScrolledToEnd, setIsCardScrolledToEnd] = useState(false);
 
   const cardContainerRef = useRef<HTMLDivElement>(null);
   const { openCancelOrderModal, openSendMessageModal } = useUnifiedModal();
@@ -42,7 +43,9 @@ const Lounge = () => {
 
   const handleCardScroll = useCallback(() => {
     if (cardContainerRef.current) {
-      setIsCardScrolled(cardContainerRef.current.scrollLeft > 0);
+      const { scrollLeft, scrollWidth, clientWidth } = cardContainerRef.current;
+      setIsCardScrolled(scrollLeft > 0);
+      setIsCardScrolledToEnd(scrollLeft + clientWidth >= scrollWidth - 1);
     }
   }, []);
 
@@ -146,7 +149,7 @@ const Lounge = () => {
               />
             ))}
           </div>
-          {filteredCards.length > 0 && renderScrollButton('right', true)}
+          {filteredCards.length > 0 && renderScrollButton('right', !isCardScrolledToEnd)}
         </div>
       </div>
     </div>

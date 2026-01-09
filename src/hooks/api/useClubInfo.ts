@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getClubInfo } from '@/api/monitoring';
+import { getShopInfo } from '@/api/gps';
 import { ApiCourseType, ApiHoleType } from '@/types/club.type';
 
 export interface CourseWithHoles {
@@ -29,7 +29,7 @@ export const useClubInfo = (options?: {
 }) => {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['clubInfo'],
-    queryFn: getClubInfo,
+    queryFn: getShopInfo,
     refetchInterval: options?.refetchInterval,
     enabled: options?.enabled ?? true,
     retry: 2,

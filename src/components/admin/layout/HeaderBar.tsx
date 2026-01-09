@@ -15,6 +15,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onExpandedChange }) => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [firstCourseScrolled, setFirstCourseScrolled] = useState(false);
   const [secondCourseScrolled, setSecondCourseScrolled] = useState(false);
+  const [hoveredCourse, setHoveredCourse] = useState<string | null>(null);
 
   const firstCourseScheduleRef = useRef<HTMLDivElement>(null);
   const secondCourseScheduleRef = useRef<HTMLDivElement>(null);
@@ -81,11 +82,29 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onExpandedChange }) => {
       )
     : [];
 
-  const renderStatusIndicator = (isGroup: boolean) => {
+  const renderStatusIndicator = (isGroup: boolean, courseColor: string) => {
     if (isGroup) {
-      return <div className={styles.statusIconLarge} />;
+      return (
+        <div
+          className={styles.statusIconLarge}
+          style={{
+            background: `${courseColor}80`,
+            outlineColor: courseColor,
+          }}
+        >
+          <div
+            className={styles.statusIconLargeInner}
+            style={{ background: courseColor }}
+          />
+        </div>
+      );
     }
-    return <div className={styles.statusIcon} />;
+    return (
+      <div
+        className={styles.statusIcon}
+        style={{ background: courseColor }}
+      />
+    );
   };
 
   const getCourseColor = (courseName: string): string => {
@@ -169,6 +188,67 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onExpandedChange }) => {
     return classes.join(' ');
   };
 
+  const getCourseScheduleData = (courseName: string) => {
+    return golferPositions.filter(
+      (golfer) => golfer.outCourse.toUpperCase() === courseName.toUpperCase()
+    );
+  };
+
+  const renderCourseSummary = (course: typeof courses[0]) => {
+    const scheduleData = getCourseScheduleData(course.courseNm);
+    const waitingCount = scheduleData.length;
+    const isHovered = hoveredCourse === course.courseNm;
+
+    return (
+      <div
+        key={course.courseId}
+        className={styles.courseSummaryItem}
+        onMouseEnter={() => setHoveredCourse(course.courseNm)}
+        onMouseLeave={() => setHoveredCourse(null)}
+      >
+        <div className={styles.courseSummaryHeader}>
+          <div
+            className={styles.courseSummaryButton}
+            style={{
+              backgroundColor: course.courseCol ? `${course.courseCol}33` : 'rgba(219, 0, 0, 0.20)',
+              outlineColor: course.courseCol || '#CE0A0A',
+            }}
+          >
+            {course.courseNm}
+          </div>
+          <div
+            className={styles.courseSummaryWaiting}
+            style={{
+              borderBottomColor: course.courseCol || '#DC0000',
+            }}
+          >
+            {waitingCount}팀 대기
+          </div>
+        </div>
+
+        {isHovered && scheduleData.length > 0 && (
+          <div className={styles.courseSummaryPopover}>
+            <div className={styles.courseSummaryPopoverContent}>
+              {scheduleData.map((schedule) => (
+                <div key={schedule.bookingId} className={styles.courseSummaryScheduleItem}>
+                  <div className={styles.statusIndicator}>
+                    {renderStatusIndicator(schedule.isGroup, getCourseColor(schedule.outCourse))}
+                  </div>
+                  <div className={styles.userInfo}>
+                    <div className={styles.userName}>{schedule.bookingNm}</div>
+                  </div>
+                  <div className={styles.timeInfo}>
+                    <div className={styles.timeText}>{schedule.bookingTm}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   const renderScheduleRow = (
     scheduleData: GolferPositionData[],
     scrollRef: React.RefObject<HTMLDivElement>,
@@ -199,7 +279,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onExpandedChange }) => {
           scheduleData.map((schedule) => (
             <div key={schedule.bookingId} className={styles.scheduleItem}>
               <div className={styles.statusIndicator}>
-                {renderStatusIndicator(schedule.isGroup)}
+                {renderStatusIndicator(schedule.isGroup, getCourseColor(schedule.outCourse))}
               </div>
               <div className={styles.userInfo}>
                 <div className={styles.userName}>{schedule.bookingNm}</div>
@@ -296,7 +376,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onExpandedChange }) => {
 
             <div className={styles.startHouse}>
               <div className={styles.startHouseTitle}>
-                <img src='/assets/image/layout/header/home.svg' alt="start-house" />
+                <img src='/assets/image/admin/layout/header/home.svg' alt="start-house" />
               </div>
             </div>
 
@@ -332,23 +412,29 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onExpandedChange }) => {
           </div>
         </div>
 
-        <div className={styles.scheduleSection}>
-          {renderScheduleRow(
-            firstCourseScheduleData,
-            firstCourseScheduleRef,
-            firstCourseScrolled,
-            handleFirstCourseScroll
-          )}
+        {courses.length >= 3 ? (
+          <div className={styles.courseSummarySection}>
+            {courses.map((course) => renderCourseSummary(course))}
+          </div>
+        ) : (
+          <div className={styles.scheduleSection}>
+            {renderScheduleRow(
+              firstCourseScheduleData,
+              firstCourseScheduleRef,
+              firstCourseScrolled,
+              handleFirstCourseScroll
+            )}
 
-          <div className={styles.spacer} />
+            <div className={styles.spacer} />
 
-          {renderScheduleRow(
-            secondCourseScheduleData,
-            secondCourseScheduleRef,
-            secondCourseScrolled,
-            handleSecondCourseScroll
-          )}
-        </div>
+            {renderScheduleRow(
+              secondCourseScheduleData,
+              secondCourseScheduleRef,
+              secondCourseScrolled,
+              handleSecondCourseScroll
+            )}
+          </div>
+        )}
 
         <button
           className={styles.toggleButton}

@@ -109,9 +109,9 @@ const InfoCard: React.FC<InfoCardProps> = ({
 
   const getArrowIcon = () => {
     if (selectedTable || isDisabledStatus) {
-      return <img src={'/assets/image/info-card/arrow-dark.svg'} alt="arrow" />;
+      return <img src={'/assets/image/admin/info-card/arrow-dark.svg'} alt="arrow" />;
     }
-    return <img src={'/assets/image/info-card/arrow-red.svg'} alt="arrow" />
+    return <img src={'/assets/image/admin/info-card/arrow-red.svg'} alt="arrow" />
   };
 
 
@@ -152,7 +152,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
           </div>
 
           <div className={styles.tableInfo}>
-              <img src="/assets/image/info-card/location.svg" alt="위치" />
+              <img src="/assets/image/admin/info-card/location.svg" alt="위치" />
               <span className={styles.tableNumber}>{orderLocation}</span>
             </div>
         </div>
@@ -174,7 +174,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
                 <span className={styles.customerTime}>{customerInfo.time}</span>
               </div>
               <button style={{'cursor': 'pointer'}} onClick={onMessageOrder}>
-                <img src="/assets/image/info-card/meassage.svg" alt="메시지" />
+                <img src="/assets/image/admin/info-card/meassage.svg" alt="메시지" />
               </button>
             </div>
           </div>

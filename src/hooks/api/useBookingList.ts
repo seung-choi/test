@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getBookingList } from '@/api/monitoring';
+import { getBookingList } from '@/api/gps';
 import { GpsBookingType } from '@/types/booking.type';
 
 export interface GolferPositionData {
