@@ -371,7 +371,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onExpandedChange }) => {
                 borderColor: firstCourse?.courseCol || '#D42B2B',
               }}
             >
-              {firstCourse?.courseNm || 'Course 1'}
+              {firstCourse?.courseNm || '코스 1'}
             </div>
 
             <div className={styles.startHouse}>
@@ -389,7 +389,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onExpandedChange }) => {
                 borderColor: secondCourse?.courseCol || '#FFD500',
               }}
             >
-              {secondCourse?.courseNm || 'Course 2'}
+              {secondCourse?.courseNm || '코스 2'}
             </div>
           </div>
 

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getShopInfo } from '@/api/gps';
+import { getShopInfo } from '@/api/shop';
 import { ApiCourseType, ApiHoleType } from '@/types/club.type';
 
 export interface CourseWithHoles {
