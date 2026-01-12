@@ -5,6 +5,7 @@ export interface MenuTableRow {
   store: string;
   image?: string;
   code?: string;
+  categoryId?: number;
   category?: string;
   name?: string;
   price: number;

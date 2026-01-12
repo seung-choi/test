@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import styles from '@/styles/components/admin/common/Table.module.scss';
 import { getTagClass } from '@/constants/admin/tags/menuTags';
 import {formatDate, formatPrice} from "@/utils/common/formatDataUtils";
-import { MENU_STATUS_OPTIONS, MENU_STATUS_STYLES, MenuStatus } from '@/constants/admin/menuStatus';
+import { MENU_STATUS_OPTIONS, getMenuStatusStyle, MenuStatus } from '@/constants/admin/menuStatus';
 import CustomSelect from '@/components/common/CustomSelect';
 
 export interface TableRowData {
@@ -81,7 +81,7 @@ export const renderStatusSelector = (
     value={value}
     onChange={(newValue) => onStatusChange?.(String(row.id), newValue as MenuStatus)}
     options={MENU_STATUS_OPTIONS.map((status) => ({ value: status, label: status }))}
-    className={`${styles.statusSelector} ${styles[MENU_STATUS_STYLES[value]]}`}
+    className={`${styles.statusSelector} ${styles[getMenuStatusStyle(value)]}`}
   />
 );
 

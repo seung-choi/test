@@ -11,7 +11,7 @@ import { getOrderCounts } from '@/utils';
 import { useHorizontalScroll } from '@/hooks/common/useScrollManagement';
 
 const Lounge = () => {
-  const [activeFilter, setActiveFilter] = useState<string>('all');
+  const [activeFilter, setActiveFilter] = useState<string>('order');
   const [selectedCardIndex, setSelectedCardIndex] = useState<number>(0);
   const [isHeaderExpanded, setIsHeaderExpanded] = useState(true);
   const [isCardScrolled, setIsCardScrolled] = useState(false);
@@ -21,12 +21,10 @@ const Lounge = () => {
   const { openCancelOrderModal, openSendMessageModal } = useUnifiedModal();
   const { handleScroll } = useHorizontalScroll();
 
-  const filteredCards = useMemo(() => {
-    if (activeFilter === 'all') {
-      return mockInfoCards;
-    }
-    return mockInfoCards.filter(card => card.status === activeFilter);
-  }, [activeFilter]);
+  const filteredCards = useMemo(
+    () => mockInfoCards.filter(card => card.status === activeFilter),
+    [activeFilter]
+  );
 
   const currentCard = filteredCards[selectedCardIndex] || filteredCards[0];
 

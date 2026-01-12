@@ -20,7 +20,7 @@ const SideTab: React.FC<SideTabProps> = ({
                                            onFilterChange,
                                            hasNotification = false
                                          }) => {
-  const [activeFilter, setActiveFilter] = useState('all');
+  const [activeFilter, setActiveFilter] = useState('order');
   const [drawer, setDrawer] = useRecoilState(drawerState);
   const [notificationOption, setNotificationOption] = useState<NotificationOption>('repeat');
   const [showNotificationPopover, setShowNotificationPopover] = useState(false);
@@ -71,11 +71,10 @@ const SideTab: React.FC<SideTabProps> = ({
   ];
 
   const filterItems = [
-    { key: 'all', label: '전체', count: orderCounts.all },
-    { key: 'order', label: '주문', count: orderCounts.order },
-    { key: 'accept', label: '수락', count: orderCounts.accept },
-    { key: 'complete', label: '완료', count: orderCounts.complete },
+    { key: 'order', label: '접수', count: orderCounts.order },
+    { key: 'accept', label: '진행중', count: orderCounts.accept },
     { key: 'cancel', label: '취소', count: orderCounts.cancel },
+    { key: 'complete', label: '완료', count: orderCounts.complete },
   ];
 
   return (
@@ -97,8 +96,12 @@ const SideTab: React.FC<SideTabProps> = ({
               >
                 <div className={styles.filterLabel}>
                   {item.label}
-                  {hasNotification && (
-                      <div className={styles.notificationDot}></div>
+                  {hasNotification && item.key === 'order' && (
+                    <div className={styles.notificationDot}>
+                      <div className={styles.notificationDotBg}>
+                        <div className={styles.notificationDotText}>N</div>
+                      </div>
+                    </div>
                   )}
                 </div>
                 <div className={styles.filterCount}>({item.count})</div>

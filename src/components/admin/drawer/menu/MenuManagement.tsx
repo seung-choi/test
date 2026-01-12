@@ -17,7 +17,7 @@ import { drawerState } from '@/lib/recoil';
 import useUnifiedModal from '@/hooks/admin/useUnifiedModal';
 import { MenuTableRow, ProductFormData } from '@/types';
 import { MenuStatus } from '@/constants/admin/menuStatus';
-import { useGoodsList, usePatchGoodsOrder } from '@/hooks/api';
+import { useGoodsList, usePatchGoodsOrder, useDeleteGoodsList, usePatchGoodsStatus } from '@/hooks/api';
 import {
   mapGoodsStatus,
   mapGoodsChannels,
@@ -46,6 +46,8 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
   const { openEditProductModal, openDeleteConfirmModal } = useUnifiedModal();
   const { data: goodsList = [] } = useGoodsList();
   const { mutateAsync: patchGoodsOrder } = usePatchGoodsOrder();
+  const { mutateAsync: deleteGoodsList } = useDeleteGoodsList();
+  const { mutateAsync: patchGoodsStatus } = usePatchGoodsStatus();
 
   const mappedMenuData = useMemo<MenuTableRow[]>(
     () =>
@@ -54,6 +56,7 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
         store: '-',
         image: goods.goodsImg || '',
         code: goods.goodsErp || '',
+        categoryId: goods.categoryId,
         category: goods.categoryNm || '',
         name: goods.goodsNm || '',
         price: goods.goodsAmt ?? 0,
@@ -118,11 +121,21 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
 
     openDeleteConfirmModal(
       itemsToDelete,
-      () => {
-        const newData = menuData.filter(item => !selectedItems.includes(String(item.id)));
-        setMenuData(newData);
-        setSelectedItems([]);
-        onDelete?.(selectedItems);
+      async () => {
+        try {
+          const goodsIdList = selectedItems.map(id => Number(id));
+          await deleteGoodsList(goodsIdList);
+
+          const newData = menuData.filter(item => !selectedItems.includes(String(item.id)));
+          setMenuData(newData);
+          setSelectedItems([]);
+          onDelete?.(selectedItems);
+
+          alert('삭제되었습니다.');
+        } catch (error) {
+          console.error('Failed to delete goods:', error);
+          alert('삭제에 실패했습니다.');
+        }
       }
     );
   };
@@ -146,7 +159,7 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
 
     const initialData: ProductFormData = {
       goodsId: menuItem.id,
-      categoryId: 0,
+      categoryId: menuItem.categoryId ?? 0,
       categoryNm: menuItem.category || '',
       goodsNm: menuItem.name || '',
       goodsAmt: menuItem.price || 0,
@@ -161,27 +174,30 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
       createdDt: menuItem?.registerDate || '',
     };
 
-    openEditProductModal(
-        initialData,
-        () => {
-          // ProductModalContent에서 API 호출 처리, goodsList가 자동으로 refetch됨
-        },
-        () => {}
-    );
+    openEditProductModal(initialData);
   };
 
-  const handleStatusChange = (itemId: string, status: MenuStatus) => {
-    setMenuData(prevData => {
-      return prevData.map(item => {
-        if (String(item.id) === itemId) {
-          return {
-            ...item,
-            status: status
-          };
-        }
-        return item;
+  const handleStatusChange = async (itemId: string, status: MenuStatus) => {
+    try {
+      const goodsId = Number(itemId);
+      const goodsStatus = mapMenuStatusToGoods(status);
+
+      await patchGoodsStatus({ goodsId, goodsSt: goodsStatus });
+
+      setMenuData(prevData => {
+        return prevData.map(item => {
+          if (String(item.id) === itemId) {
+            return {
+              ...item,
+              status: status
+            };
+          }
+          return item;
+        });
       });
-    });
+    } catch (error) {
+      alert('상태 변경에 실패했습니다.');
+    }
   };
 
   const columns = useMemo(

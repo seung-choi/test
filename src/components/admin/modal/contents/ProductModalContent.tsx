@@ -13,6 +13,8 @@ import type { GoodsChannel, GoodsOption, GoodsStatus } from '@/api/goods';
 import { useCategoryList } from '@/hooks/api/useCategory';
 import { usePostGoods, usePutGoods } from '@/hooks/api/useGoods';
 import { PostGoodsRequest, PutGoodsRequest } from '@/api/goods';
+import { GOODS_STATUS_OPTIONS } from '@/constants/admin/menuStatus';
+import { CHANNEL_OPTIONS, TYPE_OPTIONS } from '@/constants/admin/goodsOptions';
 import ImageUpload from './product/ImageUpload';
 import TimeControl from './product/TimeControl';
 import TagSelector from './product/TagSelector';
@@ -53,19 +55,6 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
   const postGoodsMutation = usePostGoods();
   const putGoodsMutation = usePutGoods();
 
-  const statusOptions: { value: GoodsStatus; label: string }[] = [
-    { value: 'Y', label: '판매' },
-    { value: 'S', label: '품절' },
-    { value: 'N', label: '중지' },
-  ];
-  const channelOptions: { value: Exclude<GoodsChannel, 'BOTH'>; label: string }[] = [
-    { value: 'COS', label: '코스' },
-    { value: 'HUS', label: '매장' },
-  ];
-  const typeOptions: { value: Exclude<GoodsOption, 'BOTH'>; label: string }[] = [
-    { value: 'DINE', label: '매장' },
-    { value: 'TAKE', label: '포장' },
-  ];
   const categoryOptions = categoryList.map((category) => ({
     value: String(category.categoryId),
     label: category.categoryNm,
@@ -180,31 +169,6 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
     openCategoryModal(() => {});
   };
 
-  const handleErpUpdate = () => {
-    openErpSearchModal(
-      (erpProduct: ErpProduct) => {
-        setFormData(prev => ({
-          ...prev,
-          categoryNm: prev.categoryNm || '미분류',
-          goodsErp: erpProduct.goodsErp,
-          goodsNm: erpProduct.goodsNm,
-          goodsAmt: Number(erpProduct.goodsAmt),
-          goodsCnt: erpProduct.goodsCnt || prev.goodsCnt,
-        }));
-      },
-      () => {}
-    );
-  };
-
-  const headerRight = mode === 'edit' ? (
-    <div className={styles.erpUpdateButton} onClick={handleErpUpdate}>
-      <div className={styles.erpUpdateText}>ERP 정보 업데이트</div>
-      <div className={styles.erpUpdateIcon}>
-        <img src="/assets/image/global/reload.svg" alt="erp_update" />
-      </div>
-    </div>
-  ) : undefined;
-
   const isSubmitting = postGoodsMutation.isPending || putGoodsMutation.isPending;
 
   const buttons = (
@@ -221,7 +185,6 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
   return (
     <CommonModalLayout
       title={mode === 'create' ? '상품 등록' : '상품 수정'}
-      headerRight={headerRight}
       buttons={buttons}
       contentClassName={styles.scrollContent}
     >
@@ -230,7 +193,7 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
         <div className={styles.formRow}>
           <div className={styles.label}>상태</div>
           <div className={styles.buttonGroup}>
-            {statusOptions.map((status) => (
+            {GOODS_STATUS_OPTIONS.map((status) => (
               <button
                 key={status.value}
                 className={`${styles.optionButton} ${
@@ -250,7 +213,7 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
             <span className={styles.labelSub}>(중복선택 가능)</span>
           </div>
           <div className={`${styles.buttonGroup} ${styles.buttonGroupMedium}`}>
-            {channelOptions.map((channel) => (
+            {CHANNEL_OPTIONS.map((channel) => (
               <button
                 key={channel.value}
                 className={`${styles.optionButton} ${styles.wide} ${
@@ -270,7 +233,7 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
             <span className={styles.labelSub}>(중복선택 가능)</span>
           </div>
           <div className={`${styles.buttonGroup} ${styles.buttonGroupMedium}`}>
-            {typeOptions.map((type) => (
+            {TYPE_OPTIONS.map((type) => (
               <button
                 key={type.value}
                 className={`${styles.optionButton} ${styles.wide} ${

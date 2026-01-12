@@ -18,7 +18,6 @@ import {
   ErpProduct
 } from '@/types';
 
-// 공통 close 함수 생성 헬퍼
 const createCloseModal = <T extends { isShow: boolean }>(
   setState: (updater: (prev: T) => T) => void
 ) => {
@@ -35,7 +34,6 @@ const useUnifiedModal = () => {
   const [deleteConfirmModal, setDeleteConfirmModal] = useRecoilState(deleteConfirmModalState);
   const [cancelReasonManagementModal, setCancelReasonManagementModal] = useRecoilState(cancelReasonManagementModalState);
 
-  // Close 함수들
   const closeCancelModal = createCloseModal(setCancelModal);
   const closeMessageModal = createCloseModal(setMessageModal);
   const closeConfirmModal = createCloseModal(setConfirmModal);
@@ -45,7 +43,6 @@ const useUnifiedModal = () => {
   const closeDeleteConfirmModal = createCloseModal(setDeleteConfirmModal);
   const closeCancelReasonManagementModal = createCloseModal(setCancelReasonManagementModal);
 
-  // 취소 사유 모달
   const openCancelModal = (onConfirm: (reason: string) => void, onCancel?: () => void) => {
     setCancelModal({
       isShow: true,
@@ -54,7 +51,6 @@ const useUnifiedModal = () => {
     });
   };
 
-  // 메시지 모달
   const openMessageModal = (
     title: string,
     recipients: string[],
@@ -85,7 +81,6 @@ const useUnifiedModal = () => {
     openCancelModal(onConfirm, onCancel);
   };
 
-  // 확인 모달
   const openConfirmModal = (
     title: string,
     desc: string,
@@ -105,7 +100,6 @@ const useUnifiedModal = () => {
     });
   };
 
-  // 상품 등록/수정 모달
   const openProductModal = (
     mode: 'create' | 'edit',
     onSubmit: (data: ProductFormData) => void,
@@ -122,22 +116,21 @@ const useUnifiedModal = () => {
   };
 
   const openCreateProductModal = (
-    onSubmit: (data: ProductFormData) => void,
+    onSubmit?: (data: ProductFormData) => void,
     initialData?: ProductFormData,
     onCancel?: () => void
   ) => {
-    openProductModal('create', onSubmit, initialData, onCancel);
+    openProductModal('create', onSubmit || (() => {}), initialData, onCancel);
   };
 
   const openEditProductModal = (
     initialData: ProductFormData,
-    onSubmit: (data: ProductFormData) => void,
+    onSubmit?: (data: ProductFormData) => void,
     onCancel?: () => void
   ) => {
-    openProductModal('edit', onSubmit, initialData, onCancel);
+    openProductModal('edit', onSubmit || (() => {}), initialData, onCancel);
   };
 
-  // 분류 설정 모달
   const openCategoryModal = (onCancel?: () => void) => {
     setCategoryModal({
       isShow: true,
@@ -145,7 +138,6 @@ const useUnifiedModal = () => {
     });
   };
 
-  // ERP 검색 모달
   const openErpSearchModal = (
     onSelect: (product: ErpProduct) => void,
     onCancel?: () => void
@@ -157,7 +149,6 @@ const useUnifiedModal = () => {
     });
   };
 
-  // 삭제 확인 모달
   const openDeleteConfirmModal = (
     items: DeleteItem[],
     onConfirm: () => void,
@@ -171,7 +162,6 @@ const useUnifiedModal = () => {
     });
   };
 
-  // 취소 사유 관리 모달
   const openCancelReasonManagementModal = (
     reasons: CancelReason[] | undefined,
     onSubmit: (reasons: CancelReason[]) => void,

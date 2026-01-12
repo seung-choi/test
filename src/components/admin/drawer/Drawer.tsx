@@ -76,13 +76,7 @@ const Drawer: React.FC<DrawerProps> = ({
           modifiedDt: new Date().toISOString(),
         };
 
-        openCreateProductModal(
-          () => {
-            // ProductModalContent에서 직접 API 호출 처리
-          },
-          initialData,
-          () => {}
-        );
+        openCreateProductModal(undefined, initialData);
       },
       () => {}
     );

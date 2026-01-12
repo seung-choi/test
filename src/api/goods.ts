@@ -3,7 +3,7 @@ import { getOriginURL } from '@/api/API_URL';
 
 export type GoodsChannel = 'COS' | 'HUS' | 'BOTH';
 export type GoodsOption = 'DINE' | 'TAKE' | 'BOTH';
-export type GoodsStatus = 'D' | 'S' | 'N' | 'Y';
+export type GoodsStatus = 'S' | 'N' | 'Y';
 
 export interface GetGoodsResponse {
   goodsId: number;
