@@ -119,7 +119,11 @@ const Lounge = () => {
         <HeaderBar
           onExpandedChange={handleHeaderExpandedChange}
         />
-        <div className={styles.scrollButtonWrapper}>
+        <div
+          className={`${styles.scrollButtonWrapper} ${
+            isHeaderExpanded ? styles.scrollButtonExpanded : styles.scrollButtonCollapsed
+          }`}
+        >
           {filteredCards.length > 0 && renderScrollButton('left', isCardScrolled)}
           <div
             className={`${styles.infoCardContainer} ${isHeaderExpanded ? styles.headerExpanded : styles.headerCollapsed}`}

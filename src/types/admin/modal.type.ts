@@ -60,8 +60,6 @@ export interface Category {
 
 export interface CategoryModalState {
   isShow: boolean;
-  categories: Category[];
-  onSubmit?: (categories: Category[]) => void;
   onCancel?: () => void;
 }
 
@@ -86,14 +84,15 @@ export interface DeleteConfirmModalState {
 }
 
 export interface CancelReason {
-  id: string;
-  content: string;
-  order: number;
+  categoryId: number | null;
+  categoryNm: string;
+  categoryOrd: number;
+  categoryErp?: string;
 }
 
 export interface CancelReasonManagementModalState {
   isShow: boolean;
-  reasons: CancelReason[];
+  reasons?: CancelReason[];
   onSubmit?: (reasons: CancelReason[]) => void;
   onCancel?: () => void;
 }

@@ -61,11 +61,12 @@ const UnifiedModal = () => {
     closeModal: closeProductModal,
   });
 
-  const categoryHandlers = createModalHandlers({
-    onSubmit: categoryModal.onSubmit,
-    onCancel: categoryModal.onCancel,
-    closeModal: closeCategoryModal,
-  });
+  const categoryHandlers = {
+    handleClose: () => {
+      categoryModal.onCancel?.();
+      closeCategoryModal();
+    },
+  };
 
   const erpSearchHandlers = createModalHandlers({
     onSelect: erpSearchModal.onSelect,
@@ -124,11 +125,7 @@ const UnifiedModal = () => {
       </ModalWrapper>
 
       <ModalWrapper isShow={categoryModal.isShow} onClose={categoryHandlers.handleClose}>
-        <CategoryModalContent
-          initialCategories={categoryModal.categories}
-          onSubmit={categoryHandlers.handleSubmit}
-          onClose={categoryHandlers.handleClose}
-        />
+        <CategoryModalContent onClose={categoryHandlers.handleClose} />
       </ModalWrapper>
 
       <ModalWrapper isShow={erpSearchModal.isShow} onClose={erpSearchHandlers.handleClose}>

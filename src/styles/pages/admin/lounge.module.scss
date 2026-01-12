@@ -69,6 +69,14 @@
   height: calc(100% - 12.5rem);
 }
 
+.scrollButtonExpanded {
+  height: calc(100% - 12.5rem);
+}
+
+.scrollButtonCollapsed {
+  height: calc(100% - 50px);
+}
+
 .scrollButton {
   position: absolute;
   width: 10rem;

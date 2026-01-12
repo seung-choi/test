@@ -185,6 +185,7 @@ const SideTab: React.FC<SideTabProps> = ({
         title="메뉴 관리"
         mode='menu'
         onDelete={() => menuManagementRef.current?.handleDelete()}
+        onReorderCommit={() => menuManagementRef.current?.handleCommitReorder()}
       >
         <MenuManagement ref={menuManagementRef} onClose={() => setDrawer(prev => ({ ...prev, openDrawer: null }))} />
       </Drawer>

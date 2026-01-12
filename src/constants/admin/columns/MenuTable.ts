@@ -34,12 +34,6 @@ export const getMenuTableColumns = ({
         render: isReorderMode ? renderDragHandle() : renderCheckbox(selectedItems, handleItemSelect),
     },
     {
-        key: 'store',
-        label: '매장',
-        width: '10%',
-        render: renderText,
-    },
-    {
         key: 'image',
         label: '이미지',
         width: '9%',
@@ -60,7 +54,7 @@ export const getMenuTableColumns = ({
     {
         key: 'name',
         label: '메뉴명',
-        width: '9%',
+        width: '15%',
         render: renderText,
     },
     {

@@ -138,15 +138,9 @@ const useUnifiedModal = () => {
   };
 
   // 분류 설정 모달
-  const openCategoryModal = (
-    categories: Category[],
-    onSubmit: (categories: Category[]) => void,
-    onCancel?: () => void
-  ) => {
+  const openCategoryModal = (onCancel?: () => void) => {
     setCategoryModal({
       isShow: true,
-      categories,
-      onSubmit,
       onCancel,
     });
   };
@@ -179,13 +173,13 @@ const useUnifiedModal = () => {
 
   // 취소 사유 관리 모달
   const openCancelReasonManagementModal = (
-    reasons: CancelReason[],
+    reasons: CancelReason[] | undefined,
     onSubmit: (reasons: CancelReason[]) => void,
     onCancel?: () => void
   ) => {
     setCancelReasonManagementModal({
       isShow: true,
-      reasons,
+      reasons: reasons || [],
       onSubmit,
       onCancel,
     });

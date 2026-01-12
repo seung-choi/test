@@ -3,10 +3,9 @@ import { useRecoilState } from 'recoil';
 import styles from '@/styles/components/admin/drawer/Drawer.module.scss';
 import { drawerState } from '@/lib/recoil';
 import useUnifiedModal from '@/hooks/admin/useUnifiedModal';
-import { Category, ProductFormData, CancelReason, ErpProduct } from '@/types';
+import { Category, ProductFormData, ErpProduct } from '@/types';
 import { useScrollLock } from '@/hooks/common/useScrollManagement';
-import { usePostGoods, usePutGoodsErpList } from '@/hooks/api';
-import { PostGoodsRequest } from '@/api/goods';
+import { usePutGoodsErpList } from '@/hooks/api';
 
 type DrawerMode = 'setting' | 'menu';
 
@@ -18,6 +17,7 @@ interface DrawerProps {
   hasBackgroundImage?: boolean;
   mode?: DrawerMode;
   onDelete?: () => void;
+  onReorderCommit?: () => void;
 }
 
 const Drawer: React.FC<DrawerProps> = ({
@@ -27,14 +27,14 @@ const Drawer: React.FC<DrawerProps> = ({
                                          children,
                                          hasBackgroundImage = true,
                                          mode,
-                                         onDelete
+                                         onDelete,
+                                         onReorderCommit
                                        }) => {
   const [drawer, setDrawer] = useRecoilState(drawerState);
   const { openCreateProductModal, openCategoryModal, openErpSearchModal, openCancelReasonManagementModal } = useUnifiedModal();
   const [isVisible, setIsVisible] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const { mutate: updateErpGoods, isPending: isUpdatingErp } = usePutGoodsErpList();
-  const { mutate: postGoods } = usePostGoods();
 
   useScrollLock(isVisible);
 
@@ -77,20 +77,8 @@ const Drawer: React.FC<DrawerProps> = ({
         };
 
         openCreateProductModal(
-          (data) => {
-            const payload: PostGoodsRequest = {
-              categoryId: data.categoryId ?? 0,
-              goodsNm: data.goodsNm,
-              goodsAmt: data.goodsAmt,
-              goodsCnt: data.goodsCnt,
-              goodsCh: data.goodsCh,
-              goodsOp: data.goodsOp,
-              goodsTm: data.goodsTm,
-              goodsImg: data.goodsImg instanceof File ? data.goodsImg : undefined,
-              goodsTag: data.goodsTag || undefined,
-              goodsErp: data.goodsErp || undefined,
-            };
-            postGoods(payload);
+          () => {
+            // ProductModalContent에서 직접 API 호출 처리
           },
           initialData,
           () => {}
@@ -101,35 +89,12 @@ const Drawer: React.FC<DrawerProps> = ({
   };
 
   const handleCategorySettings = () => {
-    const initialCategories: Category[] = [
-      { id: '1', name: '분식', order: 0 },
-      { id: '2', name: '주류', order: 1 },
-      { id: '3', name: '양식', order: 2 },
-      { id: '4', name: '한식', order: 3 },
-    ];
-
-    openCategoryModal(
-      initialCategories,
-      (categories) => {},
-      () => {}
-    );
+    openCategoryModal(() => {});
   };
 
   const handleCancelReasonManagement = () => {
-    const initialReasons: CancelReason[] = [
-      { id: '1', content: '매진', order: 0 },
-      { id: '2', content: '품절', order: 1 },
-      { id: '3', content: '고객요청', order: 2 },
-      { id: '4', content: '재료 소진', order: 3 },
-      { id: '5', content: '판매지', order: 4 },
-      { id: '6', content: '주문 대기 시간 초과', order: 5 },
-      { id: '7', content: '경기팀 요청', order: 6 },
-      { id: '8', content: '기상이변', order: 7 },
-      { id: '9', content: '기타', order: 8 },
-    ];
-
     openCancelReasonManagementModal(
-      initialReasons,
+      [],
       (reasons) => {},
       () => {}
     );
@@ -198,7 +163,12 @@ const Drawer: React.FC<DrawerProps> = ({
               </div>
               <div
                 className={`${styles.orderButton} ${drawer.isReorderMode ? styles.active : ''}`}
-                onClick={() => setDrawer(prev => ({ ...prev, isReorderMode: !prev.isReorderMode }))}
+                onClick={() => {
+                  if (drawer.isReorderMode) {
+                    onReorderCommit?.();
+                  }
+                  setDrawer(prev => ({ ...prev, isReorderMode: !prev.isReorderMode }));
+                }}
               >
                 <div className={styles.buttonText}>순서 변경</div>
               </div>

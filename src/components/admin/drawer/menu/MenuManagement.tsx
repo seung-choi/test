@@ -1,5 +1,5 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from 'react';
-import {useRecoilValue} from 'recoil';
+import { useRecoilValue } from 'recoil';
 import {
   closestCenter,
   DndContext,
@@ -9,7 +9,7 @@ import {
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
-import {arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy,} from '@dnd-kit/sortable';
+import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import styles from '@/styles/components/admin/drawer/MenuManagement.module.scss';
 import Table from '@/components/admin/common/Table';
 import { getMenuTableColumns } from '@/constants/admin/columns/MenuTable';
@@ -17,8 +17,17 @@ import { drawerState } from '@/lib/recoil';
 import useUnifiedModal from '@/hooks/admin/useUnifiedModal';
 import { MenuTableRow, ProductFormData } from '@/types';
 import { MenuStatus } from '@/constants/admin/menuStatus';
-import { useGoodsList } from '@/hooks/api';
-import type { GetGoodsResponse, GoodsChannel, GoodsOption, GoodsStatus } from '@/api/goods';
+import { useGoodsList, usePatchGoodsOrder } from '@/hooks/api';
+import {
+  mapGoodsStatus,
+  mapGoodsChannels,
+  mapGoodsTypes,
+  mapGoodsTags,
+  mapMenuStatusToGoods,
+  mapMenuChannelsToGoods,
+  mapMenuTypesToGoods,
+  mapMenuTagsToGoods,
+} from '@/utils/mappers/goodsMappers';
 
 interface MenuManagementProps {
   onClose: () => void;
@@ -27,90 +36,8 @@ interface MenuManagementProps {
 
 export interface MenuManagementRef {
   handleDelete: () => void;
+  handleCommitReorder: () => void;
 }
-
-const mapGoodsStatus = (status: GetGoodsResponse['goodsSt']): MenuStatus => {
-  switch (status) {
-    case 'Y':
-      return '판매';
-    case 'S':
-      return '대기';
-    case 'N':
-    case 'D':
-    default:
-      return '중지';
-  }
-};
-
-const mapGoodsChannels = (channel: GetGoodsResponse['goodsCh']): string[] => {
-  switch (channel) {
-    case 'COS':
-      return ['코스'];
-    case 'HUS':
-      return ['매장'];
-    case 'BOTH':
-    default:
-      return ['코스', '매장'];
-  }
-};
-
-const mapGoodsTypes = (option: GetGoodsResponse['goodsOp']): string[] => {
-  switch (option) {
-    case 'DINE':
-      return ['매장'];
-    case 'TAKE':
-      return ['포장'];
-    case 'BOTH':
-    default:
-      return ['매장', '포장'];
-  }
-};
-
-const mapGoodsTags = (tags: string): string[] => {
-  if (!tags) return [];
-  return tags
-    .split(',')
-    .map((tag) => tag.trim())
-    .filter(Boolean)
-    .map((tag) => tag.replace(/^#/, ''));
-};
-
-const mapMenuStatusToGoods = (status?: MenuStatus): GoodsStatus => {
-  switch (status) {
-    case '판매':
-      return 'Y';
-    case '대기':
-      return 'S';
-    case '중지':
-    default:
-      return 'N';
-  }
-};
-
-const mapMenuChannelsToGoods = (channels?: string[]): GoodsChannel => {
-  const list = channels ?? [];
-  const hasCos = list.includes('코스');
-  const hasHus = list.includes('매장');
-  if (hasCos && hasHus) return 'BOTH';
-  if (hasCos) return 'COS';
-  if (hasHus) return 'HUS';
-  return 'BOTH';
-};
-
-const mapMenuTypesToGoods = (types?: string[]): GoodsOption => {
-  const list = types ?? [];
-  const hasDine = list.includes('매장');
-  const hasTake = list.includes('포장');
-  if (hasDine && hasTake) return 'BOTH';
-  if (hasDine) return 'DINE';
-  if (hasTake) return 'TAKE';
-  return 'BOTH';
-};
-
-const mapMenuTagsToGoods = (tags?: string[]): string => {
-  if (!tags || tags.length === 0) return '';
-  return tags.map((tag) => `#${tag}`).join(',');
-};
 
 const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onClose, onDelete }, ref) => {
   const drawer = useRecoilValue(drawerState);
@@ -118,6 +45,7 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
   const [menuData, setMenuData] = useState<MenuTableRow[]>([]);
   const { openEditProductModal, openDeleteConfirmModal } = useUnifiedModal();
   const { data: goodsList = [] } = useGoodsList();
+  const { mutateAsync: patchGoodsOrder } = usePatchGoodsOrder();
 
   const mappedMenuData = useMemo<MenuTableRow[]>(
     () =>
@@ -200,7 +128,15 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
   };
 
   useImperativeHandle(ref, () => ({
-    handleDelete
+    handleDelete,
+    handleCommitReorder: async () => {
+      if (menuData.length === 0) return;
+      await Promise.all(
+        menuData.map((item, index) =>
+          patchGoodsOrder({ goodsId: item.id, goodsOrd: index + 1 })
+        )
+      );
+    },
   }));
 
 
@@ -227,28 +163,8 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
 
     openEditProductModal(
         initialData,
-        (data) => {
-          setMenuData(prevData => {
-            return prevData.map(item => {
-              if (String(item.id) === itemId) {
-                return {
-                  ...item,
-                  code: data.goodsErp,
-                  category: data.categoryNm,
-                  name: data.goodsNm,
-                  price: data.goodsAmt,
-                  tags: data.goodsTag
-                    ? data.goodsTag.split(',').map((tag) => tag.replace(/^#/, ''))
-                    : [],
-                  cookingTime: data.goodsTm,
-                  status: mapGoodsStatus(data.goodsSt),
-                  channels: mapGoodsChannels(data.goodsCh),
-                  types: mapGoodsTypes(data.goodsOp),
-                };
-              }
-              return item;
-            });
-          });
+        () => {
+          // ProductModalContent에서 API 호출 처리, goodsList가 자동으로 refetch됨
         },
         () => {}
     );

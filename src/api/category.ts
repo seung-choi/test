@@ -11,7 +11,7 @@ export interface GetCategoryResponse {
 }
 
 export interface PostCategoryRequest {
-  categoryId?: number;
+  categoryId?: number | null;
   categoryNm: string;
   categoryOrd: number;
   categoryErp?: string;

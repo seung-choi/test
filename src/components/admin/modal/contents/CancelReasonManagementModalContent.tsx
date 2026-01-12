@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   DndContext,
   closestCenter,
@@ -22,16 +22,26 @@ import CommonModalLayout from '@/components/admin/modal/CommonModalLayout';
 import commonStyles from '@/styles/components/admin/modal/CommonModal.module.scss';
 import styles from '@/styles/components/admin/modal/CancelReasonManagementModal.module.scss';
 import { CancelReason } from '@/types';
+import { useCategoryList, usePostCategoryList } from '@/hooks/api';
+import type { PostCategoryRequest } from '@/api/category';
 
 interface CancelReasonManagementModalContentProps {
-  initialReasons: CancelReason[];
+  initialReasons?: CancelReason[];
   onSubmit: (reasons: CancelReason[]) => void;
   onClose: () => void;
 }
 
 interface SortableRowProps {
-  reason: CancelReason;
-  onDelete: (id: string) => void;
+  reason: CancelReasonRow;
+  onDelete: (rowId: string) => void;
+}
+
+interface CancelReasonRow {
+  rowId: string;
+  categoryId: number | null;
+  categoryNm: string;
+  categoryOrd: number;
+  categoryErp: string;
 }
 
 const SortableRow: React.FC<SortableRowProps> = ({ reason, onDelete }) => {
@@ -42,7 +52,7 @@ const SortableRow: React.FC<SortableRowProps> = ({ reason, onDelete }) => {
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: reason.id });
+  } = useSortable({ id: reason.rowId });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -69,12 +79,12 @@ const SortableRow: React.FC<SortableRowProps> = ({ reason, onDelete }) => {
         </div>
       </div>
       <div className={styles.contentColumn}>
-        <div className={styles.contentText}>{reason.content}</div>
+        <div className={styles.contentText}>{reason.categoryNm}</div>
       </div>
       <div className={styles.actionColumn}>
         <button
           className={styles.deleteButton}
-          onClick={() => onDelete(reason.id)}
+          onClick={() => onDelete(reason.rowId)}
         >
           <svg width="10" height="2" viewBox="0 0 10 2" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="10" height="2" fill="#DC0000"/>
@@ -90,8 +100,11 @@ const CancelReasonManagementModalContent: React.FC<CancelReasonManagementModalCo
   initialReasons,
   onSubmit,
 }) => {
-  const [reasons, setReasons] = useState<CancelReason[]>(initialReasons);
+  const [reasons, setReasons] = useState<CancelReasonRow[]>([]);
   const [newReason, setNewReason] = useState('');
+  const [hasInitialized, setHasInitialized] = useState(false);
+  const { data: categoryReasons = [] } = useCategoryList('REASON');
+  const { mutateAsync: saveReasons } = usePostCategoryList();
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -105,13 +118,31 @@ const CancelReasonManagementModalContent: React.FC<CancelReasonManagementModalCo
 
     if (over && active.id !== over.id) {
       setReasons((items) => {
-        const oldIndex = items.findIndex((item) => item.id === active.id);
-        const newIndex = items.findIndex((item) => item.id === over.id);
+        const oldIndex = items.findIndex((item) => item.rowId === active.id);
+        const newIndex = items.findIndex((item) => item.rowId === over.id);
 
         return arrayMove(items, oldIndex, newIndex);
       });
     }
   };
+
+  const mappedInitialReasons = useMemo<CancelReasonRow[]>(() => {
+    const base = initialReasons && initialReasons.length > 0 ? initialReasons : categoryReasons;
+    return base.map((reason, index) => ({
+      rowId: reason.categoryId ? String(reason.categoryId) : `temp-${index}`,
+      categoryId: reason.categoryId ?? null,
+      categoryNm: reason.categoryNm,
+      categoryOrd: reason.categoryOrd,
+      categoryErp: reason.categoryErp || '',
+    }));
+  }, [categoryReasons, initialReasons]);
+
+  useEffect(() => {
+    if (!hasInitialized && mappedInitialReasons.length > 0) {
+      setReasons(mappedInitialReasons);
+      setHasInitialized(true);
+    }
+  }, [mappedInitialReasons, hasInitialized]);
 
   const handleAdd = () => {
     if (!newReason.trim()) {
@@ -124,25 +155,39 @@ const CancelReasonManagementModalContent: React.FC<CancelReasonManagementModalCo
       return;
     }
 
-    const newReasonItem: CancelReason = {
-      id: Date.now().toString(),
-      content: newReason.trim(),
-      order: reasons.length,
+    const newReasonItem: CancelReasonRow = {
+      rowId: `temp-${Date.now()}`,
+      categoryId: null,
+      categoryNm: newReason.trim(),
+      categoryOrd: reasons.length + 1,
+      categoryErp: '',
     };
 
     setReasons([...reasons, newReasonItem]);
     setNewReason('');
   };
 
-  const handleDelete = (id: string) => {
-    setReasons(reasons.filter(reason => reason.id !== id));
+  const handleDelete = (rowId: string) => {
+    setReasons(reasons.filter(reason => reason.rowId !== rowId));
   };
 
-  const handleSubmit = () => {
-    const updatedReasons = reasons.map((reason, index) => ({
-      ...reason,
-      order: index,
+  const handleSubmit = async () => {
+    const payload: PostCategoryRequest[] = reasons.map((reason, index) => ({
+      categoryId: reason.categoryId ?? null,
+      categoryNm: reason.categoryNm,
+      categoryOrd: index + 1,
+      categoryErp: reason.categoryErp || '',
     }));
+
+    await saveReasons({ categoryType: 'REASON', data: payload });
+
+    const updatedReasons: CancelReason[] = payload.map((reason) => ({
+      categoryId: reason.categoryId ?? null,
+      categoryNm: reason.categoryNm,
+      categoryOrd: reason.categoryOrd,
+      categoryErp: reason.categoryErp || '',
+    }));
+
     onSubmit(updatedReasons);
   };
 
@@ -188,24 +233,28 @@ const CancelReasonManagementModalContent: React.FC<CancelReasonManagementModalCo
         </div>
 
         <div className={styles.tableBody}>
-          <DndContext
-            sensors={sensors}
-            collisionDetection={closestCenter}
-            onDragEnd={handleDragEnd}
-          >
-            <SortableContext
-              items={reasons.map(r => r.id)}
-              strategy={verticalListSortingStrategy}
+          {reasons.length === 0 ? (
+            <div className={styles.emptyState}>취소사유가 없습니다</div>
+          ) : (
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
             >
-              {reasons.map((reason) => (
-                <SortableRow
-                  key={reason.id}
-                  reason={reason}
-                  onDelete={handleDelete}
-                />
-              ))}
-            </SortableContext>
-          </DndContext>
+              <SortableContext
+                items={reasons.map(r => r.rowId)}
+                strategy={verticalListSortingStrategy}
+              >
+                {reasons.map((reason) => (
+                  <SortableRow
+                    key={reason.rowId}
+                    reason={reason}
+                    onDelete={handleDelete}
+                  />
+                ))}
+              </SortableContext>
+            </DndContext>
+          )}
         </div>
       </div>
 

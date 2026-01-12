@@ -52,7 +52,6 @@ export const categoryModalState = atom<CategoryModalState>({
   key: 'categoryModalState',
   default: {
     isShow: false,
-    categories: [],
   },
 });
 

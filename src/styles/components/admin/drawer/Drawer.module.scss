@@ -303,6 +303,14 @@
     background: #6600FF;
   }
 
+  &.active {
+    background: #6600FF;
+  }
+
+  &.active:hover {
+    background: #5500cc;
+  }
+
   .buttonText {
     color: white;
     font-size: 22px;

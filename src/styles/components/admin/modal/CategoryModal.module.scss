@@ -165,6 +165,21 @@
       border-radius: 5px;
     }
 
+    .emptyState {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100px;
+      color: #959595;
+      font-size: 18px;
+      font-weight: 400;
+
+      @include tablet {
+        height: 80px;
+        font-size: 14px;
+      }
+    }
+
     .tableRow {
       display: flex;
       align-items: center;
@@ -292,5 +307,20 @@
         }
       }
     }
+  }
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  color: #959595;
+  font-size: 18px;
+  font-weight: 400;
+
+  @include tablet {
+    height: 150px;
+    font-size: 14px;
   }
 }
