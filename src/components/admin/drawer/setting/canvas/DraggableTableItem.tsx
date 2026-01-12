@@ -14,6 +14,7 @@ interface DraggableTableItemProps {
     onRotate: (tableId: string) => void;
     placedTables: PlacedTable[];
     pageId?: string;
+    availableTableNumbers: string[];
 }
 
 const DraggableTableItem: React.FC<DraggableTableItemProps> = ({
@@ -22,7 +23,8 @@ const DraggableTableItem: React.FC<DraggableTableItemProps> = ({
     onRemove,
     onSetTableNumber,
     onRotate,
-    placedTables
+    placedTables,
+    availableTableNumbers
 }) => {
     const [isSelected, setIsSelected] = useState(false);
     const [showNumberDropdown, setShowNumberDropdown] = useState(false);
@@ -128,14 +130,17 @@ const DraggableTableItem: React.FC<DraggableTableItemProps> = ({
         onRemove(table.id);
     };
 
+    const normalizeNumber = (value: string) => (value.endsWith('번') ? value.slice(0, -1) : value);
+    const formatNumber = (value: string) => (value.endsWith('번') ? value : `${value}번`);
+
     const getUsedNumbers = () => {
         return placedTables
             .filter(t => t.id !== table.id && t.tableNumber)
-            .map(t => t.tableNumber!);
+            .map(t => normalizeNumber(t.tableNumber!));
     };
 
     const usedNumbers = getUsedNumbers();
-    const availableNumbers = ['1', '2', '3', '4', '5', '6', '7'];
+    const availableNumbers = availableTableNumbers.map(normalizeNumber);
 
     return (
         <div
@@ -157,9 +162,12 @@ const DraggableTableItem: React.FC<DraggableTableItemProps> = ({
                     type={table.type}
                     borderColor={borderColor}
                     rotation={table.rotation || 0}
+                    scale={table.scale || 1}
                 >
                     {table.tableNumber && (
-                        <div className={styles.tableNumber}>{table.tableNumber}번</div>
+                        <div className={styles.tableNumber}>
+                            {formatNumber(table.tableNumber)}
+                        </div>
                     )}
                 </TableShape>
             </div>
@@ -186,7 +194,7 @@ const DraggableTableItem: React.FC<DraggableTableItemProps> = ({
                     <div className={styles.numberList}>
                         {availableNumbers.map((num) => {
                             const isUsed = usedNumbers.includes(num);
-                            const isCurrent = table.tableNumber === num;
+                            const isCurrent = normalizeNumber(table.tableNumber || '') === num;
                             return (
                                 <div
                                     key={num}
@@ -195,7 +203,7 @@ const DraggableTableItem: React.FC<DraggableTableItemProps> = ({
                                     } ${isCurrent ? styles.current : ''}`}
                                     onClick={() => !isUsed && handleNumberSelect(num)}
                                 >
-                                    {num}번
+                                    {formatNumber(num)}
                                 </div>
                             );
                         })}

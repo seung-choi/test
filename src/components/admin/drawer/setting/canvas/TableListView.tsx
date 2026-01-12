@@ -71,7 +71,11 @@ const TableListView: React.FC<TableListViewProps> = ({ placedTables, onReorder }
                         <div className={styles.tableType}>{table.type}</div>
                         <div className={styles.tableTab}>
                             <div className={styles.tableNumber}>
-                                {table.tableNumber ? `${table.tableNumber}번` : '미지정'}
+                                {table.tableNumber
+                                    ? (table.tableNumber.endsWith('번')
+                                        ? table.tableNumber
+                                        : `${table.tableNumber}번`)
+                                    : '미지정'}
                             </div>
                         </div>
                     </div>

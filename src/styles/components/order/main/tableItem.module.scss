@@ -20,7 +20,7 @@
     border-radius: 5px;
 }
 
-.table1x1 {
+.tableT4S {
     .innerContent {
         width: 97px;
         height: 97px;
@@ -97,215 +97,7 @@
     }
 }
 
-.table1x2 {
-    .innerContent {
-        width: 97px;
-        height: 183px;
-        left: 12px;
-        top: 12px;
-    }
-
-    .time {
-        left: 34px;
-        top: 35px;
-        position: absolute;
-        text-align: center;
-        color: black;
-        font-size: 12px;
-        font-weight: 900;
-        word-wrap: break-word;
-    }
-
-    .name {
-        left: 30px;
-        top: 76px;
-        position: absolute;
-        text-align: center;
-        color: black;
-        font-size: 15px;
-        font-weight: 800;
-        word-wrap: break-word;
-    }
-
-    .group {
-        left: 26px;
-        top: 96px;
-        position: absolute;
-        text-align: center;
-        color: black;
-        font-size: 10px;
-        font-weight: 500;
-        word-wrap: break-word;
-    }
-
-    .footer {
-        width: 97px;
-        height: 23px;
-        left: 0;
-        top: 160px;
-        position: absolute;
-        border-top-left-radius: 15px;
-        border-top-right-radius: 15px;
-
-        .tableNumber {
-            left: 39px;
-            top: 3px;
-            position: absolute;
-            text-align: center;
-            color: white;
-            font-size: 13px;
-            font-weight: 800;
-            word-wrap: break-word;
-        }
-    }
-}
-
-.table1x3 {
-    .innerContent {
-        width: 97px;
-        height: 269px;
-        left: 12px;
-        top: 12px;
-    }
-
-    .time {
-        left: 34px;
-        top: 64px;
-        position: absolute;
-        text-align: center;
-        color: black;
-        font-size: 12px;
-        font-weight: 900;
-        word-wrap: break-word;
-    }
-
-    .name {
-        left: 30px;
-        top: 105px;
-        position: absolute;
-        text-align: center;
-        color: black;
-        font-size: 15px;
-        font-weight: 800;
-        word-wrap: break-word;
-    }
-
-    .group {
-        left: 26px;
-        top: 125px;
-        position: absolute;
-        text-align: center;
-        color: black;
-        font-size: 10px;
-        font-weight: 500;
-        word-wrap: break-word;
-    }
-
-    .footer {
-        width: 97px;
-        height: 23px;
-        left: 0;
-        top: 246px;
-        position: absolute;
-        border-top-left-radius: 15px;
-        border-top-right-radius: 15px;
-
-        .tableNumber {
-            left: 39px;
-            top: 3px;
-            position: absolute;
-            text-align: center;
-            color: white;
-            font-size: 13px;
-            font-weight: 800;
-            word-wrap: break-word;
-        }
-    }
-}
-
-.table1x4 {
-    .innerContent {
-        width: 96px;
-        height: 358px;
-        left: 12px;
-        top: 12px;
-    }
-
-    .time {
-        left: 32px;
-        top: 120px;
-        position: absolute;
-        text-align: center;
-        color: black;
-        font-size: 12px;
-        font-weight: 900;
-        word-wrap: break-word;
-    }
-
-    .footer {
-        width: 97px;
-        height: 23px;
-        left: 0;
-        top: 335px;
-        position: absolute;
-        border-top-left-radius: 15px;
-        border-top-right-radius: 15px;
-
-        .tableNumber {
-            left: 37px;
-            top: 3px;
-            position: absolute;
-            text-align: center;
-            color: white;
-            font-size: 13px;
-            font-weight: 800;
-            word-wrap: break-word;
-        }
-    }
-}
-
-.table1x5 {
-    .innerContent {
-        width: 96px;
-        height: 447px;
-        left: 12px;
-        top: 12px;
-    }
-
-    .time {
-        left: 32px;
-        top: 150px;
-        position: absolute;
-        text-align: center;
-        color: black;
-        font-size: 12px;
-        font-weight: 900;
-        word-wrap: break-word;
-    }
-
-    .footer {
-        width: 97px;
-        height: 23px;
-        left: 0;
-        top: 424px;
-        position: absolute;
-        border-top-left-radius: 15px;
-        border-top-right-radius: 15px;
-
-        .tableNumber {
-            left: 37px;
-            top: 3px;
-            position: absolute;
-            text-align: center;
-            color: white;
-            font-size: 13px;
-            font-weight: 800;
-            word-wrap: break-word;
-        }
-    }
-}
-
-.table2x1 {
+.tableT6R {
     .innerContent {
         width: 183px;
         height: 97px;
@@ -368,7 +160,7 @@
     }
 }
 
-.table2x2 {
+.tableT8S {
     .innerContent {
         width: 183px;
         height: 183px;
@@ -431,7 +223,7 @@
     }
 }
 
-.table3x1 {
+.tableT8R {
     .innerContent {
         width: 269px;
         height: 97px;
@@ -494,7 +286,7 @@
     }
 }
 
-.table4x1 {
+.tableT10R {
     .innerContent {
         width: 356px;
         height: 97px;
@@ -558,7 +350,7 @@
     }
 }
 
-.table5x1 {
+.tableT12R {
     .innerContent {
         width: 447px;
         height: 97px;

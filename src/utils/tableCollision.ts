@@ -1,31 +1,31 @@
 import { PlacedTable, TableType } from '@/types';
 
 const baseDimensions: Record<TableType, { width: number; height: number }> = {
-    '1x1': { width: 120, height: 120 },
-    '1x2': { width: 120, height: 206 },
-    '1x3': { width: 120, height: 292 },
-    '1x4': { width: 120, height: 380 },
-    '1x5': { width: 120, height: 475 },
-    '2x1': { width: 206, height: 120 },
-    '2x2': { width: 206, height: 206 },
-    '3x1': { width: 292, height: 120 },
-    '4x1': { width: 380, height: 120 },
-    '5x1': { width: 475, height: 120 }
+    T4S: { width: 120, height: 120 },
+    T6R: { width: 206, height: 120 },
+    T8S: { width: 206, height: 206 },
+    T8R: { width: 292, height: 120 },
+    T10R: { width: 380, height: 120 },
+    T12R: { width: 475, height: 120 }
 };
 
 export const getTableDimensions = (table: PlacedTable): { width: number; height: number } => {
     const baseDim = baseDimensions[table.type];
     const rotation = table.rotation || 0;
     const isVertical = rotation === 90 || rotation === 270;
+    const scale = table.scale ?? 1;
 
     if (isVertical) {
         return {
-            width: baseDim.height,
-            height: baseDim.width
+            width: baseDim.height * scale,
+            height: baseDim.width * scale
         };
     }
 
-    return baseDim;
+    return {
+        width: baseDim.width * scale,
+        height: baseDim.height * scale
+    };
 };
 
 export const checkCollision = (
@@ -61,7 +61,6 @@ export const isPositionValid = (
     newPosition: { x: number; y: number },
     allTables: PlacedTable[]
 ): boolean => {
-    // 다른 테이블들과 충돌 검사
     for (const table of allTables) {
         if (table.id === movingTable.id) continue;
 

@@ -116,25 +116,27 @@ const SideTab: React.FC<SideTabProps> = ({
             <div className={styles.menuLabel} style={{ color:"white" }}>오더</div>
           </div>
 
-          <div className={styles.menuItem}>
+          <div
+            className={styles.menuItem}
+            onClick={() => setDrawer(prev => ({ ...prev, openDrawer: prev.openDrawer === 'menu' ? null : 'menu' }))}
+          >
             <div className={styles.menuIcon}>
               <img src="/assets/image/admin/layout/side-bar/menu.svg" alt="logo" />
             </div>
             <div className={styles.menuLabel}>
-              <button onClick={() => setDrawer(prev => ({ ...prev, openDrawer: prev.openDrawer === 'menu' ? null : 'menu' }))}>
-                메뉴 관리
-              </button>
+              메뉴 관리
             </div>
           </div>
 
-          <div className={styles.menuItem}>
+          <div
+            className={styles.menuItem}
+            onClick={() => setDrawer(prev => ({ ...prev, openDrawer: prev.openDrawer === 'setting' ? null : 'setting' }))}
+          >
             <div className={styles.menuIcon}>
               <img src="/assets/image/admin/layout/side-bar/setting.svg" alt="logo" />
             </div>
             <div className={styles.menuLabel}>
-              <button onClick={() => setDrawer(prev => ({ ...prev, openDrawer: prev.openDrawer === 'setting' ? null : 'setting' }))}>
-                설정
-              </button>
+              설정
             </div>
           </div>
 

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import TableSelector from './TableSelector';
 import LayoutCanvas from './LayoutCanvas';
 import TableNumberList from './TableNumberList';
@@ -12,6 +12,9 @@ import styles from '@/styles/components/admin/drawer/canvas/layoutManager.module
 import { usePanZoom } from '@/hooks/tableCanvas/usePanZoom';
 import { usePageManagement } from '@/hooks/tableCanvas/usePageManagement';
 import { useTableManagement } from '@/hooks/tableCanvas/useTableManagement';
+import { useTableList } from '@/hooks/api';
+import type { GetTableResponse } from '@/api/table';
+import type { PlacedTable, TableType } from '@/types';
 
 const LayoutManager: React.FC = () => {
     const [activeTab, setActiveTab] = useState<'table' | 'list'>('table');
@@ -46,6 +49,76 @@ const LayoutManager: React.FC = () => {
         handleRotateTable,
         handleReorderTables
     } = useTableManagement({ pages, setPages, currentPageId });
+
+    const { data: tableList = [] } = useTableList();
+
+    const parseXyr = (value: string) => {
+        const [x, y, r] = value.split(',').map((item) => Number(item));
+        return {
+            x: Number.isFinite(x) ? x : 0,
+            y: Number.isFinite(y) ? y : 0,
+            r: Number.isFinite(r) ? r : 0
+        };
+    };
+
+    const parseWhp = (value: string) => {
+        const [w, h, p] = value.split(',').map((item) => Number(item));
+        return {
+            w: Number.isFinite(w) ? w : 0,
+            h: Number.isFinite(h) ? h : 0,
+            p: Number.isFinite(p) ? p : 1
+        };
+    };
+
+    const mappedTables = useMemo(() => {
+        return tableList.map((table: GetTableResponse) => {
+            const { x, y, r } = parseXyr(table.tableXyr || '0,0,0');
+            const { p } = parseWhp(table.tableWhp || '0,0,1');
+            const pageIndex = Number.isFinite(p) && p > 0 ? Math.floor(p) - 1 : 0;
+
+            return {
+                pageIndex,
+                table: {
+                    id: `table-${table.tableId}`,
+                    tableId: table.tableId,
+                    type: table.tableCd as TableType,
+                    position: { x, y },
+                    rotation: r,
+                    scale: 1,
+                    tableNumber: table.tableNo
+                } as PlacedTable
+            };
+        });
+    }, [tableList]);
+
+    const availableTableNumbers = useMemo(
+        () => tableList.map((table) => table.tableNo),
+        [tableList]
+    );
+
+    const pagesFromApi = useMemo(() => {
+        if (mappedTables.length === 0) {
+            return [{ id: 'page-0-0', name: 'Page 1', tables: [], gridPosition: { row: 0, col: 0 } }];
+        }
+
+        const maxPageIndex = Math.max(...mappedTables.map(({ pageIndex }) => pageIndex));
+        const pages = Array.from({ length: maxPageIndex + 1 }, (_, index) => ({
+            id: `page-0-${index}`,
+            name: `Page ${index + 1}`,
+            tables: [] as PlacedTable[],
+            gridPosition: { row: 0, col: index }
+        }));
+
+        mappedTables.forEach(({ pageIndex, table }) => {
+            pages[pageIndex]?.tables.push(table);
+        });
+
+        return pages;
+    }, [mappedTables]);
+
+    useEffect(() => {
+        setPages(pagesFromApi);
+    }, [pagesFromApi, setPages]);
 
     const allTablesWithPage = pages.flatMap(page =>
         page.tables.map(table => ({
@@ -82,6 +155,7 @@ const LayoutManager: React.FC = () => {
                             onSetTableNumber={handleSetTableNumber}
                             onRotateTable={handleRotateTable}
                             gridPosition={page.gridPosition}
+                            availableTableNumbers={availableTableNumbers}
                         />
                     );
                 }

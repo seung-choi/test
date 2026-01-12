@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import styles from '@/styles/components/admin/drawer/Drawer.module.scss';
 import { drawerState } from '@/lib/recoil';
@@ -34,7 +34,9 @@ const Drawer: React.FC<DrawerProps> = ({
   const { openCreateProductModal, openCategoryModal, openErpSearchModal, openCancelReasonManagementModal } = useUnifiedModal();
   const [isVisible, setIsVisible] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
-  const { mutate: updateErpGoods, isPending: isUpdatingErp } = usePutGoodsErpList();
+  const { mutateAsync: updateErpGoods, isPending: isUpdatingErp } = usePutGoodsErpList();
+  const [erpToast, setErpToast] = useState<{ type: 'success' | 'empty'; count: number } | null>(null);
+  const erpToastTimerRef = useRef<number | null>(null);
 
   useScrollLock(isVisible);
 
@@ -52,10 +54,28 @@ const Drawer: React.FC<DrawerProps> = ({
     }
   }, [isOpen, isVisible]);
 
-  const handleERPUpdate = () => {
+  useEffect(() => {
+    return () => {
+      if (erpToastTimerRef.current) {
+        window.clearTimeout(erpToastTimerRef.current);
+      }
+    };
+  }, []);
+
+  const handleERPUpdate = async () => {
     if (isUpdatingErp) return;
-    updateErpGoods();
-  }
+    const data = await updateErpGoods();
+    const count = Array.isArray(data) ? data.length : 0;
+
+    if (erpToastTimerRef.current) {
+      window.clearTimeout(erpToastTimerRef.current);
+    }
+
+    setErpToast({ type: count > 0 ? 'success' : 'empty', count });
+    erpToastTimerRef.current = window.setTimeout(() => {
+      setErpToast(null);
+    }, 2500);
+  };
 
   const handleRegisterProduct = () => {
     openErpSearchModal(
@@ -189,6 +209,21 @@ const Drawer: React.FC<DrawerProps> = ({
           {children}
         </div>
       </div>
+      {erpToast && (
+        <div className={styles.erpToast}>
+          <div
+            className={`${styles.erpToastContent} ${
+              erpToast.type === 'success' ? styles.erpToastSuccess : styles.erpToastEmpty
+            }`}
+          >
+            <div className={styles.erpToastText}>
+              {erpToast.type === 'success'
+                ? `${erpToast.count}개의 등록된 상품 정보를 업데이트 하였습니다.`
+                : '업데이트 된 ERP 정보가 없습니다.'}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

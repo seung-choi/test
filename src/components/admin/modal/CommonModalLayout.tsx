@@ -9,6 +9,7 @@ interface CommonModalLayoutProps {
   buttons?: React.ReactNode;
   className?: string;
   contentClassName?: string;
+  headerRight?: React.ReactNode;
 }
 
 const CommonModalLayout: React.FC<CommonModalLayoutProps> = ({
@@ -17,11 +18,13 @@ const CommonModalLayout: React.FC<CommonModalLayoutProps> = ({
   buttons,
   className = '',
   contentClassName = '',
+  headerRight,
 }) => {
   return (
     <div className={`${styles.container} ${className}`}>
       <div className={styles.header}>
         <div className={styles.title}>{title}</div>
+        {headerRight && <div className={styles.headerRight}>{headerRight}</div>}
       </div>
       <div className={`${styles.content} ${contentClassName}`}>
         {children}

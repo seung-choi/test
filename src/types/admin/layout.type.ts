@@ -1,4 +1,4 @@
-export type TableType = '1x1' | '1x2' | '1x3' | '1x4' | '1x5' | '2x1' | '2x2' | '3x1' | '4x1' | '5x1';
+export type TableType = 'T4S' | 'T6R' | 'T8S' | 'T8R' | 'T10R' | 'T12R';
 
 export interface PlacedTable {
     id: string;
@@ -9,6 +9,8 @@ export interface PlacedTable {
     };
     tableNumber?: string;
     rotation?: number;
+    scale?: number;
+    tableId?: number;
 }
 
 export interface DragData {

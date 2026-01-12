@@ -15,6 +15,7 @@ interface LayoutCanvasProps {
     onSetTableNumber: (tableId: string, tableNumber: string, pageId?: string) => void;
     onRotateTable: (tableId: string, pageId?: string) => void;
     gridPosition?: { row: number; col: number };
+    availableTableNumbers: string[];
 }
 
 const LayoutCanvas: React.FC<LayoutCanvasProps> = ({
@@ -24,7 +25,8 @@ const LayoutCanvas: React.FC<LayoutCanvasProps> = ({
     onMoveTable,
     onRemoveTable,
     onSetTableNumber,
-    onRotateTable
+    onRotateTable,
+    availableTableNumbers
 }) => {
     const canvasRef = useRef<HTMLDivElement>(null);
 
@@ -80,6 +82,7 @@ const LayoutCanvas: React.FC<LayoutCanvasProps> = ({
                         onRotate={(tableId) => onRotateTable(tableId, pageId)}
                         placedTables={placedTables}
                         pageId={pageId}
+                        availableTableNumbers={availableTableNumbers}
                     />
                 ))}
             </div>

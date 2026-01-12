@@ -18,12 +18,12 @@ const TableSelector: React.FC = () => {
     const borderColor = '#7B7B7B';
 
     const tableConfigs: { type: TableType; capacity: string }[] = [
-        { type: '1x1', capacity: '4인' },
-        { type: '2x1', capacity: '6인' },
-        { type: '2x2', capacity: '8인' },
-        { type: '3x1', capacity: '8인' },
-        { type: '4x1', capacity: '10인' },
-        { type: '5x1', capacity: '12인' }
+        { type: 'T4S', capacity: '4인' },
+        { type: 'T6R', capacity: '6인' },
+        { type: 'T8S', capacity: '8인' },
+        { type: 'T8R', capacity: '8인' },
+        { type: 'T10R', capacity: '10인' },
+        { type: 'T12R', capacity: '12인' }
     ];
 
     return (

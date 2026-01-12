@@ -3,14 +3,14 @@ import { TableData } from '@/types';
 export const tablesMockData: TableData[] = [
     {
         id: 'T1',
-        type: '1x1',
+        type: 'T4S',
         position: { left: 0, top: 10 },
         reservation: null,
         status: 'empty'
     },
     {
         id: 'T2',
-        type: '1x1',
+        type: 'T4S',
         position: { left: 184, top: 12 },
         reservation: {
             time: '13:45',
@@ -21,21 +21,21 @@ export const tablesMockData: TableData[] = [
     },
     {
         id: 'T3',
-        type: '1x1',
+        type: 'T4S',
         position: { left: 368, top: 10 },
         reservation: null,
         status: 'empty'
     },
     {
         id: 'T4',
-        type: '1x1',
+        type: 'T4S',
         position: { left: 552, top: 10 },
         reservation: null,
         status: 'empty'
     },
     {
         id: 'T5',
-        type: '1x1',
+        type: 'T4S',
         position: { left: 736, top: 12 },
         reservation: {
             time: '12:56',
@@ -45,7 +45,7 @@ export const tablesMockData: TableData[] = [
     },
     {
         id: 'T6',
-        type: '1x2',
+        type: 'T6R',
         position: { left: 93, top: 455 },
         reservation: {
             time: '12:34',
@@ -56,14 +56,14 @@ export const tablesMockData: TableData[] = [
     },
     {
         id: 'T6',
-        type: '5x1',
+        type: 'T12R',
         position: { left: 461, top: 460 },
         reservation: null,
         status: 'empty'
     },
     {
         id: 'T7',
-        type: '2x2',
+        type: 'T8S',
         position: { left: 277, top: 195 },
         reservation: {
             time: '13:00',
@@ -74,14 +74,14 @@ export const tablesMockData: TableData[] = [
     },
     {
         id: 'T7',
-        type: '2x1',
+        type: 'T6R',
         position: { left: 645, top: 193 },
         reservation: null,
         status: 'empty'
     },
     {
         id: 'T10',
-        type: '1x1',
+        type: 'T4S',
         position: { left: 920, top: 132 },
         reservation: {
             time: '13:10',
@@ -91,7 +91,7 @@ export const tablesMockData: TableData[] = [
     },
     {
         id: 'T11',
-        type: '3x1',
+        type: 'T8R',
         position: { left: 1104, top: 32 },
         reservation: {
             time: '11:40',
@@ -101,7 +101,7 @@ export const tablesMockData: TableData[] = [
     },
     {
         id: 'T12',
-        type: '1x1',
+        type: 'T4S',
         position: { left: 920, top: 316 },
         reservation: {
             time: '14:00',
@@ -111,7 +111,7 @@ export const tablesMockData: TableData[] = [
     },
     {
         id: 'T13',
-        type: '1x1',
+        type: 'T4S',
         position: { left: 1104, top: 315 },
         reservation: {
             time: '11:30',
@@ -121,28 +121,28 @@ export const tablesMockData: TableData[] = [
     },
     {
         id: 'T14',
-        type: '1x1',
+        type: 'T4S',
         position: { left: 1288, top: 315 },
         reservation: null,
         status: 'empty'
     },
     {
         id: 'T15',
-        type: '1x3',
+        type: 'T8R',
         position: { left: 1496, top: 17 },
         reservation: null,
         status: 'empty'
     },
     {
         id: 'T16',
-        type: '1x4',
+        type: 'T10R',
         position: { left: 1664, top: 17 },
         reservation: null,
         status: 'empty'
     },
     {
         id: 'T17',
-        type: '1x2',
+        type: 'T6R',
         position: { left: 1857, top: 0 },
         reservation: {
             time: '13:00',
@@ -153,14 +153,14 @@ export const tablesMockData: TableData[] = [
     },
     {
         id: 'T19',
-        type: '1x4',
+        type: 'T10R',
         position: { left: 1857, top: 233 },
         reservation: null,
         status: 'empty'
     },
     {
         id: 'T18',
-        type: '4x1',
+        type: 'T10R',
         position: { left: 1345, top: 493 },
         reservation: {
             time: '13:00',

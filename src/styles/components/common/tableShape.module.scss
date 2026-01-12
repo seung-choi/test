@@ -104,30 +104,30 @@
     }
 }
 
-// Table type specific positioning - 1x1
-.time1x1 {
+// Table type specific positioning - T4S
+.timeT4S {
     top: 10px;
 }
 
-.time1x1.timeWithReservation {
+.timeT4S.timeWithReservation {
     left: 32px;
 }
 
-.time1x1.timeWithoutReservation {
+.timeT4S.timeWithoutReservation {
     left: 30px;
 }
 
-.name1x1 {
+.nameT4S {
     left: 29px;
     top: 28px;
 }
 
-.group1x1 {
+.groupT4S {
     left: 27px;
     top: 48px;
 }
 
-.footer1x1 {
+.footerT4S {
     width: 97px;
     height: 23px;
     left: 0;
@@ -146,115 +146,23 @@
     }
 }
 
-// 1x2
-.time1x2 {
-    left: 34px;
-    top: 35px;
-}
-
-.name1x2 {
-    left: 30px;
-    top: 76px;
-}
-
-.group1x2 {
-    left: 26px;
-    top: 96px;
-}
-
-.footer1x2 {
-    width: 97px;
-    height: 23px;
-    left: 0;
-    top: 160px;
-
-    .tableNumber {
-        left: 39px;
-        top: 3px;
-    }
-}
-
-// 1x3
-.time1x3 {
-    left: 34px;
-    top: 64px;
-}
-
-.name1x3 {
-    left: 30px;
-    top: 105px;
-}
-
-.group1x3 {
-    left: 26px;
-    top: 125px;
-}
-
-.footer1x3 {
-    width: 97px;
-    height: 23px;
-    left: 0;
-    top: 246px;
-
-    .tableNumber {
-        left: 39px;
-        top: 3px;
-    }
-}
-
-// 1x4
-.time1x4 {
-    left: 32px;
-    top: 120px;
-}
-
-.footer1x4 {
-    width: 97px;
-    height: 23px;
-    left: 0;
-    top: 335px;
-
-    .tableNumber {
-        left: 37px;
-        top: 3px;
-    }
-}
-
-// 1x5
-.time1x5 {
-    left: 32px;
-    top: 150px;
-}
-
-.footer1x5 {
-    width: 97px;
-    height: 23px;
-    left: 0;
-    top: 424px;
-
-    .tableNumber {
-        left: 37px;
-        top: 3px;
-    }
-}
-
-// 2x1
-.time2x1 {
+// T6R
+.timeT6R {
     left: 76px;
     top: 10px;
 }
 
-.name2x1 {
+.nameT6R {
     left: 72px;
     top: 28px;
 }
 
-.group2x1 {
+.groupT6R {
     left: 68px;
     top: 48px;
 }
 
-.footer2x1 {
+.footerT6R {
     width: 183px;
     height: 23px;
     left: 0;
@@ -266,23 +174,23 @@
     }
 }
 
-// 2x2
-.time2x2 {
+// T8S
+.timeT8S {
     left: 76px;
     top: 35px;
 }
 
-.name2x2 {
+.nameT8S {
     left: 72px;
     top: 76px;
 }
 
-.group2x2 {
+.groupT8S {
     left: 68px;
     top: 96px;
 }
 
-.footer2x2 {
+.footerT8S {
     width: 183px;
     height: 23px;
     left: 0;
@@ -294,23 +202,23 @@
     }
 }
 
-// 3x1
-.time3x1 {
+// T8R
+.timeT8R {
     left: 119px;
     top: 10px;
 }
 
-.name3x1 {
+.nameT8R {
     left: 115px;
     top: 28px;
 }
 
-.group3x1 {
+.groupT8R {
     left: 111px;
     top: 48px;
 }
 
-.footer3x1 {
+.footerT8R {
     width: 269px;
     height: 23px;
     left: 0;
@@ -324,23 +232,23 @@
     }
 }
 
-// 4x1
-.time4x1 {
+// T10R
+.timeT10R {
     left: 162px;
     top: 10px;
 }
 
-.name4x1 {
+.nameT10R {
     left: 158px;
     top: 28px;
 }
 
-.group4x1 {
+.groupT10R {
     left: 155px;
     top: 48px;
 }
 
-.footer4x1 {
+.footerT10R {
     width: 356px;
     height: 23px;
     left: 0;
@@ -354,23 +262,23 @@
     }
 }
 
-// 5x1
-.time5x1 {
+// T12R
+.timeT12R {
     left: 203px;
     top: 10px;
 }
 
-.name5x1 {
+.nameT12R {
     left: 199px;
     top: 28px;
 }
 
-.group5x1 {
+.groupT12R {
     left: 196px;
     top: 48px;
 }
 
-.footer5x1 {
+.footerT12R {
     width: 447px;
     height: 23px;
     left: 0;

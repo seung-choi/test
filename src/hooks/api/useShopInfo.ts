@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { getShopInfo } from '@/api/shop';
 import { ApiHoleType, CourseType, CourseWithHoles } from '@/types/shop.type';
+import storage from '@/utils/storage';
 
 const getLastThreeHoles = (holeList: ApiHoleType[]): ApiHoleType[] => {
   const sorted = [...holeList].sort((a, b) => a.holeNo - b.holeNo);
@@ -28,6 +30,13 @@ export const useShopInfo = (options?: {
     retry: 2,
     staleTime: 60000,
   });
+
+  useEffect(() => {
+    if (data?.shopErp !== undefined) {
+      const isErpConnected = data.shopErp !== null;
+      storage.local.set({ isErpConnected });
+    }
+  }, [data?.shopErp]);
 
   const courses: CourseWithHoles[] = data?.club?.courseList
     ? transformCourseData(data.club.courseList)

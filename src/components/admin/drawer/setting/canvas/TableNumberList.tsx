@@ -1,25 +1,47 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import styles from '@/styles/components/admin/drawer/canvas/tableNumberList.module.scss';
-
-const tableNumbers = [
-    '1번', '2번', '3번', '4번', '5번', '6번', '7번',
-    '7-1번', '7-2번', '8번', '9번', '10번', '11번', '12번', '13번', '14번'
-];
+import { useTableErpList, useTableList } from '@/hooks/api';
+import { useQueryClient } from '@tanstack/react-query';
 
 const TableNumberList: React.FC = () => {
+    const queryClient = useQueryClient();
+    const { data: tableList = [] } = useTableList();
+    const { refetch: refetchErpList, isFetching } = useTableErpList({ enabled: false });
+
+    const tableNumbers = useMemo(
+        () =>
+            [...tableList]
+                .sort((a, b) => a.tableOrd - b.tableOrd)
+                .map((table) => table.tableNo),
+        [tableList]
+    );
+
+    const handleErpSync = async () => {
+        const result = await refetchErpList();
+        if (result.data) {
+            queryClient.setQueryData(['tableList'], result.data);
+        }
+    };
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>
                 <h2 className={styles.title}>테이블 번호</h2>
-                <button className={styles.erpButton}>ERP 연동</button>
+                <button
+                    className={styles.erpButton}
+                    onClick={handleErpSync}
+                    disabled={isFetching}
+                >
+                    ERP 연동
+                </button>
             </div>
             <div className={styles.listContainer}>
                 <div className={styles.list}>
                     {tableNumbers.map((number, index) => (
                         <div key={index} className={styles.listItem}>
-                            {number}
+                            {number.endsWith('번') ? number : `${number}번`}
                         </div>
                     ))}
                 </div>

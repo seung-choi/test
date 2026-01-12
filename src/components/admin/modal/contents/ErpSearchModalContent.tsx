@@ -6,8 +6,8 @@ import commonStyles from '@/styles/components/admin/modal/CommonModal.module.scs
 import styles from '@/styles/components/admin/modal/ErpSearchModal.module.scss';
 import { ErpProduct, ErpSearchType } from '@/types/erp.type';
 import CustomSelect from '@/components/common/CustomSelect';
-import { erpMockData } from '@/mock/admin/erpMockData';
 import { formatPrice } from '@/utils';
+import { useGoodsErpList, usePutGoodsErpList } from '@/hooks/api';
 
 interface ErpSearchModalContentProps {
   onSelect: (product: ErpProduct) => void;
@@ -22,20 +22,22 @@ const ErpSearchModalContent: React.FC<ErpSearchModalContentProps> = ({
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState<ErpProduct[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
+  const { data: erpList = [] } = useGoodsErpList();
+  const { mutateAsync: updateErpList, isPending: isUpdating } = usePutGoodsErpList();
 
   useEffect(() => {
-    setSearchResults(erpMockData);
+    setSearchResults(erpList);
     setHasSearched(false);
-  }, []);
+  }, [erpList]);
 
   const handleSearch = () => {
     if (!searchTerm.trim()) {
-      setSearchResults(erpMockData);
+      setSearchResults(erpList);
       setHasSearched(false);
       return;
     }
 
-    const results = erpMockData.filter((product) => {
+    const results = erpList.filter((product) => {
       if (searchType === '상품 코드') {
         return product.goodsErp.toLowerCase().includes(searchTerm.toLowerCase());
       } else {
@@ -51,12 +53,12 @@ const ErpSearchModalContent: React.FC<ErpSearchModalContentProps> = ({
     setSearchTerm(value);
 
     if (!value.trim()) {
-      setSearchResults(erpMockData);
+      setSearchResults(erpList);
       setHasSearched(false);
       return;
     }
 
-    const results = erpMockData.filter((product) => {
+    const results = erpList.filter((product) => {
       if (searchType === '상품 코드') {
         return product.goodsErp.toLowerCase().includes(value.toLowerCase());
       } else {
@@ -72,6 +74,11 @@ const ErpSearchModalContent: React.FC<ErpSearchModalContentProps> = ({
     onSelect(product);
   };
 
+  const handleUpdateErpList = async () => {
+    if (isUpdating) return;
+    await updateErpList();
+  };
+
   const buttons = (
     <button className={commonStyles.cancelButton} onClick={onClose}>
       닫기
@@ -79,7 +86,20 @@ const ErpSearchModalContent: React.FC<ErpSearchModalContentProps> = ({
   );
 
   return (
-    <CommonModalLayout title="ERP 검색" buttons={buttons} contentClassName={styles.erpContent}>
+    <CommonModalLayout
+      title="ERP 검색"
+      headerRight={
+        <button
+          className={styles.erpUpdateButton}
+          onClick={handleUpdateErpList}
+          disabled={isUpdating}
+        >
+          ERP 목록 업데이트
+        </button>
+      }
+      buttons={buttons}
+      contentClassName={styles.erpContent}
+    >
       <div className={styles.searchSection}>
         <CustomSelect
           value={searchType}
