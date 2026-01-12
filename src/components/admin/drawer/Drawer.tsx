@@ -3,7 +3,7 @@ import { useRecoilState } from 'recoil';
 import styles from '@/styles/components/admin/drawer/Drawer.module.scss';
 import { drawerState } from '@/lib/recoil';
 import useUnifiedModal from '@/hooks/admin/useUnifiedModal';
-import { Category, ProductFormData, ErpProduct } from '@/types';
+import { ProductFormData, ErpProduct } from '@/types';
 import { useScrollLock } from '@/hooks/common/useScrollManagement';
 import { usePutGoodsErpList } from '@/hooks/api';
 

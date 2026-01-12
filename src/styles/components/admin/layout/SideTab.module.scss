@@ -147,6 +147,13 @@
   position: absolute;
   right: -30px;
   top: -20px;
+
+  @include tablet {
+    width: 20px;
+    height: 20px;
+    right: -20px;
+    top: -10px;
+  }
 }
 
 .notificationDotBg {
@@ -158,14 +165,22 @@
   background: #DC0000;
   box-shadow: 0 0 8.125px rgba(255, 16, 16, 0.8);
   border-radius: 50%;
+
+  @include tablet {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 .notificationDotText {
   color: #fff;
   font-size: 13px;
   font-weight: 1000;
-}
 
+  @include tablet {
+    font-size: 11px;
+  }
+}
 .menuSection {
   width: 5.375rem;
   border-radius: 1.25rem;

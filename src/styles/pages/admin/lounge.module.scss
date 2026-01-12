@@ -71,10 +71,16 @@
 
 .scrollButtonExpanded {
   height: calc(100% - 12.5rem);
+  @include tablet{
+    height: 100%;
+  }
 }
 
 .scrollButtonCollapsed {
   height: calc(100% - 50px);
+  @include tablet{
+    height: 100%;
+  }
 }
 
 .scrollButton {

@@ -41,6 +41,7 @@
 
   @include tablet {
     padding: 1.875rem 1.5625rem 0.625rem 1.5625rem;
+    height: 9.5rem;
   }
 }
 
@@ -322,6 +323,7 @@
 
   @include tablet {
     gap: 0.625rem;
+    width: 12rem;
   }
 }
 
