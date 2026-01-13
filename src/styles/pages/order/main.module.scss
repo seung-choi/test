@@ -12,7 +12,6 @@
   width: 100%;
   height: calc(100% - 100px);
   position: relative;
-  padding: 40px 40px 0;
 
   @include tablet {
     height: calc(100% - 80px);
@@ -24,4 +23,10 @@
   height: 100%;
   position: relative;
   overflow: auto;
+  padding: 20px;
+}
+
+.layoutSpacer {
+  width: 100%;
+  pointer-events: none;
 }

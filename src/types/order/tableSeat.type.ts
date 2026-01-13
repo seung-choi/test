@@ -1,20 +1,17 @@
-import {TableType} from "@/types";
+import { TableType } from '@/types';
+import { TableReservation } from '@/utils/tableShape/types';
 
-export interface TableReservation {
-    time: string;
-    name: string;
-    group?: string;
-}
+export type { TableReservation };
 
 export interface TableData {
-    id: string;
-    type: TableType;
-    position: {
-        left: number;
-        top: number;
-    };
-    reservation: TableReservation | null;
-    status: 'occupied' | 'empty';
-    rotation?: number;
-    scale?: number;
+  id: string;
+  type: TableType;
+  position: {
+    left: number;
+    top: number;
+  };
+  reservation: TableReservation | null;
+  status: 'occupied' | 'empty';
+  rotation?: number;
+  scale?: number;
 }

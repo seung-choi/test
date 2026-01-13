@@ -26,11 +26,9 @@ export const usePanZoom = () => {
     }, []);
 
     const handleWheel = useCallback((e: WheelEvent) => {
-        if (e.ctrlKey || e.metaKey) {
-            e.preventDefault();
-            const delta = e.deltaY > 0 ? -0.1 : 0.1;
-            setZoom(prev => Math.max(0.3, Math.min(3, prev + delta)));
-        }
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? -0.1 : 0.1;
+        setZoom(prev => Math.max(0.3, Math.min(3, prev + delta)));
     }, []);
 
     const handleMouseDown = useCallback((e: React.MouseEvent) => {
@@ -58,13 +56,9 @@ export const usePanZoom = () => {
             const newX = e.clientX - startPan.x;
             const newY = e.clientY - startPan.y;
 
-            // 마이너스 방지
-            const clampedX = Math.max(0, newX);
-            const clampedY = Math.max(0, newY);
-
             setPan({
-                x: clampedX,
-                y: clampedY
+                x: newX,
+                y: newY
             });
         }
     }, [isPanning, startPan]);

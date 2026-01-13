@@ -78,35 +78,7 @@ const TableNumberList: React.FC<TableNumberListProps> = ({ linkedNumbers = [] })
             </div>
             <div className={styles.listContainer}>
                 <div className={styles.list}>
-                    {isAdding && (
-                        <div className={styles.listItemRow}>
-                            <input
-                                className={styles.listItemInput}
-                                value={manualInput}
-                                type= 'number'
-                                onChange={(event) => setManualInput(event.target.value)}
-                                onKeyDown={(event) => {
-                                    if (event.key === 'Enter') {
-                                        handleSaveManual();
-                                    }
-                                    if (event.key === 'Escape') {
-                                        setIsAdding(false);
-                                        setManualInput('');
-                                    }
-                                }}
-                                placeholder="번호 입력"
-                            />
-                            <button
-                                type="button"
-                                className={styles.listItemSaveButton}
-                                onClick={handleSaveManual}
-                                disabled={isPosting}
-                            >
-                                저장
-                            </button>
-                        </div>
-                    )}
-                    {!isAdding && allNumbers.length === 0 && (
+                    {allNumbers.length === 0 && !isAdding && (
                         <div className={styles.emptyState}>테이블이 없습니다</div>
                     )}
                     {allNumbers.map((number, index) => {
@@ -119,6 +91,35 @@ const TableNumberList: React.FC<TableNumberListProps> = ({ linkedNumbers = [] })
                     })}
                 </div>
             </div>
+            {isAdding && (
+                <div className={styles.inputRow}>
+                    <input
+                        className={styles.inputField}
+                        value={manualInput}
+                        type='text'
+                        onChange={(event) => setManualInput(event.target.value)}
+                        onKeyDown={(event) => {
+                            if (event.key === 'Enter') {
+                                handleSaveManual();
+                            }
+                            if (event.key === 'Escape') {
+                                setIsAdding(false);
+                                setManualInput('');
+                            }
+                        }}
+                        placeholder="번호 입력"
+                        autoFocus
+                    />
+                    <button
+                        type="button"
+                        className={styles.saveButton}
+                        onClick={handleSaveManual}
+                        disabled={isPosting}
+                    >
+                        저장
+                    </button>
+                </div>
+            )}
             <button className={styles.addButton} onClick={handleAddClick} disabled={isAdding || isPosting}>
                 <img src="/assets/image/admin/setting/add.svg" alt="add" />
                 <span>직접 추가</span>

@@ -4,8 +4,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import styles from '@/styles/components/admin/drawer/canvas/draggableTableItem.module.scss';
 import { PlacedTable } from '@/types';
 import TableShape from '@/components/common/TableShape';
-import { isPositionValid } from '@/utils/tableCollision';
+import { isPositionValid, getTableDimensions } from '@/utils/tableCollision';
 import { useClickOutside } from '@/hooks/common/useClickOutside';
+
+const CANVAS_WIDTH = 1920;
+const CANVAS_HEIGHT = 1080;
 
 interface DraggableTableItemProps {
     table: PlacedTable;
@@ -30,6 +33,7 @@ const DraggableTableItem: React.FC<DraggableTableItemProps> = ({
     const [isSelected, setIsSelected] = useState(false);
     const [showNumberDropdown, setShowNumberDropdown] = useState(false);
     const [isDragging, setIsDragging] = useState(false);
+    const [tempPosition, setTempPosition] = useState<{ x: number; y: number } | null>(null);
     const itemRef = useRef<HTMLDivElement>(null);
     const dragStartPos = useRef<{ x: number; y: number } | null>(null);
     const tableStartPos = useRef<{ x: number; y: number } | null>(null);
@@ -50,18 +54,26 @@ const DraggableTableItem: React.FC<DraggableTableItemProps> = ({
             const deltaX = e.clientX - dragStartPos.current.x;
             const deltaY = e.clientY - dragStartPos.current.y;
 
-            const newX = tableStartPos.current.x + deltaX;
-            const newY = tableStartPos.current.y + deltaY;
+            let newX = tableStartPos.current.x + deltaX;
+            let newY = tableStartPos.current.y + deltaY;
 
-            const newPosition = { x: newX, y: newY };
+            const dimensions = getTableDimensions(table);
+            newX = Math.max(0, Math.min(CANVAS_WIDTH - dimensions.width, newX));
+            newY = Math.max(0, Math.min(CANVAS_HEIGHT - dimensions.height, newY));
 
-            if (isPositionValid(table, newPosition, placedTables)) {
-                onMove(table.id, newPosition);
-            }
+            setTempPosition({ x: newX, y: newY });
         };
 
         const handleMouseUp = () => {
+            if (tempPosition) {
+                if (isPositionValid(table, tempPosition, placedTables)) {
+                    onMove(table.id, tempPosition);
+                } else {
+                    onMove(table.id, tableStartPos.current!);
+                }
+            }
             setIsDragging(false);
+            setTempPosition(null);
             dragStartPos.current = null;
             tableStartPos.current = null;
         };
@@ -73,7 +85,7 @@ const DraggableTableItem: React.FC<DraggableTableItemProps> = ({
             document.removeEventListener('mousemove', handleMouseMove);
             document.removeEventListener('mouseup', handleMouseUp);
         };
-    }, [isDragging, table, placedTables, onMove]);
+    }, [isDragging, table, placedTables, onMove, tempPosition]);
 
     const handleMouseDown = (e: React.MouseEvent) => {
         const target = e.target as HTMLElement;
@@ -136,13 +148,15 @@ const DraggableTableItem: React.FC<DraggableTableItemProps> = ({
     const usedNumbers = getUsedNumbers();
     const availableNumbers = availableTableNumbers.map(normalizeNumber);
 
+    const currentPosition = tempPosition || table.position;
+
     return (
         <div
             ref={itemRef}
             className={`${styles.tableItem} ${isDragging ? styles.dragging : ''} ${isSelected ? styles.selected : ''}`}
             style={{
-                left: `${table.position.x}px`,
-                top: `${table.position.y}px`,
+                left: `${currentPosition.x}px`,
+                top: `${currentPosition.y}px`,
             }}
             onClick={handleClick}
             data-table-item="true"

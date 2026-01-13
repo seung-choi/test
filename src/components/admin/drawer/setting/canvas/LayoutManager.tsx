@@ -6,7 +6,6 @@ import LayoutCanvas from './LayoutCanvas';
 import TableNumberList from './TableNumberList';
 import LayoutTabs from './LayoutTabs';
 import TableListView from './TableListView';
-import ControlPanel from './ControlPanel';
 import styles from '@/styles/components/admin/drawer/canvas/layoutManager.module.scss';
 import { usePanZoom } from '@/hooks/tableCanvas/usePanZoom';
 import { usePageManagement } from '@/hooks/tableCanvas/usePageManagement';
@@ -26,7 +25,6 @@ const LayoutManager: React.FC = () => {
         containerRef,
         handleZoomIn,
         handleZoomOut,
-        handleZoomReset,
         handleMouseDown
     } = usePanZoom();
 
@@ -38,7 +36,6 @@ const LayoutManager: React.FC = () => {
         getPageAt,
         handlePageAdd,
         handlePageDelete,
-        handlePageSelect
     } = usePageManagement();
 
     const {
@@ -240,6 +237,10 @@ const LayoutManager: React.FC = () => {
         });
     }, [currentPageId, handleRemoveTable, pages]);
 
+    const handlePageAddWithDirection = useCallback((direction: 'right' | 'bottom' | 'left' | 'top') => {
+        handlePageAdd(direction);
+    }, [handlePageAdd]);
+
     const renderPageGrid = (): JSX.Element => {
         const bounds = getGridBounds();
         const rows: JSX.Element[] = [];
@@ -261,6 +262,8 @@ const LayoutManager: React.FC = () => {
                             onRemoveTable={handleRemoveTableForSave}
                             onSetTableNumber={handleAssignTableNumber}
                             onRotateTable={handleRotateTable}
+                            onPageAdd={handlePageAddWithDirection}
+                            onPageDelete={handlePageDelete}
                             gridPosition={page.gridPosition}
                             availableTableNumbers={availableTableNumbers}
                         />
@@ -295,12 +298,6 @@ const LayoutManager: React.FC = () => {
                             userSelect: isPanning ? 'none' : 'auto'
                         }}
                     >
-                        <ControlPanel
-                            pages={pages}
-                            onPageAdd={handlePageAdd}
-                            onPageDelete={handlePageDelete}
-                        />
-
                         <div
                             className={styles.zoomContainer}
                             style={{
@@ -323,18 +320,12 @@ const LayoutManager: React.FC = () => {
                                     <path d="M5 10H15" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
                                 </svg>
                             </button>
-                            <button onClick={handleZoomReset} className={styles.zoomResetButton} title="Reset Zoom (100%)">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                                    <path d="M4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12C20 16.4183 16.4183 20 12 20C9.68852 20 7.61295 18.978 6.19299 17.366" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                                    <path d="M3 17L6.5 17.5L7 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                    <text x="12" y="14" fontSize="8" fill="currentColor" textAnchor="middle" fontWeight="600">1:1</text>
-                                </svg>
-                            </button>
                         </div>
                     </div>
                 ) : (
                     <TableListView
                         placedTables={allTablesWithPage}
+                        tableList={tableList}
                         onReorder={handleReorderTables}
                     />
                 )}
