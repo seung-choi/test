@@ -42,7 +42,9 @@ const FilterSection: React.FC<FilterSectionProps> = ({
               </div>
             )}
           </div>
-          <div className={styles.filterCount}>({item.count})</div>
+          {(item.key === 'order' || activeFilter === item.key) && (
+            <div className={styles.filterCount}>({item.count})</div>
+          )}
         </div>
       ))}
     </div>

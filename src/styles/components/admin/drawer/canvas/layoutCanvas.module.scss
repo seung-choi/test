@@ -2,9 +2,9 @@
     position: relative;
     display: inline-block;
     background: transparent;
-    width: 1248px;
-    height: 752px;
-    overflow: visible;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
 }
 
 .canvas {
@@ -12,11 +12,11 @@
     display: block;
     width: 100%;
     height: 100%;
-    overflow: visible;
+    overflow: hidden;
 
     .canvasImage {
         display: block;
-        width: 1280px;
+        width: 1920px;
         height: 1080px;
         object-fit: cover;
         position: absolute;

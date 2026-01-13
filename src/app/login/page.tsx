@@ -12,6 +12,7 @@ import {
 } from '@/utils/validation/loginValidation';
 import { useLogin, useMenuHisList } from '@/hooks/api';
 import { LoginResponseAPI } from '@/api/auth';
+import storage from '@/utils/storage';
 
 const LoginPage: React.FC = () => {
     const router = useRouter();
@@ -21,11 +22,17 @@ const LoginPage: React.FC = () => {
     const loginMutation = useLogin();
     const { data: menuList, refetch: fetchMenuList } = useMenuHisList({ enabled: false });
 
+    const getSavedClubCode = () => {
+        const saved = storage.local.get('savedClubCode');
+        return saved || '';
+    };
+
     const handleLogin = useCallback(async (formData: LoginFormData) => {
         try {
             setErrors({});
 
-            const validationErrors = validateLoginForm(formData);
+            const hasSavedClubCode = !!getSavedClubCode();
+            const validationErrors = validateLoginForm(formData, hasSavedClubCode);
             if (hasErrors(validationErrors)) {
                 setErrors(validationErrors);
                 return;
@@ -57,6 +64,8 @@ const LoginPage: React.FC = () => {
         sessionStorage.setItem('initSt', loginResponse.initSt);
         sessionStorage.setItem('clubId', loginResponse.clubId);
         sessionStorage.setItem('clubLogo', loginResponse.clubLogo);
+
+        storage.local.set({ savedClubCode: formData.clubCode });
 
         const { data: menuPermissions } = await fetchMenuList();
 

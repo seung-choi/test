@@ -172,43 +172,44 @@ const DraggableTableItem: React.FC<DraggableTableItemProps> = ({
                 </TableShape>
             </div>
 
-            {isSelected && !showNumberDropdown && (
-                <div className={styles.controlPanel}>
-                    <button className={styles.assignButton} onClick={handleNumberAssign}>
-                        <img src="/assets/image/admin/setting/assign.svg" alt="assign" width={17} height={17} />
-                        <span>번호 지정</span>
-                    </button>
-                    <button className={styles.rotateButton} onClick={handleRotate}>
-                        <img src="/assets/image/admin/setting/rotate.svg" alt="rotate" width={17} height={17} />
-                        <span>회전</span>
-                    </button>
-                    <button className={styles.deleteButton} onClick={handleDelete}>
-                        <img src="/assets/image/admin/setting/delete.svg" alt="delete" width={10} height={2} />
-                        <span>삭제</span>
-                    </button>
-                </div>
-            )}
-
-            {showNumberDropdown && (
-                <div className={styles.numberDropdown}>
-                    <div className={styles.numberList}>
-                        {availableNumbers.map((num) => {
-                            const isUsed = usedNumbers.includes(num);
-                            const isCurrent = normalizeNumber(table.tableNumber || '') === num;
-                            return (
-                                <div
-                                    key={num}
-                                    className={`${styles.numberItem} ${
-                                        isUsed ? styles.used : ''
-                                    } ${isCurrent ? styles.current : ''}`}
-                                    onClick={() => !isUsed && handleNumberSelect(num)}
-                                >
-                                    {formatNumber(num)}
-                                </div>
-                            );
-                        })}
+            {isSelected && (
+                <div className={styles.panelWrapper}>
+                    <div className={styles.controlPanel}>
+                        <button className={styles.assignButton} onClick={handleNumberAssign}>
+                            <img src="/assets/image/admin/setting/assign.svg" alt="assign" width={17} height={17} />
+                            <span>번호 지정</span>
+                        </button>
+                        <button className={styles.rotateButton} onClick={handleRotate}>
+                            <img src="/assets/image/admin/setting/rotate.svg" alt="rotate" width={17} height={17} />
+                            <span>회전</span>
+                        </button>
+                        <button className={styles.deleteButton} onClick={handleDelete}>
+                            <img src="/assets/image/admin/setting/delete.svg" alt="delete" width={10} height={2} />
+                            <span>삭제</span>
+                        </button>
                     </div>
-                    <div className={styles.scrollbar} />
+
+                    {showNumberDropdown && (
+                        <div className={styles.numberDropdown}>
+                            <div className={styles.numberList}>
+                                {availableNumbers.map((num) => {
+                                    const isUsed = usedNumbers.includes(num);
+                                    const isCurrent = normalizeNumber(table.tableNumber || '') === num;
+                                    return (
+                                        <div
+                                            key={num}
+                                            className={`${styles.numberItem} ${
+                                                isUsed ? styles.used : ''
+                                            } ${isCurrent ? styles.current : ''}`}
+                                            onClick={() => !isUsed && handleNumberSelect(num)}
+                                        >
+                                            {formatNumber(num)}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    )}
                 </div>
             )}
         </div>

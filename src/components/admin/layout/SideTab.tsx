@@ -26,6 +26,7 @@ const SideTab: React.FC<SideTabProps> = ({
   const [activeFilter, setActiveFilter] = useState('order');
   const [drawer, setDrawer] = useRecoilState(drawerState);
   const menuManagementRef = useRef<MenuManagementRef>(null);
+  const [hasSelectedItems, setHasSelectedItems] = useState(false);
 
   const { notificationOption, setNotificationOption } = useNotificationStorage();
   const { isTablet } = useDeviceType();
@@ -78,10 +79,15 @@ const SideTab: React.FC<SideTabProps> = ({
         onClose={handleDrawerClose}
         title="메뉴 관리"
         mode='menu'
+        hasSelectedItems={hasSelectedItems}
         onDelete={() => menuManagementRef.current?.handleDelete()}
         onReorderCommit={() => menuManagementRef.current?.handleCommitReorder()}
       >
-        <MenuManagement ref={menuManagementRef} onClose={handleDrawerClose} />
+        <MenuManagement
+          ref={menuManagementRef}
+          onClose={handleDrawerClose}
+          onSelectionChange={setHasSelectedItems}
+        />
       </Drawer>
 
       <Drawer

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import styles from '@/styles/components/admin/drawer/canvas/tableListView.module.scss';
-import { PlacedTable } from '@/types';
+import { PlacedTable, TableType } from '@/types';
 
 interface TableWithPage extends PlacedTable {
     pageName?: string;
@@ -16,6 +16,14 @@ interface TableListViewProps {
 const TableListView: React.FC<TableListViewProps> = ({ placedTables, onReorder }) => {
     const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
     const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
+    const capacityMap: Record<TableType, string> = {
+        T4S: '4인',
+        T6R: '6인',
+        T8S: '8인',
+        T8R: '8인',
+        T10R: '10인',
+        T12R: '12인'
+    };
 
     const handleDragStart = (e: React.DragEvent, index: number) => {
         setDraggedIndex(index);
@@ -68,7 +76,7 @@ const TableListView: React.FC<TableListViewProps> = ({ placedTables, onReorder }
                     onDragEnd={handleDragEnd}
                 >
                     <div className={styles.tableCard}>
-                        <div className={styles.tableType}>{table.type}</div>
+                        <div className={styles.tableType}>{capacityMap[table.type]}</div>
                         <div className={styles.tableTab}>
                             <div className={styles.tableNumber}>
                                 {table.tableNumber

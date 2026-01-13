@@ -7,12 +7,11 @@ import TableNumberList from './TableNumberList';
 import LayoutTabs from './LayoutTabs';
 import TableListView from './TableListView';
 import ControlPanel from './ControlPanel';
-import SaveButtons from './SaveButtons';
 import styles from '@/styles/components/admin/drawer/canvas/layoutManager.module.scss';
 import { usePanZoom } from '@/hooks/tableCanvas/usePanZoom';
 import { usePageManagement } from '@/hooks/tableCanvas/usePageManagement';
 import { useTableManagement } from '@/hooks/tableCanvas/useTableManagement';
-import { useTableList } from '@/hooks/api';
+import { usePutTableList, useTableList } from '@/hooks/api';
 import type { GetTableResponse } from '@/api/table';
 import type { PlacedTable, TableType } from '@/types';
 
@@ -45,12 +44,14 @@ const LayoutManager: React.FC = () => {
         handleAddTable,
         handleMoveTable,
         handleRemoveTable,
-        handleSetTableNumber,
         handleRotateTable,
         handleReorderTables
     } = useTableManagement({ pages, setPages, currentPageId });
 
     const { data: tableList = [] } = useTableList();
+    const { mutateAsync: putTableList } = usePutTableList();
+
+    const normalizeNumber = (value: string) => value.trim().replace(/번$/, '');
 
     const parseXyr = (value: string) => {
         const [x, y, r] = value.split(',').map((item) => Number(item));
@@ -70,8 +71,14 @@ const LayoutManager: React.FC = () => {
         };
     };
 
+    const isTableType = (value: string | null): value is TableType => {
+        return value === 'T4S' || value === 'T6R' || value === 'T8S' || value === 'T8R' || value === 'T10R' || value === 'T12R';
+    };
+
     const mappedTables = useMemo(() => {
-        return tableList.map((table: GetTableResponse) => {
+        return tableList
+            .filter((table) => isTableType(table.tableCd))
+            .map((table: GetTableResponse) => {
             const { x, y, r } = parseXyr(table.tableXyr || '0,0,0');
             const { p } = parseWhp(table.tableWhp || '0,0,1');
             const pageIndex = Number.isFinite(p) && p > 0 ? Math.floor(p) - 1 : 0;
@@ -127,11 +134,84 @@ const LayoutManager: React.FC = () => {
         }))
     );
 
-    const handleEdit = useCallback(() => {}, []);
-
-    const handleSave = useCallback(() => {
-        alert('테이블 배치가 저장되었습니다.');
+    const linkedNumbers = useMemo(() => {
+        return pages
+            .flatMap(page => page.tables)
+            .map(table => table.tableNumber)
+            .filter((value): value is string => Boolean(value));
     }, [pages]);
+
+    const handleSave = useCallback(async () => {
+        const payload = pages.flatMap((page, pageIndex) =>
+            page.tables
+                .map((table) => {
+                    const resolvedId = table.tableId ?? tableList.find((item) => normalizeNumber(item.tableNo) === normalizeNumber(table.tableNumber || ''))?.tableId;
+                    if (!resolvedId) return null;
+
+                    const x = Math.round(table.position.x);
+                    const y = Math.round(table.position.y);
+                    const r = table.rotation ?? 0;
+                    const tableXyr = `${x},${y},${r}`;
+                    const tableWhp = `1920,1080,${pageIndex + 1}`;
+
+                    return {
+                        tableId: resolvedId,
+                        tableCd: table.type,
+                        tableXyr,
+                        tableWhp
+                    };
+                })
+                .filter((item): item is { tableId: number; tableCd: TableType; tableXyr: string; tableWhp: string } => Boolean(item))
+        );
+
+        if (payload.length === 0) {
+            alert('저장할 테이블이 없습니다.');
+            return;
+        }
+
+        await putTableList(payload);
+        alert('테이블 배치가 저장되었습니다.');
+    }, [pages, putTableList, tableList]);
+
+    const handleAssignTableNumber = useCallback((tableId: string, tableNumber: string, targetPageId?: string) => {
+        const pageId = targetPageId || currentPageId;
+        const normalized = normalizeNumber(tableNumber);
+        const matched = tableList.find((item) => normalizeNumber(item.tableNo) === normalized);
+        const resolvedId = matched?.tableId;
+
+        setPages(prev =>
+            prev.map(page =>
+                page.id === pageId
+                    ? {
+                        ...page,
+                        tables: page.tables.map(table =>
+                            table.id === tableId
+                                ? { ...table, tableNumber: normalized, tableId: resolvedId ?? table.tableId }
+                                : table
+                        )
+                    }
+                    : page
+            )
+        );
+    }, [currentPageId, setPages, tableList]);
+
+    const handleRemoveTableWithApi = useCallback((tableId: string, targetPageId?: string) => {
+        const pageId = targetPageId || currentPageId;
+        const targetTable = pages
+            .find(page => page.id === pageId)
+            ?.tables.find(table => table.id === tableId);
+
+        handleRemoveTable(tableId, pageId);
+
+        if (!targetTable?.tableId) return;
+
+        void putTableList([{
+            tableId: targetTable.tableId,
+            tableCd: null,
+            tableXyr: null,
+            tableWhp: null
+        }]);
+    }, [currentPageId, handleRemoveTable, pages, putTableList]);
 
     const renderPageGrid = (): JSX.Element => {
         const bounds = getGridBounds();
@@ -151,8 +231,8 @@ const LayoutManager: React.FC = () => {
                             placedTables={page.tables}
                             onAddTable={handleAddTable}
                             onMoveTable={handleMoveTable}
-                            onRemoveTable={handleRemoveTable}
-                            onSetTableNumber={handleSetTableNumber}
+                            onRemoveTable={handleRemoveTableWithApi}
+                            onSetTableNumber={handleAssignTableNumber}
                             onRotateTable={handleRotateTable}
                             gridPosition={page.gridPosition}
                             availableTableNumbers={availableTableNumbers}
@@ -177,7 +257,7 @@ const LayoutManager: React.FC = () => {
         <div className={styles.container}>
             <TableSelector />
             <div className={styles.canvasWrapper}>
-                <LayoutTabs activeTab={activeTab} onTabChange={setActiveTab} />
+                <LayoutTabs activeTab={activeTab} onTabChange={setActiveTab} onSave={handleSave} />
                 {activeTab === 'table' ? (
                     <div
                         ref={containerRef}
@@ -232,10 +312,7 @@ const LayoutManager: React.FC = () => {
                     />
                 )}
             </div>
-            <TableNumberList />
-            <div className={styles.saveButtonsWrapper}>
-                <SaveButtons onEdit={handleEdit} onSave={handleSave} />
-            </div>
+            <TableNumberList linkedNumbers={linkedNumbers} />
         </div>
     );
 };

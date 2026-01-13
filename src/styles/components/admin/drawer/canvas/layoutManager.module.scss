@@ -6,16 +6,6 @@
     position: relative;
 }
 
-.saveButtonsWrapper {
-    display: flex;
-    align-items: flex-start;
-    padding-top: 20px;
-    position: absolute;
-    right: 0;
-    top: -85px;
-    z-index: 200;
-}
-
 .canvasWrapper {
     flex: 1;
     height: 100%;

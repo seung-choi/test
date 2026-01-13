@@ -34,7 +34,9 @@ export const useShopInfo = (options?: {
   useEffect(() => {
     if (data?.shopErp !== undefined) {
       const isErpConnected = data.shopErp !== null;
-      storage.local.set({ isErpConnected });
+      const clubNm = data.club.clubNm;
+      storage.session.set({ isErpConnected });
+      storage.session.set({ clubNm });
     }
   }, [data?.shopErp]);
 

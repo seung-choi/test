@@ -4,12 +4,14 @@ import { getOriginURL } from '@/api/API_URL';
 export interface GetTableResponse {
   tableId: number;
   tableNo: string;
-  tableCd: string;
-  tableXyr: string;
-  tableWhp: string;
+  tableCd: string | null;
+  tableXyr: string | null;
+  tableWhp: string | null;
   tableOrd: number;
-  tableErp: string;
-  tableDiv: string;
+  tableErp: string | null;
+  tableDiv: string | null;
+  createdDt?: string;
+  modifiedDt?: string;
 }
 
 export interface PostTableRequest {
@@ -19,9 +21,9 @@ export interface PostTableRequest {
 
 export interface PutTableRequest {
   tableId: number;
-  tableCd: string;
-  tableXyr: string;
-  tableWhp: string;
+  tableCd: string | null;
+  tableXyr: string | null;
+  tableWhp: string | null;
 }
 
 export const getTableList = async (): Promise<GetTableResponse[]> => {

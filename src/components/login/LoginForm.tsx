@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import styles from '@/styles/pages/login/login.module.scss';
 import { LoginFormData, FormErrors, isFormEmpty } from '@/utils/validation/loginValidation';
 import Checkbox from '@/components/common/Checkbox';
+import storage from '@/utils/storage';
 
 interface LoginFormProps {
     onSubmit: (data: LoginFormData) => Promise<void>;
@@ -12,12 +13,26 @@ interface LoginFormProps {
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, errors = {}, isLoading = false }) => {
+    const [showClubCodeInput, setShowClubCodeInput] = useState(false);
+
+    const getSavedClubCode = () => {
+        const saved = storage.local.get('savedClubCode');
+        return saved || '';
+    };
+
     const [formData, setFormData] = useState<LoginFormData>({
-        clubCode: '',
+        clubCode: getSavedClubCode(),
         username: '',
         password: '',
         rememberMe: false
     });
+
+    useEffect(() => {
+        const savedClubCode = getSavedClubCode();
+        if (!savedClubCode) {
+            setShowClubCodeInput(true);
+        }
+    }, []);
 
     const handleInputChange = useCallback((field: keyof Omit<LoginFormData, 'rememberMe'>) => (
         e: React.ChangeEvent<HTMLInputElement>
@@ -36,8 +51,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, errors = {}, isLoading 
     }, []);
 
     const isFormDisabled = useMemo(() => {
-        return isLoading || isFormEmpty(formData);
-    }, [isLoading, formData]);
+        return isLoading || isFormEmpty(formData, !showClubCodeInput);
+    }, [isLoading, formData, showClubCodeInput]);
 
     const handleSubmit = useCallback(async () => {
         if (isFormDisabled) return;
@@ -56,31 +71,35 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, errors = {}, isLoading 
 
             <div className={styles.formWrapper}>
                 <div className={styles.formContainer}>
-                    <div className={styles.inputGroup}>
-                        <div className={styles.labelWrapper}>
-                            <label className={styles.label}>클럽코드</label>
-                        </div>
-                        <div className={`${styles.inputWrapper} ${errors.clubCode ? styles.error : ''}`}>
-                            <input
-                                type="text"
-                                className={styles.input}
-                                value={formData.clubCode}
-                                onChange={handleInputChange('clubCode')}
-                                onKeyDown={handleKeyPress}
-                                placeholder="클럽코드를 입력하세요"
-                                disabled={isLoading}
-                                autoComplete="organization"
-                            />
-                        </div>
-                    </div>
-
-                    {errors.clubCode && (
-                        <div className={styles.errorMessage}>
-                            <div className={styles.errorIcon}>
-                                <img src='/assets/image/login/alert.svg' alt='alert'/>
+                    {showClubCodeInput && (
+                        <>
+                            <div className={styles.inputGroup}>
+                                <div className={styles.labelWrapper}>
+                                    <label className={styles.label}>클럽코드</label>
+                                </div>
+                                <div className={`${styles.inputWrapper} ${errors.clubCode ? styles.error : ''}`}>
+                                    <input
+                                        type="text"
+                                        className={styles.input}
+                                        value={formData.clubCode}
+                                        onChange={handleInputChange('clubCode')}
+                                        onKeyDown={handleKeyPress}
+                                        placeholder="클럽코드를 입력하세요"
+                                        disabled={isLoading}
+                                        autoComplete="organization"
+                                    />
+                                </div>
                             </div>
-                            <span className={styles.errorText}>{errors.clubCode}</span>
-                        </div>
+
+                            {errors.clubCode && (
+                                <div className={styles.errorMessage}>
+                                    <div className={styles.errorIcon}>
+                                        <img src='/assets/image/login/alert.svg' alt='alert'/>
+                                    </div>
+                                    <span className={styles.errorText}>{errors.clubCode}</span>
+                                </div>
+                            )}
+                        </>
                     )}
 
                     <div className={styles.inputGroup}>

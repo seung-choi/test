@@ -16,6 +16,7 @@ interface DrawerProps {
   children: React.ReactNode;
   hasBackgroundImage?: boolean;
   mode?: DrawerMode;
+  hasSelectedItems?: boolean;
   onDelete?: () => void;
   onReorderCommit?: () => void;
 }
@@ -27,6 +28,7 @@ const Drawer: React.FC<DrawerProps> = ({
                                          children,
                                          hasBackgroundImage = true,
                                          mode,
+                                         hasSelectedItems = false,
                                          onDelete,
                                          onReorderCommit
                                        }) => {
@@ -189,7 +191,10 @@ const Drawer: React.FC<DrawerProps> = ({
               <div className={styles.cancelReasonButton} onClick={handleCancelReasonManagement}>
                 <div className={styles.buttonText}>취소사유 관리</div>
               </div>
-              <div className={styles.deleteButton} onClick={onDelete}>
+              <div
+                className={`${styles.deleteButton} ${!hasSelectedItems ? styles.disabled : ''}`}
+                onClick={hasSelectedItems ? onDelete : undefined}
+              >
                 <div className={styles.buttonText}>삭제</div>
               </div>
             </div>

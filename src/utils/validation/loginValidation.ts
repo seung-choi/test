@@ -64,12 +64,14 @@ export const validatePassword = (password: string): string | undefined => {
 /**
  * 전체 폼 유효성 검사
  */
-export const validateLoginForm = (formData: LoginFormData): FormErrors => {
+export const validateLoginForm = (formData: LoginFormData, skipClubCode: boolean = false): FormErrors => {
   const errors: FormErrors = {};
 
-  const clubCodeError = validateClubCode(formData.clubCode);
-  if (clubCodeError) {
-    errors.clubCode = clubCodeError;
+  if (!skipClubCode) {
+    const clubCodeError = validateClubCode(formData.clubCode);
+    if (clubCodeError) {
+      errors.clubCode = clubCodeError;
+    }
   }
 
   const usernameError = validateUsername(formData.username);
@@ -95,8 +97,15 @@ export const hasErrors = (errors: FormErrors): boolean => {
 /**
  * 폼이 비어있는지 확인 (submit 버튼 disable 용도)
  */
-export const isFormEmpty = (formData: LoginFormData): boolean => {
-  return !formData.clubCode.trim() ||
-         !formData.username.trim() ||
-         !formData.password.trim();
+export const isFormEmpty = (formData: LoginFormData, skipClubCode: boolean = false): boolean => {
+  const requiredFields = [
+    formData.username.trim(),
+    formData.password.trim()
+  ];
+
+  if (!skipClubCode) {
+    requiredFields.push(formData.clubCode.trim());
+  }
+
+  return requiredFields.some(field => !field);
 };

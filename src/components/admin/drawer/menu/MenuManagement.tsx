@@ -32,6 +32,7 @@ import {
 interface MenuManagementProps {
   onClose: () => void;
   onDelete?: (selectedItems: string[]) => void;
+  onSelectionChange?: (hasSelection: boolean) => void;
 }
 
 export interface MenuManagementRef {
@@ -39,7 +40,7 @@ export interface MenuManagementRef {
   handleCommitReorder: () => void;
 }
 
-const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onClose, onDelete }, ref) => {
+const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onClose, onDelete, onSelectionChange }, ref) => {
   const drawer = useRecoilValue(drawerState);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [menuData, setMenuData] = useState<MenuTableRow[]>([]);
@@ -73,6 +74,10 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
   useEffect(() => {
     setMenuData(mappedMenuData);
   }, [mappedMenuData]);
+
+  useEffect(() => {
+    onSelectionChange?.(selectedItems.length > 0);
+  }, [selectedItems, onSelectionChange]);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
