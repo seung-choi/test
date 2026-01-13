@@ -51,8 +51,10 @@ const TableShape: React.FC<TableShapeProps> = ({
     tableId
 }) => {
     const baseDim = baseDimensions[type];
-    const width = baseDim.width * scale;
-    const height = baseDim.height * scale;
+    const sizeScale = 0.8;
+    const scaledFactor = scale * sizeScale;
+    const width = baseDim.width * scaledFactor;
+    const height = baseDim.height * scaledFactor;
 
     const isOccupied = status === 'occupied';
     const borderColor = variant === 'order'
@@ -64,83 +66,102 @@ const TableShape: React.FC<TableShapeProps> = ({
 
     const renderBorders = () => {
         const borders = [];
-        const s = scale;
+        const s = scaledFactor;
+        const borderWidth = 76 * s;
+        const borderHeight = (variant === 'order' ? 9 : 11) * s;
+        const borderRadius = (variant === 'order' ? 5 : 10) * s;
 
         switch (type) {
             case 'T4S':
                 borders.push(
-                    <div key="top" className={`${styles.border} ${styles.borderTop}`} style={{ left: 23 * s, background: borderColor }} />,
-                    <div key="bottom" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 98 * s, top: height, background: borderColor }} />,
-                    <div key="left" className={`${styles.border} ${styles.borderLeft}`} style={{ left: 0, top: 98 * s, background: borderColor }} />,
-                    <div key="right" className={`${styles.border} ${styles.borderRight}`} style={{ left: width, top: 22 * s, background: borderColor }} />
+                    <div
+                        key="top"
+                        className={`${styles.border} ${styles.borderTop}`}
+                        style={{ left: 23 * s, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }}
+                    />,
+                    <div
+                        key="bottom"
+                        className={`${styles.border} ${styles.borderBottom}`}
+                        style={{ left: 98 * s, top: height, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }}
+                    />,
+                    <div
+                        key="left"
+                        className={`${styles.border} ${styles.borderLeft}`}
+                        style={{ left: 0, top: 98 * s, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }}
+                    />,
+                    <div
+                        key="right"
+                        className={`${styles.border} ${styles.borderRight}`}
+                        style={{ left: width, top: 22 * s, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }}
+                    />
                 );
                 break;
             case 'T6R':
                 borders.push(
-                    <div key="top1" className={`${styles.border} ${styles.borderTop}`} style={{ left: 22 * s, background: borderColor }} />,
-                    <div key="top2" className={`${styles.border} ${styles.borderTop}`} style={{ left: 108 * s, background: borderColor }} />,
-                    <div key="bottom1" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 97 * s, top: height, background: borderColor }} />,
-                    <div key="bottom2" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 183 * s, top: height, background: borderColor }} />,
-                    <div key="left" className={`${styles.border} ${styles.borderLeft}`} style={{ left: 0, top: 98 * s, background: borderColor }} />,
-                    <div key="right" className={`${styles.border} ${styles.borderRight}`} style={{ left: width, top: 22 * s, background: borderColor }} />
+                    <div key="top1" className={`${styles.border} ${styles.borderTop}`} style={{ left: 22 * s, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="top2" className={`${styles.border} ${styles.borderTop}`} style={{ left: 108 * s, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="bottom1" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 97 * s, top: height, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="bottom2" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 183 * s, top: height, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="left" className={`${styles.border} ${styles.borderLeft}`} style={{ left: 0, top: 98 * s, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="right" className={`${styles.border} ${styles.borderRight}`} style={{ left: width, top: 22 * s, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />
                 );
                 break;
 
             case 'T8S':
                 borders.push(
-                    <div key="top1" className={`${styles.border} ${styles.borderTop}`} style={{ left: 22 * s, background: borderColor }} />,
-                    <div key="top2" className={`${styles.border} ${styles.borderTop}`} style={{ left: 108 * s, background: borderColor }} />,
-                    <div key="bottom1" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 97 * s, top: height, background: borderColor }} />,
-                    <div key="bottom2" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 183 * s, top: height, background: borderColor }} />,
-                    <div key="left1" className={`${styles.border} ${styles.borderLeft}`} style={{ left: 0, top: 98 * s, background: borderColor }} />,
-                    <div key="left2" className={`${styles.border} ${styles.borderLeft}`} style={{ left: 0, top: 184 * s, background: borderColor }} />,
-                    <div key="right1" className={`${styles.border} ${styles.borderRight}`} style={{ left: width, top: 22 * s, background: borderColor }} />,
-                    <div key="right2" className={`${styles.border} ${styles.borderRight}`} style={{ left: width, top: 108 * s, background: borderColor }} />
+                    <div key="top1" className={`${styles.border} ${styles.borderTop}`} style={{ left: 22 * s, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="top2" className={`${styles.border} ${styles.borderTop}`} style={{ left: 108 * s, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="bottom1" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 97 * s, top: height, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="bottom2" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 183 * s, top: height, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="left1" className={`${styles.border} ${styles.borderLeft}`} style={{ left: 0, top: 98 * s, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="left2" className={`${styles.border} ${styles.borderLeft}`} style={{ left: 0, top: 184 * s, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="right1" className={`${styles.border} ${styles.borderRight}`} style={{ left: width, top: 22 * s, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="right2" className={`${styles.border} ${styles.borderRight}`} style={{ left: width, top: 108 * s, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />
                 );
                 break;
 
             case 'T8R':
                 borders.push(
-                    <div key="top1" className={`${styles.border} ${styles.borderTop}`} style={{ left: 22 * s, background: borderColor }} />,
-                    <div key="top2" className={`${styles.border} ${styles.borderTop}`} style={{ left: 108 * s, background: borderColor }} />,
-                    <div key="top3" className={`${styles.border} ${styles.borderTop}`} style={{ left: 194 * s, background: borderColor }} />,
-                    <div key="bottom1" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 97 * s, top: height, background: borderColor }} />,
-                    <div key="bottom2" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 183 * s, top: height, background: borderColor }} />,
-                    <div key="bottom3" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 269 * s, top: height, background: borderColor }} />,
-                    <div key="left" className={`${styles.border} ${styles.borderLeft}`} style={{ left: 0, top: 98 * s, background: borderColor }} />,
-                    <div key="right" className={`${styles.border} ${styles.borderRight}`} style={{ left: width, top: 22 * s, background: borderColor }} />
+                    <div key="top1" className={`${styles.border} ${styles.borderTop}`} style={{ left: 22 * s, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="top2" className={`${styles.border} ${styles.borderTop}`} style={{ left: 108 * s, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="top3" className={`${styles.border} ${styles.borderTop}`} style={{ left: 194 * s, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="bottom1" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 97 * s, top: height, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="bottom2" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 183 * s, top: height, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="bottom3" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 269 * s, top: height, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="left" className={`${styles.border} ${styles.borderLeft}`} style={{ left: 0, top: 98 * s, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="right" className={`${styles.border} ${styles.borderRight}`} style={{ left: width, top: 22 * s, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />
                 );
                 break;
 
             case 'T10R':
                 borders.push(
-                    <div key="top1" className={`${styles.border} ${styles.borderTop}`} style={{ left: 22 * s, background: borderColor }} />,
-                    <div key="top2" className={`${styles.border} ${styles.borderTop}`} style={{ left: 108 * s, background: borderColor }} />,
-                    <div key="top3" className={`${styles.border} ${styles.borderTop}`} style={{ left: 194 * s, background: borderColor }} />,
-                    <div key="top4" className={`${styles.border} ${styles.borderTop}`} style={{ left: 281 * s, background: borderColor }} />,
-                    <div key="bottom1" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 98 * s, top: height, background: borderColor }} />,
-                    <div key="bottom2" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 183 * s, top: height, background: borderColor }} />,
-                    <div key="bottom3" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 269 * s, top: height, background: borderColor }} />,
-                    <div key="bottom4" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 357 * s, top: height, background: borderColor }} />,
-                    <div key="left" className={`${styles.border} ${styles.borderLeft}`} style={{ left: 0, top: 98 * s, background: borderColor }} />,
-                    <div key="right" className={`${styles.border} ${styles.borderRight}`} style={{ left: width, top: 22 * s, background: borderColor }} />
+                    <div key="top1" className={`${styles.border} ${styles.borderTop}`} style={{ left: 22 * s, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="top2" className={`${styles.border} ${styles.borderTop}`} style={{ left: 108 * s, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="top3" className={`${styles.border} ${styles.borderTop}`} style={{ left: 194 * s, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="top4" className={`${styles.border} ${styles.borderTop}`} style={{ left: 281 * s, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="bottom1" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 98 * s, top: height, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="bottom2" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 183 * s, top: height, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="bottom3" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 269 * s, top: height, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="bottom4" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 357 * s, top: height, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="left" className={`${styles.border} ${styles.borderLeft}`} style={{ left: 0, top: 98 * s, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="right" className={`${styles.border} ${styles.borderRight}`} style={{ left: width, top: 22 * s, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />
                 );
                 break;
 
             case 'T12R':
                 borders.push(
-                    <div key="top1" className={`${styles.border} ${styles.borderTop}`} style={{ left: 22 * s, background: borderColor }} />,
-                    <div key="top2" className={`${styles.border} ${styles.borderTop}`} style={{ left: 108 * s, background: borderColor }} />,
-                    <div key="top3" className={`${styles.border} ${styles.borderTop}`} style={{ left: 194 * s, background: borderColor }} />,
-                    <div key="top4" className={`${styles.border} ${styles.borderTop}`} style={{ left: 281 * s, background: borderColor }} />,
-                    <div key="top5" className={`${styles.border} ${styles.borderTop}`} style={{ left: 367 * s, background: borderColor }} />,
-                    <div key="bottom1" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 98 * s, top: height, background: borderColor }} />,
-                    <div key="bottom2" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 183 * s, top: height, background: borderColor }} />,
-                    <div key="bottom3" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 269 * s, top: height, background: borderColor }} />,
-                    <div key="bottom4" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 357 * s, top: height, background: borderColor }} />,
-                    <div key="bottom5" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 443 * s, top: height, background: borderColor }} />,
-                    <div key="left" className={`${styles.border} ${styles.borderLeft}`} style={{ left: 0, top: 98 * s, background: borderColor }} />,
-                    <div key="right" className={`${styles.border} ${styles.borderRight}`} style={{ left: width, top: 22 * s, background: borderColor }} />
+                    <div key="top1" className={`${styles.border} ${styles.borderTop}`} style={{ left: 22 * s, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="top2" className={`${styles.border} ${styles.borderTop}`} style={{ left: 108 * s, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="top3" className={`${styles.border} ${styles.borderTop}`} style={{ left: 194 * s, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="top4" className={`${styles.border} ${styles.borderTop}`} style={{ left: 281 * s, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="top5" className={`${styles.border} ${styles.borderTop}`} style={{ left: 367 * s, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="bottom1" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 98 * s, top: height, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="bottom2" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 183 * s, top: height, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="bottom3" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 269 * s, top: height, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="bottom4" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 357 * s, top: height, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="bottom5" className={`${styles.border} ${styles.borderBottom}`} style={{ left: 443 * s, top: height, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="left" className={`${styles.border} ${styles.borderLeft}`} style={{ left: 0, top: 98 * s, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />,
+                    <div key="right" className={`${styles.border} ${styles.borderRight}`} style={{ left: width, top: 22 * s, background: borderColor, width: borderWidth, height: borderHeight, borderTopLeftRadius: borderRadius, borderTopRightRadius: borderRadius }} />
                 );
                 break;
         }
@@ -151,6 +172,8 @@ const TableShape: React.FC<TableShapeProps> = ({
     const isVertical = rotation === 90 || rotation === 270;
     const displayWidth = isVertical ? height : width;
     const displayHeight = isVertical ? width : height;
+    const borderLayerLeft = (displayWidth - width) / 2;
+    const borderLayerTop = (displayHeight - height) / 2;
 
     const renderOrderContent = () => {
         if (variant !== 'order') return null;
@@ -179,13 +202,20 @@ const TableShape: React.FC<TableShapeProps> = ({
         );
     };
 
+    const contentWidthBase = width - (24 * scaledFactor);
+    const contentHeightBase = height - (24 * scaledFactor);
+    const contentWidth = isVertical ? contentHeightBase : contentWidthBase;
+    const contentHeight = isVertical ? contentWidthBase : contentHeightBase;
+    const contentLeft = (displayWidth - contentWidth) / 2;
+    const contentTop = (displayHeight - contentHeight) / 2;
+
     return (
         <div
             className={`${styles.tableShape} ${variant === 'order' ? styles.orderVariant : ''} ${className}`}
             style={{
                 width: displayWidth,
                 height: displayHeight,
-                transform: `rotate(${rotation}deg)`,
+                transform: 'rotate(0deg)',
                 transformOrigin: 'center',
                 cursor: variant === 'order' && status === 'empty' ? 'default' : (onClick ? 'pointer' : 'default'),
                 transition: variant === 'order' ? 'transform 0.2s ease' : undefined,
@@ -197,15 +227,28 @@ const TableShape: React.FC<TableShapeProps> = ({
             <div
                 className={styles.innerContent}
                 style={{
-                    width: width - (24 * scale),
-                    height: height - (24 * scale),
-                    left: 12 * scale,
-                    top: 12 * scale
+                    width: contentWidth,
+                    height: contentHeight,
+                    left: contentLeft,
+                    top: contentTop,
+                    transformOrigin: 'center'
                 }}
             >
                 {variant === 'order' ? renderOrderContent() : children}
             </div>
-            {renderBorders()}
+            <div
+                style={{
+                    position: 'absolute',
+                    width,
+                    height,
+                    left: borderLayerLeft,
+                    top: borderLayerTop,
+                    transform: isVertical ? `rotate(${rotation}deg)` : undefined,
+                    transformOrigin: 'center'
+                }}
+            >
+                {renderBorders()}
+            </div>
         </div>
     );
 };

@@ -221,6 +221,19 @@
   }
 }
 
+.activeMenuItem {
+  background: #9081D8 !important;
+  border-color: #9081D8 !important;
+
+  .menuLabel {
+    color: white !important;
+  }
+
+  &:hover {
+    background: #7a6fc7 !important;
+  }
+}
+
 .menuIcon {
   width: 2.125rem;
   height: 2.125rem;

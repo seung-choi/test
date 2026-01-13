@@ -17,6 +17,7 @@ import type { PlacedTable, TableType } from '@/types';
 
 const LayoutManager: React.FC = () => {
     const [activeTab, setActiveTab] = useState<'table' | 'list'>('table');
+    const [deletedTableIds, setDeletedTableIds] = useState<Set<number>>(new Set());
 
     const {
         zoom,
@@ -142,42 +143,69 @@ const LayoutManager: React.FC = () => {
     }, [pages]);
 
     const handleSave = useCallback(async () => {
-        const payload = pages.flatMap((page, pageIndex) =>
-            page.tables
-                .map((table) => {
-                    const resolvedId = table.tableId ?? tableList.find((item) => normalizeNumber(item.tableNo) === normalizeNumber(table.tableNumber || ''))?.tableId;
-                    if (!resolvedId) return null;
+        const placementMap = new Map<number, { table: PlacedTable; pageIndex: number }>();
 
-                    const x = Math.round(table.position.x);
-                    const y = Math.round(table.position.y);
-                    const r = table.rotation ?? 0;
-                    const tableXyr = `${x},${y},${r}`;
-                    const tableWhp = `1920,1080,${pageIndex + 1}`;
+        pages.forEach((page, pageIndex) => {
+            page.tables.forEach((table) => {
+                if (table.tableId) {
+                    placementMap.set(table.tableId, { table, pageIndex });
+                }
+            });
+        });
 
-                    return {
-                        tableId: resolvedId,
-                        tableCd: table.type,
-                        tableXyr,
-                        tableWhp
-                    };
-                })
-                .filter((item): item is { tableId: number; tableCd: TableType; tableXyr: string; tableWhp: string } => Boolean(item))
-        );
+        const payload = tableList.map((tableInfo) => {
+            if (deletedTableIds.has(tableInfo.tableId)) {
+                return {
+                    tableId: tableInfo.tableId,
+                    tableCd: null,
+                    tableXyr: null,
+                    tableWhp: null
+                };
+            }
 
-        if (payload.length === 0) {
-            alert('저장할 테이블이 없습니다.');
-            return;
-        }
+            const placement = placementMap.get(tableInfo.tableId);
+            if (!placement) {
+                return {
+                    tableId: tableInfo.tableId,
+                    tableCd: null,
+                    tableXyr: null,
+                    tableWhp: null
+                };
+            }
+
+            const { table, pageIndex } = placement;
+            const x = Math.round(table.position.x);
+            const y = Math.round(table.position.y);
+            const r = table.rotation ?? 0;
+            const tableXyr = `${x},${y},${r}`;
+            const tableWhp = `1920,1080,${pageIndex + 1}`;
+
+            return {
+                tableId: tableInfo.tableId,
+                tableCd: table.type,
+                tableXyr,
+                tableWhp
+            };
+        });
 
         await putTableList(payload);
+        setDeletedTableIds(new Set());
         alert('테이블 배치가 저장되었습니다.');
-    }, [pages, putTableList, tableList]);
+    }, [pages, putTableList, tableList, deletedTableIds]);
 
     const handleAssignTableNumber = useCallback((tableId: string, tableNumber: string, targetPageId?: string) => {
         const pageId = targetPageId || currentPageId;
         const normalized = normalizeNumber(tableNumber);
         const matched = tableList.find((item) => normalizeNumber(item.tableNo) === normalized);
         const resolvedId = matched?.tableId;
+
+        if (resolvedId) {
+            setDeletedTableIds((prev) => {
+                const next = new Set(prev);
+                next.delete(resolvedId);
+                return next;
+            });
+        }
 
         setPages(prev =>
             prev.map(page =>
@@ -195,7 +223,7 @@ const LayoutManager: React.FC = () => {
         );
     }, [currentPageId, setPages, tableList]);
 
-    const handleRemoveTableWithApi = useCallback((tableId: string, targetPageId?: string) => {
+    const handleRemoveTableForSave = useCallback((tableId: string, targetPageId?: string) => {
         const pageId = targetPageId || currentPageId;
         const targetTable = pages
             .find(page => page.id === pageId)
@@ -205,13 +233,12 @@ const LayoutManager: React.FC = () => {
 
         if (!targetTable?.tableId) return;
 
-        void putTableList([{
-            tableId: targetTable.tableId,
-            tableCd: null,
-            tableXyr: null,
-            tableWhp: null
-        }]);
-    }, [currentPageId, handleRemoveTable, pages, putTableList]);
+        setDeletedTableIds((prev) => {
+            const next = new Set(prev);
+            next.add(targetTable.tableId!);
+            return next;
+        });
+    }, [currentPageId, handleRemoveTable, pages]);
 
     const renderPageGrid = (): JSX.Element => {
         const bounds = getGridBounds();
@@ -231,7 +258,7 @@ const LayoutManager: React.FC = () => {
                             placedTables={page.tables}
                             onAddTable={handleAddTable}
                             onMoveTable={handleMoveTable}
-                            onRemoveTable={handleRemoveTableWithApi}
+                            onRemoveTable={handleRemoveTableForSave}
                             onSetTableNumber={handleAssignTableNumber}
                             onRotateTable={handleRotateTable}
                             gridPosition={page.gridPosition}

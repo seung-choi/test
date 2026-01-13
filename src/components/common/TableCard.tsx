@@ -54,11 +54,11 @@ const TableCard: React.FC<TableCardProps> = ({
             )}
 
             {variant === 'compact' && (
-                <div className={styles.tableType}>{tableNumber}</div>
+                <div className={styles.tableType}>T{tableNumber}</div>
             )}
 
             <div className={styles.tableTab}>
-                <div className={styles.tableNumber}>{tableNumber}</div>
+                <div className={styles.tableNumber}>T{tableNumber}</div>
             </div>
         </div>
     );

@@ -1,12 +1,11 @@
 'use client';
 
-import React, { useMemo, useRef, useState, useEffect } from 'react';
+import React, { useMemo, useRef, useState, useEffect, useLayoutEffect } from 'react';
 
 import TableSeat from '@/components/order/main/TableSeat';
 import TableItem from '@/components/order/main/TableItem';
 import styles from '@/styles/pages/order/main.module.scss';
 import OrderHeader from "@/components/order/main/Header";
-import { seatsMockData } from '@/mock/order/seatMockData';
 import { useTableList } from '@/hooks/api';
 import type { TableData, TableType } from '@/types';
 
@@ -20,7 +19,7 @@ const OrderMainPage: React.FC = () => {
         setIsTableMode(tableMode);
     };
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const element = containerRef.current;
         if (!element) return;
 
@@ -32,6 +31,18 @@ const OrderMainPage: React.FC = () => {
         };
 
         updateSize();
+    }, []);
+
+    useEffect(() => {
+        const element = containerRef.current;
+        if (!element) return;
+
+        const updateSize = () => {
+            setContainerSize({
+                width: element.clientWidth,
+                height: element.clientHeight
+            });
+        };
 
         if (typeof ResizeObserver !== 'undefined') {
             const observer = new ResizeObserver(() => updateSize());
@@ -42,6 +53,21 @@ const OrderMainPage: React.FC = () => {
         window.addEventListener('resize', updateSize);
         return () => window.removeEventListener('resize', updateSize);
     }, []);
+
+    useEffect(() => {
+        if (!isTableMode) return;
+        const element = containerRef.current;
+        if (!element) return;
+
+        const frameId = requestAnimationFrame(() => {
+            setContainerSize({
+                width: element.clientWidth,
+                height: element.clientHeight
+            });
+        });
+
+        return () => cancelAnimationFrame(frameId);
+    }, [isTableMode]);
 
     const parseXyr = (value: string) => {
         const [x, y, r] = value.split(',').map((item) => Number(item));
@@ -62,6 +88,10 @@ const OrderMainPage: React.FC = () => {
     };
 
     const tableData = useMemo(() => {
+        if (containerSize.width === 0 || containerSize.height === 0) {
+            return [];
+        }
+
         return tableList
             .filter((table) => Boolean(table.tableCd && table.tableXyr))
             .map((table) => {
@@ -89,6 +119,18 @@ const OrderMainPage: React.FC = () => {
             .filter((item): item is NonNullable<typeof item> => item !== null);
     }, [tableList, containerSize]);
 
+    const seatData = useMemo(() => {
+        return tableList.map((table) => ({
+            id: `seat-${table.tableId}`,
+            time: '--:--',
+            customerName: undefined,
+            groupName: undefined,
+            members: undefined,
+            tableNumber: table.tableNo,
+            isEmpty: true
+        }));
+    }, [tableList]);
+
     return (
         <div className={styles.mainPage}>
             <OrderHeader
@@ -107,7 +149,7 @@ const OrderMainPage: React.FC = () => {
                         ))}
                     </div>
                 ) : (
-                    <TableSeat seats={seatsMockData} />
+                    <TableSeat seats={seatData} />
                 )}
             </div>
         </div>
