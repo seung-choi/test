@@ -72,38 +72,11 @@ const MessageModalContent: React.FC<MessageModalContentProps> = ({
     <CommonModalLayout title={title} buttons={buttons} contentClassName={styles.messageContent}>
       <div className={styles.formContainer}>
         <div className={styles.labelColumn}>
-          <div className={styles.label}>받는 분</div>
           <div className={styles.label}>내용</div>
           <div className={styles.label}>이미지</div>
         </div>
 
         <div className={styles.inputColumn}>
-          <div className={styles.inputWrapper}>
-            <div
-              className={styles.selectBox}
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            >
-              <span className={formData.recipient ? styles.selectedText : styles.placeholderText}>
-                {formData.recipient || '선택하기'}
-              </span>
-              <div className={`${styles.arrow} ${isDropdownOpen ? styles.arrowUp : styles.arrowDown}`} />
-            </div>
-
-            {isDropdownOpen && recipients.length > 0 && (
-              <div className={styles.dropdown}>
-                {recipients.map((recipient, index) => (
-                  <div
-                    key={index}
-                    className={styles.dropdownItem}
-                    onClick={() => handleRecipientSelect(recipient)}
-                  >
-                    {recipient}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
           <div className={styles.inputWrapper}>
             <input
               type="text"

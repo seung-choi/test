@@ -39,7 +39,7 @@ export const useHorizontalScroll = () => {
   return { handleScroll };
 };
 
-export const useScrollToTop = (dependency?: any) => {
+export const useScrollToTop = (dependency?: unknown) => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [dependency]);

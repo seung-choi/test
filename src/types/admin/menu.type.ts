@@ -15,4 +15,5 @@ export interface MenuTableRow {
   channels?: string[];
   types?: string[];
   registerDate: string;
+  [key: string]: string | number | string[] | boolean | undefined | MenuStatus;
 }

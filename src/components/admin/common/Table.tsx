@@ -4,6 +4,7 @@ import React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import styles from '@/styles/components/admin/common/Table.module.scss';
+import { TableRowData } from '@/utils/admin/tableRenderers';
 
 export interface TableColumn {
   key: string;
@@ -11,12 +12,12 @@ export interface TableColumn {
   width?: string;
   sortable?: boolean;
   style?: React.CSSProperties;
-  render?: (value: any, row: any) => React.ReactNode;
+  render?: (value: string | number | string[] | boolean | undefined, row: TableRowData) => React.ReactNode;
 }
 
 export interface TableProps {
   columns: TableColumn[];
-  data: any[];
+  data: TableRowData[];
   variant?: 'default' | 'menu' | 'sales';
   onSort?: (key: string) => void;
   className?: string;
@@ -24,7 +25,7 @@ export interface TableProps {
 }
 
 interface SortableRowProps {
-  row: any;
+  row: TableRowData;
   columns: TableColumn[];
   isReorderMode?: boolean;
 }

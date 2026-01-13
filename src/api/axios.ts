@@ -23,11 +23,11 @@ const $axios = axios.create({
 const tokens = {
   get access() {
     if (!isClient) return '';
-    return window.sessionStorage.getItem('accessToken') ?? '';
+    return window.localStorage.getItem('accessToken') ?? '';
   },
   set access(token: string) {
     if (!isClient) return;
-    window.sessionStorage.setItem('accessToken', token);
+    window.localStorage.setItem('accessToken', token);
   },
   get refresh() {
     if (!isClient) return '';
@@ -83,8 +83,8 @@ $axios.interceptors.response.use(
   },
   async (error: AxiosError<ErrorResponse>) => {
     if (error?.status && error.status > 500) {
-      if (isClient) location.reload();
-      return;
+      if (isClient) window.location.reload();
+      return Promise.reject(error);
     }
 
     if (
@@ -99,7 +99,7 @@ $axios.interceptors.response.use(
 
     if (error.code === 'ECONNABORTED' || error.message === 'Network Error') {
       console.error('ECONNABORTED Error || Network Error: ', error.code);
-      return 'TIMEOUT';
+      return Promise.reject({ ...error, code: 'NETWORK_ERROR' });
     }
 
     if (error.status === 401) {

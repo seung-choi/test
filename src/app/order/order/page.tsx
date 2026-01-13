@@ -62,7 +62,6 @@ const OrderPageContent: React.FC = () => {
 
   const handlePayerSelect = useCallback((payerName: string) => {
     setSelectedPayer(payerName);
-    console.log('선택된 결제자:', payerName);
   }, []);
 
   const handleMenuClick = useCallback((item: MenuItem) => {
@@ -86,13 +85,10 @@ const OrderPageContent: React.FC = () => {
   }, []);
 
   const handleMemoSave = useCallback((memo: string) => {
-    console.log('메모 저장:', memo);
     // TODO: 메모 저장 API 호출
   }, []);
 
   const handleOrderClick = useCallback(() => {
-    console.log('주문하기:', orderItems);
-    console.log('선택된 결제자:', selectedPayer);
     // TODO: 주문 API 호출
     alert(`결제자: ${selectedPayer || '미선택'}\n주문이 완료되었습니다!`);
     setOrderItems([]);
@@ -103,7 +99,6 @@ const OrderPageContent: React.FC = () => {
   }, []);
 
   const handleOrderModify = useCallback(() => {
-    console.log('주문 수정');
     // TODO: 주문 수정 로직
     setIsDetailModalOpen(false);
   }, []);

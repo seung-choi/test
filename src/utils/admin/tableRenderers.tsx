@@ -6,15 +6,17 @@ import { MENU_STATUS_OPTIONS, getMenuStatusStyle, MenuStatus } from '@/constants
 import CustomSelect from '@/components/common/CustomSelect';
 
 export interface TableRowData {
-  id: string;
+  id: string | number;
   name?: string;
-  [key: string]: any;
+  customerNames?: string;
+  groupName?: string;
+  [key: string]: string | number | string[] | boolean | undefined;
 }
 
 export const renderCheckbox = (
   selectedItems: string[],
   onItemSelect?: (itemId: string, checked: boolean) => void
-) => (value: any, row: TableRowData) => {
+) => (value: unknown, row: TableRowData) => {
   const isChecked = selectedItems.includes(String(row.id));
   return (
     <div
@@ -34,11 +36,12 @@ export const renderCheckbox = (
   );
 };
 
-export const renderImage = (value: string, row: TableRowData) => {
+export const renderImage = (value: string | number | string[] | boolean | undefined, row: TableRowData) => {
     const ImageCell = () => {
         const [imageError, setImageError] = useState(false);
+        const imageUrl = typeof value === 'string' ? value : '';
 
-        if (!value || imageError) {
+        if (!imageUrl || imageError) {
             return (
                 <div className={styles.menuImage}>
                     <div className={styles.imagePlaceholder}>
@@ -51,7 +54,7 @@ export const renderImage = (value: string, row: TableRowData) => {
         return (
             <div className={styles.menuImage}>
                 <img
-                    src={value}
+                    src={imageUrl}
                     alt={row.name || '이미지'}
                     onError={() => setImageError(true)}
                 />
@@ -62,10 +65,11 @@ export const renderImage = (value: string, row: TableRowData) => {
     return <ImageCell />;
 };
 
-export const renderTags = (value: string[], row: TableRowData) => {
+export const renderTags = (value: string | number | string[] | boolean | undefined, row: TableRowData) => {
+  const tags = Array.isArray(value) ? value : [];
   return (
     <div className={styles.tagsContainer}>
-      {value?.map((tag, index) => (
+      {tags.map((tag, index) => (
         <div key={index} className={`${styles.tag} ${styles[getTagClass(tag)]}`}>
           <span className={styles.tagText}>{tag}</span>
         </div>
@@ -76,42 +80,48 @@ export const renderTags = (value: string[], row: TableRowData) => {
 
 export const renderStatusSelector = (
   onStatusChange?: (itemId: string, status: MenuStatus) => void
-) => (value: MenuStatus, row: TableRowData) => (
-  <CustomSelect
-    value={value}
-    onChange={(newValue) => onStatusChange?.(String(row.id), newValue as MenuStatus)}
-    options={MENU_STATUS_OPTIONS.map((status) => ({ value: status, label: status }))}
-    className={`${styles.statusSelector} ${styles[getMenuStatusStyle(value)]}`}
-  />
-);
+) => (value: string | number | string[] | boolean | undefined, row: TableRowData) => {
+  const status = (typeof value === 'string' ? value : 'TEMP') as MenuStatus;
+  return (
+    <CustomSelect
+      value={status}
+      onChange={(newValue) => onStatusChange?.(String(row.id), newValue as MenuStatus)}
+      options={MENU_STATUS_OPTIONS.map((status) => ({ value: status, label: status }))}
+      className={`${styles.statusSelector} ${styles[getMenuStatusStyle(status)]}`}
+    />
+  );
+};
 
-export const renderChannelTags = (value: string[], row: TableRowData) => (
-  <div className={styles.channelTags}>
-    {value?.map((item, index) => (
-      <span key={index} className={styles.channelTag}>{item}</span>
-    ))}
-  </div>
-);
+export const renderChannelTags = (value: string | number | string[] | boolean | undefined, row: TableRowData) => {
+  const items = Array.isArray(value) ? value : [];
+  return (
+    <div className={styles.channelTags}>
+      {items.map((item, index) => (
+        <span key={index} className={styles.channelTag}>{item}</span>
+      ))}
+    </div>
+  );
+};
 
 export const renderEditButton = (
   onEdit?: (itemId: string) => void
-) => (value: any, row: TableRowData) => (
+) => (value: unknown, row: TableRowData) => (
   <button className={styles.editButton} onClick={() => onEdit?.(String(row.id))}>
     <img src="/assets/image/global/edit.svg" alt="edit" />
   </button>
 );
 
-export const renderPrice = (value: number, row: TableRowData) => (
+export const renderPrice = (value: string | number | string[] | boolean | undefined, row: TableRowData) => (
   <span className={styles.cellText}>
-    {formatPrice(value)}
+    {formatPrice(typeof value === 'number' ? value : 0)}
   </span>
 );
 
-export const renderText = (value: any, row: TableRowData) => (
-  <span className={styles.cellText}>{value}</span>
+export const renderText = (value: string | number | string[] | boolean | undefined, row: TableRowData) => (
+  <span className={styles.cellText}>{value ?? ''}</span>
 );
 
-export const renderDragHandle = () => (value: any, row: TableRowData) => {
+export const renderDragHandle = () => (value: unknown, row: TableRowData) => {
   return (
     <div className={styles.dragHandle}>
       <svg width="27" height="12" viewBox="0 0 27 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -121,13 +131,14 @@ export const renderDragHandle = () => (value: any, row: TableRowData) => {
   );
 };
 
-export const renderDate = (value: string, row: TableRowData) => {
+export const renderDate = (value: string | number | string[] | boolean | undefined, row: TableRowData) => {
+  const dateString = typeof value === 'string' ? value : '';
   return (
-      <p className={styles.cellText}>{formatDate(value)} </p>
+      <p className={styles.cellText}>{formatDate(dateString)} </p>
   );
-}
+};
 
-export const renderCustomers = (value: any, row: any) => {
+export const renderCustomers = (value: unknown, row: TableRowData) => {
   return (
       <>
         <p className={styles.cellText}>{row.customerNames}</p>

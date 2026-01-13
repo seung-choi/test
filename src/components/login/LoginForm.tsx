@@ -15,9 +15,9 @@ interface LoginFormProps {
 const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, errors = {}, isLoading = false }) => {
     const [showClubCodeInput, setShowClubCodeInput] = useState(false);
 
-    const getSavedClubCode = () => {
+    const getSavedClubCode = (): string => {
         const saved = storage.local.get('savedClubCode');
-        return saved || '';
+        return (typeof saved === 'string' ? saved : '') || '';
     };
 
     const [formData, setFormData] = useState<LoginFormData>({

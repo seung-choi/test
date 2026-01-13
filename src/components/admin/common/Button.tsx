@@ -1,25 +1,38 @@
-import React from "react";
-import PropTypes from "prop-types";
-import styles from "@/styles/components/admin/common/Button.module.scss";
+import React from 'react';
+import PropTypes from 'prop-types';
+import styles from '@/styles/components/admin/common/Button.module.scss';
+
+interface ButtonType {
+  type: 'button' | 'submit' | 'reset';
+  label: string;
+  size?: 'small' | 'medium' | 'large';
+  primary?: boolean;
+  disabled?: boolean;
+  readonly?: string;
+  id?: string;
+  block?: boolean;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  style?: React.CSSProperties;
+}
 
 export const Button = ({
-  type = "submit",
+  type = 'submit',
   id,
   label,
   primary,
   disabled,
   readonly,
-  size = "medium",
+  size = 'medium',
   block,
   ...props
 }: ButtonType) => {
   return (
     <button
       type={type}
-      className={`${styles["button"]}
-                ${size !== "medium" ? styles[size] : ""}
-                ${primary ? styles["primary"] : ""}
-                ${block ? styles["block"] : ""}
+      className={`${styles.button}
+                ${size !== 'medium' ? styles[size] : ''}
+                ${primary ? styles.primary : ''}
+                ${block ? styles.block : ''}
             `}
       disabled={disabled}
       {...props}
@@ -30,24 +43,11 @@ export const Button = ({
 };
 
 Button.propTypes = {
-  type: PropTypes.oneOf(["button", "submit", "reset"]).isRequired,
+  type: PropTypes.oneOf(['button', 'submit', 'reset']).isRequired,
   primary: PropTypes.bool,
   block: PropTypes.bool,
   disabled: PropTypes.bool,
-  size: PropTypes.oneOf(["small", "medium", "large"]),
+  size: PropTypes.oneOf(['small', 'medium', 'large']),
   label: PropTypes.string.isRequired,
   onClick: PropTypes.func,
 };
-
-interface ButtonType {
-  type: "button" | "submit" | "reset";
-  label: string;
-  size?: "small" | "medium" | "large";
-  primary?: boolean;
-  disabled?: boolean;
-  readonly?: string;
-  id?: string;
-  block?: boolean;
-  onClick?: (value?: any) => {} | void;
-  style?: {};
-}

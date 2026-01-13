@@ -2,6 +2,7 @@ import React from 'react';
 import styles from '@/styles/components/admin/layout/SideTab.module.scss';
 import NotificationButton from './NotificationButton';
 import { NotificationOption } from '@/hooks/common/useNotificationStorage';
+import {router} from "next/client";
 
 interface MenuSectionProps {
   notificationOption: NotificationOption;
@@ -20,13 +21,17 @@ const MenuSection: React.FC<MenuSectionProps> = ({
   onNotificationChange,
   onFullscreenToggle,
 }) => {
-  return (
+    const handleRouterClick = () => {
+        router.push('order/main')
+    }
+
+    return (
     <div className={styles.menuSection}>
       <div className={styles.menuItem} style={{ backgroundColor: '#9081D8' }}>
         <div className={styles.menuIcon}>
           <img src="/assets/image/admin/layout/side-bar/order.svg" alt="logo" />
         </div>
-        <div className={styles.menuLabel} style={{ color: 'white' }}>오더</div>
+        <div className={styles.menuLabel} style={{ color: 'white' }} onClick={handleRouterClick}>오더</div>
       </div>
 
       <div className={styles.menuItem} onClick={onMenuClick}>

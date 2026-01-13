@@ -11,7 +11,7 @@ interface TableItemProps {
 
 const TableItem: React.FC<TableItemProps> = ({ table }) => {
     const router = useRouter();
-    const { id, type, position, reservation, status } = table;
+    const { id, type, position, reservation, status, rotation, scale } = table;
 
     const handleTableClick = () => {
         if (status === 'empty') return;
@@ -33,6 +33,8 @@ const TableItem: React.FC<TableItemProps> = ({ table }) => {
             reservation={reservation ?? undefined}
             status={status}
             tableId={id}
+            rotation={rotation}
+            scale={scale}
             onClick={handleTableClick}
             style={{
                 position: 'absolute',

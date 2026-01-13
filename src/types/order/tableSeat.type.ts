@@ -15,4 +15,6 @@ export interface TableData {
     };
     reservation: TableReservation | null;
     status: 'occupied' | 'empty';
+    rotation?: number;
+    scale?: number;
 }

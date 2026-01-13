@@ -22,8 +22,8 @@ interface MenuTableColumnsParams {
 export const getMenuTableColumns = ({
                                         selectedItems,
                                         handleItemSelect,
-                                        handleStatusChange = (itemId, status) => console.log('상태 변경:', itemId, status),
-                                        handleEdit = (itemId) => console.log('수정:', itemId),
+                                        handleStatusChange = () => {},
+                                        handleEdit = () => {},
                                         isReorderMode = false,
                                     }: MenuTableColumnsParams): TableColumn[] => [
     {

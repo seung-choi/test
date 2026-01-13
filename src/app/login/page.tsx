@@ -22,9 +22,9 @@ const LoginPage: React.FC = () => {
     const loginMutation = useLogin();
     const { data: menuList, refetch: fetchMenuList } = useMenuHisList({ enabled: false });
 
-    const getSavedClubCode = () => {
+    const getSavedClubCode = (): string => {
         const saved = storage.local.get('savedClubCode');
-        return saved || '';
+        return (typeof saved === 'string' ? saved : '') || '';
     };
 
     const handleLogin = useCallback(async (formData: LoginFormData) => {
@@ -46,7 +46,7 @@ const LoginPage: React.FC = () => {
             });
 
             await handleLoginSuccess(formData, loginResponse);
-        } catch (error: any) {
+        } catch (error) {
             handleLoginError(error);
         } finally {
             setIsLoading(false);
@@ -89,10 +89,10 @@ const LoginPage: React.FC = () => {
         }
     };
 
-    const handleLoginError = (error: any) => {
+    const handleLoginError = (error: unknown) => {
         console.error('Login failed:', error);
 
-        const errorCode = error?.response?.data?.code || error?.message || 'UNKNOWN_ERROR';
+        const errorCode = (error as any)?.response?.data?.code || (error as any)?.message || 'UNKNOWN_ERROR';
 
         switch (errorCode) {
             case 'CLUBCODE_INVALID':

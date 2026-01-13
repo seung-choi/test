@@ -5,6 +5,7 @@ import styles from '@/styles/components/admin/drawer/canvas/draggableTableItem.m
 import { PlacedTable } from '@/types';
 import TableShape from '@/components/common/TableShape';
 import { isPositionValid } from '@/utils/tableCollision';
+import { useClickOutside } from '@/hooks/common/useClickOutside';
 
 interface DraggableTableItemProps {
     table: PlacedTable;
@@ -35,17 +36,10 @@ const DraggableTableItem: React.FC<DraggableTableItemProps> = ({
 
     const borderColor = '#7B7B7B';
 
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (itemRef.current && !itemRef.current.contains(event.target as Node)) {
-                setIsSelected(false);
-                setShowNumberDropdown(false);
-            }
-        };
-
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
+    useClickOutside(itemRef, () => {
+        setIsSelected(false);
+        setShowNumberDropdown(false);
+    });
 
     useEffect(() => {
         if (!isDragging) return;
