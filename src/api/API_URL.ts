@@ -7,7 +7,7 @@ export const getOriginURL = (subdomain: string, path = "/fnb/v1/"): string | und
 
   return (
     (window.location.protocol.startsWith("https")
-      ? origin.replace("m", subdomain === "gps" ? "gps" : "api")
+      ? origin.replace("fnb", subdomain === "gps" ? "gps" : "api")
       : origin.replace(":7050", subdomain === "gps" ? ":7120" : ":7110")) + path
   );
 };
