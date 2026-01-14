@@ -2,6 +2,7 @@
 
 import { exportToExcel } from './excelExport';
 import { OrderRecord, SalesFilter } from '@/types';
+import storage from '@/utils/storage';
 
 export const exportSalesToExcel = async (
     records: OrderRecord[],
@@ -29,18 +30,35 @@ export const exportSalesToExcel = async (
 
     const exportData = filteredData.map(record => ({
         ...record,
-        customerNames: Array.isArray(record.customerNames) 
-            ? record.customerNames.join(', ') 
+        customerNames: Array.isArray(record.customerNames)
+            ? record.customerNames.join(', ')
             : record.customerNames,
         cancelReason: record.cancelReason || ''
     }));
 
-    const filename = `서서울CC_매출조회_${filter.dateRange.startDate}~${filter.dateRange.endDate}.xlsx`;
+    if (exportData.length === 0) {
+        exportData.push({
+            id: 'empty',
+            orderDate: '',
+            tO: '',
+            caddyName: '',
+            customerNames: '',
+            groupName: '',
+            totalMenuCount: 0,
+            orderDetails: '해당 기간의 매출이 없습니다',
+            totalAmount: 0,
+            status: '',
+            cancelReason: ''
+        });
+    }
+
+    const clubNm = (storage.session.get('clubNm') as string) || '클럽';
+    const filename = `${clubNm}_매출조회_${filter.dateRange.startDate}~${filter.dateRange.endDate}.xlsx`;
 
     await exportToExcel(exportData, columns, {
         filename,
         sheetName: '매출 조회',
-        title: `서서울CC 매출조회 (${filter.dateRange.startDate} ~ ${filter.dateRange.endDate})`,
+        title: `${clubNm} 매출조회 (${filter.dateRange.startDate} ~ ${filter.dateRange.endDate})`,
         titleCell: 'B2',
         titleMergeTo: 'J2',
     });

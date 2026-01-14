@@ -2,24 +2,29 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import styles from '@/styles/components/admin/layout/SideTab.module.scss';
 import NotificationButton from './NotificationButton';
+import MessageButton from './MessageButton';
 import { NotificationOption } from '@/hooks/common/useNotificationStorage';
 
 interface MenuSectionProps {
   notificationOption: NotificationOption;
   isTablet: boolean;
+  hasMenuNotification?: boolean;
   onMenuClick: () => void;
   onSettingClick: () => void;
   onNotificationChange: (option: NotificationOption) => void;
   onFullscreenToggle: () => void;
+  onMessageNotificationClear?: () => void;
 }
 
 const MenuSection: React.FC<MenuSectionProps> = ({
   notificationOption,
   isTablet,
+  hasMenuNotification = false,
   onMenuClick,
   onSettingClick,
   onNotificationChange,
   onFullscreenToggle,
+  onMessageNotificationClear,
 }) => {
     const router = useRouter();
 
@@ -50,17 +55,21 @@ const MenuSection: React.FC<MenuSectionProps> = ({
         <div className={styles.menuLabel}>설정</div>
       </div>
 
+      <MessageButton
+        hasNotification={hasMenuNotification}
+        onNotificationClear={onMessageNotificationClear}
+      />
+
       <NotificationButton
         notificationOption={notificationOption}
         onOptionChange={onNotificationChange}
       />
 
       {!isTablet && (
-        <div className={styles.menuItem} onClick={onFullscreenToggle}>
+        <div className={styles.menuItem} onClick={onFullscreenToggle} style={{ height: '2.5rem', alignItems: 'center' }}>
           <div className={styles.menuIcon}>
             <img src="/assets/image/admin/layout/side-bar/view.svg" alt="logo" />
           </div>
-          <div className={styles.menuLabel}>보기설정</div>
         </div>
       )}
     </div>

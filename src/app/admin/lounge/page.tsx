@@ -82,6 +82,10 @@ const Lounge = () => {
     }
   };
 
+  const handleMessageNotificationClear = () => {
+    setHasNewOrders(false);
+  };
+
   const handleHeaderExpandedChange = (expanded: boolean) => {
     setIsHeaderExpanded(expanded);
   };
@@ -143,6 +147,7 @@ const Lounge = () => {
         orderCounts={orderCounts}
         onFilterChange={handleFilterChange}
         hasNotification={hasNewOrders}
+        onMessageNotificationClear={handleMessageNotificationClear}
       />
 
       <div className={styles.mainContent}>

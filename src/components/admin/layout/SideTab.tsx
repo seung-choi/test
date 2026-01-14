@@ -16,12 +16,14 @@ interface SideTabProps {
   orderCounts: OrderCounts;
   onFilterChange: (filter: string) => void;
   hasNotification?: boolean;
+  onMessageNotificationClear?: () => void;
 }
 
 const SideTab: React.FC<SideTabProps> = ({
   orderCounts,
   onFilterChange,
-  hasNotification = false
+  hasNotification = false,
+  onMessageNotificationClear
 }) => {
   const [activeFilter, setActiveFilter] = useState('order');
   const [drawer, setDrawer] = useRecoilState(drawerState);
@@ -67,10 +69,12 @@ const SideTab: React.FC<SideTabProps> = ({
         <MenuSection
           notificationOption={notificationOption}
           isTablet={isTablet}
+          hasMenuNotification={hasNotification}
           onMenuClick={handleMenuClick}
           onSettingClick={handleSettingClick}
           onNotificationChange={setNotificationOption}
           onFullscreenToggle={toggleFullscreen}
+          onMessageNotificationClear={onMessageNotificationClear}
         />
       </div>
 

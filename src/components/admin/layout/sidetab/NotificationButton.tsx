@@ -57,7 +57,7 @@ const NotificationButton: React.FC<NotificationButtonProps> = ({
       className={styles.menuItem}
       ref={buttonRef}
       onClick={handleClick}
-      style={{ cursor: 'pointer', position: 'relative' }}
+      style={{ height: '2.5rem', alignItems: 'center' }}
     >
       <div className={styles.menuIcon}>
         <img src="/assets/image/admin/layout/side-bar/notification.svg" alt="logo" />
@@ -65,7 +65,6 @@ const NotificationButton: React.FC<NotificationButtonProps> = ({
           <img src={`/assets/image/admin/layout/side-bar/noti-option/${notificationOption}.svg`} alt="logo" />
         </div>
       </div>
-      <div className={styles.menuLabel}>알림음</div>
       {showPopover && (
         <div ref={popoverRef} className={styles.notificationPopover}>
           {notificationOptions.map((option) => (
