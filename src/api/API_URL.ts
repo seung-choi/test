@@ -2,12 +2,12 @@ export const getOriginURL = (subdomain: string, path = "/fnb/v1/"): string | und
   if (typeof window === "undefined") return undefined;
 
   const origin = window.location.origin.includes("localhost")
-    ? "http://43.202.78.220:7010"
+    ? "http://43.202.78.220:7050"
     : window.location.origin;
 
   return (
     (window.location.protocol.startsWith("https")
       ? origin.replace("m", subdomain === "gps" ? "gps" : "api")
-      : origin.replace(":7010", subdomain === "gps" ? ":7120" : ":7110")) + path
+      : origin.replace(":7050", subdomain === "gps" ? ":7120" : ":7110")) + path
   );
 };
