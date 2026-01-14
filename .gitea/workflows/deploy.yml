@@ -1,4 +1,4 @@
-name: Vgolf MNG
+name: Vgolf FNB
 on:
   push:
     branches: ["main", "ap-northeast-2", "ap-southeast-1"]
@@ -32,19 +32,19 @@ jobs:
         run: npm run build
 
       - name: Archive
-        run: tar -czvf mng.tar.gz -C out .
+        run: tar -czvf fnb.tar.gz -C out .
 
       - name: Push to AWS EC2
         run: |
           echo "${{ secrets.AWS_AP_NORTHEAST_2_PEM }}" > aws.pem
           chmod 400 aws.pem
-          scp -i aws.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r -v mng.tar.gz ec2-user@43.202.78.220:/home/ec2-user/plug-golf/
+          scp -i aws.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r -v fnb.tar.gz ec2-user@43.202.78.220:/home/ec2-user/plug-golf/
 
       - name: Run
         run: |
           ssh -i aws.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ec2-user@43.202.78.220 << 'EOF'
-            tar -xzvf /home/ec2-user/plug-golf/mng.tar.gz -C /home/ec2-user/plug-golf/mng/html/
-            rm -rf /home/ec2-user/plug-golf/mng.tar.gz
+            tar -xzvf /home/ec2-user/plug-golf/fnb.tar.gz -C /home/ec2-user/plug-golf/fnb/html/
+            rm -rf /home/ec2-user/plug-golf/fnb.tar.gz
           EOF
 
       - name: Notify Success to Teams
@@ -53,13 +53,13 @@ jobs:
           curl -H 'Content-Type: application/json' -d "{
             \"@type\": \"MessageCard\",
             \"@context\": \"https://schema.org/extensions\",
-            \"summary\": \"✅[개발/성공] MNG 배포\",
+            \"summary\": \"✅[개발/성공] FNB 배포\",
             \"themeColor\": \"0076D7\",
-            \"title\": \"✅[개발/성공] MNG 배포\",
+            \"title\": \"✅[개발/성공] FNB 배포\",
             \"sections\": [{
               \"facts\": [
                 { \"name\": \"대상\", \"value\": \"43.202.78.220\" },
-                { \"name\": \"네임\", \"value\": \"plug-golf-mng\" },
+                { \"name\": \"네임\", \"value\": \"plug-golf-fnb\" },
                 { \"name\": \"시간\", \"value\": \"$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M:%S')\" },
                 { \"name\": \"배포\", \"value\": \"${{ steps.changes.outputs.comment }}\" }
               ],
@@ -75,13 +75,13 @@ jobs:
           curl -H 'Content-Type: application/json' -d "{
             \"@type\": \"MessageCard\",
             \"@context\": \"https://schema.org/extensions\",
-            \"summary\": \"❌[개발/실패] MNG 배포\",
+            \"summary\": \"❌[개발/실패] FNB 배포\",
             \"themeColor\": \"FF0000\",
-            \"title\": \"❌[개발/실패] MNG 배포\",
+            \"title\": \"❌[개발/실패] FNB 배포\",
             \"sections\": [{
               \"facts\": [
                 { \"name\": \"대상\", \"value\": \"43.202.78.220\" },
-                { \"name\": \"네임\", \"value\": \"plug-golf-mng\" },
+                { \"name\": \"네임\", \"value\": \"plug-golf-fnb\" },
                 { \"name\": \"시간\", \"value\": \"$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M:%S')\" },
                 { \"name\": \"배포\", \"value\": \"${{ steps.changes.outputs.comment }}\" },
                 { \"name\": \"에러\", \"value\": \"${ERROR_MSG}\" }
@@ -137,21 +137,21 @@ jobs:
           ECR_REGISTRY: ${{ steps.plug-golf.outputs.registry }}
           IMAGE_TAG: ${{ gitea.sha }}
         run: |
-          echo "🔁 Building plug-golf-mng from ."
-          docker build -t plug-golf-mng:$IMAGE_TAG .
-          docker tag plug-golf-mng:$IMAGE_TAG $ECR_REGISTRY/plug-golf-mng:$IMAGE_TAG
-          docker tag plug-golf-mng:$IMAGE_TAG $ECR_REGISTRY/plug-golf-mng:latest
-          docker push $ECR_REGISTRY/plug-golf-mng:$IMAGE_TAG
-          docker push $ECR_REGISTRY/plug-golf-mng:latest
+          echo "🔁 Building plug-golf-fnb from ."
+          docker build -t plug-golf-fnb:$IMAGE_TAG .
+          docker tag plug-golf-fnb:$IMAGE_TAG $ECR_REGISTRY/plug-golf-fnb:$IMAGE_TAG
+          docker tag plug-golf-fnb:$IMAGE_TAG $ECR_REGISTRY/plug-golf-fnb:latest
+          docker push $ECR_REGISTRY/plug-golf-fnb:$IMAGE_TAG
+          docker push $ECR_REGISTRY/plug-golf-fnb:latest
 
       - name: Deploy to ECS Services
         env:
           AWS_REGION: ap-northeast-2
         run: |
-          echo "🚀 Updating ECS service: plug-golf-mng-service"
+          echo "🚀 Updating ECS service: plug-golf-fnb-service"
           aws ecs update-service \
             --cluster plug-golf-cluster \
-            --service plug-golf-mng-service \
+            --service plug-golf-fnb-service \
             --force-new-deployment \
             --region $AWS_REGION
 
@@ -163,13 +163,13 @@ jobs:
           curl -H 'Content-Type: application/json' -d "{
             \"@type\": \"MessageCard\",
             \"@context\": \"https://schema.org/extensions\",
-            \"summary\": \"✅[서울/성공] MNG 배포\",
+            \"summary\": \"✅[서울/성공] FNB 배포\",
             \"themeColor\": \"0076D7\",
-            \"title\": \"✅[서울/성공] MNG 배포\",
+            \"title\": \"✅[서울/성공] FNB 배포\",
             \"sections\": [{
               \"facts\": [
                 { \"name\": \"대상\", \"value\": \"$AWS_REGION\" },
-                { \"name\": \"네임\", \"value\": \"plug-golf-mng\" },
+                { \"name\": \"네임\", \"value\": \"plug-golf-fnb\" },
                 { \"name\": \"시간\", \"value\": \"$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M:%S')\" },
                 { \"name\": \"배포\", \"value\": \"${{ steps.changes.outputs.comment }}\" }
               ],
@@ -187,13 +187,13 @@ jobs:
           curl -H 'Content-Type: application/json' -d "{
             \"@type\": \"MessageCard\",
             \"@context\": \"https://schema.org/extensions\",
-            \"summary\": \"❌[서울/실패] MNG 배포\",
+            \"summary\": \"❌[서울/실패] FNB 배포\",
             \"themeColor\": \"FF0000\",
-            \"title\": \"❌[서울/실패] MNG 배포\",
+            \"title\": \"❌[서울/실패] FNB 배포\",
             \"sections\": [{
               \"facts\": [
                 { \"name\": \"대상\", \"value\": \"$AWS_REGION\" },
-                { \"name\": \"네임\", \"value\": \"plug-golf-mng\" },
+                { \"name\": \"네임\", \"value\": \"plug-golf-fnb\" },
                 { \"name\": \"시간\", \"value\": \"$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M:%S')\" },
                 { \"name\": \"배포\", \"value\": \"${{ steps.changes.outputs.comment }}\" },
                 { \"name\": \"에러\", \"value\": \"${ERROR_MSG}\" }
@@ -249,21 +249,21 @@ jobs:
           ECR_REGISTRY: ${{ steps.plug-golf.outputs.registry }}
           IMAGE_TAG: ${{ gitea.sha }}
         run: |
-          echo "🔁 Building plug-golf-mng from ."
-          docker build -t plug-golf-mng:$IMAGE_TAG .
-          docker tag plug-golf-mng:$IMAGE_TAG $ECR_REGISTRY/plug-golf-mng:$IMAGE_TAG
-          docker tag plug-golf-mng:$IMAGE_TAG $ECR_REGISTRY/plug-golf-mng:latest
-          docker push $ECR_REGISTRY/plug-golf-mng:$IMAGE_TAG
-          docker push $ECR_REGISTRY/plug-golf-mng:latest
+          echo "🔁 Building plug-golf-fnb from ."
+          docker build -t plug-golf-fnb:$IMAGE_TAG .
+          docker tag plug-golf-fnb:$IMAGE_TAG $ECR_REGISTRY/plug-golf-fnb:$IMAGE_TAG
+          docker tag plug-golf-fnb:$IMAGE_TAG $ECR_REGISTRY/plug-golf-fnb:latest
+          docker push $ECR_REGISTRY/plug-golf-fnb:$IMAGE_TAG
+          docker push $ECR_REGISTRY/plug-golf-fnb:latest
 
       - name: Deploy to ECS Services
         env:
           AWS_REGION: ap-southeast-1
         run: |
-          echo "🚀 Updating ECS service: plug-golf-mng-service"
+          echo "🚀 Updating ECS service: plug-golf-fnb-service"
           aws ecs update-service \
             --cluster plug-golf-cluster \
-            --service plug-golf-mng-service \
+            --service plug-golf-fnb-service \
             --force-new-deployment \
             --region $AWS_REGION
 
@@ -275,13 +275,13 @@ jobs:
           curl -H 'Content-Type: application/json' -d "{
             \"@type\": \"MessageCard\",
             \"@context\": \"https://schema.org/extensions\",
-            \"summary\": \"✅[싱가포르/성공] MNG 배포\",
+            \"summary\": \"✅[싱가포르/성공] FNB 배포\",
             \"themeColor\": \"0076D7\",
-            \"title\": \"✅[싱가포르/성공] MNG 배포\",
+            \"title\": \"✅[싱가포르/성공] FNB 배포\",
             \"sections\": [{
               \"facts\": [
                 { \"name\": \"대상\", \"value\": \"$AWS_REGION\" },
-                { \"name\": \"네임\", \"value\": \"plug-golf-mng\" },
+                { \"name\": \"네임\", \"value\": \"plug-golf-fnb\" },
                 { \"name\": \"시간\", \"value\": \"$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M:%S')\" },
                 { \"name\": \"배포\", \"value\": \"${{ steps.changes.outputs.comment }}\" }
               ],
@@ -299,13 +299,13 @@ jobs:
           curl -H 'Content-Type: application/json' -d "{
             \"@type\": \"MessageCard\",
             \"@context\": \"https://schema.org/extensions\",
-            \"summary\": \"❌[싱가포르/실패] MNG 배포\",
+            \"summary\": \"❌[싱가포르/실패] FNB 배포\",
             \"themeColor\": \"FF0000\",
-            \"title\": \"❌[싱가포르/실패] MNG 배포\",
+            \"title\": \"❌[싱가포르/실패] FNB 배포\",
             \"sections\": [{
               \"facts\": [
                 { \"name\": \"대상\", \"value\": \"$AWS_REGION\" },
-                { \"name\": \"네임\", \"value\": \"plug-golf-mng\" },
+                { \"name\": \"네임\", \"value\": \"plug-golf-fnb\" },
                 { \"name\": \"시간\", \"value\": \"$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M:%S')\" },
                 { \"name\": \"배포\", \"value\": \"${{ steps.changes.outputs.comment }}\" },
                 { \"name\": \"에러\", \"value\": \"${ERROR_MSG}\" }

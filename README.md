@@ -32,7 +32,7 @@ Vgolf 고객사가 사용하는 모바일 버전 관리자 사이트
 - **운영**
 
 ```
-http://43.202.78.220:7110/mng/v1
+http://43.202.78.220:7110/fnb/v1
 ```
 
 <br/>
@@ -40,7 +40,7 @@ http://43.202.78.220:7110/mng/v1
 ## 🔗 GPS API URL
 
 ```
-http://43.202.78.220:7120/mng/v1
+http://43.202.78.220:7120/fnb/v1
 ```
 
 <br/>
@@ -90,7 +90,7 @@ http://43.202.78.220:7120/mng/v1
 **1. Clone the repository**
 
 ```bash
-git clone http://43.202.78.220:3000/golf/plug-golf-mng.git
+git clone http://43.202.78.220:3000/golf/plug-golf-fnb.git
 ```
 
 **2. Install dependencies**
