@@ -4,7 +4,6 @@ import React, { useRef } from 'react';
 import styles from '@/styles/components/admin/drawer/canvas/layoutCanvas.module.scss';
 import { PlacedTable, TableType, DragData } from '@/types';
 import DraggableTableItem from './DraggableTableItem';
-import { isPositionValid } from '@/utils/tableCollision';
 
 interface LayoutCanvasProps {
     pageId?: string;
@@ -14,10 +13,8 @@ interface LayoutCanvasProps {
     onRemoveTable: (tableId: string, pageId?: string) => void;
     onSetTableNumber: (tableId: string, tableNumber: string, pageId?: string) => void;
     onRotateTable: (tableId: string, pageId?: string) => void;
-    onPageAdd?: (direction: 'right' | 'bottom' | 'left' | 'top') => void;
-    onPageDelete?: (pageId: string) => void;
-    gridPosition?: { row: number; col: number };
     availableTableNumbers: string[];
+    onSelect?: (pageId?: string) => void;
 }
 
 const LayoutCanvas: React.FC<LayoutCanvasProps> = ({
@@ -28,9 +25,8 @@ const LayoutCanvas: React.FC<LayoutCanvasProps> = ({
     onRemoveTable,
     onSetTableNumber,
     onRotateTable,
-    onPageAdd,
-    onPageDelete,
-    availableTableNumbers
+    availableTableNumbers,
+    onSelect
 }) => {
     const canvasRef = useRef<HTMLDivElement>(null);
 
@@ -59,7 +55,10 @@ const LayoutCanvas: React.FC<LayoutCanvasProps> = ({
     };
 
     return (
-        <div className={styles.container}>
+        <div
+            className={styles.container}
+            onClick={() => onSelect?.(pageId)}
+        >
             <div
                 ref={canvasRef}
                 className={styles.canvas}
@@ -83,48 +82,6 @@ const LayoutCanvas: React.FC<LayoutCanvasProps> = ({
                 ))}
             </div>
 
-            {onPageAdd && (
-                <>
-                    <button
-                        className={styles.pageAddButtonRight}
-                        onClick={() => onPageAdd('right')}
-                        title="우측에 페이지 추가"
-                    >
-                        <img src="/assets/image/admin/setting/page_add.svg" alt="add page right" />
-                    </button>
-                    <button
-                        className={styles.pageAddButtonBottom}
-                        onClick={() => onPageAdd('bottom')}
-                        title="하단에 페이지 추가"
-                    >
-                        <img src="/assets/image/admin/setting/page_add.svg" alt="add page bottom" />
-                    </button>
-                    <button
-                        className={styles.pageAddButtonLeft}
-                        onClick={() => onPageAdd('left')}
-                        title="좌측에 페이지 추가"
-                    >
-                        <img src="/assets/image/admin/setting/page_add.svg" alt="add page left" />
-                    </button>
-                    <button
-                        className={styles.pageAddButtonTop}
-                        onClick={() => onPageAdd('top')}
-                        title="상단에 페이지 추가"
-                    >
-                        <img src="/assets/image/admin/setting/page_add.svg" alt="add page top" />
-                    </button>
-                </>
-            )}
-
-            {onPageDelete && (
-                <button
-                    className={styles.pageDeleteButton}
-                    onClick={() => pageId && onPageDelete(pageId)}
-                    title="현재 페이지 삭제"
-                >
-                    <img src="/assets/image/admin/setting/page_delete.svg" alt="delete page" />
-                </button>
-            )}
         </div>
     );
 };

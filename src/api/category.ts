@@ -1,5 +1,6 @@
 import $axios from '@/api/axios';
 import { getOriginURL } from '@/api/API_URL';
+import { API_ENDPOINTS } from '@/api/endpoints';
 
 export type CategoryType = 'REASON' | 'CATEGORY';
 
@@ -19,7 +20,7 @@ export interface PostCategoryRequest {
 
 export const getCategoryList = async (categoryType: CategoryType): Promise<GetCategoryResponse[]> => {
   const res = await $axios({
-    url: `${getOriginURL('api', `/fnb/v1/category/${categoryType}`)}`,
+    url: `${getOriginURL('api')}${API_ENDPOINTS.CATEGORY.LIST(categoryType)}`,
     method: 'get',
   });
   return res.data;
@@ -27,7 +28,7 @@ export const getCategoryList = async (categoryType: CategoryType): Promise<GetCa
 
 export const getCategoryErpList = async (): Promise<GetCategoryResponse[]> => {
   const res = await $axios({
-    url: `${getOriginURL('api', '/fnb/v1/category/erp')}`,
+    url: `${getOriginURL('api')}${API_ENDPOINTS.CATEGORY.ERP}`,
     method: 'get',
   });
   return res.data;
@@ -38,7 +39,7 @@ export const postCategoryList = async (
   data: PostCategoryRequest[]
 ): Promise<void> => {
   const res = await $axios({
-    url: `${getOriginURL('api', `/fnb/v1/category/${categoryType}`)}`,
+    url: `${getOriginURL('api')}${API_ENDPOINTS.CATEGORY.LIST(categoryType)}`,
     method: 'post',
     data,
   });

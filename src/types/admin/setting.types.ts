@@ -22,7 +22,7 @@ export interface OrderRecord {
   orderDate: string;
   tO: string;
   caddyName: string;
-  customerNames: string[];
+  customerNames: string[] | string;
   groupName: string;
   totalMenuCount: number;
   orderDetails: string;

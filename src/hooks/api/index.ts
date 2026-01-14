@@ -13,5 +13,8 @@ export * from './useGoods';
 // Category
 export * from './useCategory';
 
+// Bill (Sales)
+export * from './useBill';
+
 // Booking (GPS)
 export * from './useBookingList';

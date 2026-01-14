@@ -138,12 +138,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onExpandedChange }) => {
           left: golfer.position.left,
         }}
       >
-        <div
-          className={styles.golferCard}
-          style={{
-            border: golfer.isGroup ? `0.125rem solid ${borderColor}` : 'none',
-          }}
-        >
+        <div className={styles.golferCard}>
           <div className={styles.golferName}>
             {golfer.bookingNm}
           </div>

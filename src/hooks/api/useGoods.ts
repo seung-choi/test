@@ -6,7 +6,7 @@ import {
   putGoodsInfo,
   putGoodsErpList,
   patchGoodsStatusInfo,
-  patchGoodsOrderInfo,
+  patchGoodsOrderList,
   deleteGoodsList,
   PostGoodsRequest,
   PutGoodsRequest,
@@ -88,12 +88,12 @@ export const usePatchGoodsStatus = () => {
   });
 };
 
-export const usePatchGoodsOrder = () => {
+export const usePatchGoodsOrderList = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ goodsId, goodsOrd }: { goodsId: number; goodsOrd: number }) =>
-      patchGoodsOrderInfo(goodsId, goodsOrd),
+    mutationFn: (data: { goodsId: number; goodsOrd: number }[]) =>
+      patchGoodsOrderList(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['goodsList'] });
     },

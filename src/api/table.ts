@@ -1,5 +1,6 @@
 import $axios from '@/api/axios';
 import { getOriginURL } from '@/api/API_URL';
+import { API_ENDPOINTS } from '@/api/endpoints';
 
 export interface GetTableResponse {
   tableId: number;
@@ -28,7 +29,7 @@ export interface PutTableRequest {
 
 export const getTableList = async (): Promise<GetTableResponse[]> => {
   const res = await $axios({
-    url: `${getOriginURL('api', '/fnb/v1/table')}`,
+    url: `${getOriginURL('api')}${API_ENDPOINTS.TABLE.LIST}`,
     method: 'get',
   });
   return res.data;
@@ -36,7 +37,7 @@ export const getTableList = async (): Promise<GetTableResponse[]> => {
 
 export const getTableErpList = async (): Promise<GetTableResponse[]> => {
   const res = await $axios({
-    url: `${getOriginURL('api', '/fnb/v1/table/erp')}`,
+    url: `${getOriginURL('api')}${API_ENDPOINTS.TABLE.ERP}`,
     method: 'get',
   });
   return res.data;
@@ -44,7 +45,7 @@ export const getTableErpList = async (): Promise<GetTableResponse[]> => {
 
 export const postTableInfo = async (data: PostTableRequest): Promise<void> => {
   const res = await $axios({
-    url: `${getOriginURL('api', '/fnb/v1/table')}`,
+    url: `${getOriginURL('api')}${API_ENDPOINTS.TABLE.LIST}`,
     method: 'post',
     data,
   });
@@ -53,7 +54,7 @@ export const postTableInfo = async (data: PostTableRequest): Promise<void> => {
 
 export const putTableList = async (data: PutTableRequest[]): Promise<void> => {
   const res = await $axios({
-    url: `${getOriginURL('api', '/fnb/v1/table')}`,
+    url: `${getOriginURL('api')}${API_ENDPOINTS.TABLE.LIST}`,
     method: 'put',
     data,
   });
@@ -62,7 +63,7 @@ export const putTableList = async (data: PutTableRequest[]): Promise<void> => {
 
 export const deleteTableInfo = async (tableId: number): Promise<void> => {
   const res = await $axios({
-    url: `${getOriginURL('api', `/fnb/v1/table/${tableId}`)}`,
+    url: `${getOriginURL('api')}${API_ENDPOINTS.TABLE.DETAIL(tableId)}`,
     method: 'delete',
   });
   return res.data;

@@ -3,23 +3,87 @@ import { useRecoilValue } from 'recoil';
 import { drawerState } from '@/lib/recoil';
 import styles from '@/styles/components/admin/drawer/SalesManagement.module.scss';
 import Table from '@/components/admin/common/Table';
-import { SalesMockData } from '@/mock/admin/salesMockData';
 import {getSalesTableColumns} from "@/constants";
 import SalesFilterActionBar from "@/components/admin/drawer/setting/SalesInquiryActionBar";
 import { SalesFilter } from '@/types';
 import { exportSalesToExcel } from '@/utils/admin/excel/salesExcelExporter';
 import LayoutManager from '@/components/admin/drawer/setting/canvas/LayoutManager';
+import { useBillList } from '@/hooks/api';
+import { Bill } from '@/types/bill.type';
+
+const formatBookingTime = (bookingTm: { hour: number; minute: number }) => {
+    return `${String(bookingTm.hour).padStart(2, '0')}:${String(bookingTm.minute).padStart(2, '0')}`;
+};
+
+const getBillStatus = (billSt: string) => {
+    switch (billSt) {
+        case 'D': return '정산 완료';
+        case 'C': return '취소';
+        case 'W': return '대기';
+        default: return billSt;
+    }
+};
+
+const transformBillToOrderRecord = (bill: Bill) => {
+    const totalMenuCount = bill.orderList.reduce((sum, order) =>
+        sum + order.orderHisList.reduce((orderSum, item) => orderSum + item.orderCnt, 0), 0
+    );
+
+    const orderDetails = bill.orderList
+        .flatMap(order => order.orderHisList)
+        .reduce((acc, item) => {
+            const existingItem = acc.find(i => i.goodsNm === item.goodsNm);
+            if (existingItem) {
+                existingItem.count += item.orderCnt;
+            } else {
+                acc.push({ goodsNm: item.goodsNm, count: item.orderCnt });
+            }
+            return acc;
+        }, [] as { goodsNm: string; count: number }[])
+        .map(item => `${item.goodsNm}(${item.count})`)
+        .join(', ');
+
+    const cancelReason = bill.orderList
+        .filter(order => order.orderRea)
+        .map(order => order.orderRea)
+        .join(', ') || '-';
+
+    return {
+        id: String(bill.billId),
+        orderDate: bill.createdDt,
+        tO: formatBookingTime(bill.bookingTm),
+        caddyName: bill.bookingNm || '-',
+        customerNames: bill.playerList || '-',
+        groupName: bill.bookingsNm || '-',
+        totalMenuCount,
+        orderDetails,
+        totalAmount: bill.billAmt,
+        status: getBillStatus(bill.billSt),
+        cancelReason,
+    };
+};
 
 const SettingManagement = ({showActionBar = true}) => {
     const drawer = useRecoilValue(drawerState);
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+    const yesterdayString = yesterday.toISOString().split('T')[0];
     const [filter, setFilter] = useState<SalesFilter>({
         dateRange: {
-            startDate: '2025-12-22',
-            endDate: '2025-12-25'
+            startDate: yesterdayString,
+            endDate: yesterdayString
         },
         status: '전체',
         caddyName: '',
         searchTerm: ''
+    });
+
+    const { billData, isLoading, refetch } = useBillList({
+        fromDt: filter.dateRange.startDate,
+        toDt: filter.dateRange.endDate,
+        page: 0,
+        size: 50
     });
 
     const handleFilterChange = (newFilter: SalesFilter) => {
@@ -31,15 +95,13 @@ const SettingManagement = ({showActionBar = true}) => {
         []
     );
 
-    const filteredData = useMemo(() => {
-        let result = SalesMockData;
+    const transformedData = useMemo(() => {
+        if (!billData?.billList) return [];
+        return billData.billList.map(transformBillToOrderRecord);
+    }, [billData]);
 
-        if (filter.dateRange.startDate && filter.dateRange.endDate) {
-            result = result.filter(item => {
-                const itemDate = item.orderDate.split('T')[0];
-                return itemDate >= filter.dateRange.startDate && itemDate <= filter.dateRange.endDate;
-            });
-        }
+    const filteredData = useMemo(() => {
+        let result = transformedData;
 
         if (filter.status && filter.status !== '전체') {
             result = result.filter(item => item.status === filter.status);
@@ -62,23 +124,16 @@ const SettingManagement = ({showActionBar = true}) => {
         }
 
         return result;
-    }, [filter]);
+    }, [transformedData, filter.status, filter.caddyName, filter.searchTerm]);
 
     const stats = useMemo(() => {
-        const totalOrders = filteredData.length;
-        const completedOrders = filteredData.filter(item => item.status === '정산 완료').length;
-        const canceledOrders = filteredData.filter(item => item.status === '취소').length;
-        const totalAmount = filteredData
-            .filter(item => true)
-            .reduce((sum, item) => sum + item.totalAmount, 0);
-
         return {
-            totalOrders,
-            completedOrders,
-            canceledOrders,
-            totalAmount
+            totalOrders: billData?.totalCnt || 0,
+            completedOrders: billData?.doneCnt || 0,
+            canceledOrders: billData?.cancelCnt || 0,
+            totalAmount: billData?.totalAmt || 0
         };
-    }, [filteredData]);
+    }, [billData]);
 
 
     const handleExportExcel = () => {
@@ -88,7 +143,9 @@ const SettingManagement = ({showActionBar = true}) => {
             tO: item.tO,
             caddyName: item.caddyName,
             groupName: item.groupName,
-            customerNames: item.customerNames.split(', '),
+            customerNames: typeof item.customerNames === 'string'
+                ? item.customerNames.split(', ')
+                : item.customerNames,
             totalMenuCount: item.totalMenuCount,
             orderDetails: item.orderDetails,
             totalAmount: item.totalAmount,

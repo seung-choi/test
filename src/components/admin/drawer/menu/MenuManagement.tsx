@@ -17,7 +17,7 @@ import { drawerState } from '@/lib/recoil';
 import useUnifiedModal from '@/hooks/admin/useUnifiedModal';
 import { MenuTableRow, ProductFormData } from '@/types';
 import { MenuStatus } from '@/constants/admin/menuStatus';
-import { useGoodsList, usePatchGoodsOrder, useDeleteGoodsList, usePatchGoodsStatus } from '@/hooks/api';
+import { useGoodsList, usePatchGoodsOrderList, useDeleteGoodsList, usePatchGoodsStatus } from '@/hooks/api';
 import {
   mapGoodsStatus,
   mapGoodsChannels,
@@ -46,7 +46,7 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
   const [menuData, setMenuData] = useState<MenuTableRow[]>([]);
   const { openEditProductModal, openDeleteConfirmModal } = useUnifiedModal();
   const { data: goodsList = [] } = useGoodsList();
-  const { mutateAsync: patchGoodsOrder } = usePatchGoodsOrder();
+  const { mutateAsync: patchGoodsOrderList } = usePatchGoodsOrderList();
   const { mutateAsync: deleteGoodsList } = useDeleteGoodsList();
   const { mutateAsync: patchGoodsStatus } = usePatchGoodsStatus();
 
@@ -149,11 +149,11 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
     handleDelete,
     handleCommitReorder: async () => {
       if (menuData.length === 0) return;
-      await Promise.all(
-        menuData.map((item, index) =>
-          patchGoodsOrder({ goodsId: item.id, goodsOrd: index + 1 })
-        )
-      );
+      const orderData = menuData.map((item, index) => ({
+        goodsId: item.id,
+        goodsOrd: index + 1
+      }));
+      await patchGoodsOrderList(orderData);
     },
   }));
 

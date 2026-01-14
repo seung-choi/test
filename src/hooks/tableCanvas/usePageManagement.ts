@@ -25,33 +25,31 @@ export const usePageManagement = () => {
         return pages.find(p => p.gridPosition.row === row && p.gridPosition.col === col);
     }, [pages]);
 
-    const handlePageAdd = useCallback((direction: 'right' | 'bottom' | 'left' | 'top') => {
+    const handlePageAdd = useCallback(() => {
         const sourcePage = pages.find(p => p.id === currentPageId);
-        if (!sourcePage) return;
+        const targetRow = sourcePage?.gridPosition.row ?? 0;
 
-        const { row, col } = sourcePage.gridPosition;
-        let targetRow = row;
-        let targetCol = col;
+        const colsInRow = pages
+            .filter(p => p.gridPosition.row === targetRow)
+            .map(p => p.gridPosition.col);
 
-        switch (direction) {
-            case 'right':
-                targetCol = col + 1;
-                break;
-            case 'bottom':
-                targetRow = row + 1;
-                break;
-            case 'left':
-                targetCol = col - 1;
-                break;
-            case 'top':
-                targetRow = row - 1;
-                break;
+        let targetCol = 0;
+        if (colsInRow.length > 0) {
+            const colSet = new Set(colsInRow);
+            const minCol = Math.min(...colsInRow);
+            const maxCol = Math.max(...colsInRow);
+
+            targetCol = maxCol + 1;
+            for (let col = minCol; col <= maxCol + 1; col++) {
+                if (!colSet.has(col)) {
+                    targetCol = col;
+                    break;
+                }
+            }
         }
 
-        const existingPage = getPageAt(targetRow, targetCol);
-        if (existingPage) {
-            setCurrentPageId(existingPage.id);
-            return;
+        while (getPageAt(targetRow, targetCol)) {
+            targetCol += 1;
         }
 
         setPages(prev => {
@@ -87,8 +85,10 @@ export const usePageManagement = () => {
         });
     }, [pages, currentPageId]);
 
-    const handlePageSelect = useCallback((pageId: string) => {
-        setCurrentPageId(pageId);
+    const handlePageSelect = useCallback((pageId?: string) => {
+        if (pageId) {
+            setCurrentPageId(pageId);
+        }
     }, []);
 
     return {

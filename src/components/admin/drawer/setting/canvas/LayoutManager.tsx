@@ -6,6 +6,7 @@ import LayoutCanvas from './LayoutCanvas';
 import TableNumberList from './TableNumberList';
 import LayoutTabs from './LayoutTabs';
 import TableListView from './TableListView';
+import ControlPanel from './ControlPanel';
 import styles from '@/styles/components/admin/drawer/canvas/layoutManager.module.scss';
 import { usePanZoom } from '@/hooks/tableCanvas/usePanZoom';
 import { usePageManagement } from '@/hooks/tableCanvas/usePageManagement';
@@ -36,6 +37,7 @@ const LayoutManager: React.FC = () => {
         getPageAt,
         handlePageAdd,
         handlePageDelete,
+        handlePageSelect
     } = usePageManagement();
 
     const {
@@ -237,10 +239,6 @@ const LayoutManager: React.FC = () => {
         });
     }, [currentPageId, handleRemoveTable, pages]);
 
-    const handlePageAddWithDirection = useCallback((direction: 'right' | 'bottom' | 'left' | 'top') => {
-        handlePageAdd(direction);
-    }, [handlePageAdd]);
-
     const renderPageGrid = (): JSX.Element => {
         const bounds = getGridBounds();
         const rows: JSX.Element[] = [];
@@ -262,10 +260,8 @@ const LayoutManager: React.FC = () => {
                             onRemoveTable={handleRemoveTableForSave}
                             onSetTableNumber={handleAssignTableNumber}
                             onRotateTable={handleRotateTable}
-                            onPageAdd={handlePageAddWithDirection}
-                            onPageDelete={handlePageDelete}
-                            gridPosition={page.gridPosition}
                             availableTableNumbers={availableTableNumbers}
+                            onSelect={handlePageSelect}
                         />
                     );
                 }
@@ -298,6 +294,11 @@ const LayoutManager: React.FC = () => {
                             userSelect: isPanning ? 'none' : 'auto'
                         }}
                     >
+                        <ControlPanel
+                            pages={pages}
+                            onPageAdd={handlePageAdd}
+                            onPageDelete={() => handlePageDelete(currentPageId)}
+                        />
                         <div
                             className={styles.zoomContainer}
                             style={{
