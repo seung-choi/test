@@ -15,6 +15,7 @@ interface LayoutCanvasProps {
     onRotateTable: (tableId: string, pageId?: string) => void;
     availableTableNumbers: string[];
     onSelect?: (pageId?: string) => void;
+    getPlacedTablesByPageId?: (pageId?: string) => PlacedTable[];
 }
 
 const LayoutCanvas: React.FC<LayoutCanvasProps> = ({
@@ -26,7 +27,8 @@ const LayoutCanvas: React.FC<LayoutCanvasProps> = ({
     onSetTableNumber,
     onRotateTable,
     availableTableNumbers,
-    onSelect
+    onSelect,
+    getPlacedTablesByPageId
 }) => {
     const canvasRef = useRef<HTMLDivElement>(null);
 
@@ -58,12 +60,15 @@ const LayoutCanvas: React.FC<LayoutCanvasProps> = ({
         <div
             className={styles.container}
             onClick={() => onSelect?.(pageId)}
+            data-page-canvas="true"
+            data-page-id={pageId}
         >
             <div
                 ref={canvasRef}
                 className={styles.canvas}
                 onDragOver={handleDragOver}
                 onDrop={handleDrop}
+                data-page-canvas-inner="true"
             >
                 <img className={styles.canvasImage} src="/assets/image/admin/canvas.png" alt="canvas" />
 
@@ -71,12 +76,13 @@ const LayoutCanvas: React.FC<LayoutCanvasProps> = ({
                     <DraggableTableItem
                         key={table.id}
                         table={table}
-                        onMove={(tableId, position) => onMoveTable(tableId, position, pageId, pageId)}
+                        onMove={(tableId, position, targetPageId) => onMoveTable(tableId, position, pageId, targetPageId)}
                         onRemove={(tableId) => onRemoveTable(tableId, pageId)}
                         onSetTableNumber={(tableId, tableNumber) => onSetTableNumber(tableId, tableNumber, pageId)}
                         onRotate={(tableId) => onRotateTable(tableId, pageId)}
                         placedTables={placedTables}
                         pageId={pageId}
+                        getPlacedTablesByPageId={getPlacedTablesByPageId}
                         availableTableNumbers={availableTableNumbers}
                     />
                 ))}

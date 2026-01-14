@@ -7,17 +7,15 @@ import TableShape from '@/components/common/TableShape';
 import { isPositionValid, getTableDimensions } from '@/utils/tableCollision';
 import { useClickOutside } from '@/hooks/common/useClickOutside';
 
-const CANVAS_WIDTH = 1920;
-const CANVAS_HEIGHT = 1080;
-
 interface DraggableTableItemProps {
     table: PlacedTable;
-    onMove: (tableId: string, position: { x: number; y: number }) => void;
+    onMove: (tableId: string, position: { x: number; y: number }, targetPageId?: string) => void;
     onRemove: (tableId: string) => void;
     onSetTableNumber: (tableId: string, tableNumber: string) => void;
     onRotate: (tableId: string) => void;
     placedTables: PlacedTable[];
     pageId?: string;
+    getPlacedTablesByPageId?: (pageId?: string) => PlacedTable[];
     availableTableNumbers: string[];
 }
 
@@ -28,6 +26,8 @@ const DraggableTableItem: React.FC<DraggableTableItemProps> = ({
     onSetTableNumber,
     onRotate,
     placedTables,
+    pageId,
+    getPlacedTablesByPageId,
     availableTableNumbers
 }) => {
     const [isSelected, setIsSelected] = useState(false);
@@ -39,6 +39,28 @@ const DraggableTableItem: React.FC<DraggableTableItemProps> = ({
     const tableStartPos = useRef<{ x: number; y: number } | null>(null);
 
     const borderColor = '#7B7B7B';
+
+    const findTargetByPoint = (pointX: number, pointY: number) => {
+        const containers = Array.from(
+            document.querySelectorAll<HTMLElement>('[data-page-canvas="true"]')
+        );
+
+        for (const container of containers) {
+            const canvas = container.querySelector<HTMLElement>('[data-page-canvas-inner="true"]');
+            if (!canvas) continue;
+            const rect = canvas.getBoundingClientRect();
+            if (
+                pointX >= rect.left &&
+                pointX <= rect.right &&
+                pointY >= rect.top &&
+                pointY <= rect.bottom
+            ) {
+                return { targetPageId: container.dataset.pageId, rect };
+            }
+        }
+
+        return null;
+    };
 
     useClickOutside(itemRef, () => {
         setIsSelected(false);
@@ -54,24 +76,46 @@ const DraggableTableItem: React.FC<DraggableTableItemProps> = ({
             const deltaX = e.clientX - dragStartPos.current.x;
             const deltaY = e.clientY - dragStartPos.current.y;
 
-            let newX = tableStartPos.current.x + deltaX;
-            let newY = tableStartPos.current.y + deltaY;
-
-            const dimensions = getTableDimensions(table);
-            newX = Math.max(0, Math.min(CANVAS_WIDTH - dimensions.width, newX));
-            newY = Math.max(0, Math.min(CANVAS_HEIGHT - dimensions.height, newY));
+            const newX = tableStartPos.current.x + deltaX;
+            const newY = tableStartPos.current.y + deltaY;
 
             setTempPosition({ x: newX, y: newY });
         };
 
         const handleMouseUp = () => {
-            if (tempPosition) {
-                if (isPositionValid(table, tempPosition, placedTables)) {
-                    onMove(table.id, tempPosition);
-                } else {
-                    onMove(table.id, tableStartPos.current!);
+            if (!tableStartPos.current) return;
+
+            let nextPosition = tempPosition ?? tableStartPos.current;
+            let targetPageId = pageId;
+            let tablesForValidation = placedTables;
+
+            const sourceCanvas = document.querySelector<HTMLElement>(
+                `[data-page-id="${pageId}"] [data-page-canvas-inner="true"]`
+            );
+
+            if (sourceCanvas) {
+                const sourceRect = sourceCanvas.getBoundingClientRect();
+                const topLeftX = sourceRect.left + nextPosition.x;
+                const topLeftY = sourceRect.top + nextPosition.y;
+                const targetInfo = findTargetByPoint(topLeftX, topLeftY);
+                if (targetInfo?.rect && targetInfo.targetPageId) {
+                    const newX = topLeftX - targetInfo.rect.left;
+                    const newY = topLeftY - targetInfo.rect.top;
+
+                    nextPosition = { x: newX, y: newY };
+                    targetPageId = targetInfo.targetPageId;
+                    tablesForValidation = getPlacedTablesByPageId
+                        ? getPlacedTablesByPageId(targetPageId)
+                        : placedTables;
                 }
             }
+
+            if (isPositionValid(table, nextPosition, tablesForValidation)) {
+                onMove(table.id, nextPosition, targetPageId);
+            } else {
+                onMove(table.id, tableStartPos.current, pageId);
+            }
+
             setIsDragging(false);
             setTempPosition(null);
             dragStartPos.current = null;
@@ -100,6 +144,7 @@ const DraggableTableItem: React.FC<DraggableTableItemProps> = ({
 
         dragStartPos.current = { x: e.clientX, y: e.clientY };
         tableStartPos.current = { x: table.position.x, y: table.position.y };
+
     };
 
     const handleClick = (e: React.MouseEvent) => {

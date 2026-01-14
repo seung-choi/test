@@ -12,10 +12,16 @@ interface TableWithPage extends PlacedTable {
 interface TableListViewProps {
     placedTables: TableWithPage[];
     tableList?: GetTableResponse[];
-    onReorder?: (reorderedTables: PlacedTable[]) => void;
+    onReorderPlacedTables?: (reorderedTables: PlacedTable[]) => void;
+    onReorderTableList?: (reorderedTables: GetTableResponse[]) => void;
 }
 
-const TableListView: React.FC<TableListViewProps> = ({ placedTables, tableList, onReorder }) => {
+const TableListView: React.FC<TableListViewProps> = ({
+    placedTables,
+    tableList,
+    onReorderPlacedTables,
+    onReorderTableList
+}) => {
     const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
     const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
     const capacityMap: Record<TableType, string> = {
@@ -27,7 +33,7 @@ const TableListView: React.FC<TableListViewProps> = ({ placedTables, tableList, 
         T12R: '12인'
     };
 
-    const isReorderable = Boolean(onReorder) && !tableList;
+    const isReorderable = Boolean(tableList ? onReorderTableList : onReorderPlacedTables);
 
     const handleDragStart = (e: React.DragEvent, index: number) => {
         if (!isReorderable) return;
@@ -55,11 +61,17 @@ const TableListView: React.FC<TableListViewProps> = ({ placedTables, tableList, 
             return;
         }
 
-        const reorderedTables = [...placedTables];
-        const [draggedItem] = reorderedTables.splice(draggedIndex, 1);
-        reorderedTables.splice(dropIndex, 0, draggedItem);
-
-        onReorder?.(reorderedTables);
+        if (tableList) {
+            const reorderedTables = [...(displayTables ?? tableList)];
+            const [draggedItem] = reorderedTables.splice(draggedIndex, 1);
+            reorderedTables.splice(dropIndex, 0, draggedItem);
+            onReorderTableList?.(reorderedTables);
+        } else {
+            const reorderedTables = [...placedTables];
+            const [draggedItem] = reorderedTables.splice(draggedIndex, 1);
+            reorderedTables.splice(dropIndex, 0, draggedItem);
+            onReorderPlacedTables?.(reorderedTables);
+        }
         setDraggedIndex(null);
         setDragOverIndex(null);
     };

@@ -15,6 +15,7 @@ export const API_ENDPOINTS = {
     LIST: '/fnb/v1/table',
     ERP: '/fnb/v1/table/erp',
     DETAIL: (tableId: number) => `/fnb/v1/table/${tableId}`,
+    ORDER: '/fnb/v1/table',
   },
 
   // Goods

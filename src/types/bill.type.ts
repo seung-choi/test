@@ -1,6 +1,6 @@
-export type BillStatus = 'D' | 'C' | 'W';
-export type BillOrderStatus = 'N' | 'A' | 'C' | 'D' | 'W';
-export type OrderTake = 'D' | 'T';
+export type BillStatus = 'D' | 'N' | 'Y';
+export type BillOrderStatus = 'N' | 'Y' | 'P' | 'R';
+export type OrderTake = 'D' | 'N' | 'Y';
 
 export interface BookingTime {
   hour: number;

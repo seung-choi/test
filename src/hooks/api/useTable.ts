@@ -4,9 +4,11 @@ import {
   getTableErpList,
   postTableInfo,
   putTableList,
+  patchTableOrder,
   deleteTableInfo,
   PostTableRequest,
   PutTableRequest,
+  PatchTableRequest,
 } from '@/api/table';
 
 export const useTableList = (options?: {
@@ -53,6 +55,17 @@ export const usePutTableList = () => {
 
   return useMutation({
     mutationFn: (data: PutTableRequest[]) => putTableList(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tableList'] });
+    },
+  });
+};
+
+export const usePatchTableOrder = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: PatchTableRequest[]) => patchTableOrder(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tableList'] });
     },

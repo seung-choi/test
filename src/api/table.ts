@@ -27,6 +27,11 @@ export interface PutTableRequest {
   tableWhp: string | null;
 }
 
+export interface PatchTableRequest {
+  tableId: number;
+  tableOrd: number;
+}
+
 export const getTableList = async (): Promise<GetTableResponse[]> => {
   const res = await $axios({
     url: `${getOriginURL('api')}${API_ENDPOINTS.TABLE.LIST}`,
@@ -56,6 +61,15 @@ export const putTableList = async (data: PutTableRequest[]): Promise<void> => {
   const res = await $axios({
     url: `${getOriginURL('api')}${API_ENDPOINTS.TABLE.LIST}`,
     method: 'put',
+    data,
+  });
+  return res.data;
+};
+
+export const patchTableOrder = async (data: PatchTableRequest[]): Promise<void> => {
+  const res = await $axios({
+    url: `${getOriginURL('api')}${API_ENDPOINTS.TABLE.ORDER}`,
+    method: 'patch',
     data,
   });
   return res.data;

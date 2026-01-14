@@ -11,7 +11,7 @@ import styles from '@/styles/components/admin/drawer/canvas/layoutManager.module
 import { usePanZoom } from '@/hooks/tableCanvas/usePanZoom';
 import { usePageManagement } from '@/hooks/tableCanvas/usePageManagement';
 import { useTableManagement } from '@/hooks/tableCanvas/useTableManagement';
-import { usePutTableList, useTableList } from '@/hooks/api';
+import { usePatchTableOrder, usePutTableList, useTableList } from '@/hooks/api';
 import type { GetTableResponse } from '@/api/table';
 import type { PlacedTable, TableType } from '@/types';
 
@@ -50,6 +50,8 @@ const LayoutManager: React.FC = () => {
 
     const { data: tableList = [] } = useTableList();
     const { mutateAsync: putTableList } = usePutTableList();
+    const { mutateAsync: patchTableOrder } = usePatchTableOrder();
+    const [tableListOrder, setTableListOrder] = useState<GetTableResponse[]>([]);
 
     const normalizeNumber = (value: string) => value.trim().replace(/번$/, '');
 
@@ -127,6 +129,15 @@ const LayoutManager: React.FC = () => {
         setPages(pagesFromApi);
     }, [pagesFromApi, setPages]);
 
+    useEffect(() => {
+        setTableListOrder(tableList);
+    }, [tableList]);
+
+    const getPlacedTablesByPageId = useCallback(
+        (pageId?: string) => pages.find((page) => page.id === pageId)?.tables ?? [],
+        [pages]
+    );
+
     const allTablesWithPage = pages.flatMap(page =>
         page.tables.map(table => ({
             ...table,
@@ -191,6 +202,19 @@ const LayoutManager: React.FC = () => {
         setDeletedTableIds(new Set());
         alert('테이블 배치가 저장되었습니다.');
     }, [pages, putTableList, tableList, deletedTableIds]);
+
+    const handleTableOrderChange = useCallback(async (reorderedTables: GetTableResponse[]) => {
+        const updatedTables = reorderedTables.map((table, index) => ({
+            ...table,
+            tableOrd: index + 1
+        }));
+        setTableListOrder(updatedTables);
+        const payload = updatedTables.map((table) => ({
+            tableId: table.tableId,
+            tableOrd: table.tableOrd
+        }));
+        await patchTableOrder(payload);
+    }, [patchTableOrder]);
 
     const handleAssignTableNumber = useCallback((tableId: string, tableNumber: string, targetPageId?: string) => {
         const pageId = targetPageId || currentPageId;
@@ -262,6 +286,7 @@ const LayoutManager: React.FC = () => {
                             onRotateTable={handleRotateTable}
                             availableTableNumbers={availableTableNumbers}
                             onSelect={handlePageSelect}
+                            getPlacedTablesByPageId={getPlacedTablesByPageId}
                         />
                     );
                 }
@@ -326,8 +351,9 @@ const LayoutManager: React.FC = () => {
                 ) : (
                     <TableListView
                         placedTables={allTablesWithPage}
-                        tableList={tableList}
-                        onReorder={handleReorderTables}
+                        tableList={tableListOrder}
+                        onReorderPlacedTables={handleReorderTables}
+                        onReorderTableList={handleTableOrderChange}
                     />
                 )}
             </div>
