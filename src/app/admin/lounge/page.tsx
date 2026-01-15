@@ -4,12 +4,10 @@ import React, { useState, useMemo, useRef, useCallback } from 'react';
 import SideTab from '@/components/admin/layout/SideTab';
 import HeaderBar from '@/components/admin/layout/HeaderBar';
 import InfoCard from '@/components/admin/contents/InfoCard';
-import { mockAvailableTables } from '@/mock/admin/infocardMockData';
 import styles from '@/styles/pages/admin/lounge.module.scss';
 import useUnifiedModal from '@/hooks/admin/useUnifiedModal';
 import { useHorizontalScroll } from '@/hooks/common/useScrollManagement';
-import { useBillListByStatus } from '@/hooks/api';
-import { transformBillToInfoCard } from '@/utils/mappers/billMappers';
+import { useBillListByStatus, useDeleteBill, usePatchBill, useTableList } from '@/hooks/api';
 import { OrderCounts } from '@/types';
 
 const mapFilterToStatus = (filter: string): string => {
@@ -34,29 +32,21 @@ const Lounge = () => {
   const cardContainerRef = useRef<HTMLDivElement>(null);
   const { openCancelOrderModal, openSendMessageModal } = useUnifiedModal();
   const { handleScroll } = useHorizontalScroll();
+  const { mutate: deleteBill } = useDeleteBill();
+  const { mutate: patchBill } = usePatchBill();
+  const { data: tableList = [] } = useTableList();
 
-  // 상태별 Bill 데이터 조회 (접수만 5초 리페치)
   const billStatus = mapFilterToStatus(activeFilter);
   const { billList = [], isLoading } = useBillListByStatus(billStatus, {
     refetchInterval: activeFilter === 'order' ? 5000 : undefined,
     enabled: true,
   });
 
-  // Bill 데이터를 InfoCard 형식으로 변환
-  const filteredCards = useMemo(
-    () => billList.map(bill => transformBillToInfoCard(bill)),
-    [billList]
-  );
-
-  const currentCard = filteredCards[selectedCardIndex] || filteredCards[0];
-
-  // 전체 주문 카운트 계산 (모든 상태의 데이터 필요)
   const { billList: orderBills = [] } = useBillListByStatus('R', { enabled: true });
   const { billList: acceptBills = [] } = useBillListByStatus('P', { enabled: true });
   const { billList: completeBills = [] } = useBillListByStatus('Y', { enabled: true });
   const { billList: cancelBills = [] } = useBillListByStatus('N', { enabled: true });
 
-  // 새로운 접수 주문 감지
   React.useEffect(() => {
     const currentOrderCount = orderBills.length;
     if (previousOrderCountRef.current > 0 && currentOrderCount > previousOrderCountRef.current) {
@@ -90,6 +80,17 @@ const Lounge = () => {
     setIsHeaderExpanded(expanded);
   };
 
+  const availableTables = useMemo(
+    () =>
+      tableList
+        .filter((table) => Boolean(table.tableNo && table.tableId))
+        .map((table) => ({
+          id: table.tableId,
+          label: `${table.tableNo}${table.tableNo.endsWith('번') ? '' : '번'}`
+        })),
+    [tableList]
+  );
+
   const handleCardScroll = useCallback(() => {
     if (cardContainerRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = cardContainerRef.current;
@@ -98,39 +99,45 @@ const Lounge = () => {
     }
   }, []);
 
-  const handleAcceptOrder = () => {
+  const handleAcceptOrder = (billId: number) => (tableId: number | null) => {
+    if (tableId !== null) {
+      patchBill({ billId, tableId });
+    }
   };
 
-  const handleCancelOrder = () => {
+  const handleCancelOrder = (billId: number) => () => {
     openCancelOrderModal(
-      () => {
-        alert('주문이 취소되었습니다.');
+      (reason: string) => {
+        deleteBill(
+          { billId, data: { orderRea: reason } },
+          {
+            onSuccess: () => {
+              alert('주문이 취소되었습니다.');
+            },
+            onError: (error) => {
+              console.error('주문 취소 실패:', error);
+              alert('주문 취소에 실패했습니다.');
+            }
+          }
+        );
       },
       () => {
+        // 취소 버튼 클릭 시
       }
     );
   };
 
-  const handleMessageOrder = () => {
-    const availableRecipients = [
-      '홀 매니저',
-      '주방장',
-      '서빙팀',
-      '고객 서비스',
-      currentCard?.customerInfo?.name || '고객'
-    ];
-
+  const handleMessageOrder = (billId: number) => () => {
     openSendMessageModal(
-      availableRecipients,
-      (formData) => {
-        alert(`메시지가 ${formData.recipient}에게 전송되었습니다.`);
-      },
+      ['홀 매니저', '주방장', '서빙팀', '고객 서비스'],
       () => {
-      }
+        alert('메시지가 전송되었습니다.');
+      },
     );
   };
 
-  const handleCompleteOrder = () => {
+  const handleCompleteOrder = (billId: number) => () => {
+    // TODO: 주문 완료 로직
   };
 
   const renderScrollButton = (direction: 'left' | 'right', isVisible: boolean) => (
@@ -159,7 +166,7 @@ const Lounge = () => {
             isHeaderExpanded ? styles.scrollButtonExpanded : styles.scrollButtonCollapsed
           }`}
         >
-          {filteredCards.length > 0 && renderScrollButton('left', isCardScrolled)}
+          {billList.length > 0 && renderScrollButton('left', isCardScrolled)}
           <div
             className={`${styles.infoCardContainer} ${isHeaderExpanded ? styles.headerExpanded : styles.headerCollapsed}`}
             ref={cardContainerRef}
@@ -169,36 +176,25 @@ const Lounge = () => {
               <div className={styles.loadingContainer}>
                 <p>로딩 중...</p>
               </div>
-            ) : filteredCards.length === 0 ? (
+            ) : billList.length === 0 ? (
               <div className={styles.emptyContent}>
                 <p>주문이 없습니다.</p>
               </div>
             ) : (
-              filteredCards.map((card, index) => (
+              billList.map((bill, index) => (
                 <InfoCard
-                  key={index}
-                  tableNumber={card.tableNumber}
-                  customerInfo={card.customerInfo}
-                  orderItems={card.orderItems}
-                  orderHistory={card.orderHistory}
-                  specialRequest={card.specialRequest}
-                  totalItems={card.totalItems}
-                  orderTime={card.orderTime}
-                  orderLocation={card.orderLocation}
-                  tags={card.tags}
-                  status={card.status}
-                  cancelReason={card.cancelReason}
-                  totalAmount={card.totalAmount}
-                  onAcceptOrder={handleAcceptOrder}
-                  onCancelOrder={handleCancelOrder}
-                  onCompleteOrder={handleCompleteOrder}
-                  onMessageOrder={handleMessageOrder}
-                  availableTables={mockAvailableTables}
+                  key={bill.billId}
+                  bill={bill}
+                  onAcceptOrder={handleAcceptOrder(bill.billId)}
+                  onCancelOrder={handleCancelOrder(bill.billId)}
+                  onCompleteOrder={handleCompleteOrder(bill.billId)}
+                  onMessageOrder={handleMessageOrder(bill.billId)}
+                  availableTables={availableTables}
                 />
               ))
             )}
           </div>
-          {filteredCards.length > 0 && renderScrollButton('right', !isCardScrolledToEnd)}
+          {billList.length > 0 && renderScrollButton('right', !isCardScrolledToEnd)}
         </div>
       </div>
     </div>

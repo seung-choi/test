@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from '@/styles/components/admin/contents/InfoCard.module.scss';
+import { TableOption } from '@/hooks/admin/useTableSelection';
 
 interface InfoCardHeaderProps {
   tableNumber: string;
@@ -7,9 +8,9 @@ interface InfoCardHeaderProps {
   selectedTable: string | null;
   isDropdownOpen: boolean;
   isDisabledStatus: boolean;
-  availableTables: string[];
+  availableTables: TableOption[];
   onToggleDropdown: () => void;
-  onSelectTable: (table: string) => void;
+  onSelectTable: (table: TableOption) => void;
 }
 
 const InfoCardHeader: React.FC<InfoCardHeaderProps> = ({
@@ -60,7 +61,7 @@ const InfoCardHeader: React.FC<InfoCardHeaderProps> = ({
           onClick={onToggleDropdown}
         >
           <span className={`${styles.tableText} ${selectedTable}`}>
-            {tableNumber || (selectedTable || '테이블')}
+            {tableNumber || selectedTable || '테이블'}
           </span>
           {getArrowIcon()}
         </div>
@@ -69,10 +70,10 @@ const InfoCardHeader: React.FC<InfoCardHeaderProps> = ({
             {availableTables.map((table, index) => (
               <div
                 key={index}
-                className={`${styles.tableOption} ${selectedTable === table ? styles.selectedOption : ''}`}
+                className={`${styles.tableOption} ${selectedTable === table.label ? styles.selectedOption : ''}`}
                 onClick={() => onSelectTable(table)}
               >
-                {table}
+                {table.label}
               </div>
             ))}
           </div>

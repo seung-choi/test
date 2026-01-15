@@ -13,13 +13,16 @@ const OrderHistorySection: React.FC<OrderHistorySectionProps> = ({
   isExpanded,
   onToggleExpansion,
 }) => {
-  if (!orderHistory || orderHistory.length === 0) {
+  // 접수(order) 상태가 아닌 항목만 표시
+  const filteredHistory = orderHistory.filter((history) => history.status !== 'order');
+
+  if (!filteredHistory || filteredHistory.length === 0) {
     return null;
   }
 
   return (
     <div className={styles.orderHistorySection}>
-      {orderHistory.map((history) => (
+      {filteredHistory.map((history) => (
         <div
           key={history.id}
           className={styles.historyItem}

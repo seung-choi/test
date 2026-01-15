@@ -11,8 +11,17 @@ import LayoutManager from '@/components/admin/drawer/setting/canvas/LayoutManage
 import { useBillList } from '@/hooks/api';
 import { Bill } from '@/types/bill.type';
 
-const formatBookingTime = (bookingTm: { hour: number; minute: number }) => {
-    return `${String(bookingTm.hour).padStart(2, '0')}:${String(bookingTm.minute).padStart(2, '0')}`;
+const formatTime = (value?: string | null) => {
+    if (!value) return '-';
+    const match = value.match(/^(\d{2}):(\d{2})(?::\d{2})?$/);
+    if (match) {
+        return `${match[1]}:${match[2]}`;
+    }
+    const parsed = new Date(value);
+    if (!Number.isNaN(parsed.getTime())) {
+        return parsed.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+    }
+    return value;
 };
 
 const getBillStatus = (billSt: string) => {
@@ -25,12 +34,13 @@ const getBillStatus = (billSt: string) => {
 };
 
 const transformBillToOrderRecord = (bill: Bill) => {
-    const totalMenuCount = bill.orderList.reduce((sum, order) =>
-        sum + order.orderHisList.reduce((orderSum, item) => orderSum + item.orderCnt, 0), 0
+    const orderList = bill.orderList ?? [];
+    const totalMenuCount = orderList.reduce((sum, order) =>
+        sum + (order.orderHisList ?? []).reduce((orderSum, item) => orderSum + item.orderCnt, 0), 0
     );
 
-    const orderDetails = bill.orderList
-        .flatMap(order => order.orderHisList)
+    const orderDetails = orderList
+        .flatMap(order => order.orderHisList ?? [])
         .reduce((acc, item) => {
             const existingItem = acc.find(i => i.goodsNm === item.goodsNm);
             if (existingItem) {
@@ -43,7 +53,7 @@ const transformBillToOrderRecord = (bill: Bill) => {
         .map(item => `${item.goodsNm}(${item.count})`)
         .join(', ');
 
-    const cancelReason = bill.orderList
+    const cancelReason = orderList
         .filter(order => order.orderRea)
         .map(order => order.orderRea)
         .join(', ') || '-';
@@ -51,7 +61,7 @@ const transformBillToOrderRecord = (bill: Bill) => {
     return {
         id: String(bill.billId),
         orderDate: bill.createdDt,
-        tO: formatBookingTime(bill.bookingTm),
+        tO: formatTime(bill.bookingTm),
         caddyName: bill.bookingNm || '-',
         customerNames: bill.playerList || '-',
         groupName: bill.bookingsNm || '-',
@@ -80,9 +90,9 @@ const SettingManagement = ({showActionBar = true}) => {
     });
 
     const { billData, isLoading, refetch } = useBillList({
-        fromDt: filter.dateRange.startDate,
-        toDt: filter.dateRange.endDate,
-        page: 0,
+        fromDate: filter.dateRange.startDate,
+        toDate: filter.dateRange.endDate,
+        page: 1,
         size: 50
     });
 

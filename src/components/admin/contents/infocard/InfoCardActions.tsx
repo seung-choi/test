@@ -7,7 +7,8 @@ interface InfoCardActionsProps {
   status: OrderStatus;
   cancelReason?: string;
   totalAmount?: number;
-  onAcceptOrder?: () => void;
+  selectedTableId?: number | null;
+  onAcceptOrder?: (tableId: number | null) => void;
   onCancelOrder?: () => void;
   onCompleteOrder?: () => void;
 }
@@ -16,10 +17,16 @@ const InfoCardActions: React.FC<InfoCardActionsProps> = ({
   status,
   cancelReason,
   totalAmount = 250000,
+  selectedTableId,
   onAcceptOrder,
   onCancelOrder,
   onCompleteOrder,
 }) => {
+  const handleAcceptOrder = () => {
+    if (onAcceptOrder) {
+      onAcceptOrder(selectedTableId ?? null);
+    }
+  };
   const isCompleteStatus = status === 'complete';
 
   return (
@@ -42,7 +49,7 @@ const InfoCardActions: React.FC<InfoCardActionsProps> = ({
             </button>
             <button
               className={`${styles.button} ${styles.orderButton}`}
-              onClick={onAcceptOrder}
+              onClick={handleAcceptOrder}
             >
               주문 수락
             </button>

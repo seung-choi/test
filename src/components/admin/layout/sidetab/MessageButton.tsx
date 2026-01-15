@@ -89,63 +89,87 @@ const MessageButton: React.FC<MessageButtonProps> = ({
     setShowPopover(false);
   };
 
+  const getButtonStyle = () => {
+    const baseStyle = {
+      height: '2.5rem',
+      alignItems: 'center' as const,
+    };
+
+    if (showPopover) {
+      return {
+        ...baseStyle,
+        background: '#666666',
+        outline: '1px #7B7B7B solid',
+        outlineOffset: '-1px'
+      };
+    }
+
+    if (hasNotification) {
+      return {
+        ...baseStyle,
+        background: '#F7D2D2',
+        outline: '1px rgba(219.94, 0, 0, 0.20) solid',
+        outlineOffset: '-1px'
+      };
+    }
+
+    return baseStyle;
+  };
+
   return (
-    <div
-      className={styles.menuItem}
-      ref={buttonRef}
-      onClick={handleClick}
-      style={{
-        height: '2.5rem',
-        alignItems: 'center',
-        ...(hasNotification && {
-          background: '#F7D2D2',
-          outline: '1px rgba(219.94, 0, 0, 0.20) solid',
-          outlineOffset: '-1px'
-        })
-      }}
-    >
-      <div className={styles.menuIcon}>
-        <MessageIcon hasNotification={hasNotification} />
-      </div>
+    <>
       {showPopover && (
-        <div ref={popoverRef} className={styles.messagePopover}>
-          <div className={styles.messagePopoverHeader}>
-            <h3 className={styles.messagePopoverTitle}>전체 메시지 내역</h3>
-            <button className={styles.messageCloseIcon} onClick={(e) => { e.stopPropagation(); handleClose(); }}>
-              <svg width="18" height="18" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M2 2L21 21M2 21L21 2" stroke="#666666" strokeWidth="3" strokeLinecap="round"/>
-              </svg>
+        <div className={styles.messageBackdrop} onClick={handleClose} />
+      )}
+      <div
+        className={styles.menuItem}
+        ref={buttonRef}
+        onClick={handleClick}
+        style={getButtonStyle()}
+      >
+        <div className={styles.menuIcon}>
+          <MessageIcon hasNotification={hasNotification} isActive={showPopover} />
+        </div>
+        {showPopover && (
+          <div ref={popoverRef} className={styles.messagePopover}>
+            <div className={styles.messagePopoverHeader}>
+              <h3 className={styles.messagePopoverTitle}>전체 메시지 내역</h3>
+              <button className={styles.messageCloseIcon} onClick={(e) => { e.stopPropagation(); handleClose(); }}>
+                <svg width="18" height="18" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M2 2L21 21M2 21L21 2" stroke="#666666" strokeWidth="3" strokeLinecap="round"/>
+                </svg>
+              </button>
+            </div>
+            <div className={styles.messageDivider} />
+            <div className={styles.messageList}>
+              {mockMessages.map((message) => (
+                <div key={message.id} className={styles.messageItem}>
+                  {!message.isSent && (
+                    <div className={styles.messageSender}>{message.sender}</div>
+                  )}
+                  <div className={message.isSent ? styles.sentMessageRow : styles.receivedMessageRow}>
+                    {message.isSent && <div className={styles.messageTime}>{message.time}</div>}
+                    <div className={message.isSent ? styles.sentBubble : styles.receivedBubble}>
+                      <div className={styles.messageContent}>
+                        {message.recipient && (
+                          <span className={styles.messageRecipient}>{message.recipient}</span>
+                        )}
+                        {message.recipient && ' '}
+                        <span className={styles.messageText}>{message.content}</span>
+                      </div>
+                    </div>
+                    {!message.isSent && <div className={styles.messageTime}>{message.time}</div>}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <button className={styles.messageCloseButton} onClick={(e) => { e.stopPropagation(); handleClose(); }}>
+              닫기
             </button>
           </div>
-          <div className={styles.messageDivider} />
-          <div className={styles.messageList}>
-            {mockMessages.map((message) => (
-              <div key={message.id} className={styles.messageItem}>
-                {!message.isSent && (
-                  <div className={styles.messageSender}>{message.sender}</div>
-                )}
-                <div className={message.isSent ? styles.sentMessageRow : styles.receivedMessageRow}>
-                  {message.isSent && <div className={styles.messageTime}>{message.time}</div>}
-                  <div className={message.isSent ? styles.sentBubble : styles.receivedBubble}>
-                    <div className={styles.messageContent}>
-                      {message.recipient && (
-                        <span className={styles.messageRecipient}>{message.recipient}</span>
-                      )}
-                      {message.recipient && ' '}
-                      <span className={styles.messageText}>{message.content}</span>
-                    </div>
-                  </div>
-                  {!message.isSent && <div className={styles.messageTime}>{message.time}</div>}
-                </div>
-              </div>
-            ))}
-          </div>
-          <button className={styles.messageCloseButton} onClick={(e) => { e.stopPropagation(); handleClose(); }}>
-            닫기
-          </button>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 };
 

@@ -406,7 +406,7 @@
   width: 100%;
   height: 100%;
   justify-content: space-between;
-  align-items: end;
+  align-items: flex-end;
   display: inline-flex;
 
   @include tablet {

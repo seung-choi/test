@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import CommonModalLayout from '@/components/admin/modal/CommonModalLayout';
 import commonStyles from '@/styles/components/admin/modal/CommonModal.module.scss';
 import styles from '@/styles/components/admin/modal/CancelReasonModal.module.scss';
+import {useCategoryList} from "@/hooks/api";
 
 interface CancelReasonModalContentProps {
   onConfirm: (reason: string) => void;
@@ -15,8 +16,7 @@ const CancelReasonModalContent: React.FC<CancelReasonModalContentProps> = ({
   onClose,
 }) => {
   const [selectedReason, setSelectedReason] = useState<string>('');
-
-  const reasons = ['고객 요청'];
+    const { data: categoryReasons = [] } = useCategoryList('REASON');
 
   const handleReasonSelect = (reason: string) => {
     setSelectedReason(selectedReason === reason ? '' : reason);
@@ -51,16 +51,16 @@ const CancelReasonModalContent: React.FC<CancelReasonModalContentProps> = ({
 
   return (
     <CommonModalLayout title="주문 취소 사유" buttons={buttons}>
-      <div className={`${styles.reasonList} ${reasons.length === 1 ? styles.singleItem : styles.multipleItems}`}>
-        {reasons.map((reason) => (
+      <div className={`${styles.reasonList} ${categoryReasons.length === 1 ? styles.singleItem : styles.multipleItems}`}>
+        {categoryReasons.map((reason) => (
           <button
-            key={reason}
+            key={reason.categoryId}
             className={`${styles.reasonButton} ${
-              selectedReason === reason ? styles.selected : ''
+              selectedReason === reason.categoryNm ? styles.selected : ''
             }`}
-            onClick={() => handleReasonSelect(reason)}
+            onClick={() => handleReasonSelect(reason.categoryNm)}
           >
-            {reason}
+            {reason.categoryNm}
           </button>
         ))}
       </div>

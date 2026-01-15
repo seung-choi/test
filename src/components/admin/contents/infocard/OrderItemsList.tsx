@@ -8,6 +8,9 @@ interface OrderItemsListProps {
   orderTime: string;
   orderLocation: string;
   orderItems: OrderItemSummary[];
+  orderPlayerName?: string | null;
+  orderCourseName?: string | null;
+  orderHoleNo?: number | null;
   specialRequest?: string;
   status: OrderStatus;
 }
@@ -17,6 +20,9 @@ const OrderItemsList: React.FC<OrderItemsListProps> = ({
   orderTime,
   orderLocation,
   orderItems,
+  orderPlayerName,
+  orderCourseName,
+  orderHoleNo,
   specialRequest,
   status,
 }) => {
@@ -31,8 +37,11 @@ const OrderItemsList: React.FC<OrderItemsListProps> = ({
         <div className={styles.orderInfo}>
           <span className={styles.orderLabel}>주문 정보</span>
           <div className={styles.orderDetails}>
+            <span className={styles.orderTimeText}>[{orderPlayerName || '-'}]</span>
             <span className={styles.orderTimeText}>{orderTime}</span>
-            <span className={styles.orderLocationText}>({orderLocation})</span>
+            <span className={styles.orderLocationText}>
+              ({orderCourseName || '-'} {orderHoleNo ?? '-'}H)
+            </span>
           </div>
         </div>
       </div>

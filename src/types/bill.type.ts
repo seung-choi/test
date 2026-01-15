@@ -2,13 +2,6 @@ export type BillStatus = 'D' | 'N' | 'Y';
 export type BillOrderStatus = 'N' | 'Y' | 'P' | 'R';
 export type OrderTake = 'D' | 'N' | 'Y';
 
-export interface BookingTime {
-  hour: number;
-  minute: number;
-  second: number;
-  nano: number;
-}
-
 export interface BillOrderHistory {
   orderNo: number;
   goodsId: number;
@@ -23,18 +16,18 @@ export interface BillOrderHistory {
 
 export interface BillOrder {
   orderId: number;
-  playerId: number;
-  holeId: number;
-  holeNo: number;
-  courseId: number;
-  courseNm: string;
-  playerNm: string;
-  playerErp: string;
+  playerId: number | null;
+  holeId: number | null;
+  holeNo: number | null;
+  courseId: number | null;
+  courseNm: string | null;
+  playerNm: string | null;
+  playerErp: string | null;
   orderAmt: number;
-  orderReq: string;
-  orderRea: string;
+  orderReq: string | null;
+  orderRea: string | null;
   orderSt: BillOrderStatus;
-  orderErp: string;
+  orderErp: string | null;
   createdDt: string;
   modifiedDt: string;
   orderHisList: BillOrderHistory[];
@@ -43,14 +36,14 @@ export interface BillOrder {
 export interface Bill {
   isERP: boolean;
   billId: number;
-  bookingId: number;
-  tableId: number;
-  tableNo: string;
-  bookingNm: string;
-  bookingTm: BookingTime;
-  bookingsNm: string;
-  bookingErp: string;
-  playerList: string;
+  bookingId: number | null;
+  tableId: number | null;
+  tableNo: string | null;
+  bookingNm: string | null;
+  bookingTm: string | null;
+  bookingsNm: string | null;
+  bookingErp: string | null;
+  playerList: string | null;
   billAmt: number;
   billSt: BillStatus;
   createdDt: string;
@@ -67,8 +60,8 @@ export interface GetBillResponse {
 }
 
 export interface GetBillParams {
-  fromDt?: string;
-  toDt?: string;
+  fromDate?: string;
+  toDate?: string;
   page?: number;
   size?: number;
 }
@@ -77,7 +70,7 @@ export interface PostBillRequest {
   bookingId?: number;
   tableId: number;
   bookingNm: string;
-  bookingTm?: BookingTime;
+  bookingTm?: string;
   bookingsNm?: string;
   bookingErp?: string;
   playerList?: string;
