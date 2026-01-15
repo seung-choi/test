@@ -14,6 +14,7 @@ export interface MessageModalState {
   isShow: boolean;
   title: string;
   recipients?: string[];
+  bookingId?: number | null;
   onSubmit?: (data: MessageFormData) => void;
   onCancel?: () => void;
 }
@@ -97,5 +98,20 @@ export interface CancelReasonManagementModalState {
   isShow: boolean;
   reasons?: CancelReason[];
   onSubmit?: (reasons: CancelReason[]) => void;
+  onCancel?: () => void;
+}
+
+export interface ErpLinkSelection {
+  bookingErp: string;
+  playerNm: string;
+  playerErp: string;
+}
+
+export interface ErpLinkModalState {
+  isShow: boolean;
+  billId?: number;
+  tableId?: number | null;
+  onLinkErp?: (selection: ErpLinkSelection) => void;
+  onManual?: () => void;
   onCancel?: () => void;
 }

@@ -1,10 +1,10 @@
 import React from 'react';
 import styles from '@/styles/components/admin/contents/InfoCard.module.scss';
-import { OrderStatus } from '@/types';
+import { BillOrderStatus } from '@/types/bill.type';
 import { formatPrice } from '@/utils';
 
 interface InfoCardActionsProps {
-  status: OrderStatus;
+  status: BillOrderStatus;
   cancelReason?: string;
   totalAmount?: number;
   selectedTableId?: number | null;
@@ -27,7 +27,7 @@ const InfoCardActions: React.FC<InfoCardActionsProps> = ({
       onAcceptOrder(selectedTableId ?? null);
     }
   };
-  const isCompleteStatus = status === 'complete';
+  const isCompleteStatus = status === 'Y';
 
   return (
     <>
@@ -39,7 +39,7 @@ const InfoCardActions: React.FC<InfoCardActionsProps> = ({
       )}
 
       <div className={styles.buttonSection}>
-        {status === 'order' && (
+        {status === 'R' && (
           <>
             <button
               className={`${styles.button} ${styles.cancelButton}`}
@@ -56,7 +56,7 @@ const InfoCardActions: React.FC<InfoCardActionsProps> = ({
           </>
         )}
 
-        {status === 'accept' && (
+        {status === 'P' && (
           <>
             <button
               className={`${styles.button} ${styles.cancelButton}`}
@@ -79,7 +79,7 @@ const InfoCardActions: React.FC<InfoCardActionsProps> = ({
           </div>
         )}
 
-        {status === 'cancel' && (
+        {status === 'N' && (
           <div className={`${styles.button} ${styles.canceledButton}`}>
             <span>주문 취소</span>
           </div>

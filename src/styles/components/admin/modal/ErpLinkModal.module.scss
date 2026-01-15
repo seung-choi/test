@@ -1,0 +1,318 @@
+@import '../../../common/mixins';
+
+.erpLinkContainer {
+  min-width: 1438px;
+
+  @include tablet {
+    min-width: 1080px;
+  }
+}
+
+.erpLinkContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.erpTable {
+  width: 100%;
+  background: white;
+  display: flex;
+  flex-direction: column;
+
+  .tableHeader {
+    display: flex;
+    align-items: center;
+    height: 73px;
+    border-bottom: 3px solid #444444;
+    color: #444444;
+    font-size: 22px;
+    font-weight: 400;
+
+    @include tablet {
+      height: 55px;
+      font-size: 16px;
+    }
+  }
+
+  .tableBody {
+    max-height: 488px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+
+    @include tablet {
+      max-height: 366px;
+    }
+
+    &::-webkit-scrollbar {
+      width: 9px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #D9D9D9;
+      border-radius: 5px;
+    }
+  }
+}
+
+.tableRow {
+  display: flex;
+  align-items: center;
+  min-height: 94px;
+  background: white;
+  border-bottom: 1px solid #7B7B7B;
+  padding: 10px 0;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  width: 100%;
+  cursor: pointer;
+  text-align: left;
+
+  @include tablet {
+    min-height: 70px;
+    padding: 8px 0;
+  }
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.02);
+  }
+}
+
+.selectedRow {
+  background: #F2F8FF;
+
+  &:hover {
+    background: #F2F8FF;
+  }
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cellText {
+  color: #1F1F1F;
+  font-size: 22px;
+  font-weight: 600;
+
+  @include tablet {
+    font-size: 16px;
+  }
+}
+
+.selectColumn {
+  width: 83px;
+  flex-shrink: 0;
+
+  @include tablet {
+    width: 62px;
+  }
+}
+
+.timeColumn {
+  width: 187px;
+  flex-shrink: 0;
+
+  @include tablet {
+    width: 140px;
+  }
+}
+
+.playersColumn {
+  width: 617px;
+  flex-shrink: 0;
+  padding: 0 30px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  gap: 12px;
+  justify-content: flex-start;
+
+  @include tablet {
+    width: 463px;
+    padding: 0 22px;
+    gap: 9px;
+  }
+}
+
+.caddyColumn {
+  width: 194px;
+  flex-shrink: 0;
+
+  @include tablet {
+    width: 145px;
+  }
+}
+
+.groupColumn {
+  width: 237px;
+  flex-shrink: 0;
+
+  @include tablet {
+    width: 178px;
+  }
+}
+
+.rowCheckbox {
+  width: 25px;
+  height: 25px;
+  border: none;
+  outline: 4px solid #444444;
+  outline-offset: -2px;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @include tablet {
+    width: 19px;
+    height: 19px;
+    outline-width: 3px;
+  }
+
+  &.checked {
+    background: #444444;
+
+    &::after {
+      content: '';
+      width: 12px;
+      height: 8px;
+      border-left: 3px solid white;
+      border-bottom: 3px solid white;
+      transform: rotate(-45deg) translateY(-1px);
+
+      @include tablet {
+        width: 9px;
+        height: 6px;
+        border-width: 2px;
+      }
+    }
+  }
+}
+
+.playerItem {
+  width: 130px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 1px;
+
+  @include tablet {
+    width: 97px;
+    gap: 7px;
+  }
+}
+
+.playerCheckbox {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  border: none;
+  outline: 2px solid #959595;
+  outline-offset: -1px;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @include tablet {
+    width: 15px;
+    height: 15px;
+  }
+
+  &.checked {
+    background: #1F1F1F;
+    outline-color: #1F1F1F;
+
+    &::after {
+      content: '';
+      width: 10px;
+      height: 6px;
+      border-left: 2px solid white;
+      border-bottom: 2px solid white;
+      transform: rotate(-45deg) translateY(-1px);
+
+      @include tablet {
+        width: 7px;
+        height: 4px;
+        border-width: 1.5px;
+      }
+    }
+  }
+}
+
+.playerName {
+  color: #1F1F1F;
+  font-size: 22px;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @include tablet {
+    font-size: 16px;
+  }
+}
+
+.emptyTable {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666666;
+  font-size: 22px;
+
+  @include tablet {
+    height: 150px;
+    font-size: 16px;
+  }
+}
+
+.disabledButton {
+  width: 215px;
+  height: 54px;
+  padding: 10px 20px;
+  background: #D9D9D9;
+  border-radius: 5px;
+  outline: 1px #666666 solid;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #666666;
+  font-size: 22px;
+  font-weight: 400;
+  cursor: not-allowed;
+
+  @include tablet {
+    width: 161px;
+    height: 40px;
+    font-size: 16px;
+    padding: 7px 15px;
+  }
+}
+
+.loadingContainer {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666666;
+  font-size: 22px;
+
+  @include tablet {
+    height: 150px;
+    font-size: 16px;
+  }
+}

@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from '@/styles/components/admin/contents/InfoCard.module.scss';
-import { OrderItemSummary, OrderStatus } from '@/types';
+import { OrderItemSummary } from '@/types';
+import { BillOrderStatus } from '@/types/bill.type';
 import { formatPrice } from '@/utils';
 
 interface OrderItemsListProps {
@@ -12,7 +13,7 @@ interface OrderItemsListProps {
   orderCourseName?: string | null;
   orderHoleNo?: number | null;
   specialRequest?: string;
-  status: OrderStatus;
+  status: BillOrderStatus;
 }
 
 const OrderItemsList: React.FC<OrderItemsListProps> = ({
@@ -26,8 +27,8 @@ const OrderItemsList: React.FC<OrderItemsListProps> = ({
   specialRequest,
   status,
 }) => {
-  const isCompleteStatus = status === 'complete';
-  const isCancelStatus = status === 'cancel';
+  const isCompleteStatus = status === 'Y';
+  const isCancelStatus = status === 'N';
   const isDisabledStatus = isCompleteStatus || isCancelStatus;
 
   return (
@@ -52,6 +53,9 @@ const OrderItemsList: React.FC<OrderItemsListProps> = ({
             <div key={index} className={`${styles.orderItem} ${isDisabledStatus ? styles.disabledOrderItem : ''}`}>
               <div className={styles.itemName}>
                 <span>{item.name}</span>
+                {item.orderTake && item.orderTake !== 'N' && (
+                  <span className={styles.takeoutBadge}>포장</span>
+                )}
               </div>
               {isCompleteStatus && (
                 <div className={styles.itemPrice}>

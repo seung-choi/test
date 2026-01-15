@@ -470,6 +470,15 @@
   }
 }
 
+.messageBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 900;
+  width: calc(100% - 6.625rem);
+  left: 6.625rem;
+}
+
 .messagePopoverHeader {
   position: relative;
   padding: 1.3125rem 2.3125rem;
@@ -594,7 +603,7 @@
 
 .sentMessageRow {
   display: flex;
-  justify-content: flex-start;
+  justify-content: flex-end;
   align-items: flex-end;
   gap: 0.4375rem;
   padding-left: 2.3125rem;
@@ -641,6 +650,14 @@
   @include tablet {
     line-height: 1.5rem;
   }
+}
+
+.messageImage {
+  margin-top: 0.625rem;
+  width: 20rem;
+  height: 15rem;
+  object-fit: cover;
+  border-radius: 0.5rem;
 }
 
 .messageRecipient {

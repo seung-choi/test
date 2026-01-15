@@ -1,12 +1,12 @@
 import React from 'react';
 import styles from '@/styles/components/admin/layout/SideTab.module.scss';
-import { OrderCounts } from '@/types';
+import { OrderCounts, OrderFilterKey } from '@/types';
 
 interface FilterSectionProps {
-  activeFilter: string;
+  activeFilter: OrderFilterKey;
   orderCounts: OrderCounts;
   hasNotification: boolean;
-  onFilterChange: (filter: string) => void;
+  onFilterChange: (filter: OrderFilterKey) => void;
 }
 
 const FilterSection: React.FC<FilterSectionProps> = ({
@@ -15,7 +15,7 @@ const FilterSection: React.FC<FilterSectionProps> = ({
   hasNotification,
   onFilterChange,
 }) => {
-  const filterItems = [
+  const filterItems: { key: OrderFilterKey; label: string; count: number }[] = [
     { key: 'order', label: '접수', count: orderCounts.order },
     { key: 'accept', label: '진행중', count: orderCounts.accept },
     { key: 'cancel', label: '취소', count: orderCounts.cancel },
@@ -34,7 +34,7 @@ const FilterSection: React.FC<FilterSectionProps> = ({
         >
           <div className={styles.filterLabel}>
             {item.label}
-            {hasNotification && item.key === 'order' && (
+            {item.key === 'order' && orderCounts.order > 0 && (
               <div className={styles.notificationDot}>
                 <div className={styles.notificationDotBg}>
                   <div className={styles.notificationDotText}>N</div>

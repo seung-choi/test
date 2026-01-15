@@ -1,53 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from '@/styles/components/admin/layout/SideTab.module.scss';
 import MessageIcon from './MessageIcon';
-
-interface Message {
-  id: string;
-  sender: string;
-  recipient?: string;
-  content: string;
-  time: string;
-  isSent: boolean;
-}
+import { useEventMsgHisList } from '@/hooks/api';
+import storage from '@/utils/storage';
 
 interface MessageButtonProps {
   hasNotification?: boolean;
   onNotificationClear?: () => void;
 }
-
-const mockMessages: Message[] = [
-  {
-    id: '1',
-    sender: '그룹명[계정명] or 캐디명',
-    content: '@나캐디 미역국을 주문했는데, 좀 맵게 해달라는 요청이 있습니다. 참고해주세요.',
-    time: '14:25',
-    isSent: false,
-  },
-  {
-    id: '2',
-    sender: '그룹명[계정명] or 캐디명',
-    content: '@나캐디 내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용',
-    time: '14:28',
-    isSent: false,
-  },
-  {
-    id: '3',
-    recipient: '@받는사람@받는사람@받는사람@받는사람',
-    content: '내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용',
-    time: '14:30',
-    isSent: true,
-    sender: '',
-  },
-  {
-    id: '4',
-    recipient: '@받는사람@받는사람@받는사람@받는사람',
-    content: '내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용',
-    time: '14:35',
-    isSent: true,
-    sender: '',
-  },
-];
 
 const MessageButton: React.FC<MessageButtonProps> = ({
   hasNotification = false,
@@ -56,6 +16,8 @@ const MessageButton: React.FC<MessageButtonProps> = ({
   const [showPopover, setShowPopover] = useState(false);
   const buttonRef = useRef<HTMLDivElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
+  const { eventMsgHistory } = useEventMsgHisList();
+  const userId = String(storage.session.get('userId') || '');
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -118,9 +80,6 @@ const MessageButton: React.FC<MessageButtonProps> = ({
 
   return (
     <>
-      {showPopover && (
-        <div className={styles.messageBackdrop} onClick={handleClose} />
-      )}
       <div
         className={styles.menuItem}
         ref={buttonRef}
@@ -130,6 +89,15 @@ const MessageButton: React.FC<MessageButtonProps> = ({
         <div className={styles.menuIcon}>
           <MessageIcon hasNotification={hasNotification} isActive={showPopover} />
         </div>
+        {showPopover && (
+          <div
+            className={styles.messageBackdrop}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleClose();
+            }}
+          />
+        )}
         {showPopover && (
           <div ref={popoverRef} className={styles.messagePopover}>
             <div className={styles.messagePopoverHeader}>
@@ -142,30 +110,27 @@ const MessageButton: React.FC<MessageButtonProps> = ({
             </div>
             <div className={styles.messageDivider} />
             <div className={styles.messageList}>
-              {mockMessages.map((message) => (
-                <div key={message.id} className={styles.messageItem}>
-                  {!message.isSent && (
-                    <div className={styles.messageSender}>{message.sender}</div>
-                  )}
-                  <div className={message.isSent ? styles.sentMessageRow : styles.receivedMessageRow}>
-                    {message.isSent && <div className={styles.messageTime}>{message.time}</div>}
-                    <div className={message.isSent ? styles.sentBubble : styles.receivedBubble}>
+              {eventMsgHistory.map((message) => {
+                const isSent = userId && message.fromId === userId;
+                return (
+                <div key={message.eventNo} className={styles.messageItem}>
+                  {!isSent && <div className={styles.messageSender}>{message.fromNm}</div>}
+                  <div className={isSent ? styles.sentMessageRow : styles.receivedMessageRow}>
+                    {isSent && <div className={styles.messageTime}>{message.createdDt}</div>}
+                    <div className={isSent ? styles.sentBubble : styles.receivedBubble}>
                       <div className={styles.messageContent}>
-                        {message.recipient && (
-                          <span className={styles.messageRecipient}>{message.recipient}</span>
-                        )}
-                        {message.recipient && ' '}
-                        <span className={styles.messageText}>{message.content}</span>
+                        <span className={styles.messageRecipient}>@{message.toNm}</span>
+                        <span className={styles.messageText}> {message.eventCont}</span>
                       </div>
+                      {message.eventImg && (
+                        <img src={message.eventImg} alt="첨부 이미지" className={styles.messageImage} />
+                      )}
                     </div>
-                    {!message.isSent && <div className={styles.messageTime}>{message.time}</div>}
+                    {!isSent && <div className={styles.messageTime}>{message.createdDt}</div>}
                   </div>
                 </div>
-              ))}
+              )})}
             </div>
-            <button className={styles.messageCloseButton} onClick={(e) => { e.stopPropagation(); handleClose(); }}>
-              닫기
-            </button>
           </div>
         )}
       </div>

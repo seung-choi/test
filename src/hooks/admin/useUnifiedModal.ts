@@ -9,6 +9,7 @@ import {
   erpSearchModalState,
   deleteConfirmModalState,
   cancelReasonManagementModalState,
+  erpLinkModalState,
 } from '@/lib/recoil/admin/modalAtom';
 import {
   ProductFormData,
@@ -16,7 +17,8 @@ import {
   DeleteItem,
   CancelReason,
   ErpProduct,
-  BillOrder
+  BillOrder,
+  ErpLinkSelection,
 } from '@/types';
 
 const createCloseModal = <T extends { isShow: boolean }>(
@@ -34,6 +36,7 @@ const useUnifiedModal = () => {
   const [erpSearchModal, setErpSearchModal] = useRecoilState(erpSearchModalState);
   const [deleteConfirmModal, setDeleteConfirmModal] = useRecoilState(deleteConfirmModalState);
   const [cancelReasonManagementModal, setCancelReasonManagementModal] = useRecoilState(cancelReasonManagementModalState);
+  const [erpLinkModal, setErpLinkModal] = useRecoilState(erpLinkModalState);
 
   const closeCancelModal = createCloseModal(setCancelModal);
   const closeMessageModal = createCloseModal(setMessageModal);
@@ -43,6 +46,7 @@ const useUnifiedModal = () => {
   const closeErpSearchModal = createCloseModal(setErpSearchModal);
   const closeDeleteConfirmModal = createCloseModal(setDeleteConfirmModal);
   const closeCancelReasonManagementModal = createCloseModal(setCancelReasonManagementModal);
+  const closeErpLinkModal = createCloseModal(setErpLinkModal);
 
   const openCancelModal = (
     onConfirm: (payload: { reason: string; orderIdList: number[] }) => void,
@@ -65,12 +69,14 @@ const useUnifiedModal = () => {
     title: string,
     recipients: string[],
     onSubmit: (data: MessageFormData) => void,
-    onCancel?: () => void
+    onCancel?: () => void,
+    bookingId?: number | null
   ) => {
     setMessageModal({
       isShow: true,
       title,
       recipients,
+      bookingId: bookingId ?? null,
       onSubmit,
       onCancel,
     });
@@ -79,9 +85,10 @@ const useUnifiedModal = () => {
   const openSendMessageModal = (
     recipients: string[],
     onSend: (data: MessageFormData) => void,
-    onCancel?: () => void
+    onCancel?: () => void,
+    bookingId?: number | null
   ) => {
-    openMessageModal('메시지 보내기', recipients, onSend, onCancel);
+    openMessageModal('메시지 보내기', recipients, onSend, onCancel, bookingId);
   };
 
   const openCancelOrderModal = (
@@ -189,6 +196,23 @@ const useUnifiedModal = () => {
     });
   };
 
+  const openErpLinkModal = (
+    billId: number,
+    tableId: number | null,
+    onLinkErp: (selection: ErpLinkSelection) => void,
+    onManual: () => void,
+    onCancel?: () => void
+  ) => {
+    setErpLinkModal({
+      isShow: true,
+      billId,
+      tableId,
+      onLinkErp,
+      onManual,
+      onCancel,
+    });
+  };
+
   return {
     // 취소 사유 모달
     cancelModal,
@@ -233,6 +257,11 @@ const useUnifiedModal = () => {
     cancelReasonManagementModal,
     openCancelReasonManagementModal,
     closeCancelReasonManagementModal,
+
+    // ERP 연동 모달
+    erpLinkModal,
+    openErpLinkModal,
+    closeErpLinkModal,
   };
 };
 

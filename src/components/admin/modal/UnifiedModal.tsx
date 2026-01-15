@@ -12,6 +12,8 @@ import CategoryModalContent from './contents/CategoryModalContent';
 import ErpSearchModalContent from './contents/ErpSearchModalContent';
 import DeleteConfirmModalContent from './contents/DeleteConfirmModalContent';
 import CancelReasonManagementModalContent from './contents/CancelReasonManagementModalContent';
+import ErpLinkModalContent from './contents/ErpLinkModalContent';
+import { ErpLinkSelection } from '@/types';
 
 const UnifiedModal = () => {
   const {
@@ -31,6 +33,8 @@ const UnifiedModal = () => {
     closeDeleteConfirmModal,
     cancelReasonManagementModal,
     closeCancelReasonManagementModal,
+    erpLinkModal,
+    closeErpLinkModal,
   } = useUnifiedModal();
 
   const handleCancelConfirm = (payload: { reason: string; orderIdList: number[] }) => {
@@ -86,6 +90,21 @@ const UnifiedModal = () => {
     closeModal: closeCancelReasonManagementModal,
   });
 
+  const handleErpLinkConfirm = (selection: ErpLinkSelection) => {
+    erpLinkModal.onLinkErp?.(selection);
+    closeErpLinkModal();
+  };
+
+  const handleErpLinkManual = () => {
+    erpLinkModal.onManual?.();
+    closeErpLinkModal();
+  };
+
+  const handleErpLinkClose = () => {
+    erpLinkModal.onCancel?.();
+    closeErpLinkModal();
+  };
+
   return (
     <>
       <ModalWrapper isShow={cancelModal.isShow} onClose={handleCancelClose}>
@@ -101,6 +120,7 @@ const UnifiedModal = () => {
         <MessageModalContent
           title={messageModal.title}
           recipients={messageModal.recipients}
+          bookingId={messageModal.bookingId}
           onSubmit={messageHandlers.handleSubmit}
           onClose={messageHandlers.handleClose}
         />
@@ -150,6 +170,14 @@ const UnifiedModal = () => {
           initialReasons={cancelReasonManagementModal.reasons}
           onSubmit={cancelReasonManagementHandlers.handleSubmit}
           onClose={cancelReasonManagementHandlers.handleClose}
+        />
+      </ModalWrapper>
+
+      <ModalWrapper isShow={erpLinkModal.isShow} onClose={handleErpLinkClose}>
+        <ErpLinkModalContent
+          onLinkErp={handleErpLinkConfirm}
+          onManual={handleErpLinkManual}
+          onClose={handleErpLinkClose}
         />
       </ModalWrapper>
     </>

@@ -8,6 +8,7 @@ import {
   ErpSearchModalState,
   DeleteConfirmModalState,
   CancelReasonManagementModalState,
+  ErpLinkModalState,
 } from '@/types';
 
 // 취소 사유 모달
@@ -27,6 +28,7 @@ export const messageModalState = atom<MessageModalState>({
   default: {
     isShow: false,
     title: '',
+    bookingId: null,
   },
 });
 
@@ -80,5 +82,13 @@ export const cancelReasonManagementModalState = atom<CancelReasonManagementModal
   default: {
     isShow: false,
     reasons: [],
+  },
+});
+
+// ERP 연동 모달
+export const erpLinkModalState = atom<ErpLinkModalState>({
+  key: 'erpLinkModalState',
+  default: {
+    isShow: false,
   },
 });

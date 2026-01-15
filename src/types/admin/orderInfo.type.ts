@@ -1,9 +1,10 @@
-export type OrderStatus = 'order' | 'accept' | 'complete' | 'cancel';
+import { BillOrderStatus, OrderTake } from '@/types/bill.type';
 
 export interface OrderItemSummary {
   name: string;
   quantity: number;
   price?: number;
+  orderTake?: OrderTake;
 }
 
 export interface CustomerInfo {
@@ -15,7 +16,7 @@ export interface CustomerInfo {
 
 export interface OrderHistory {
   id: string;
-  status: OrderStatus;
+  status: BillOrderStatus;
   totalItems: number;
   orderTime: string;
   orderLocation: string;
@@ -28,7 +29,7 @@ export interface OrderHistory {
 
 export interface InfoCardData {
   id: string;
-  status: OrderStatus;
+  status: BillOrderStatus;
   tableNumber: string;
   customerInfo: CustomerInfo;
   orderItems?: OrderItemSummary[];
@@ -49,3 +50,5 @@ export interface OrderCounts {
   complete: number;
   cancel: number;
 }
+
+export type OrderFilterKey = 'order' | 'accept' | 'complete' | 'cancel';

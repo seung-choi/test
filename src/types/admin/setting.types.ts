@@ -1,5 +1,3 @@
-import {OrderStatus} from "@/types";
-
 export interface SalesFilter {
   dateRange: {
     startDate: string;

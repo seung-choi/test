@@ -1,82 +1,30 @@
-.modal {
-  width: 1063px;
-  min-height: 400px;
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0px 4px 4px rgba(128, 128, 128, 0.55);
-  outline: 1px #666666 solid;
-  outline-offset: -1px;
-  position: relative;
-  overflow: hidden;
+.messageModal {
+  min-width: 1063px;
+}
+
+.messageContent {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 20px;
 }
 
-.header {
-  padding: 25px 70px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #D9D9D9;
+.closeButton {
+  width: 23px;
+  height: 23px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
 
-  .title {
-    color: black;
-    font-size: 30px;
-    
-    font-weight: 700;
-    margin: 0;
+  img {
+    width: 100%;
+    height: 100%;
   }
-
-  .closeButton {
-    width: 23px;
-    height: 23px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-
-    .closeIcon {
-      width: 100%;
-      height: 100%;
-      position: relative;
-
-      &::before,
-      &::after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 2px;
-        height: 16px;
-        background: white;
-        transform: translate(-50%, -50%);
-      }
-
-      &::before {
-        transform: translate(-50%, -50%) rotate(45deg);
-      }
-
-      &::after {
-        transform: translate(-50%, -50%) rotate(-45deg);
-      }
-    }
-  }
-}
-
-.divider {
-  width: 100%;
-  height: 1px;
-  background: #D9D9D9;
-}
-
-.content {
-  padding: 26px 66px;
 }
 
 .formContainer {
   display: flex;
   gap: 7px;
-  position: relative;
 }
 
 .labelColumn {
@@ -94,13 +42,12 @@
     align-items: center;
     color: #444444;
     font-size: 22px;
-    
     font-weight: 700;
   }
 }
 
 .inputColumn {
-  flex: 1;
+  width: 679px;
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -112,7 +59,7 @@
   .selectBox {
     width: 100%;
     height: 50px;
-    background: white;
+    background: #F3F3F3;
     border-radius: 2px;
     outline: 1px #D9D9D9 solid;
     outline-offset: -1px;
@@ -120,10 +67,10 @@
     align-items: center;
     justify-content: space-between;
     padding: 0 23px;
-    cursor: pointer;
+    cursor: default;
 
     .selectedText {
-      color: black;
+      color: #1F1F1F;
       font-size: 22px;
       font-weight: 400;
     }
@@ -237,100 +184,124 @@
 
 .submitButtonContainer {
   margin-left: 7px;
-
-  .submitButton {
-    width: 100px;
-    height: 105px;
-    background: #001A9F;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    outline: 1px #0655F6 solid;
-    font-size: 22px;
-    font-weight: 700;
-    cursor: pointer;
-
-    &:hover {
-      background: #001580;
-    }
-  }
-}
-
-.cancelContent {
-  padding: 60px;
-  text-align: center;
-
-  .cancelMessage {
-    font-size: 24px;
-    font-weight: 400;
-    color: black;
-    margin: 0;
-  }
-}
-
-.buttonContainer {
-  padding: 0 66px 40px;
   display: flex;
+  align-items: flex-start;
+}
+
+.submitButton {
+  width: 121px;
+  height: 160px;
+  background: #001A9F;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  outline: 1px #0655F6 solid;
+  font-size: 22px;
+  font-weight: 700;
+  cursor: pointer;
+
+  &:hover {
+    background: #001580;
+  }
+}
+
+.historySection {
+  display: flex;
+  flex-direction: column;
+}
+
+.historyHeader {
+  display: flex;
+  background: #D9D9D9;
+}
+
+.headerCell {
+  height: 50px;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 20px;
+  color: #444444;
+  font-size: 22px;
+  font-weight: 700;
+  border-right: 1px solid #F3F3F3;
+}
 
-  .cancelButton {
-    width: 213px;
-    height: 54px;
-    padding: 10px 20px;
-    background: white;
-    color: #001A9F;
-    border: none;
-    border-radius: 5px;
-    outline: 1px #0655F6 solid;
-    outline-offset: -1px;
-    font-size: 22px;
-    font-weight: 400;
-    cursor: pointer;
+.historyBody {
+  max-height: 275px;
+  overflow-y: auto;
+}
 
-    &:hover {
-      background: #f5f5f5;
-    }
-  }
+.historyRow {
+  display: flex;
+  border-bottom: 1px solid #D9D9D9;
+}
 
-  .confirmButton {
-    width: 213px;
-    height: 54px;
-    padding: 10px 20px;
-    background: #001A9F;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    outline: 1px #0655F6 solid;
-    outline-offset: -1px;
-    font-size: 22px;
-    font-weight: 700;
-    cursor: pointer;
+.cell {
+  height: 60px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1F1F1F;
+  font-size: 20px;
+  font-weight: 400;
+  border-right: 1px solid #D9D9D9;
+}
 
-    &:hover {
-      background: #001580;
-    }
-  }
+.timeColumn {
+  width: 15%;
+  border-left: 1px solid #D9D9D9;
+}
+
+.senderColumn {
+  width: 15%;
+}
+
+.contentColumn {
+  width: 60%;
+  justify-content: flex-start;
+  gap: 4px;
+}
+
+.imageColumn {
+  width: 10%;
+  border-right: 1px solid #D9D9D9;
+}
+
+.recipientText {
+  color: #666666;
+}
+
+.messageText {
+  color: #1F1F1F;
+}
+
+.historyImage {
+  width: 79px;
+  height: 44px;
+  object-fit: cover;
+}
+
+.noImage {
+  color: #959595;
+}
+
+.emptyHistory {
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666666;
+  font-size: 20px;
+  border: 1px solid #D9D9D9;
+  border-top: none;
 }
 
 @import '../../../common/mixins';
 
 @include tablet {
-  .modal {
-    width: 90vw;
-    max-width: 950px;
-  }
-
-  .header {
-    padding: 20px 50px;
-
-    .title {
-      font-size: 26px;
-    }
-  }
-
-  .content {
-    padding: 20px 50px;
+  .messageModal {
+    min-width: 90vw;
   }
 
   .labelColumn {
@@ -372,21 +343,32 @@
   }
 
   .submitButtonContainer {
-    .submitButton {
-      width: 80px;
-      height: 140px;
-      font-size: 20px;
-    }
+    align-items: flex-start;
   }
 
-  .buttonContainer {
-    padding: 0 50px 35px;
+  .submitButton {
+    width: 90px;
+    height: 140px;
+    font-size: 20px;
+  }
 
-    .cancelButton,
-    .confirmButton {
-      width: 180px;
-      height: 48px;
-      font-size: 20px;
-    }
+  .headerCell {
+    font-size: 18px;
+    height: 44px;
+  }
+
+  .cell {
+    font-size: 18px;
+    height: 50px;
+  }
+
+  .historyImage {
+    width: 70px;
+    height: 40px;
+  }
+
+  .emptyHistory {
+    font-size: 18px;
+    height: 100px;
   }
 }

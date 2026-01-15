@@ -4,7 +4,7 @@ import React, {useMemo} from 'react';
 import styles from '@/styles/components/admin/contents/InfoCard.module.scss';
 import {Bill, BillOrderStatus} from '@/types/bill.type';
 import {GpsBookingType} from '@/types/booking.type';
-import {CustomerInfo, OrderHistory, OrderItemSummary, OrderStatus} from '@/types';
+import {CustomerInfo, OrderHistory, OrderItemSummary} from '@/types';
 import {useHistoryExpansion} from '@/hooks/admin/useHistoryExpansion';
 import {TableOption, useTableSelection} from '@/hooks/admin/useTableSelection';
 import InfoCardHeader from './infocard/InfoCardHeader';
@@ -22,16 +22,6 @@ export interface InfoCardProps {
   onMessageOrder?: () => void;
   availableTables?: TableOption[];
 }
-
-const mapBillStatusToOrderStatus = (billOrderStatus: BillOrderStatus): OrderStatus => {
-  switch (billOrderStatus) {
-    case 'R': return 'order';    // 접수
-    case 'P': return 'accept';   // 진행중
-    case 'N': return 'cancel';   // 취소
-    case 'Y': return 'complete'; // 완료
-    default: return 'order';
-  }
-};
 
 const formatTime = (value?: string | null): string => {
   if (!value) return '-';
@@ -69,9 +59,9 @@ const InfoCard: React.FC<InfoCardProps> = ({
     );
   }, [orderList]);
   const firstOrder = orderList[0];
-  const status = firstOrder ? mapBillStatusToOrderStatus(firstOrder.orderSt) : 'order';
-  const isAcceptStatus = status === 'accept';
-  const isCancelStatus = status === 'cancel';
+  const status: BillOrderStatus = firstOrder?.orderSt ?? 'R';
+  const isAcceptStatus = status === 'P';
+  const isCancelStatus = status === 'N';
   const currentOrderList = isAcceptStatus && latestOrder ? [latestOrder] : orderList;
   const historyOrderList = isAcceptStatus && latestOrder
     ? orderList.filter((order) => order.orderId !== latestOrder.orderId)
@@ -90,6 +80,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
         name: item.goodsNm,
         quantity: item.orderCnt,
         price: item.orderAmt,
+        orderTake: item.orderTake,
       }))
     ), [currentOrderList]
   );
@@ -97,7 +88,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
   const orderHistory: OrderHistory[] = useMemo(() =>
     historyOrderList.map(order => ({
       id: String(order.orderId),
-      status: mapBillStatusToOrderStatus(order.orderSt),
+      status: order.orderSt,
       totalItems: (order.orderHisList ?? []).reduce((sum, item) => sum + item.orderCnt, 0),
       orderTime: formatTime(order.createdDt),
       orderLocation: order.courseNm && order.holeNo !== null && order.holeNo !== undefined
@@ -154,8 +145,8 @@ const InfoCard: React.FC<InfoCardProps> = ({
   const tableNumber = bill.tableNo || '';
   const totalAmount = bill.billAmt;
 
-  const isOrderCard = status === 'order';
-  const isCompleteStatus = status === 'complete';
+  const isOrderCard = status === 'R';
+  const isCompleteStatus = status === 'Y';
   const isDisabledStatus = isCompleteStatus || isCancelStatus;
 
   const borderColor = isOrderCard ? '#9081D8' : '#D9D9D9';

@@ -16,5 +16,8 @@ export * from './useCategory';
 // Bill (Sales)
 export * from './useBill';
 
+// Event
+export * from './useEvent';
+
 // Booking (GPS)
 export * from './useBookingList';

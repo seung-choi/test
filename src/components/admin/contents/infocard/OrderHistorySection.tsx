@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from '@/styles/components/admin/contents/InfoCard.module.scss';
 import { OrderHistory } from '@/types';
+import { BillOrderStatus } from '@/types/bill.type';
 
 interface OrderHistorySectionProps {
   orderHistory: OrderHistory[];
@@ -8,13 +9,13 @@ interface OrderHistorySectionProps {
   onToggleExpansion: (historyId: string) => void;
 }
 
-const getStatusLabel = (status: string, cancelReason?: string): string => {
+const getStatusLabel = (status: BillOrderStatus, cancelReason?: string): string => {
   switch (status) {
-    case 'accept':
+    case 'P':
       return '수락';
-    case 'complete':
+    case 'Y':
       return '완료';
-    case 'cancel':
+    case 'N':
       return `주문 취소${cancelReason ? ` (${cancelReason})` : ''}`;
     default:
       return '';
@@ -26,8 +27,7 @@ const OrderHistorySection: React.FC<OrderHistorySectionProps> = ({
   isExpanded,
   onToggleExpansion,
 }) => {
-  // 접수(order) 상태가 아닌 항목만 표시
-  const filteredHistory = orderHistory.filter((history) => history.status !== 'order');
+  const filteredHistory = orderHistory.filter((history) => history.status !== 'R');
 
   if (!filteredHistory || filteredHistory.length === 0) {
     return null;
@@ -36,7 +36,7 @@ const OrderHistorySection: React.FC<OrderHistorySectionProps> = ({
   return (
     <div className={styles.orderHistorySection}>
       {filteredHistory.map((history) => {
-        const isCanceled = history.status === 'cancel';
+        const isCanceled = history.status === 'N';
 
         return (
           <div
