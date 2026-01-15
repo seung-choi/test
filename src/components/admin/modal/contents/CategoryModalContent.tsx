@@ -18,6 +18,7 @@ import commonStyles from '@/styles/components/admin/modal/CommonModal.module.scs
 import styles from '@/styles/components/admin/modal/CategoryModal.module.scss';
 import { useCategoryList, usePostCategoryList } from '@/hooks/api/useCategory';
 import { GetCategoryResponse, PostCategoryRequest } from '@/api/category';
+import { useToast } from '@/hooks/common/useToast';
 
 interface CategoryModalContentProps {
   onClose: () => void;
@@ -31,6 +32,7 @@ interface CategoryItem extends GetCategoryResponse {
 const CategoryModalContent: React.FC<CategoryModalContentProps> = ({ onClose }) => {
   const { data: categoryList = [], isLoading } = useCategoryList('CATEGORY');
   const postCategoryMutation = usePostCategoryList();
+  const { showToast } = useToast();
 
   const [categories, setCategories] = useState<CategoryItem[]>([]);
   const [newCategoryName, setNewCategoryName] = useState('');
@@ -68,7 +70,7 @@ const CategoryModalContent: React.FC<CategoryModalContentProps> = ({ onClose }) 
 
   const handleAddCategory = () => {
     if (!newCategoryName.trim()) {
-      alert('분류명을 입력하세요.');
+      showToast('분류명을 입력하세요.', 'error');
       return;
     }
 
@@ -117,11 +119,11 @@ const CategoryModalContent: React.FC<CategoryModalContentProps> = ({ onClose }) 
         data: requestData,
       });
 
-      alert('저장되었습니다.');
+      showToast('저장되었습니다.', 'success');
       onClose();
     } catch (error) {
       console.error('Failed to save categories:', error);
-      alert('저장에 실패했습니다.');
+      showToast('저장에 실패했습니다.', 'error');
     }
   };
 

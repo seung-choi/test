@@ -150,9 +150,9 @@ const ErpSearchModalContent: React.FC<ErpSearchModalContentProps> = ({
         </div>
 
         <div className={styles.tableBody}>
-          {hasSearched && searchResults.length === 0 ? (
+          {searchResults.length === 0 ? (
             <div className={styles.emptyState}>
-              <div className={styles.emptyText}>검색 결과가 없습니다.</div>
+              <div className={styles.emptyText}>목록이 없습니다.</div>
             </div>
           ) : (
             searchResults.map((product) => (

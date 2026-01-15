@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   getBillList,
   postBillInfo,
@@ -38,6 +38,59 @@ export const useBillList = (params?: GetBillParams, options?: {
     billData: data,
     isLoading,
     error,
+    refetch,
+  };
+};
+
+export const useInfiniteBillList = (params?: Omit<GetBillParams, 'page'>, options?: {
+  enabled?: boolean;
+}) => {
+  const PAGE_SIZE = 50;
+
+  const {
+    data,
+    isLoading,
+    isFetchingNextPage,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    refetch,
+  } = useInfiniteQuery({
+    queryKey: ['infiniteBillList', params],
+    queryFn: ({ pageParam = 1 }) => getBillList({
+      ...params,
+      page: pageParam,
+      size: PAGE_SIZE,
+    }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, allPages) => {
+      const totalLoaded = allPages.reduce((sum, page) => sum + page.billList.length, 0);
+      if (totalLoaded >= lastPage.totalCnt) {
+        return undefined;
+      }
+      return allPages.length + 1;
+    },
+    enabled: options?.enabled ?? true,
+    retry: 2,
+    staleTime: 30000,
+  });
+
+  const billList = data?.pages.flatMap(page => page.billList) ?? [];
+  const stats = data?.pages[0] ? {
+    totalCnt: data.pages[0].totalCnt,
+    doneCnt: data.pages[0].doneCnt,
+    cancelCnt: data.pages[0].cancelCnt,
+    totalAmt: data.pages[0].totalAmt,
+  } : null;
+
+  return {
+    billList,
+    stats,
+    isLoading,
+    isFetchingNextPage,
+    error,
+    fetchNextPage,
+    hasNextPage,
     refetch,
   };
 };

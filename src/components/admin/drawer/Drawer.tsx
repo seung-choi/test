@@ -7,6 +7,7 @@ import { ProductFormData, ErpProduct } from '@/types';
 import { useScrollLock } from '@/hooks/common/useScrollManagement';
 import { usePutGoodsErpList } from '@/hooks/api';
 import ErpToast from '@/components/common/ErpToast';
+import storage from '@/utils/storage';
 
 type DrawerMode = 'setting' | 'menu';
 
@@ -40,6 +41,7 @@ const Drawer: React.FC<DrawerProps> = ({
   const { mutateAsync: updateErpGoods, isPending: isUpdatingErp } = usePutGoodsErpList();
   const [erpToast, setErpToast] = useState<{ type: 'success' | 'empty'; count: number } | null>(null);
   const erpToastTimerRef = useRef<number | null>(null);
+  const isErpConnected = storage.session.get('isErpConnected') === 'true';
 
   useScrollLock(isVisible);
 
@@ -81,6 +83,26 @@ const Drawer: React.FC<DrawerProps> = ({
   };
 
   const handleRegisterProduct = () => {
+    if (!isErpConnected) {
+      const initialData: ProductFormData = {
+        goodsSt: 'Y',
+        goodsCh: 'BOTH',
+        goodsOp: 'BOTH',
+        categoryId: 0,
+        categoryNm: '미분류',
+        goodsNm: '',
+        goodsAmt: 0,
+        goodsCnt: '1',
+        goodsTm: 0,
+        goodsTag: '',
+        goodsErp: '',
+        createdDt: new Date().toISOString(),
+        modifiedDt: new Date().toISOString(),
+      };
+      openCreateProductModal(undefined, initialData);
+      return;
+    }
+
     openErpSearchModal(
       (erpProduct: ErpProduct) => {
         const initialData: ProductFormData = {
@@ -169,9 +191,11 @@ const Drawer: React.FC<DrawerProps> = ({
                   <div className={styles.buttonText}>검색</div>
                 </div>
               </div>
-              <div className={styles.categoryButton} onClick={handleERPUpdate}>
-                <div className={styles.buttonText}>ERP 업데이트</div>
-              </div>
+              {isErpConnected && (
+                <div className={styles.categoryButton} onClick={handleERPUpdate}>
+                  <div className={styles.buttonText}>ERP 업데이트</div>
+                </div>
+              )}
               <div className={styles.categoryButton} onClick={handleCategorySettings}>
                 <div className={styles.buttonText}>분류 설정</div>
               </div>

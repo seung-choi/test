@@ -5,6 +5,7 @@ import CommonModalLayout from '@/components/admin/modal/CommonModalLayout';
 import commonStyles from '@/styles/components/admin/modal/CommonModal.module.scss';
 import styles from '@/styles/components/admin/modal/CancelReasonModal.module.scss';
 import { useCategoryList } from '@/hooks/api';
+import { useToast } from '@/hooks/common/useToast';
 import { BillOrder } from '@/types/bill.type';
 import { formatPrice } from '@/utils';
 
@@ -24,6 +25,7 @@ const CancelReasonModalContent: React.FC<CancelReasonModalContentProps> = ({
   const [selectedReason, setSelectedReason] = useState<string>('');
   const [selectedOrderIds, setSelectedOrderIds] = useState<number[]>([]);
   const { data: categoryReasons = [] } = useCategoryList('REASON');
+  const { showToast } = useToast();
 
   const formatTime = (value?: string | null): string => {
     if (!value) return '-';
@@ -73,11 +75,11 @@ const CancelReasonModalContent: React.FC<CancelReasonModalContentProps> = ({
 
   const handleConfirm = () => {
     if (!selectedReason) {
-      alert('취소 사유를 선택해주세요.');
+      showToast('취소 사유를 선택해주세요.', 'error');
       return;
     }
     if (isOrderSelectionRequired && selectedOrderIds.length === 0) {
-      alert('취소할 주문을 선택해주세요.');
+      showToast('취소할 주문을 선택해주세요.', 'error');
       return;
     }
     onConfirm({ reason: selectedReason, orderIdList: selectedOrderIds });

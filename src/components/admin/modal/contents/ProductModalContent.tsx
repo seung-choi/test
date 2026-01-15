@@ -18,6 +18,8 @@ import { CHANNEL_OPTIONS, TYPE_OPTIONS } from '@/constants/admin/goodsOptions';
 import ImageUpload from './product/ImageUpload';
 import TimeControl from './product/TimeControl';
 import TagSelector from './product/TagSelector';
+import { useToast } from '@/hooks/common/useToast';
+import storage from '@/utils/storage';
 
 interface ProductModalContentProps {
   mode: 'create' | 'edit';
@@ -54,6 +56,8 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
   const { data: categoryList = [] } = useCategoryList('CATEGORY');
   const postGoodsMutation = usePostGoods();
   const putGoodsMutation = usePutGoods();
+  const { showToast } = useToast();
+  const isErpConnected = storage.session.get('isErpConnected') === 'true';
 
   const categoryOptions = categoryList.map((category) => ({
     value: String(category.categoryId),
@@ -116,7 +120,7 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
 
   const handleSubmit = async () => {
     if (!formData.goodsNm || !formData.goodsAmt || !formData.goodsErp) {
-      alert('필수 항목을 입력해주세요.');
+      showToast('필수 항목을 입력해주세요.', 'error');
       return;
     }
 
@@ -137,7 +141,7 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
         await postGoodsMutation.mutateAsync(payload);
       } else {
         if (!formData.goodsId) {
-          alert('상품 ID가 없습니다.');
+          showToast('상품 ID가 없습니다.', 'error');
           return;
         }
         const payload: PutGoodsRequest = {
@@ -157,11 +161,11 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
       // Call the onSubmit callback if provided (for any additional logic)
       onSubmit(formData);
 
-      alert('저장되었습니다.');
+      showToast('저장되었습니다.', 'success');
       onClose();
     } catch (error) {
       console.error('Failed to save product:', error);
-      alert('저장에 실패했습니다.');
+      showToast('저장에 실패했습니다.', 'error');
     }
   };
 
@@ -282,8 +286,8 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
             className={styles.input}
             value={formData.goodsErp || ''}
             onChange={(e) => setFormData({ ...formData, goodsErp: e.target.value })}
-            style={{ backgroundColor: '#f3f3f3'}}
-            readOnly
+            style={{ backgroundColor: isErpConnected ? '#f3f3f3' : 'white' }}
+            readOnly={isErpConnected}
           />
         </div>
 
@@ -294,8 +298,8 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
             className={styles.input}
             value={formData.goodsNm}
             onChange={(e) => setFormData({ ...formData, goodsNm: e.target.value })}
-            style={{ backgroundColor: '#f3f3f3'}}
-            readOnly
+            style={{ backgroundColor: isErpConnected ? '#f3f3f3' : 'white' }}
+            readOnly={isErpConnected}
           />
         </div>
 
@@ -309,8 +313,8 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({
               const nextValue = e.target.value.replace(/[^0-9]/g, '');
               setFormData({ ...formData, goodsAmt: nextValue ? Number(nextValue) : 0 });
             }}
-            style={{ backgroundColor: '#f3f3f3'}}
-            readOnly
+            style={{ backgroundColor: isErpConnected ? '#f3f3f3' : 'white' }}
+            readOnly={isErpConnected}
           />
         </div>
 

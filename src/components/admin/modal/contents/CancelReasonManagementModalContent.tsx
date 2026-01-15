@@ -24,6 +24,7 @@ import styles from '@/styles/components/admin/modal/CancelReasonManagementModal.
 import { CancelReason } from '@/types';
 import { useCategoryList, usePostCategoryList } from '@/hooks/api';
 import type { PostCategoryRequest } from '@/api/category';
+import { useToast } from '@/hooks/common/useToast';
 
 interface CancelReasonManagementModalContentProps {
   initialReasons?: CancelReason[];
@@ -105,6 +106,7 @@ const CancelReasonManagementModalContent: React.FC<CancelReasonManagementModalCo
   const [hasInitialized, setHasInitialized] = useState(false);
   const { data: categoryReasons = [] } = useCategoryList('REASON');
   const { mutateAsync: saveReasons } = usePostCategoryList();
+  const { showToast } = useToast();
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -146,12 +148,12 @@ const CancelReasonManagementModalContent: React.FC<CancelReasonManagementModalCo
 
   const handleAdd = () => {
     if (!newReason.trim()) {
-      alert('취소 사유를 입력해주세요.');
+      showToast('취소 사유를 입력해주세요.', 'error');
       return;
     }
 
     if (reasons.length >= 10) {
-      alert('취소 사유는 최대 10개까지 등록이 가능합니다.');
+      showToast('취소 사유는 최대 10개까지 등록이 가능합니다.', 'error');
       return;
     }
 

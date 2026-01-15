@@ -4,6 +4,7 @@ import React from "react";
 import { RecoilRoot} from "recoil";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import UnifiedModal from "@/components/admin/modal/UnifiedModal";
+import GlobalToast from "@/components/common/GlobalToast";
 
 const ClientLayoutContent = ({ children }: { children: React.ReactNode }) => {
   const queryClient = new QueryClient();
@@ -13,6 +14,7 @@ const ClientLayoutContent = ({ children }: { children: React.ReactNode }) => {
       <div className='layout'>
         {children}
         <UnifiedModal />
+        <GlobalToast />
       </div>
     </QueryClientProvider>
   );

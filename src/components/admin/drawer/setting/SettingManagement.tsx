@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useCallback, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import { drawerState } from '@/lib/recoil';
 import styles from '@/styles/components/admin/drawer/SalesManagement.module.scss';
@@ -8,8 +8,8 @@ import SalesFilterActionBar from "@/components/admin/drawer/setting/SalesInquiry
 import { SalesFilter } from '@/types';
 import { exportSalesToExcel } from '@/utils/admin/excel/salesExcelExporter';
 import LayoutManager from '@/components/admin/drawer/setting/canvas/LayoutManager';
-import { useBillList } from '@/hooks/api';
-import { Bill } from '@/types/bill.type';
+import { useInfiniteBillList } from '@/hooks/api';
+import type { Bill } from '@/types/bill.type';
 
 const formatTime = (value?: string | null) => {
     if (!value) return '-';
@@ -75,6 +75,7 @@ const transformBillToOrderRecord = (bill: Bill) => {
 
 const SettingManagement = ({showActionBar = true}) => {
     const drawer = useRecoilValue(drawerState);
+    const contentRef = useRef<HTMLDivElement>(null);
     const today = new Date();
     const yesterday = new Date(today);
     yesterday.setDate(today.getDate() - 1);
@@ -89,12 +90,37 @@ const SettingManagement = ({showActionBar = true}) => {
         searchTerm: ''
     });
 
-    const { billData, isLoading, refetch } = useBillList({
+    const {
+        billList,
+        stats,
+        isLoading,
+        isFetchingNextPage,
+        fetchNextPage,
+        hasNextPage,
+        refetch
+    } = useInfiniteBillList({
         fromDate: filter.dateRange.startDate,
         toDate: filter.dateRange.endDate,
-        page: 1,
-        size: 50
     });
+
+    const handleScroll = useCallback(() => {
+        if (!contentRef.current || isFetchingNextPage || !hasNextPage) return;
+
+        const { scrollTop, scrollHeight, clientHeight } = contentRef.current;
+        const scrollThreshold = 100;
+
+        if (scrollHeight - scrollTop - clientHeight < scrollThreshold) {
+            fetchNextPage();
+        }
+    }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
+    useEffect(() => {
+        const contentElement = contentRef.current;
+        if (contentElement) {
+            contentElement.addEventListener('scroll', handleScroll);
+            return () => contentElement.removeEventListener('scroll', handleScroll);
+        }
+    }, [handleScroll]);
 
     const handleFilterChange = (newFilter: SalesFilter) => {
         setFilter(newFilter);
@@ -106,9 +132,9 @@ const SettingManagement = ({showActionBar = true}) => {
     );
 
     const transformedData = useMemo(() => {
-        if (!billData?.billList) return [];
-        return billData.billList.map(transformBillToOrderRecord);
-    }, [billData]);
+        if (!billList || billList.length === 0) return [];
+        return billList.map(transformBillToOrderRecord);
+    }, [billList]);
 
     const filteredData = useMemo(() => {
         let result = transformedData;
@@ -136,14 +162,14 @@ const SettingManagement = ({showActionBar = true}) => {
         return result;
     }, [transformedData, filter.status, filter.caddyName, filter.searchTerm]);
 
-    const stats = useMemo(() => {
+    const salesStats = useMemo(() => {
         return {
-            totalOrders: billData?.totalCnt || 0,
-            completedOrders: billData?.doneCnt || 0,
-            canceledOrders: billData?.cancelCnt || 0,
-            totalAmount: billData?.totalAmt || 0
+            totalOrders: stats?.totalCnt || 0,
+            completedOrders: stats?.doneCnt || 0,
+            canceledOrders: stats?.cancelCnt || 0,
+            totalAmount: stats?.totalAmt || 0
         };
-    }, [billData]);
+    }, [stats]);
 
 
     const handleExportExcel = () => {
@@ -176,18 +202,36 @@ const SettingManagement = ({showActionBar = true}) => {
                 <SalesFilterActionBar
                     filter={filter}
                     onFilterChange={handleFilterChange}
-                    stats={stats}
+                    stats={salesStats}
                     onExportExcel={handleExportExcel}
                 />
             )}
 
-            <div className={styles.contentArea}>
-                <Table
-                    columns={columns}
-                    data={filteredData}
-                    variant="sales"
-                    onSort={() => {}}
-                />
+            <div className={styles.contentArea} ref={contentRef}>
+                {isLoading ? (
+                    <div className={styles.loadingContainer}>
+                        <p>데이터를 불러오는 중...</p>
+                    </div>
+                ) : (
+                    <>
+                        <Table
+                            columns={columns}
+                            data={filteredData}
+                            variant="sales"
+                            onSort={() => {}}
+                        />
+                        {isFetchingNextPage && (
+                            <div className={styles.loadingMore}>
+                                <p>추가 데이터 로딩 중...</p>
+                            </div>
+                        )}
+                        {!hasNextPage && filteredData.length > 0 && (
+                            <div className={styles.endOfList}>
+                                <p>모든 데이터를 불러왔습니다.</p>
+                            </div>
+                        )}
+                    </>
+                )}
             </div>
         </div>
     );

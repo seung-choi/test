@@ -12,10 +12,12 @@ import { CategoryType, MenuItem, OrderItem, TableInfo, MenuOption } from '@/type
 import { mockMenuItems, categories } from '@/data/mockMenuData';
 import { mockTableInfo, mockOrderItems } from '@/data/mockOrderData';
 import { useScrollToTop } from '@/hooks/common/useScrollManagement';
+import { useToast } from '@/hooks/common/useToast';
 
 const OrderPageContent: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { showToast } = useToast();
   const [activeCategory, setActiveCategory] = useState<CategoryType>('전체메뉴');
   const [selectedPayer, setSelectedPayer] = useState<string>('');
   const [orderItems, setOrderItems] = useState<OrderItem[]>(mockOrderItems);
@@ -90,9 +92,9 @@ const OrderPageContent: React.FC = () => {
 
   const handleOrderClick = useCallback(() => {
     // TODO: 주문 API 호출
-    alert(`결제자: ${selectedPayer || '미선택'}\n주문이 완료되었습니다!`);
+    showToast(`결제자: ${selectedPayer || '미선택'} - 주문이 완료되었습니다!`, 'success');
     setOrderItems([]);
-  }, [orderItems, selectedPayer]);
+  }, [orderItems, selectedPayer, showToast]);
 
   const handleDetailClick = useCallback(() => {
     setIsDetailModalOpen(true);

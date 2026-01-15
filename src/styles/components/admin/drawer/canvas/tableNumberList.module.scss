@@ -89,6 +89,34 @@
     font-size: 20px;
     font-weight: 400;
     border-radius: 3px;
+    position: relative;
+    padding: 0 30px;
+}
+
+.deleteButton {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+
+    &:hover {
+        opacity: 1;
+    }
+
+    img {
+        width: 11px;
+        height: 11px;
+    }
 }
 
 .listItemLinked {

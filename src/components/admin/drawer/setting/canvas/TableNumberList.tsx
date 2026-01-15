@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import styles from '@/styles/components/admin/drawer/canvas/tableNumberList.module.scss';
-import { usePostTable, useTableErpList, useTableList } from '@/hooks/api';
+import { useDeleteTable, usePostTable, useTableErpList, useTableList } from '@/hooks/api';
 import { useQueryClient } from '@tanstack/react-query';
+import storage from '@/utils/storage';
 
 interface TableNumberListProps {
     linkedNumbers?: string[];
@@ -14,8 +15,15 @@ const TableNumberList: React.FC<TableNumberListProps> = ({ linkedNumbers = [] })
     const { data: tableList = [] } = useTableList();
     const { refetch: refetchErpList, isFetching } = useTableErpList({ enabled: false });
     const { mutateAsync: postTable, isPending: isPosting } = usePostTable();
+    const { mutateAsync: deleteTable, isPending: isDeleting } = useDeleteTable();
     const [isAdding, setIsAdding] = useState(false);
     const [manualInput, setManualInput] = useState('');
+    const [isErpConnected, setIsErpConnected] = useState(false);
+
+    useEffect(() => {
+        const flag = storage.session.get('iserpconnected');
+        setIsErpConnected(String(flag) === 'true');
+    }, []);
 
     const tableNumbers = useMemo(
         () =>
@@ -64,17 +72,29 @@ const TableNumberList: React.FC<TableNumberListProps> = ({ linkedNumbers = [] })
         setManualInput('');
     };
 
+    const handleDeleteTable = async (tableNo: string) => {
+        const normalized = normalizeNumber(tableNo);
+        const targetTable = tableList.find((table) => normalizeNumber(table.tableNo) === normalized);
+        if (!targetTable) return;
+
+        if (window.confirm(`${tableNo} 테이블을 삭제하시겠습니까?`)) {
+            await deleteTable(targetTable.tableId);
+        }
+    };
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>
                 <h2 className={styles.title}>테이블 번호</h2>
-                <button
-                    className={styles.erpButton}
-                    onClick={handleErpSync}
-                    disabled={isFetching}
-                >
-                    ERP 연동
-                </button>
+                {isErpConnected && (
+                    <button
+                        className={styles.erpButton}
+                        onClick={handleErpSync}
+                        disabled={isFetching}
+                    >
+                        ERP 연동
+                    </button>
+                )}
             </div>
             <div className={styles.listContainer}>
                 <div className={styles.list}>
@@ -83,10 +103,21 @@ const TableNumberList: React.FC<TableNumberListProps> = ({ linkedNumbers = [] })
                     )}
                     {allNumbers.map((number, index) => {
                         const isLinked = linkedSet.has(normalizeNumber(number));
+                        const displayNumber = number.endsWith('번') ? number : `${number}번`;
                         return (
-                        <div key={index} className={`${styles.listItem} ${isLinked ? styles.listItemLinked : ''}`}>
-                            {number.endsWith('번') ? number : `${number}번`}
-                        </div>
+                            <div key={index} className={`${styles.listItem} ${isLinked ? styles.listItemLinked : ''}`}>
+                                {displayNumber}
+                                {!isErpConnected && (
+                                    <button
+                                        type="button"
+                                        className={styles.deleteButton}
+                                        onClick={() => handleDeleteTable(number)}
+                                        disabled={isDeleting}
+                                    >
+                                        <img src="/assets/image/admin/setting/close.svg" alt="삭제" />
+                                    </button>
+                                )}
+                            </div>
                         );
                     })}
                 </div>
@@ -120,10 +151,12 @@ const TableNumberList: React.FC<TableNumberListProps> = ({ linkedNumbers = [] })
                     </button>
                 </div>
             )}
-            <button className={styles.addButton} onClick={handleAddClick} disabled={isAdding || isPosting}>
-                <img src="/assets/image/admin/setting/add.svg" alt="add" />
-                <span>직접 추가</span>
-            </button>
+            {!isErpConnected && (
+                <button className={styles.addButton} onClick={handleAddClick} disabled={isAdding || isPosting}>
+                    <img src="/assets/image/admin/setting/add.svg" alt="add" />
+                    <span>직접 추가</span>
+                </button>
+            )}
         </div>
     );
 };

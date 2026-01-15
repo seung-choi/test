@@ -12,6 +12,7 @@ import { usePanZoom } from '@/hooks/tableCanvas/usePanZoom';
 import { usePageManagement } from '@/hooks/tableCanvas/usePageManagement';
 import { useTableManagement } from '@/hooks/tableCanvas/useTableManagement';
 import { usePatchTableOrder, usePutTableList, useTableList } from '@/hooks/api';
+import { useToast } from '@/hooks/common/useToast';
 import type { GetTableResponse } from '@/api/table';
 import type { PlacedTable, TableType } from '@/types';
 
@@ -51,6 +52,7 @@ const LayoutManager: React.FC = () => {
     const { data: tableList = [] } = useTableList();
     const { mutateAsync: putTableList } = usePutTableList();
     const { mutateAsync: patchTableOrder } = usePatchTableOrder();
+    const { showToast } = useToast();
     const [tableListOrder, setTableListOrder] = useState<GetTableResponse[]>([]);
 
     const normalizeNumber = (value: string) => value.trim().replace(/번$/, '');
@@ -200,7 +202,7 @@ const LayoutManager: React.FC = () => {
 
         await putTableList(payload);
         setDeletedTableIds(new Set());
-        alert('테이블 배치가 저장되었습니다.');
+        showToast('테이블 배치가 저장되었습니다.', 'success');
     }, [pages, putTableList, tableList, deletedTableIds]);
 
     const handleTableOrderChange = useCallback(async (reorderedTables: GetTableResponse[]) => {

@@ -28,6 +28,7 @@ import {
   mapMenuTypesToGoods,
   mapMenuTagsToGoods,
 } from '@/utils/mappers/goodsMappers';
+import { useToast } from '@/hooks/common/useToast';
 
 interface MenuManagementProps {
   onClose: () => void;
@@ -49,6 +50,7 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
   const { mutateAsync: patchGoodsOrderList } = usePatchGoodsOrderList();
   const { mutateAsync: deleteGoodsList } = useDeleteGoodsList();
   const { mutateAsync: patchGoodsStatus } = usePatchGoodsStatus();
+  const { showToast } = useToast();
 
   const mappedMenuData = useMemo<MenuTableRow[]>(
     () =>
@@ -111,7 +113,7 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
 
   const handleDelete = () => {
     if (selectedItems.length === 0) {
-      alert('삭제할 항목을 선택해주세요.');
+      showToast('삭제할 항목을 선택해주세요.', 'error');
       return;
     }
 
@@ -136,10 +138,10 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
           setSelectedItems([]);
           onDelete?.(selectedItems);
 
-          alert('삭제되었습니다.');
+          showToast('삭제되었습니다.', 'success');
         } catch (error) {
           console.error('Failed to delete goods:', error);
-          alert('삭제에 실패했습니다.');
+          showToast('삭제에 실패했습니다.', 'error');
         }
       }
     );
@@ -201,7 +203,7 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
         });
       });
     } catch (error) {
-      alert('상태 변경에 실패했습니다.');
+      showToast('상태 변경에 실패했습니다.', 'error');
     }
   };
 

@@ -1,0 +1,66 @@
+@import '../../common/mixins';
+
+.toastContainer {
+  position: fixed;
+  left: 50%;
+  bottom: 3rem;
+  transform: translateX(-50%);
+  z-index: 9999;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.toastContent {
+  padding: 16px 32px;
+  border-radius: 10px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.toastSuccess {
+  background: #BFEFD4;
+}
+
+.toastError {
+  background: #F6C6C6;
+}
+
+.toastInfo {
+  background: #D2D2D2;
+}
+
+.toastText {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  word-wrap: break-word;
+  white-space: nowrap;
+
+  @include tablet {
+    font-size: 18px;
+  }
+}
+
+.toastSuccess .toastText {
+  color: #28C76F;
+}
+
+.toastError .toastText {
+  color: #B00000;
+}
+
+.toastInfo .toastText {
+  color: #444444;
+}

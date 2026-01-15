@@ -7,6 +7,7 @@ import InfoCard from '@/components/admin/contents/InfoCard';
 import styles from '@/styles/pages/admin/lounge.module.scss';
 import useUnifiedModal from '@/hooks/admin/useUnifiedModal';
 import { useHorizontalScroll } from '@/hooks/common/useScrollManagement';
+import { useToast } from '@/hooks/common/useToast';
 import { useBillListByStatus, useBookingList, useDeleteBill, useDeleteBillOrderList, usePatchBill, usePatchBillComplete, usePutBillErp, usePostEventMsgSend, useTableList } from '@/hooks/api';
 import { Bill, OrderCounts, OrderFilterKey, ErpLinkSelection } from '@/types';
 import { BillOrderStatus } from '@/types/bill.type';
@@ -31,6 +32,7 @@ const Lounge = () => {
   const cardContainerRef = useRef<HTMLDivElement>(null);
   const { openCancelOrderModal, openSendMessageModal, openErpLinkModal } = useUnifiedModal();
   const { handleScroll } = useHorizontalScroll();
+  const { showToast } = useToast();
   const { mutate: deleteBill } = useDeleteBill();
   const { mutate: deleteBillOrderList } = useDeleteBillOrderList();
   const { mutate: postEventMsgSend } = usePostEventMsgSend();
@@ -134,11 +136,11 @@ const Lounge = () => {
             },
             {
               onSuccess: () => {
-                alert('ERP 연동이 완료되었습니다.');
+                showToast('ERP 연동이 완료되었습니다.', 'success');
               },
               onError: (error) => {
                 console.error('ERP 연동 실패:', error);
-                alert('ERP 연동에 실패했습니다.');
+                showToast('ERP 연동에 실패했습니다.', 'error');
               },
             }
           );
@@ -162,11 +164,11 @@ const Lounge = () => {
             { billId: bill.billId, data: { orderRea: reason, orderIdList } },
             {
               onSuccess: () => {
-                alert('주문이 취소되었습니다.');
+                showToast('주문이 취소되었습니다.', 'success');
               },
               onError: (error) => {
                 console.error('주문 취소 실패:', error);
-                alert('주문 취소에 실패했습니다.');
+                showToast('주문 취소에 실패했습니다.', 'error');
               }
             }
           );
@@ -177,11 +179,11 @@ const Lounge = () => {
           { billId: bill.billId, data: { orderRea: reason } },
           {
             onSuccess: () => {
-              alert('주문이 취소되었습니다.');
+              showToast('주문이 취소되었습니다.', 'success');
             },
             onError: (error) => {
               console.error('주문 취소 실패:', error);
-              alert('주문 취소에 실패했습니다.');
+              showToast('주문 취소에 실패했습니다.', 'error');
             }
           }
         );
@@ -213,11 +215,11 @@ const Lounge = () => {
           },
           {
             onSuccess: () => {
-              alert('메시지가 전송되었습니다.');
+              showToast('메시지가 전송되었습니다.', 'success');
             },
             onError: (error) => {
               console.error('메시지 전송 실패:', error);
-              alert('메시지 전송에 실패했습니다.');
+              showToast('메시지 전송에 실패했습니다.', 'error');
             },
           }
         );
