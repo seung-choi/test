@@ -8,19 +8,16 @@ import { MessageFormData } from '@/types';
 
 interface MessageModalContentProps {
   title: string;
-  recipients?: string[];
   onSubmit: (data: MessageFormData) => void;
   onClose: () => void;
 }
 
 const MessageModalContent: React.FC<MessageModalContentProps> = ({
   title,
-  recipients = [],
   onSubmit,
   onClose,
 }) => {
   const [formData, setFormData] = useState<MessageFormData>({
-    recipient: '',
     content: '',
     image: undefined,
   });
@@ -32,11 +29,6 @@ const MessageModalContent: React.FC<MessageModalContentProps> = ({
       ...prev,
       [field]: value,
     }));
-  };
-
-  const handleRecipientSelect = (recipient: string) => {
-    handleInputChange('recipient', recipient);
-    setIsDropdownOpen(false);
   };
 
   const handleFileSelect = () => {
@@ -51,10 +43,6 @@ const MessageModalContent: React.FC<MessageModalContentProps> = ({
   };
 
   const handleSubmit = () => {
-    if (!formData.recipient || !formData.content) {
-      alert('받는 분과 내용을 모두 입력해주세요.');
-      return;
-    }
     onSubmit(formData);
   };
 

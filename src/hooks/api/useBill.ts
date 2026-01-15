@@ -143,7 +143,7 @@ export const usePatchBill = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ billId, tableId }: { billId: number; tableId: number }) =>
+    mutationFn: ({ billId, tableId }: { billId: number; tableId: number | null }) =>
       patchBillInfo(billId, tableId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['billList'] });

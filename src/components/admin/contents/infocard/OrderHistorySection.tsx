@@ -8,6 +8,19 @@ interface OrderHistorySectionProps {
   onToggleExpansion: (historyId: string) => void;
 }
 
+const getStatusLabel = (status: string, cancelReason?: string): string => {
+  switch (status) {
+    case 'accept':
+      return '수락';
+    case 'complete':
+      return '완료';
+    case 'cancel':
+      return `주문 취소${cancelReason ? ` (${cancelReason})` : ''}`;
+    default:
+      return '';
+  }
+};
+
 const OrderHistorySection: React.FC<OrderHistorySectionProps> = ({
   orderHistory,
   isExpanded,
@@ -22,51 +35,58 @@ const OrderHistorySection: React.FC<OrderHistorySectionProps> = ({
 
   return (
     <div className={styles.orderHistorySection}>
-      {filteredHistory.map((history) => (
-        <div
-          key={history.id}
-          className={styles.historyItem}
-          onClick={() => onToggleExpansion(history.id)}
-        >
-          <div className={styles.historySummary}>
-            <span className={styles.historyStatus}>
-              {history.status === 'accept' ? '수락' : '완료'} (총 {history.totalItems}개)
-            </span>
-            <div className={styles.historyInfo}>
-              <span className={styles.orderLabel}>주문 정보</span>
-              <div className={styles.orderDetails}>
-                <span className={styles.orderTimeText}>{history.orderTime}</span>
-                <span className={styles.orderLocationText}>({history.orderLocation})</span>
-              </div>
-              <img
-                src="/assets/image/global/arrow/arrow.svg"
-                alt="펼치기"
-                className={`${styles.expandArrow} ${isExpanded(history.id) ? styles.expanded : ''}`}
-              />
-            </div>
-          </div>
+      {filteredHistory.map((history) => {
+        const isCanceled = history.status === 'cancel';
 
-          {isExpanded(history.id) && (
-            <div className={styles.historyDetails}>
-              {history.items.map((item, index) => (
-                <div key={index} className={styles.historyOrderItem}>
-                  <div>
-                    <span className={styles.itemName}>{item.name}</span>
-                  </div>
-                  <div>
-                    <span className={styles.itemQuantity}>{item.quantity}개</span>
-                  </div>
+        return (
+          <div
+            key={history.id}
+            className={`${styles.historyItem} ${isCanceled ? styles.canceledHistoryItem : ''}`}
+            onClick={() => onToggleExpansion(history.id)}
+          >
+            <div className={`${styles.historySummary} ${isCanceled ? styles.canceledSummary : ''}`}>
+              <span className={`${styles.historyStatus} ${isCanceled ? styles.canceledStatus : ''}`}>
+                {getStatusLabel(history.status, history.cancelReason)}
+                {!isCanceled && ` (총 ${history.totalItems}개)`}
+              </span>
+              <div className={styles.historyInfo}>
+                {history.playerName && (
+                  <span className={styles.orderPlayerName}>[{history.playerName}]</span>
+                )}
+                <div className={styles.orderDetails}>
+                  <span className={styles.orderTimeText}>{history.orderTime}</span>
+                  <span className={styles.orderLocationText}>({history.orderLocation})</span>
                 </div>
-              ))}
-              {history.specialRequest && (
-                <div className={styles.historySpecialRequest}>
-                  <span>[요청] {history.specialRequest}</span>
-                </div>
-              )}
+                <img
+                  src="/assets/image/global/arrow/arrow.svg"
+                  alt="펼치기"
+                  className={`${styles.expandArrow} ${isExpanded(history.id) ? styles.expanded : ''}`}
+                />
+              </div>
             </div>
-          )}
-        </div>
-      ))}
+
+            {isExpanded(history.id) && (
+              <div className={`${styles.historyDetails} ${isCanceled ? styles.canceledDetails : ''}`}>
+                {history.items.map((item, index) => (
+                  <div key={index} className={`${styles.historyOrderItem} ${isCanceled ? styles.canceledOrderItem : ''}`}>
+                    <div>
+                      <span className={styles.itemName}>{item.name}</span>
+                    </div>
+                    <div>
+                      <span className={styles.itemQuantity}>{item.quantity}개</span>
+                    </div>
+                  </div>
+                ))}
+                {history.specialRequest && (
+                  <div className={`${styles.historySpecialRequest} ${isCanceled ? styles.canceledSpecialRequest : ''}`}>
+                    <span>[요청] {history.specialRequest}</span>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 };

@@ -41,7 +41,7 @@ export const API_ENDPOINTS = {
     DETAIL: (billId: number) => `/fnb/v1/bill/${billId}`,
     BY_STATUS: (orderSt: string) => `/fnb/v1/bill/${orderSt}`,
     ORDER_LIST: (billId: number) => `/fnb/v1/bill/order/${billId}`,
-    ACCEPT_WITH_ERP: (billId: number, tableId: number) => `/fnb/v1/bill/${billId}/${tableId}`,
+    ACCEPT_WITH_ERP: (billId: number, tableId: number | null) => `/fnb/v1/bill/${billId}/${tableId ?? 'null'}`,
     ERP_LIST: '/fnb/v1/bill/erp',
   },
 

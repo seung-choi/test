@@ -1,10 +1,13 @@
 import { MessageFormData, ErpProduct } from '@/types';
+import { BillOrder } from '@/types/bill.type';
 import type { GoodsChannel, GoodsOption, GoodsStatus } from '@/api/goods';
 
 export interface CancelModalState {
   isShow: boolean;
-  onConfirm: (reason: string) => void;
+  onConfirm: (payload: { reason: string; orderIdList: number[] }) => void;
   onCancel?: () => void;
+  orderList?: BillOrder[];
+  isOrderSelectionRequired?: boolean;
 }
 
 export interface MessageModalState {

@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React, {useMemo} from 'react';
 import styles from '@/styles/components/admin/contents/InfoCard.module.scss';
-import { Bill, BillOrderStatus } from '@/types/bill.type';
-import { CustomerInfo, OrderItemSummary, OrderHistory, OrderStatus } from '@/types';
-import { useHistoryExpansion } from '@/hooks/admin/useHistoryExpansion';
-import { TableOption, useTableSelection } from '@/hooks/admin/useTableSelection';
+import {Bill, BillOrderStatus} from '@/types/bill.type';
+import {GpsBookingType} from '@/types/booking.type';
+import {CustomerInfo, OrderHistory, OrderItemSummary, OrderStatus} from '@/types';
+import {useHistoryExpansion} from '@/hooks/admin/useHistoryExpansion';
+import {TableOption, useTableSelection} from '@/hooks/admin/useTableSelection';
 import InfoCardHeader from './infocard/InfoCardHeader';
 import CustomerInfoSection from './infocard/CustomerInfoSection';
 import OrderItemsList from './infocard/OrderItemsList';
@@ -14,6 +15,7 @@ import InfoCardActions from './infocard/InfoCardActions';
 
 export interface InfoCardProps {
   bill: Bill;
+  booking?: GpsBookingType;
   onAcceptOrder?: (tableId: number | null) => void;
   onCancelOrder?: () => void;
   onCompleteOrder?: () => void;
@@ -46,6 +48,7 @@ const formatTime = (value?: string | null): string => {
 
 const InfoCard: React.FC<InfoCardProps> = ({
   bill,
+  booking,
   onAcceptOrder,
   onCancelOrder,
   onCompleteOrder,
@@ -53,11 +56,26 @@ const InfoCard: React.FC<InfoCardProps> = ({
   availableTables = [],
 }) => {
   const { toggleExpansion, isExpanded } = useHistoryExpansion();
-  const { isDropdownOpen, selectedTable, selectedTableId, toggleDropdown, selectTable } = useTableSelection();
+  const { isDropdownOpen, selectedTable, selectedTableId, toggleDropdown, selectTable } = useTableSelection({
+    tableId: bill.tableId,
+    tableLabel: bill.tableNo || null,
+  });
 
   const orderList = bill.orderList ?? [];
+  const latestOrder = useMemo(() => {
+    if (orderList.length === 0) return undefined;
+    return orderList.reduce((latest, current) =>
+      current.orderId > latest.orderId ? current : latest
+    );
+  }, [orderList]);
   const firstOrder = orderList[0];
   const status = firstOrder ? mapBillStatusToOrderStatus(firstOrder.orderSt) : 'order';
+  const isAcceptStatus = status === 'accept';
+  const isCancelStatus = status === 'cancel';
+  const currentOrderList = isAcceptStatus && latestOrder ? [latestOrder] : orderList;
+  const historyOrderList = isAcceptStatus && latestOrder
+    ? orderList.filter((order) => order.orderId !== latestOrder.orderId)
+    : orderList;
 
   const customerInfo: CustomerInfo = useMemo(() => ({
     name: bill.bookingNm || '-',
@@ -67,17 +85,17 @@ const InfoCard: React.FC<InfoCardProps> = ({
   }), [bill]);
 
   const orderItems: OrderItemSummary[] = useMemo(() =>
-    orderList.flatMap(order =>
+    currentOrderList.flatMap(order =>
       (order.orderHisList ?? []).map(item => ({
         name: item.goodsNm,
         quantity: item.orderCnt,
         price: item.orderAmt,
       }))
-    ), [orderList]
+    ), [currentOrderList]
   );
 
   const orderHistory: OrderHistory[] = useMemo(() =>
-    orderList.map(order => ({
+    historyOrderList.map(order => ({
       id: String(order.orderId),
       status: mapBillStatusToOrderStatus(order.orderSt),
       totalItems: (order.orderHisList ?? []).reduce((sum, item) => sum + item.orderCnt, 0),
@@ -91,7 +109,9 @@ const InfoCard: React.FC<InfoCardProps> = ({
         price: item.orderAmt,
       })),
       specialRequest: order.orderReq || undefined,
-    })), [orderList]
+      cancelReason: order.orderRea || undefined,
+      playerName: order.playerNm || undefined,
+    })), [historyOrderList]
   );
 
   const totalItems = useMemo(() =>
@@ -99,46 +119,59 @@ const InfoCard: React.FC<InfoCardProps> = ({
     [orderItems]
   );
 
-  const orderTime = firstOrder ? formatTime(firstOrder.createdDt) : '-';
+  const mainOrder = currentOrderList[0];
+  const orderTime = mainOrder ? formatTime(mainOrder.createdDt) : '-';
 
-  const orderLocation = firstOrder && firstOrder.courseNm && firstOrder.holeNo !== null && firstOrder.holeNo !== undefined
-    ? `${firstOrder.courseNm} ${firstOrder.holeNo}H`
+  const orderLocation = mainOrder && mainOrder.courseNm && mainOrder.holeNo !== null && mainOrder.holeNo !== undefined
+    ? `${mainOrder.courseNm} ${mainOrder.holeNo}H`
     : '-';
-  const orderPlayerName = firstOrder?.playerNm ?? null;
-  const orderCourseName = firstOrder?.courseNm ?? null;
-  const orderHoleNo = firstOrder?.holeNo ?? null;
+  const orderPlayerName = mainOrder?.playerNm ?? null;
+  const orderCourseName = mainOrder?.courseNm ?? null;
+  const orderHoleNo = mainOrder?.holeNo ?? null;
 
-  const specialRequest = firstOrder?.orderReq || undefined;
+  const specialRequest = mainOrder?.orderReq || undefined;
 
   const cancelReason = orderList
     .filter(order => order.orderRea)
     .map(order => order.orderRea)
     .join(', ') || undefined;
 
-  const tags = bill.isERP ? ['ERP'] : [];
+  const realTimeLocation = useMemo(() => {
+    if (booking && booking.courseNm && booking.holeNo !== null && booking.holeNo !== undefined) {
+      return `${booking.courseNm} ${booking.holeNo}H`;
+    }
+    return '스타트하우스';
+  }, [booking]);
+
+  const tags = useMemo(() => {
+    const bookingTags = booking?.tags ?? [];
+    if (bill.isERP && !bookingTags.includes('ERP')) {
+      return [...bookingTags, 'ERP'];
+    }
+    return bookingTags;
+  }, [booking?.tags, bill.isERP]);
+
   const tableNumber = bill.tableNo || '';
   const totalAmount = bill.billAmt;
 
   const isOrderCard = status === 'order';
   const isCompleteStatus = status === 'complete';
-  const isCancelStatus = status === 'cancel';
   const isDisabledStatus = isCompleteStatus || isCancelStatus;
 
   const borderColor = isOrderCard ? '#9081D8' : '#D9D9D9';
-  const hasShadow = isOrderCard;
 
   return (
     <div
       className={`${styles.infoCard} ${isOrderCard ? styles.historyCard : styles.newCard} ${isDisabledStatus ? styles.disabledCard : ''}`}
       style={{
         border: `2px solid ${borderColor}`,
-        boxShadow: hasShadow ? '0px 0px 10px rgba(144, 129, 216, 0.50)' : 'none',
+        boxShadow: isOrderCard ? '0px 0px 10px rgba(144, 129, 216, 0.50)' : 'none',
       }}
     >
       <div className={styles.content}>
         <InfoCardHeader
           tableNumber={tableNumber}
-          orderLocation={orderLocation}
+          realTimeLocation={realTimeLocation}
           selectedTable={selectedTable}
           isDropdownOpen={isDropdownOpen}
           isDisabledStatus={isDisabledStatus}
@@ -165,7 +198,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
           status={status}
         />
 
-        {isOrderCard && (
+        {(isOrderCard || isAcceptStatus || isCancelStatus) && (
           <OrderHistorySection
             orderHistory={orderHistory}
             isExpanded={isExpanded}

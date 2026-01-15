@@ -16,6 +16,8 @@ export const cancelModalState = atom<CancelModalState>({
   default: {
     isShow: false,
     onConfirm: () => {},
+    orderList: [],
+    isOrderSelectionRequired: false,
   },
 });
 

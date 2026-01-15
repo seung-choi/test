@@ -61,3 +61,140 @@
     }
   }
 }
+
+.cancelContent {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  @include tablet {
+    gap: 18px;
+  }
+}
+
+.orderTable {
+  width: 100%;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  .tableHeader {
+    display: flex;
+    align-items: center;
+    height: 46px;
+    border-bottom: 3px solid #444444;
+    color: #444444;
+    font-size: 22px;
+    font-weight: 400;
+
+    @include tablet {
+      height: 34px;
+      font-size: 16px;
+    }
+  }
+
+  .tableBody {
+    max-height: 310px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+
+    @include tablet {
+      max-height: 200px;
+    }
+  }
+}
+
+.tableRow {
+  display: flex;
+  align-items: center;
+  height: 61px;
+  background: white;
+  border-bottom: 1px solid #7B7B7B;
+  padding: 0;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  width: 100%;
+  cursor: pointer;
+  text-align: left;
+
+  @include tablet {
+    height: 46px;
+  }
+}
+
+.selectedRow {
+  background: #F2F8FF;
+
+  .cellText {
+    color: #1F1F1F;
+  }
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cellText {
+  color: #666666;
+  font-size: 22px;
+  font-weight: 500;
+
+  @include tablet {
+    font-size: 16px;
+  }
+}
+
+.selectColumn {
+  width: 54px;
+}
+
+.timeColumn {
+  width: 80px;
+}
+
+.payerColumn {
+  width: 110px;
+}
+
+.summaryColumn {
+  width: 215px;
+}
+
+.amountColumn {
+  width: 130px;
+  justify-content: flex-end;
+  padding-right: 5px;
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+  background: #959595;
+  border-radius: 4px;
+
+  @include tablet {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.checked {
+  background: #1F1F1F;
+}
+
+.emptyTable {
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666666;
+  font-size: 20px;
+
+  @include tablet {
+    height: 90px;
+    font-size: 14px;
+  }
+}

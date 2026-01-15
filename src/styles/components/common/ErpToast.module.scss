@@ -1,0 +1,52 @@
+@import '../../common/mixins';
+
+.erpToast {
+  position: fixed;
+  left: 50%;
+  bottom: 2rem;
+  transform: translateX(-50%);
+  z-index: 1100;
+}
+
+.erpToastContent {
+  width: 100%;
+  height: 100%;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.3125rem;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.625rem;
+  overflow: hidden;
+}
+
+.toastSuccess {
+  background: #BFEFD4;
+}
+
+.toastEmpty {
+  background: #D2D2D2;
+}
+
+.toastError {
+  background: #F6C6C6;
+}
+
+.erpToastText {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #28C76F;
+  font-size: 1rem;
+  font-weight: 700;
+  word-wrap: break-word;
+}
+
+.toastEmpty .erpToastText {
+  color: #444444;
+}
+
+.toastError .erpToastText {
+  color: #B00000;
+}

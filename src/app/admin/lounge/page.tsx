@@ -7,8 +7,8 @@ import InfoCard from '@/components/admin/contents/InfoCard';
 import styles from '@/styles/pages/admin/lounge.module.scss';
 import useUnifiedModal from '@/hooks/admin/useUnifiedModal';
 import { useHorizontalScroll } from '@/hooks/common/useScrollManagement';
-import { useBillListByStatus, useDeleteBill, usePatchBill, useTableList } from '@/hooks/api';
-import { OrderCounts } from '@/types';
+import { useBillListByStatus, useBookingList, useDeleteBill, useDeleteBillOrderList, usePatchBill, usePatchBillComplete, useTableList } from '@/hooks/api';
+import { Bill, OrderCounts } from '@/types';
 
 const mapFilterToStatus = (filter: string): string => {
   switch (filter) {
@@ -33,8 +33,11 @@ const Lounge = () => {
   const { openCancelOrderModal, openSendMessageModal } = useUnifiedModal();
   const { handleScroll } = useHorizontalScroll();
   const { mutate: deleteBill } = useDeleteBill();
+  const { mutate: deleteBillOrderList } = useDeleteBillOrderList();
   const { mutate: patchBill } = usePatchBill();
+  const { mutate: patchBillComplete } = usePatchBillComplete();
   const { data: tableList = [] } = useTableList();
+  const { data: bookingList = [] } = useBookingList({ refetchInterval: 5000 });
 
   const billStatus = mapFilterToStatus(activeFilter);
   const { billList = [], isLoading } = useBillListByStatus(billStatus, {
@@ -66,7 +69,6 @@ const Lounge = () => {
   const handleFilterChange = (filter: string) => {
     setActiveFilter(filter);
     setSelectedCardIndex(0);
-    // 필터 변경 시 알림 초기화
     if (filter === 'order') {
       setHasNewOrders(false);
     }
@@ -91,6 +93,14 @@ const Lounge = () => {
     [tableList]
   );
 
+  const bookingMap = useMemo(() => {
+    const map = new Map<number, typeof bookingList[0]>();
+    bookingList.forEach((booking) => {
+      map.set(booking.bookingId, booking);
+    });
+    return map;
+  }, [bookingList]);
+
   const handleCardScroll = useCallback(() => {
     if (cardContainerRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = cardContainerRef.current;
@@ -100,16 +110,34 @@ const Lounge = () => {
   }, []);
 
   const handleAcceptOrder = (billId: number) => (tableId: number | null) => {
-    if (tableId !== null) {
-      patchBill({ billId, tableId });
-    }
+    patchBill({ billId, tableId });
   };
 
-  const handleCancelOrder = (billId: number) => () => {
+  const handleCancelOrder = (bill: Bill) => () => {
+    const orderStatus = bill.orderList?.[0]?.orderSt;
+    const isAcceptStatus = orderStatus === 'P';
+    const modalOrderList = isAcceptStatus ? bill.orderList ?? [] : [];
+
     openCancelOrderModal(
-      (reason: string) => {
+      ({ reason, orderIdList }) => {
+        if (isAcceptStatus) {
+          deleteBillOrderList(
+            { billId: bill.billId, data: { orderRea: reason, orderIdList } },
+            {
+              onSuccess: () => {
+                alert('주문이 취소되었습니다.');
+              },
+              onError: (error) => {
+                console.error('주문 취소 실패:', error);
+                alert('주문 취소에 실패했습니다.');
+              }
+            }
+          );
+          return;
+        }
+
         deleteBill(
-          { billId, data: { orderRea: reason } },
+          { billId: bill.billId, data: { orderRea: reason } },
           {
             onSuccess: () => {
               alert('주문이 취소되었습니다.');
@@ -123,6 +151,10 @@ const Lounge = () => {
       },
       () => {
         // 취소 버튼 클릭 시
+      },
+      {
+        orderList: modalOrderList,
+        isOrderSelectionRequired: isAcceptStatus,
       }
     );
   };
@@ -137,7 +169,7 @@ const Lounge = () => {
   };
 
   const handleCompleteOrder = (billId: number) => () => {
-    // TODO: 주문 완료 로직
+    patchBillComplete(billId);
   };
 
   const renderScrollButton = (direction: 'left' | 'right', isVisible: boolean) => (
@@ -185,8 +217,9 @@ const Lounge = () => {
                 <InfoCard
                   key={bill.billId}
                   bill={bill}
+                  booking={bill.bookingId ? bookingMap.get(bill.bookingId) : undefined}
                   onAcceptOrder={handleAcceptOrder(bill.billId)}
-                  onCancelOrder={handleCancelOrder(bill.billId)}
+                  onCancelOrder={handleCancelOrder(bill)}
                   onCompleteOrder={handleCompleteOrder(bill.billId)}
                   onMessageOrder={handleMessageOrder(bill.billId)}
                   availableTables={availableTables}

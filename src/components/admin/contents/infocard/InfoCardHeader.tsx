@@ -4,7 +4,7 @@ import { TableOption } from '@/hooks/admin/useTableSelection';
 
 interface InfoCardHeaderProps {
   tableNumber: string;
-  orderLocation: string;
+  realTimeLocation: string;
   selectedTable: string | null;
   isDropdownOpen: boolean;
   isDisabledStatus: boolean;
@@ -15,7 +15,7 @@ interface InfoCardHeaderProps {
 
 const InfoCardHeader: React.FC<InfoCardHeaderProps> = ({
   tableNumber,
-  orderLocation,
+  realTimeLocation,
   selectedTable,
   isDropdownOpen,
   isDisabledStatus,
@@ -23,6 +23,9 @@ const InfoCardHeader: React.FC<InfoCardHeaderProps> = ({
   onToggleDropdown,
   onSelectTable,
 }) => {
+  const hasTableOptions = availableTables.length > 0;
+  const hasTableValue = Boolean(tableNumber || selectedTable);
+
   const getTableTagStyles = () => {
     if (isDisabledStatus) {
       return {
@@ -30,7 +33,7 @@ const InfoCardHeader: React.FC<InfoCardHeaderProps> = ({
         border: 'none',
         color: '#666',
       };
-    } else if (selectedTable) {
+    } else if (hasTableValue) {
       return {
         background: '#E6E9F1',
         border: 'none',
@@ -46,43 +49,56 @@ const InfoCardHeader: React.FC<InfoCardHeaderProps> = ({
   };
 
   const getArrowIcon = () => {
-    if (selectedTable || isDisabledStatus) {
+    if (!hasTableOptions) {
+      return null;
+    }
+    if (hasTableValue || isDisabledStatus) {
       return <img src={'/assets/image/admin/info-card/arrow-dark.svg'} alt="arrow" />;
     }
     return <img src={'/assets/image/admin/info-card/arrow-red.svg'} alt="arrow" />;
   };
 
+  const handleToggle = () => {
+    if (!hasTableOptions || isDisabledStatus) return;
+    onToggleDropdown();
+  };
+
   return (
     <div className={styles.header}>
-      <div className={styles.tableSelectContainer}>
-        <div
-          className={`${styles.tableTag} ${styles.clickableTableTag}`}
-          style={getTableTagStyles()}
-          onClick={onToggleDropdown}
-        >
-          <span className={`${styles.tableText} ${selectedTable}`}>
-            {tableNumber || selectedTable || '테이블'}
-          </span>
-          {getArrowIcon()}
-        </div>
-        {isDropdownOpen && !isDisabledStatus && (
-          <div className={styles.tableDropdown}>
-            {availableTables.map((table, index) => (
-              <div
-                key={index}
-                className={`${styles.tableOption} ${selectedTable === table.label ? styles.selectedOption : ''}`}
-                onClick={() => onSelectTable(table)}
-              >
-                {table.label}
-              </div>
-            ))}
+      {hasTableOptions || hasTableValue ? (
+        <div className={styles.tableSelectContainer}>
+          <div
+            className={`${styles.tableTag} ${hasTableOptions ? styles.clickableTableTag : ''}`}
+            style={getTableTagStyles()}
+            onClick={handleToggle}
+          >
+            <span className={`${styles.tableText} ${selectedTable}`}>
+              {tableNumber || selectedTable || '테이블'}
+            </span>
+            {getArrowIcon()}
           </div>
-        )}
-      </div>
+          {hasTableOptions && isDropdownOpen && !isDisabledStatus && (
+            <div className={styles.tableDropdown}>
+              {availableTables.map((table, index) => (
+                <div
+                  key={index}
+                  className={`${styles.tableOption} ${selectedTable === table.label ? styles.selectedOption : ''}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onSelectTable(table);
+                  }}
+                >
+                  {table.label}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      ) : null}
 
       <div className={styles.tableInfo}>
         <img src="/assets/image/admin/info-card/location.svg" alt="위치" />
-        <span className={styles.tableNumber}>{orderLocation}</span>
+        <span className={styles.tableNumber}>{realTimeLocation}</span>
       </div>
     </div>
   );

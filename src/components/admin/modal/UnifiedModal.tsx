@@ -33,8 +33,8 @@ const UnifiedModal = () => {
     closeCancelReasonManagementModal,
   } = useUnifiedModal();
 
-  const handleCancelConfirm = (reason: string) => {
-    cancelModal.onConfirm(reason);
+  const handleCancelConfirm = (payload: { reason: string; orderIdList: number[] }) => {
+    cancelModal.onConfirm(payload);
     closeCancelModal();
   };
 
@@ -92,6 +92,8 @@ const UnifiedModal = () => {
         <CancelReasonModalContent
           onConfirm={handleCancelConfirm}
           onClose={handleCancelClose}
+          orderList={cancelModal.orderList}
+          isOrderSelectionRequired={cancelModal.isOrderSelectionRequired}
         />
       </ModalWrapper>
 

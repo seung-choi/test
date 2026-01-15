@@ -71,7 +71,8 @@ export const putBillErpInfo = async (
   return res.data;
 };
 
-export const patchBillInfo = async (billId: number, tableId: number): Promise<void> => {
+// [접수] >> [진행중]
+export const patchBillInfo = async (billId: number, tableId: number | null): Promise<void> => {
   const res = await $axios({
     url: `${getOriginURL('api')}${API_ENDPOINTS.BILL.ACCEPT_WITH_ERP(billId, tableId)}`,
     method: 'patch',
@@ -79,6 +80,7 @@ export const patchBillInfo = async (billId: number, tableId: number): Promise<vo
   return res.data;
 };
 
+// [진행중] >> [완료]
 export const patchBillComplete = async (billId: number): Promise<void> => {
   const res = await $axios({
     url: `${getOriginURL('api')}${API_ENDPOINTS.BILL.DETAIL(billId)}`,
@@ -87,6 +89,7 @@ export const patchBillComplete = async (billId: number): Promise<void> => {
   return res.data;
 };
 
+// [접수] 주문 취소
 export const deleteBillInfo = async (billId: number, data: DeleteBillRequest): Promise<void> => {
   const res = await $axios({
     url: `${getOriginURL('api')}${API_ENDPOINTS.BILL.DETAIL(billId)}`,
@@ -96,6 +99,7 @@ export const deleteBillInfo = async (billId: number, data: DeleteBillRequest): P
   return res.data;
 };
 
+// [진행중] 주문 취소
 export const deleteBillOrderList = async (
   billId: number,
   data: DeleteBillListRequest

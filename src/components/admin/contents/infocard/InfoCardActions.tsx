@@ -81,7 +81,7 @@ const InfoCardActions: React.FC<InfoCardActionsProps> = ({
 
         {status === 'cancel' && (
           <div className={`${styles.button} ${styles.canceledButton}`}>
-            <span>주문 취소 : {cancelReason || '품절'}</span>
+            <span>주문 취소</span>
           </div>
         )}
       </div>

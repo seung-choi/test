@@ -15,7 +15,8 @@ import {
   Category,
   DeleteItem,
   CancelReason,
-  ErpProduct
+  ErpProduct,
+  BillOrder
 } from '@/types';
 
 const createCloseModal = <T extends { isShow: boolean }>(
@@ -43,11 +44,20 @@ const useUnifiedModal = () => {
   const closeDeleteConfirmModal = createCloseModal(setDeleteConfirmModal);
   const closeCancelReasonManagementModal = createCloseModal(setCancelReasonManagementModal);
 
-  const openCancelModal = (onConfirm: (reason: string) => void, onCancel?: () => void) => {
+  const openCancelModal = (
+    onConfirm: (payload: { reason: string; orderIdList: number[] }) => void,
+    onCancel?: () => void,
+    options?: {
+      orderList?: BillOrder[];
+      isOrderSelectionRequired?: boolean;
+    }
+  ) => {
     setCancelModal({
       isShow: true,
       onConfirm,
       onCancel,
+      orderList: options?.orderList ?? [],
+      isOrderSelectionRequired: options?.isOrderSelectionRequired ?? false,
     });
   };
 
@@ -75,10 +85,14 @@ const useUnifiedModal = () => {
   };
 
   const openCancelOrderModal = (
-    onConfirm: (reason: string) => void,
-    onCancel?: () => void
+    onConfirm: (payload: { reason: string; orderIdList: number[] }) => void,
+    onCancel?: () => void,
+    options?: {
+      orderList?: BillOrder[];
+      isOrderSelectionRequired?: boolean;
+    }
   ) => {
-    openCancelModal(onConfirm, onCancel);
+    openCancelModal(onConfirm, onCancel, options);
   };
 
   const openConfirmModal = (

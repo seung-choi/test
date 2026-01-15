@@ -6,6 +6,7 @@ import useUnifiedModal from '@/hooks/admin/useUnifiedModal';
 import { ProductFormData, ErpProduct } from '@/types';
 import { useScrollLock } from '@/hooks/common/useScrollManagement';
 import { usePutGoodsErpList } from '@/hooks/api';
+import ErpToast from '@/components/common/ErpToast';
 
 type DrawerMode = 'setting' | 'menu';
 
@@ -215,19 +216,14 @@ const Drawer: React.FC<DrawerProps> = ({
         </div>
       </div>
       {erpToast && (
-        <div className={styles.erpToast}>
-          <div
-            className={`${styles.erpToastContent} ${
-              erpToast.type === 'success' ? styles.erpToastSuccess : styles.erpToastEmpty
-            }`}
-          >
-            <div className={styles.erpToastText}>
-              {erpToast.type === 'success'
-                ? `${erpToast.count}개의 등록된 상품 정보를 업데이트 하였습니다.`
-                : '업데이트 된 ERP 정보가 없습니다.'}
-            </div>
-          </div>
-        </div>
+        <ErpToast
+          variant={erpToast.type}
+          message={
+            erpToast.type === 'success'
+              ? `${erpToast.count}개의 등록된 상품 정보를 업데이트 하였습니다.`
+              : '업데이트 된 ERP 정보가 없습니다.'
+          }
+        />
       )}
     </div>
   );

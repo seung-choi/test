@@ -22,6 +22,8 @@ export interface OrderHistory {
   items: OrderItemSummary[];
   specialRequest?: string;
   isExpanded?: boolean;
+  cancelReason?: string;
+  playerName?: string;
 }
 
 export interface InfoCardData {

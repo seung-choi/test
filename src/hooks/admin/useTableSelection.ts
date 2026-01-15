@@ -1,14 +1,23 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export interface TableOption {
   id: number;
   label: string;
 }
 
-export const useTableSelection = () => {
+export const useTableSelection = (initial?: { tableId?: number | null; tableLabel?: string | null }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [selectedTable, setSelectedTable] = useState<string | null>(null);
-  const [selectedTableId, setSelectedTableId] = useState<number | null>(null);
+  const [selectedTable, setSelectedTable] = useState<string | null>(initial?.tableLabel ?? null);
+  const [selectedTableId, setSelectedTableId] = useState<number | null>(initial?.tableId ?? null);
+
+  useEffect(() => {
+    if (initial?.tableLabel) {
+      setSelectedTable(initial.tableLabel);
+    }
+    if (typeof initial?.tableId === 'number') {
+      setSelectedTableId(initial.tableId);
+    }
+  }, [initial?.tableId, initial?.tableLabel]);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
