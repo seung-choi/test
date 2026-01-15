@@ -7,14 +7,14 @@ import SettingManagement from '@/components/admin/drawer/setting/SettingManageme
 import FilterSection from './sidetab/FilterSection';
 import MenuSection from './sidetab/MenuSection';
 import { drawerState } from '@/lib/recoil';
-import { OrderCounts, OrderFilterKey } from '@/types';
+import { BillOrderStatus, OrderCounts } from '@/types';
 import { useNotificationStorage } from '@/hooks/common/useNotificationStorage';
 import { useDeviceType } from '@/hooks/common/useDeviceType';
 import { useFullscreen } from '@/hooks/common/useFullscreen';
 
 interface SideTabProps {
   orderCounts: OrderCounts;
-  onFilterChange: (filter: OrderFilterKey) => void;
+  onFilterChange: (filter: BillOrderStatus) => void;
   hasNotification?: boolean;
   onMessageNotificationClear?: () => void;
 }
@@ -25,7 +25,7 @@ const SideTab: React.FC<SideTabProps> = ({
   hasNotification = false,
   onMessageNotificationClear
 }) => {
-  const [activeFilter, setActiveFilter] = useState<OrderFilterKey>('order');
+  const [activeFilter, setActiveFilter] = useState<BillOrderStatus>('R');
   const [drawer, setDrawer] = useRecoilState(drawerState);
   const menuManagementRef = useRef<MenuManagementRef>(null);
   const [hasSelectedItems, setHasSelectedItems] = useState(false);
@@ -34,7 +34,7 @@ const SideTab: React.FC<SideTabProps> = ({
   const { isTablet } = useDeviceType();
   const { toggleFullscreen } = useFullscreen();
 
-  const handleFilterClick = (filter: OrderFilterKey) => {
+  const handleFilterClick = (filter: BillOrderStatus) => {
     setActiveFilter(filter);
     onFilterChange(filter);
   };

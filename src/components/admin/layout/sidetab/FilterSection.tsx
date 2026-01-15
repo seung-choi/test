@@ -1,12 +1,13 @@
 import React from 'react';
 import styles from '@/styles/components/admin/layout/SideTab.module.scss';
-import { OrderCounts, OrderFilterKey } from '@/types';
+import { OrderCounts } from '@/types';
+import { BillOrderStatus } from '@/types/bill.type';
 
 interface FilterSectionProps {
-  activeFilter: OrderFilterKey;
+  activeFilter: BillOrderStatus;
   orderCounts: OrderCounts;
   hasNotification: boolean;
-  onFilterChange: (filter: OrderFilterKey) => void;
+  onFilterChange: (filter: BillOrderStatus) => void;
 }
 
 const FilterSection: React.FC<FilterSectionProps> = ({
@@ -15,11 +16,11 @@ const FilterSection: React.FC<FilterSectionProps> = ({
   hasNotification,
   onFilterChange,
 }) => {
-  const filterItems: { key: OrderFilterKey; label: string; count: number }[] = [
-    { key: 'order', label: '접수', count: orderCounts.order },
-    { key: 'accept', label: '진행중', count: orderCounts.accept },
-    { key: 'cancel', label: '취소', count: orderCounts.cancel },
-    { key: 'complete', label: '완료', count: orderCounts.complete },
+  const filterItems: { key: BillOrderStatus; label: string; count: number }[] = [
+    { key: 'R', label: '접수', count: orderCounts.R },
+    { key: 'P', label: '진행중', count: orderCounts.P },
+    { key: 'N', label: '취소', count: orderCounts.N },
+    { key: 'Y', label: '완료', count: orderCounts.Y },
   ];
 
   return (
@@ -34,7 +35,7 @@ const FilterSection: React.FC<FilterSectionProps> = ({
         >
           <div className={styles.filterLabel}>
             {item.label}
-            {item.key === 'order' && orderCounts.order > 0 && (
+            {item.key === 'R' && orderCounts.R > 0 && (
               <div className={styles.notificationDot}>
                 <div className={styles.notificationDotBg}>
                   <div className={styles.notificationDotText}>N</div>
@@ -42,7 +43,7 @@ const FilterSection: React.FC<FilterSectionProps> = ({
               </div>
             )}
           </div>
-          {(item.key === 'order' || activeFilter === item.key) && (
+          {(item.key === 'R' || activeFilter === item.key) && (
             <div className={styles.filterCount}>({item.count})</div>
           )}
         </div>

@@ -56,22 +56,22 @@ export const useTableData = ({
         const { x, y, r } = parseXYR(table.tableXyr || '0,0,0');
         const { w, h, p } = parseWHP(table.tableWhp || '1920,1080,1');
 
-        const scale = containerWidth / w;
+        const scale = 1;
         const pageIndex = Math.max(0, Math.floor(p) - 1);
         const pageRow = Math.floor(pageIndex / pageColumns);
         const pageCol = pageIndex % pageColumns;
-        const pageOffsetX = pageCol * w * scale;
-        const pageOffsetY = pageRow * h * scale;
+        const pageOffsetX = pageCol * w;
+        const pageOffsetY = pageRow * h;
 
         return {
-          id: table.tableNo,
+          id: table.tableNo || String(table.tableId ?? ''),
           type: table.tableCd as TableType,
           position: {
-            left: x * scale + pageOffsetX,
-            top: y * scale + pageOffsetY
+            left: x + pageOffsetX,
+            top: y + pageOffsetY
           },
           reservation: null,
-          status: 'empty',
+          status: 'empty' as const,
           rotation: r,
           scale
         } satisfies TableData;

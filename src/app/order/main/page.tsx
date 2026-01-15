@@ -5,15 +5,49 @@ import TableSeat from '@/components/order/main/TableSeat';
 import TableItem from '@/components/order/main/TableItem';
 import styles from '@/styles/pages/order/main.module.scss';
 import OrderHeader from '@/components/order/main/Header';
-import { useTableList } from '@/hooks/api';
+import { useBillListByStatus, useTableList } from '@/hooks/api';
 import { useContainerSize } from '@/hooks/order/useContainerSize';
 import { useTableData } from '@/hooks/order/useTableData';
+import { TableData } from '@/types';
+import { Bill } from '@/types/bill.type';
+
+const formatTime = (value?: string | null): string => {
+  if (!value) return '00:00';
+  const match = value.match(/^(\d{2}):(\d{2})(?::\d{2})?$/);
+  if (match) {
+    return `${match[1]}:${match[2]}`;
+  }
+  const parsed = new Date(value);
+  if (!Number.isNaN(parsed.getTime())) {
+    return parsed.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+  }
+  return value;
+};
 
 const OrderMainPage: React.FC = () => {
   const [isTableMode, setIsTableMode] = useState(true);
   const { data: tableList = [] } = useTableList();
   const containerRef = useRef<HTMLDivElement>(null);
   const containerSize = useContainerSize(containerRef, isTableMode);
+  const { billList = [] } = useBillListByStatus('P', { refetchInterval: 5000 });
+
+  const billByTableId = useMemo(() => {
+    const map = new Map<number, Bill>();
+    billList.forEach((bill) => {
+      if (!bill.tableId) return;
+      const current = map.get(bill.tableId);
+      if (!current) {
+        map.set(bill.tableId, bill);
+        return;
+      }
+      const currentTime = Date.parse(current.modifiedDt || current.createdDt || '');
+      const nextTime = Date.parse(bill.modifiedDt || bill.createdDt || '');
+      if ((Number.isNaN(currentTime) ? 0 : currentTime) <= (Number.isNaN(nextTime) ? 0 : nextTime)) {
+        map.set(bill.tableId, bill);
+      }
+    });
+    return map;
+  }, [billList]);
 
   const handleModeChange = (tableMode: boolean) => {
     setIsTableMode(tableMode);
@@ -24,6 +58,33 @@ const OrderMainPage: React.FC = () => {
     containerWidth: containerSize.width,
     containerHeight: containerSize.height
   });
+
+  const mappedTableData = useMemo<TableData[]>(() => {
+    const tableIdByNo = new Map<string, number>();
+    tableList.forEach((table) => {
+      if (table.tableNo && table.tableId) {
+        tableIdByNo.set(table.tableNo, table.tableId);
+      }
+    });
+
+    return tableData.map((table) => {
+      const tableId = tableIdByNo.get(table.id);
+      const bill = tableId ? billByTableId.get(tableId) : undefined;
+      if (!bill) {
+        return table;
+      }
+
+      return {
+        ...table,
+        reservation: {
+          time: formatTime(bill.bookingTm),
+          name: bill.bookingNm || undefined,
+          group: bill.bookingsNm || undefined,
+        },
+        status: 'occupied' as const,
+      };
+    });
+  }, [tableData, tableList, billByTableId]);
 
   const layoutSize = useMemo(() => {
     if (containerSize.width === 0) {
@@ -43,26 +104,32 @@ const OrderMainPage: React.FC = () => {
       if (Number.isFinite(p) && p > maxPage) maxPage = Math.floor(p);
     });
 
-    const scale = containerSize.width / baseWidth;
     const columns = Math.min(pageColumns, maxPage);
     const rows = Math.ceil(maxPage / pageColumns);
     return {
-      width: baseWidth * scale * columns,
-      height: baseHeight * scale * rows
+      width: baseWidth * columns,
+      height: baseHeight * rows
     };
   }, [containerSize.width, tableList]);
 
   const seatData = useMemo(() => {
-    return tableList.map((table) => ({
-      id: `seat-${table.tableId}`,
-      time: '--:--',
-      customerName: undefined,
-      groupName: undefined,
-      members: undefined,
-      tableNumber: table.tableNo,
-      isEmpty: true
-    }));
-  }, [tableList]);
+    return tableList.map((table) => {
+      const bill = table.tableId ? billByTableId.get(table.tableId) : undefined;
+      const members = bill?.playerList
+        ? bill.playerList.split(',').map((member) => member.trim()).filter(Boolean)
+        : undefined;
+
+      return {
+        id: `seat-${table.tableId}`,
+        time: formatTime(bill?.bookingTm),
+        customerName: bill?.bookingNm || undefined,
+        groupName: bill?.bookingsNm || undefined,
+        members,
+        tableNumber: table.tableNo || '-',
+        isEmpty: !bill
+      };
+    });
+  }, [tableList, billByTableId]);
 
   return (
     <div className={styles.mainPage}>
@@ -80,7 +147,7 @@ const OrderMainPage: React.FC = () => {
               className={styles.layoutSpacer}
               style={{ width: layoutSize.width, height: layoutSize.height }}
             />
-            {tableData.map((table, index) => (
+            {mappedTableData.map((table, index) => (
               <TableItem key={`${table.id}-${index}`} table={table} />
             ))}
           </div>

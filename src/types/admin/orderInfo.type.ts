@@ -45,10 +45,8 @@ export interface InfoCardData {
 
 export interface OrderCounts {
   all: number;
-  order: number;
-  accept: number;
-  complete: number;
-  cancel: number;
+  R: number;
+  P: number;
+  Y: number;
+  N: number;
 }
-
-export type OrderFilterKey = 'order' | 'accept' | 'complete' | 'cancel';

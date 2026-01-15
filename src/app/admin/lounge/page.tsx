@@ -9,19 +9,12 @@ import useUnifiedModal from '@/hooks/admin/useUnifiedModal';
 import { useHorizontalScroll } from '@/hooks/common/useScrollManagement';
 import { useToast } from '@/hooks/common/useToast';
 import { useBillListByStatus, useBookingList, useDeleteBill, useDeleteBillOrderList, usePatchBill, usePatchBillComplete, usePutBillErp, usePostEventMsgSend, useTableList } from '@/hooks/api';
-import { Bill, OrderCounts, OrderFilterKey, ErpLinkSelection } from '@/types';
+import { Bill, OrderCounts, ErpLinkSelection } from '@/types';
 import { BillOrderStatus } from '@/types/bill.type';
 import storage from '@/utils/storage';
 
-const filterStatusMap: Record<OrderFilterKey, BillOrderStatus> = {
-  order: 'R',
-  accept: 'P',
-  complete: 'Y',
-  cancel: 'N',
-};
-
 const Lounge = () => {
-  const [activeFilter, setActiveFilter] = useState<OrderFilterKey>('order');
+  const [activeFilter, setActiveFilter] = useState<BillOrderStatus>('R');
   const [selectedCardIndex, setSelectedCardIndex] = useState<number>(0);
   const [isHeaderExpanded, setIsHeaderExpanded] = useState(true);
   const [isCardScrolled, setIsCardScrolled] = useState(false);
@@ -42,9 +35,9 @@ const Lounge = () => {
   const { data: tableList = [] } = useTableList();
   const { data: bookingList = [] } = useBookingList({ refetchInterval: 5000 });
 
-  const billStatus = filterStatusMap[activeFilter];
+  const billStatus = activeFilter;
   const { billList = [], isLoading } = useBillListByStatus(billStatus, {
-    refetchInterval: activeFilter === 'order' ? 5000 : undefined,
+    refetchInterval: activeFilter === 'R' ? 5000 : undefined,
     enabled: true,
   });
 
@@ -59,7 +52,7 @@ const Lounge = () => {
       .sort()
       .join('|');
     const hasPrevious = previousOrderSignatureRef.current.length > 0;
-    if (hasPrevious && signature !== previousOrderSignatureRef.current && activeFilter !== 'order') {
+    if (hasPrevious && signature !== previousOrderSignatureRef.current && activeFilter !== 'R') {
       setHasNewOrders(true);
     }
     previousOrderSignatureRef.current = signature;
@@ -67,16 +60,16 @@ const Lounge = () => {
 
   const orderCounts: OrderCounts = useMemo(() => ({
     all: orderBills.length + acceptBills.length + completeBills.length + cancelBills.length,
-    order: orderBills.length,
-    accept: acceptBills.length,
-    complete: completeBills.length,
-    cancel: cancelBills.length,
+    R: orderBills.length,
+    P: acceptBills.length,
+    Y: completeBills.length,
+    N: cancelBills.length,
   }), [orderBills, acceptBills, completeBills, cancelBills]);
 
-  const handleFilterChange = (filter: OrderFilterKey) => {
+  const handleFilterChange = (filter: BillOrderStatus) => {
     setActiveFilter(filter);
     setSelectedCardIndex(0);
-    if (filter === 'order') {
+    if (filter === 'R') {
       setHasNewOrders(false);
     }
   };

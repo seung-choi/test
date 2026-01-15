@@ -15,14 +15,17 @@ const TableItem: React.FC<TableItemProps> = ({ table }) => {
   const displayScale = (scale ?? 1) * 1.06;
 
   const handleTableClick = useCallback(() => {
-    if (status === 'empty') return;
-
     const params = new URLSearchParams({
       tableNumber: id,
       groupName: reservation?.group || '',
       customerName: reservation?.name || '',
       time: reservation?.time || ''
     });
+
+    if (status === 'empty') {
+      router.push(`/order/assign?${params.toString()}`);
+      return;
+    }
 
     router.push(`/order/order?${params.toString()}`);
   }, [status, id, reservation, router]);

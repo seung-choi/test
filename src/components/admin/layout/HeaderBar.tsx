@@ -219,7 +219,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onExpandedChange }) => {
           <div
             className={styles.courseSummaryButton}
             style={{
-              backgroundColor: course.courseCol ? `${course.courseCol}33` : 'rgba(219, 0, 0, 0.20)',
+              backgroundColor: course.courseCol ? `${course.courseCol}15` : 'rgba(219, 0, 0, 0.20)',
               outlineColor: course.courseCol || '#CE0A0A',
             }}
           >
@@ -373,7 +373,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onExpandedChange }) => {
               className={styles.courseButton}
               style={{
                 backgroundColor: firstCourse?.courseCol
-                  ? `${firstCourse.courseCol}33`
+                  ? `${firstCourse.courseCol}15`
                   : 'rgba(212, 43, 43, 0.20)',
                 borderColor: firstCourse?.courseCol || '#D42B2B',
               }}
@@ -391,7 +391,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onExpandedChange }) => {
               className={styles.courseButton}
               style={{
                 backgroundColor: secondCourse?.courseCol
-                  ? `${secondCourse.courseCol}33`
+                  ? `${secondCourse.courseCol}15`
                   : 'rgba(255, 213, 0, 0.20)',
                 borderColor: secondCourse?.courseCol || '#FFD500',
               }}

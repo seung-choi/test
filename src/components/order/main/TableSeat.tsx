@@ -23,13 +23,15 @@ const TableSeat: React.FC<TableSeatProps> = ({ seats }) => {
   const router = useRouter();
 
   const handleSeatClick = useCallback((seat: SeatData) => {
-    if (seat.isEmpty) return;
-
     const params = new URLSearchParams({
       tableNumber: seat.tableNumber,
       groupName: seat.groupName || '',
       members: seat.members?.join(',') || ''
     });
+    if (seat.isEmpty) {
+      router.push(`/order/assign?${params.toString()}`);
+      return;
+    }
 
     router.push(`/order/order?${params.toString()}`);
   }, [router]);
