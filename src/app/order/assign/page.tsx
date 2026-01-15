@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import React, { useMemo, useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from '@/styles/pages/order/assign.module.scss';
 import { useBillErpList } from '@/hooks/api';
 
@@ -15,11 +15,19 @@ const formatTime = (value?: string | null): string => {
 };
 
 const OrderAssignPage: React.FC = () => {
+  const isClient = typeof window !== 'undefined';
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const tableNumber = searchParams.get('tableNumber') || '-';
-  const { erpBookingList = [] } = useBillErpList();
+  const [tableNumber, setTableNumber] = useState('-');
+  const { erpBookingList = [] } = useBillErpList({ enabled: isClient });
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!isClient) {
+      return;
+    }
+    const params = new URLSearchParams(window.location.search);
+    setTableNumber(params.get('tableNumber') || '-');
+  }, [isClient]);
 
   const rows = useMemo(() => {
     return erpBookingList.map((booking) => ({

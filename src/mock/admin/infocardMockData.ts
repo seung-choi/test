@@ -6,7 +6,7 @@ export const mockAvailableTables = ['1번', '2번', '3번', '4번', '5번', '6�
 export const mockInfoCards: InfoCardData[] = [
   {
     id: '1',
-    status: 'order',
+    status: 'R',
     tableNumber: '3번',
     customerInfo: {
       name: '김지원',
@@ -23,7 +23,7 @@ export const mockInfoCards: InfoCardData[] = [
     orderHistory: [
       {
         id: 'h1',
-        status: 'accept',
+        status: 'P',
         totalItems: 15,
         orderTime: '14:10',
         orderLocation: 'LAKE 7H',
@@ -36,7 +36,7 @@ export const mockInfoCards: InfoCardData[] = [
       },
       {
         id: 'h2',
-        status: 'accept',
+        status: 'P',
         totalItems: 15,
         orderTime: '14:00',
         orderLocation: 'LAKE 7H',
@@ -58,7 +58,7 @@ export const mockInfoCards: InfoCardData[] = [
   },
   {
     id: '2',
-    status: 'accept',
+    status: 'P',
     tableNumber: '5번',
     customerInfo: {
       name: '이민호',
@@ -73,7 +73,7 @@ export const mockInfoCards: InfoCardData[] = [
     orderHistory: [
       {
         id: 'h3',
-        status: 'accept',
+        status: 'P',
         totalItems: 8,
         orderTime: '15:10',
         orderLocation: 'HILL 5H',
@@ -92,7 +92,7 @@ export const mockInfoCards: InfoCardData[] = [
   },
   {
     id: '3',
-    status: 'complete',
+    status: 'Y',
     tableNumber: '6번',
     customerInfo: {
       name: '박서준',
@@ -107,7 +107,7 @@ export const mockInfoCards: InfoCardData[] = [
     orderHistory: [
       {
         id: 'h4',
-        status: 'accept',
+        status: 'P',
         totalItems: 12,
         orderTime: '13:30',
         orderLocation: 'LAKE 6H',
@@ -120,7 +120,7 @@ export const mockInfoCards: InfoCardData[] = [
       },
       {
         id: 'h5',
-        status: 'accept',
+        status: 'P',
         totalItems: 8,
         orderTime: '13:15',
         orderLocation: 'LAKE 6H',
@@ -138,7 +138,7 @@ export const mockInfoCards: InfoCardData[] = [
   },
   {
     id: '4',
-    status: 'order',
+    status: 'R',
     tableNumber: '3번',
     customerInfo: {
       name: '정유진',
@@ -161,7 +161,7 @@ export const mockInfoCards: InfoCardData[] = [
   },
   {
     id: '5',
-    status: 'cancel',
+    status: 'N',
     tableNumber: '3번',
     customerInfo: {
       name: '김지원',
@@ -185,7 +185,7 @@ export const mockInfoCards: InfoCardData[] = [
   },
   {
     id: '6',
-    status: 'order',
+    status: 'R',
     tableNumber: '8번',
     customerInfo: {
       name: '윤서영',
@@ -202,7 +202,7 @@ export const mockInfoCards: InfoCardData[] = [
     orderHistory: [
       {
         id: 'h6',
-        status: 'accept',
+        status: 'P',
         totalItems: 10,
         orderTime: '16:00',
         orderLocation: 'HILL 8H',
@@ -221,7 +221,7 @@ export const mockInfoCards: InfoCardData[] = [
   },
   {
     id: '7',
-    status: 'accept',
+    status: 'P',
     tableNumber: '10번',
     customerInfo: {
       name: '박준호',
@@ -237,7 +237,7 @@ export const mockInfoCards: InfoCardData[] = [
     orderHistory: [
       {
         id: 'h7',
-        status: 'accept',
+        status: 'P',
         totalItems: 8,
         orderTime: '16:45',
         orderLocation: 'LAKE 10H',
@@ -248,7 +248,7 @@ export const mockInfoCards: InfoCardData[] = [
       },
       {
         id: 'h8',
-        status: 'accept',
+        status: 'P',
         totalItems: 12,
         orderTime: '16:30',
         orderLocation: 'LAKE 10H',
@@ -266,7 +266,7 @@ export const mockInfoCards: InfoCardData[] = [
   },
   {
     id: '8',
-    status: 'complete',
+    status: 'Y',
     tableNumber: '12번',
     customerInfo: {
       name: '최은지',
@@ -282,7 +282,7 @@ export const mockInfoCards: InfoCardData[] = [
     orderHistory: [
       {
         id: 'h9',
-        status: 'complete',
+        status: 'Y',
         totalItems: 12,
         orderTime: '18:15',
         orderLocation: 'HILL 12H',
@@ -302,7 +302,7 @@ export const mockInfoCards: InfoCardData[] = [
   },
   {
     id: '9',
-    status: 'order',
+    status: 'R',
     tableNumber: '1번',
     customerInfo: {
       name: '정우현',
@@ -319,7 +319,7 @@ export const mockInfoCards: InfoCardData[] = [
     orderHistory: [
       {
         id: 'h10',
-        status: 'accept',
+        status: 'P',
         totalItems: 15,
         orderTime: '19:30',
         orderLocation: 'LAKE 1H',
@@ -340,7 +340,7 @@ export const mockInfoCards: InfoCardData[] = [
   },
   {
     id: '10',
-    status: 'cancel',
+    status: 'N',
     tableNumber: '14번',
     customerInfo: {
       name: '김태수',
@@ -356,7 +356,7 @@ export const mockInfoCards: InfoCardData[] = [
     orderHistory: [
       {
         id: 'h11',
-        status: 'cancel',
+        status: 'N',
         totalItems: 20,
         orderTime: '19:45',
         orderLocation: 'HILL 14H',
@@ -378,7 +378,7 @@ export const mockInfoCards: InfoCardData[] = [
   },
   {
     id: '11',
-    status: 'order',
+    status: 'R',
     tableNumber: '2번',
     customerInfo: {
       name: '이승현',
@@ -394,7 +394,7 @@ export const mockInfoCards: InfoCardData[] = [
     orderHistory: [
       {
         id: 'h12',
-        status: 'accept',
+        status: 'P',
         totalItems: 8,
         orderTime: '09:15',
         orderLocation: 'HILL 2H',
@@ -413,7 +413,7 @@ export const mockInfoCards: InfoCardData[] = [
   },
   {
     id: '12',
-    status: 'accept',
+    status: 'P',
     tableNumber: '4번',
     customerInfo: {
       name: '박미영',
@@ -429,7 +429,7 @@ export const mockInfoCards: InfoCardData[] = [
     orderHistory: [
       {
         id: 'h13',
-        status: 'accept',
+        status: 'P',
         totalItems: 6,
         orderTime: '10:45',
         orderLocation: 'LAKE 4H',
@@ -447,7 +447,7 @@ export const mockInfoCards: InfoCardData[] = [
   },
   {
     id: '13',
-    status: 'complete',
+    status: 'Y',
     tableNumber: '7번',
     customerInfo: {
       name: '조현우',
@@ -463,7 +463,7 @@ export const mockInfoCards: InfoCardData[] = [
     orderHistory: [
       {
         id: 'h14',
-        status: 'complete',
+        status: 'Y',
         totalItems: 15,
         orderTime: '16:30',
         orderLocation: 'HILL 7H',
@@ -482,7 +482,7 @@ export const mockInfoCards: InfoCardData[] = [
   },
   {
     id: '14',
-    status: 'order',
+    status: 'R',
     tableNumber: '9번',
     customerInfo: {
       name: '김소희',
@@ -498,7 +498,7 @@ export const mockInfoCards: InfoCardData[] = [
     orderHistory: [
       {
         id: 'h15',
-        status: 'accept',
+        status: 'P',
         totalItems: 10,
         orderTime: '14:00',
         orderLocation: 'LAKE 9H',
@@ -517,7 +517,7 @@ export const mockInfoCards: InfoCardData[] = [
   },
   {
     id: '15',
-    status: 'cancel',
+    status: 'N',
     tableNumber: '11번',
     customerInfo: {
       name: '한지민',
@@ -533,7 +533,7 @@ export const mockInfoCards: InfoCardData[] = [
     orderHistory: [
       {
         id: 'h16',
-        status: 'cancel',
+        status: 'N',
         totalItems: 12,
         orderTime: '18:05',
         orderLocation: 'HILL 11H',
@@ -553,7 +553,7 @@ export const mockInfoCards: InfoCardData[] = [
   },
   {
     id: '16',
-    status: 'accept',
+    status: 'P',
     tableNumber: '13번',
     customerInfo: {
       name: '신동현',
@@ -569,7 +569,7 @@ export const mockInfoCards: InfoCardData[] = [
     orderHistory: [
       {
         id: 'h17',
-        status: 'accept',
+        status: 'P',
         totalItems: 18,
         orderTime: '12:15',
         orderLocation: 'LAKE 13H',
@@ -589,7 +589,7 @@ export const mockInfoCards: InfoCardData[] = [
   },
   {
     id: '17',
-    status: 'complete',
+    status: 'Y',
     tableNumber: '14번',
     customerInfo: {
       name: '오세훈',
@@ -605,7 +605,7 @@ export const mockInfoCards: InfoCardData[] = [
     orderHistory: [
       {
         id: 'h18',
-        status: 'complete',
+        status: 'Y',
         totalItems: 8,
         orderTime: '15:30',
         orderLocation: 'HILL 14H',
@@ -623,7 +623,7 @@ export const mockInfoCards: InfoCardData[] = [
   },
   {
     id: '18',
-    status: 'order',
+    status: 'R',
     tableNumber: '1번',
     customerInfo: {
       name: '강민석',
@@ -639,7 +639,7 @@ export const mockInfoCards: InfoCardData[] = [
     orderHistory: [
       {
         id: 'h19',
-        status: 'accept',
+        status: 'P',
         totalItems: 14,
         orderTime: '10:00',
         orderLocation: 'LAKE 1H',
@@ -658,7 +658,7 @@ export const mockInfoCards: InfoCardData[] = [
   },
   {
     id: '19',
-    status: 'accept',
+    status: 'P',
     tableNumber: '6번',
     customerInfo: {
       name: '윤정아',
@@ -674,7 +674,7 @@ export const mockInfoCards: InfoCardData[] = [
     orderHistory: [
       {
         id: 'h20',
-        status: 'accept',
+        status: 'P',
         totalItems: 10,
         orderTime: '13:05',
         orderLocation: 'HILL 6H',
@@ -693,7 +693,7 @@ export const mockInfoCards: InfoCardData[] = [
   },
   {
     id: '20',
-    status: 'cancel',
+    status: 'N',
     tableNumber: '8번',
     customerInfo: {
       name: '이재범',
@@ -709,7 +709,7 @@ export const mockInfoCards: InfoCardData[] = [
     orderHistory: [
       {
         id: 'h21',
-        status: 'cancel',
+        status: 'N',
         totalItems: 20,
         orderTime: '19:00',
         orderLocation: 'LAKE 8H',
