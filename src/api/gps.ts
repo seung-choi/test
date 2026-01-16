@@ -1,7 +1,7 @@
 import $axios from '@/api/axios';
 import { getOriginURL } from '@/api/API_URL';
 import { API_ENDPOINTS } from '@/api/endpoints';
-import { GpsBookingListType, GpsBookingType } from '@/types/booking.type';
+import { GpsBookingListType, GpsBookingType } from '@/types/api/booking.type';
 
 export const getBookingList = async (): Promise<GpsBookingListType> => {
   const res = await $axios({

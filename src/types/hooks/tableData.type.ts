@@ -1,4 +1,4 @@
-import type { GetTableResponse } from '@/types/table.type';
+import type { GetTableResponse } from '@/types/api/table.type';
 
 export interface TableXYR {
   x: number;

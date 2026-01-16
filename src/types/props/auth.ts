@@ -1,4 +1,4 @@
-import type { FormErrors, LoginFormData } from '@/utils/validation/loginValidation';
+import type { FormErrors, LoginFormData } from '@/utils/validation';
 
 export interface LoginFormProps {
   onSubmit: (data: LoginFormData) => Promise<void>;

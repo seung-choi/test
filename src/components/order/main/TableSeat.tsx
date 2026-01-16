@@ -4,24 +4,30 @@ import React, { memo, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import TableCard from '@/components/common/TableCard';
 import styles from '@/styles/components/order/main/tableSeat.module.scss';
-import type { SeatData, TableSeatProps } from '@/types';
+import type { TableSeatProps } from '@/types';
 
-const TableSeat: React.FC<TableSeatProps> = ({ seats }) => {
+const TableSeat: React.FC<TableSeatProps> = ({ tables, billsByTableId }) => {
   const router = useRouter();
 
-  const handleSeatClick = useCallback((seat: SeatData) => {
+  const handleSeatClick = useCallback((
+    tableNumber: string,
+    tableId: number | undefined,
+    billId: number | undefined,
+    bookingsNm: string,
+    playerList: string[]
+  ) => {
     const params = new URLSearchParams({
-      tableNumber: seat.tableNumber,
-      groupName: seat.groupName || '',
-      members: seat.members?.join(',') || ''
+      tableNumber,
+      bookingsNm,
+      playerList: playerList.join(','),
     });
-    if (typeof seat.tableId === 'number') {
-      params.set('tableId', String(seat.tableId));
+    if (typeof tableId === 'number') {
+      params.set('tableId', String(tableId));
     }
-    if (typeof seat.billId === 'number') {
-      params.set('billId', String(seat.billId));
+    if (typeof billId === 'number') {
+      params.set('billId', String(billId));
     }
-    if (seat.isEmpty) {
+    if (!billId) {
       router.push(`/order/assign?${params.toString()}`);
       return;
     }
@@ -31,19 +37,27 @@ const TableSeat: React.FC<TableSeatProps> = ({ seats }) => {
 
   return (
     <div className={styles.seatsContainer}>
-      {seats.map((seat) => (
-        <TableCard
-          key={seat.id}
-          id={seat.id}
-          time={seat.time}
-          customerName={seat.customerName}
-          groupName={seat.groupName}
-          members={seat.members}
-          tableNumber={seat.tableNumber}
-          isEmpty={seat.isEmpty}
-          onClick={() => handleSeatClick(seat)}
-        />
-      ))}
+      {tables.map((table) => {
+        const bill = table.tableId ? billsByTableId.get(table.tableId) : undefined;
+        const playerList = bill?.playerList
+          ? bill.playerList.split(',').map((member) => member.trim()).filter(Boolean)
+          : [];
+
+        return (
+          <TableCard
+            key={`seat-${table.tableId}`}
+            table={table}
+            bill={bill}
+            onClick={() => handleSeatClick(
+              table.tableNo || '-',
+              table.tableId ?? undefined,
+              bill?.billId,
+              bill?.bookingsNm || '',
+              playerList
+            )}
+          />
+        );
+      })}
     </div>
   );
 };

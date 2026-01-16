@@ -20,9 +20,9 @@ const OrderSidebar: React.FC<OrderSidebarProps> = ({
     const [isPayerDropdownOpen, setIsPayerDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     
-    const totalItems = orderItems.reduce((sum, item) => sum + item.quantity, 0);
+    const totalItems = orderItems.reduce((sum, item) => sum + item.orderCnt, 0);
     const totalAmount = orderItems.reduce(
-        (sum, item) => sum + item.menuItem.goodsAmt * item.quantity,
+        (sum, item) => sum + item.orderAmt * item.orderCnt,
         0
     );
 
@@ -69,7 +69,7 @@ const OrderSidebar: React.FC<OrderSidebarProps> = ({
 
                     <div className={styles.orderInfo}>
                         <div className={styles.groupHeader}>
-                            <div className={styles.groupName}>{tableInfo.groupName}</div>
+                            <div className={styles.groupName}>{tableInfo.bookingNm}({tableInfo.bookingsNm})</div>
                             {!hidePayerSection && (
                                 <div className={styles.payerSection} ref={dropdownRef}>
                                     <button
@@ -83,7 +83,7 @@ const OrderSidebar: React.FC<OrderSidebarProps> = ({
 
                                     {isPayerDropdownOpen && (
                                         <div className={styles.payerDropdown}>
-                                            {tableInfo.memberNames.map((memberName, index) => (
+                                            {tableInfo.playerList.map((memberName, index) => (
                                                 <button
                                                     key={index}
                                                     className={`${styles.payerOption} ${selectedPayer === memberName ? styles.selected : ''}`}
@@ -99,7 +99,7 @@ const OrderSidebar: React.FC<OrderSidebarProps> = ({
                         </div>
                         {!hideMemberNames && (
                             <div className={styles.memberNames}>
-                                {tableInfo.memberNames.join(', ')}
+                                {tableInfo.playerList.join(', ')}
                             </div>
                         )}
                     </div>
@@ -115,22 +115,22 @@ const OrderSidebar: React.FC<OrderSidebarProps> = ({
                                     <div className={styles.itemContent}>
                                         <button
                                             className={styles.deleteButton}
-                                            onClick={() => onQuantityChange(item.menuItem.goodsId, 0)}
+                                            onClick={() => onQuantityChange(item.goodsId, 0)}
                                             aria-label="삭제"
                                         >
                                             <img src="/assets/image/global/x/x-sm.svg" alt="삭제"/>
                                         </button>
                                         <div className={styles.itemDetails}>
                                             <div className={styles.itemHeader}>
-                                                <div className={styles.itemName}>{item.menuItem.goodsNm}</div>
+                                                <div className={styles.itemName}>{item.goods.goodsNm}</div>
                                                 <div className={styles.itemPrice}>
-                                                    {(item.menuItem.goodsAmt * item.quantity).toLocaleString('ko-KR')}원
+                                                    {(item.orderAmt * item.orderCnt).toLocaleString('ko-KR')}원
                                                 </div>
                                             </div>
                                             <QuantityControl
-                                                quantity={item.quantity}
-                                                onIncrease={() => onQuantityChange(item.menuItem.goodsId, item.quantity + 1)}
-                                                onDecrease={() => onQuantityChange(item.menuItem.goodsId, item.quantity - 1)}
+                                                quantity={item.orderCnt}
+                                                onIncrease={() => onQuantityChange(item.goodsId, item.orderCnt + 1)}
+                                                onDecrease={() => onQuantityChange(item.goodsId, item.orderCnt - 1)}
                                                 variant="sidebar"/>
                                         </div>
                                     </div>

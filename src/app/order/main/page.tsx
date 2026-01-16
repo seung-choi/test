@@ -9,9 +9,7 @@ import { useBillListByStatus, useTableList } from '@/hooks/api';
 import { useContainerSize } from '@/hooks/order/useContainerSize';
 import { useTableData } from '@/hooks/order/useTableData';
 import { usePanZoom } from '@/hooks/tableCanvas/usePanZoom';
-import { TableData } from '@/types';
-import { Bill } from '@/types/bill.type';
-import { formatTime } from '@/utils';
+import type { Bill } from '@/types/api/bill.type';
 
 const OrderMainPage: React.FC = () => {
   const [isTableMode, setIsTableMode] = useState(true);
@@ -59,39 +57,6 @@ const OrderMainPage: React.FC = () => {
     containerHeight: containerSize.height
   });
 
-  const mappedTableData = useMemo<TableData[]>(() => {
-    const tableIdByNo = new Map<string, number>();
-    tableList.forEach((table) => {
-      if (table.tableNo && table.tableId) {
-        tableIdByNo.set(table.tableNo, table.tableId);
-      }
-    });
-
-    return tableData.map((table) => {
-      const tableId = tableIdByNo.get(table.id);
-      const bill = tableId ? billByTableId.get(tableId) : undefined;
-      if (!bill) {
-        return table;
-      }
-
-      const members = bill.playerList
-        ? bill.playerList.split(',').map((member) => member.trim()).filter(Boolean)
-        : undefined;
-
-      return {
-        ...table,
-        reservation: {
-          time: formatTime(bill.bookingTm, { emptyValue: '00:00' }),
-          name: bill.bookingNm || undefined,
-          group: bill.bookingsNm || bill.bookingNm || undefined,
-        },
-        members,
-        billId: bill.billId,
-        status: 'occupied' as const,
-      };
-    });
-  }, [tableData, tableList, billByTableId]);
-
   const layoutSize = useMemo(() => {
     if (containerSize.width === 0) {
       return { width: 0, height: 0 };
@@ -118,27 +83,6 @@ const OrderMainPage: React.FC = () => {
     };
   }, [containerSize.width, tableList]);
 
-  const seatData = useMemo(() => {
-    return tableList.map((table) => {
-      const bill = table.tableId ? billByTableId.get(table.tableId) : undefined;
-      const members = bill?.playerList
-        ? bill.playerList.split(',').map((member) => member.trim()).filter(Boolean)
-        : undefined;
-
-      return {
-        id: `seat-${table.tableId}`,
-        tableId: table.tableId ?? undefined,
-        billId: bill?.billId,
-        time: formatTime(bill?.bookingTm, { emptyValue: '00:00' }),
-        customerName: bill?.bookingNm || undefined,
-        groupName: bill?.bookingsNm || undefined,
-        members,
-        tableNumber: table.tableNo || '-',
-        isEmpty: !bill
-      };
-    });
-  }, [tableList, billByTableId]);
-
   return (
     <div className={styles.mainPage}>
       <OrderHeader
@@ -164,13 +108,17 @@ const OrderMainPage: React.FC = () => {
                 height: layoutSize.height,
               }}
             >
-              {mappedTableData.map((table, index) => (
-                <TableItem key={`${table.id}-${index}`} table={table} />
+              {tableData.map((table, index) => (
+                <TableItem
+                  key={`${table.id}-${index}`}
+                  table={table}
+                  bill={table.tableId ? billByTableId.get(table.tableId) : undefined}
+                />
               ))}
             </div>
           </div>
         ) : (
-          <TableSeat seats={seatData} />
+          <TableSeat tables={tableList} billsByTableId={billByTableId} />
         )}
       </div>
     </div>

@@ -5,7 +5,7 @@ import CommonModalLayout from '@/components/admin/modal/CommonModalLayout';
 import commonStyles from '@/styles/components/admin/modal/CommonModal.module.scss';
 import styles from '@/styles/components/admin/modal/ErpLinkModal.module.scss';
 import { useBillErpList } from '@/hooks/api';
-import { ErpBookingResponse, ErpPlayerResponse } from '@/types/bill.type';
+import { ErpBookingResponse, ErpPlayerResponse } from '@/types/api/bill.type';
 import { ErpLinkSelection } from '@/types';
 import { formatTime } from '@/utils';
 import type { ErpLinkModalContentProps } from '@/types';

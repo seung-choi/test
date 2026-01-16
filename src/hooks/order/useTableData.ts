@@ -35,8 +35,6 @@ export const useTableData = ({
             left: x + pageOffsetX,
             top: y + pageOffsetY
           },
-          reservation: null,
-          status: 'empty' as const,
           rotation: r,
           scale
         } satisfies TableData;

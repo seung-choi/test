@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { getShopInfo } from '@/api/shop';
-import { ApiHoleType, CourseType, CourseWithHoles } from '@/types/shop.type';
+import { ApiHoleType, CourseType, CourseWithHoles } from '@/types/api/shop.type';
 import storage from '@/utils/storage';
 
 const getLastThreeHoles = (holeList: ApiHoleType[]): ApiHoleType[] => {

@@ -6,7 +6,7 @@ import commonStyles from '@/styles/components/admin/modal/CommonModal.module.scs
 import styles from '@/styles/components/admin/modal/CancelReasonModal.module.scss';
 import { useCategoryList } from '@/hooks/api';
 import { useToast } from '@/hooks/common/useToast';
-import { BillOrder } from '@/types/bill.type';
+import { BillOrder } from '@/types/api/bill.type';
 import { formatPrice, formatTime } from '@/utils';
 import type { CancelReasonModalContentProps } from '@/types';
 

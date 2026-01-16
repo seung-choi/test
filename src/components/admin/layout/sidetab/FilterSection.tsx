@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '@/styles/components/admin/layout/SideTab.module.scss';
 import { OrderCounts } from '@/types';
-import { BillOrderStatus } from '@/types/bill.type';
+import { BillOrderStatus } from '@/types/api/bill.type';
 import type { FilterSectionProps } from '@/types';
 
 const FilterSection: React.FC<FilterSectionProps> = ({

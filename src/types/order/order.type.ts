@@ -1,5 +1,5 @@
-import type { GetGoodsResponse } from '@/types/goods.type';
-import type { GetOrderHisResponse } from '@/types/bill.type';
+import type { GetGoodsResponse } from '@/types/api/goods.type';
+import type { GetOrderHisResponse, OrderHisRequest } from '@/types/api/bill.type';
 
 export type CategoryType = string;
 
@@ -16,9 +16,8 @@ export interface MenuItemWithOptions extends MenuItem {
   options?: MenuOption[];
 }
 
-export interface OrderItem {
-  menuItem: MenuItem;
-  quantity: number;
+export interface OrderItem extends OrderHisRequest {
+  goods: GetGoodsResponse;
   selectedOptions?: { option: MenuOption; quantity: number }[];
 }
 
@@ -30,6 +29,7 @@ export interface OrderDetailItem extends GetOrderHisResponse {
 
 export interface TableInfo {
   tableNumber: string;
-  groupName: string;
-  memberNames: string[];
+  bookingNm: string;
+  bookingsNm: string;
+  playerList: string[];
 }

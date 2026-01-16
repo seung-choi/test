@@ -4,18 +4,29 @@ import React, { memo, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import TableShape from '@/components/common/TableShape';
 import type { TableItemProps } from '@/types';
+import { formatTime } from '@/utils';
 
-const TableItem: React.FC<TableItemProps> = ({ table }) => {
+const TableItem: React.FC<TableItemProps> = ({ table, bill }) => {
   const router = useRouter();
-  const { id, tableId, billId, members, type, position, reservation, status, rotation, scale } = table;
+  const { id, tableId, type, position, rotation, scale } = table;
   const displayScale = (scale ?? 1) * 1.06;
+  const members = bill?.playerList
+    ? bill.playerList.split(',').map((member) => member.trim()).filter(Boolean)
+    : undefined;
+  const reservation = bill ? {
+    time: formatTime(bill.bookingTm, { emptyValue: '00:00' }),
+    bookingNm: bill.bookingNm ?? undefined,
+    bookingsNm: bill.bookingsNm ?? undefined,
+  } : undefined;
+  const status = bill ? 'occupied' as const : 'empty' as const;
+  const billId = bill?.billId;
 
   const handleTableClick = useCallback(() => {
     const params = new URLSearchParams({
       tableNumber: id,
-      groupName: reservation?.group || '',
-      customerName: reservation?.name || '',
-      time: reservation?.time || ''
+      bookingsNm: reservation?.bookingsNm || '',
+      bookingNm: reservation?.bookingNm || '',
+      bookingTm: reservation?.time || '',
     });
     if (typeof tableId === 'number') {
       params.set('tableId', String(tableId));
@@ -24,7 +35,7 @@ const TableItem: React.FC<TableItemProps> = ({ table }) => {
       params.set('billId', String(billId));
     }
     if (members && members.length > 0) {
-      params.set('members', members.join(','));
+      params.set('playerList', members.join(','));
     }
 
     if (status === 'empty') {
@@ -33,7 +44,7 @@ const TableItem: React.FC<TableItemProps> = ({ table }) => {
     }
 
     router.push(`/order/order?${params.toString()}`);
-  }, [status, id, reservation, router, tableId, billId]);
+  }, [status, id, reservation, router, tableId, billId, members]);
 
   return (
     <TableShape

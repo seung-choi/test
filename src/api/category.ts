@@ -1,7 +1,7 @@
 import $axios from '@/api/axios';
 import { getOriginURL } from '@/api/API_URL';
 import { API_ENDPOINTS } from '@/api/endpoints';
-import type { CategoryApiType, GetCategoryResponse, PostCategoryRequest } from '@/types/category.type';
+import type { CategoryApiType, GetCategoryResponse, PostCategoryRequest } from '@/types/api/category.type';
 
 export type { CategoryApiType, GetCategoryResponse, PostCategoryRequest };
 

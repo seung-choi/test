@@ -10,7 +10,7 @@ import { useHorizontalScroll } from '@/hooks/common/useScrollManagement';
 import { useToast } from '@/hooks/common/useToast';
 import { useBillListByStatus, useBookingList, useDeleteBill, useDeleteBillOrderList, usePatchBill, usePatchBillComplete, usePutBillErp, usePostEventMsgSend, useTableList } from '@/hooks/api';
 import { Bill, OrderCounts, ErpLinkSelection } from '@/types';
-import { BillOrderStatus } from '@/types/bill.type';
+import { BillOrderStatus } from '@/types/api/bill.type';
 import storage from '@/utils/storage';
 
 const Lounge = () => {

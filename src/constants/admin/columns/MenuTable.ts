@@ -9,12 +9,12 @@ import {
     renderText,
     renderDragHandle
 } from "@/utils/admin/tableRenderers";
-import { MenuStatus } from '@/constants/admin/menuStatus';
+import type { GoodsStatus } from '@/types/api/goods.type';
 
 interface MenuTableColumnsParams {
     selectedItems: string[];
     handleItemSelect: (itemId: string, checked: boolean) => void;
-    handleStatusChange?: (itemId: string, status: MenuStatus) => void;
+    handleStatusChange?: (itemId: string, status: GoodsStatus) => void;
     handleEdit?: (itemId: string) => void;
     isReorderMode?: boolean;
 }
@@ -34,67 +34,67 @@ export const getMenuTableColumns = ({
         render: isReorderMode ? renderDragHandle() : renderCheckbox(selectedItems, handleItemSelect),
     },
     {
-        key: 'image',
+        key: 'goodsImg',
         label: '이미지',
         width: '9%',
         render: renderImage,
     },
     {
-        key: 'code',
+        key: 'goodsErp',
         label: '코드',
         width: '6.7%',
         render: renderText,
     },
     {
-        key: 'category',
+        key: 'categoryNm',
         label: '분류',
         width: '6%',
         render: renderText,
     },
     {
-        key: 'name',
+        key: 'goodsNm',
         label: '메뉴명',
         width: '15%',
         render: renderText,
     },
     {
-        key: 'price',
+        key: 'goodsAmt',
         label: '금액',
         width: '8.4%',
         render: renderPrice,
     },
     {
-        key: 'tags',
+        key: 'goodsTag',
         label: '태그',
         width: '10%',
         render: renderTags,
     },
     {
-        key: 'cookingTime',
+        key: 'goodsTm',
         label: '조리시간',
         width: '9%',
         render: renderText,
     },
     {
-        key: 'status',
+        key: 'goodsSt',
         label: '상태',
         width: '7.9%',
         render: renderStatusSelector(handleStatusChange),
     },
     {
-        key: 'channels',
+        key: 'goodsCh',
         label: '채널',
         width: '7%',
         render: renderChannelTags,
     },
     {
-        key: 'types',
+        key: 'goodsOp',
         label: '유형',
         width: '7%',
         render: renderChannelTags,
     },
     {
-        key: 'registerDate',
+        key: 'createdDt',
         label: '등록일',
         width: '10%',
         render: renderText,

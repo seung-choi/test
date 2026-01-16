@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react';
 import type { CategoryType, MenuItem, MenuItemWithOptions, MenuOption, OrderItem, TableInfo } from '@/types/order/order.type';
 import type { TableData } from '@/types/order/tableSeat.type';
+import type { Bill } from '@/types/api/bill.type';
+import type { GetTableResponse } from '@/types/api/table.type';
 
 export interface OrderHeaderProps {
   isTableMode: boolean;
@@ -31,22 +33,12 @@ export interface OrderHeaderShellProps {
 
 export interface TableItemProps {
   table: TableData;
-}
-
-export interface SeatData {
-  id: string;
-  tableId?: number;
-  billId?: number;
-  time: string;
-  customerName?: string;
-  groupName?: string;
-  members?: string[];
-  tableNumber: string;
-  isEmpty: boolean;
+  bill?: Bill;
 }
 
 export interface TableSeatProps {
-  seats: SeatData[];
+  tables: GetTableResponse[];
+  billsByTableId: Map<number, Bill>;
 }
 
 export interface MenuGridProps {

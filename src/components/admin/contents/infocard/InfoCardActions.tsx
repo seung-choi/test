@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from '@/styles/components/admin/contents/InfoCard.module.scss';
-import { BillOrderStatus } from '@/types/bill.type';
+import { BillOrderStatus } from '@/types/api/bill.type';
 import { formatPrice } from '@/utils';
 import type { InfoCardActionsProps } from '@/types';
 

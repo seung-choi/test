@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from '@/styles/pages/order/assign.module.scss';
 import OrderHeaderShell from '@/components/order/common/OrderHeaderShell';
@@ -36,15 +36,6 @@ const OrderAssignPage: React.FC = () => {
       setTableId(null);
     }
   }, [isClient]);
-
-  const rows = useMemo(() => {
-    return erpBookingList.map((booking) => ({
-      teeOff: formatTime(booking.bookingTm),
-      players: booking.playerList?.map((player) => player.playerNm).join(', ') || '-',
-      caddy: booking.caddyNm || '-',
-      group: booking.bookingsNm || '-',
-    }));
-  }, [erpBookingList]);
 
   const handleBack = () => {
     router.push('/order/main');
@@ -86,7 +77,7 @@ const OrderAssignPage: React.FC = () => {
         onSuccess: (data) => {
           const params = new URLSearchParams({
             tableNumber,
-            groupName: trimmed,
+            bookingsNm: trimmed,
             manual: '1',
           });
           if (data?.billId) {
@@ -124,14 +115,15 @@ const OrderAssignPage: React.FC = () => {
           <div className={styles.colGroup}>단체명</div>
         </div>
         <div className={styles.tableBody}>
-          {rows.length === 0 ? (
+          {erpBookingList.length === 0 ? (
             <div className={styles.emptyState}>지정 가능한 내장객이 없습니다</div>
           ) : (
-            rows.map((row, index) => {
+            erpBookingList.map((booking, index) => {
               const isSelected = selectedIndex === index;
+              const players = booking.playerList?.map((player) => player.playerNm).join(', ') || '-';
               return (
                 <button
-                  key={`${row.teeOff}-${index}`}
+                  key={`${booking.bookingNm ?? 'booking'}-${index}`}
                   type="button"
                   className={`${styles.tableRow} ${isSelected ? styles.selectedRow : ''}`}
                   onClick={() => setSelectedIndex(index)}
@@ -139,10 +131,10 @@ const OrderAssignPage: React.FC = () => {
                   <div className={styles.colSelect}>
                     <span className={`${styles.radio} ${isSelected ? styles.radioOn : styles.radioOff}`} />
                   </div>
-                  <div className={styles.colTime}>{row.teeOff}</div>
-                  <div className={styles.colPlayers}>{row.players}</div>
-                  <div className={styles.colCaddy}>{row.caddy}</div>
-                  <div className={styles.colGroup}>{row.group}</div>
+                  <div className={styles.colTime}>{formatTime(booking.bookingTm)}</div>
+                  <div className={styles.colPlayers}>{players}</div>
+                  <div className={styles.colCaddy}>{booking.caddyNm || '-'}</div>
+                  <div className={styles.colGroup}>{booking.bookingsNm || '-'}</div>
                 </button>
               );
             })

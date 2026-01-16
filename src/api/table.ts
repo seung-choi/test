@@ -6,7 +6,7 @@ import type {
   PostTableRequest,
   PutTableRequest,
   PatchTableRequest,
-} from '@/types/table.type';
+} from '@/types/api/table.type';
 
 export type { GetTableResponse, PostTableRequest, PutTableRequest, PatchTableRequest };
 

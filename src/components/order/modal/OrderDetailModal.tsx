@@ -32,13 +32,13 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
   const orderItemsWithTime: OrderDetailItem[] = useMemo(() => {
     if (orderList.length === 0) {
       return orderItems.map((item, index) => ({
-        orderNo: item.menuItem.goodsId,
-        goodsId: item.menuItem.goodsId,
-        goodsNm: item.menuItem.goodsNm,
+        orderNo: item.goodsId,
+        goodsId: item.goodsId,
+        goodsNm: item.goods.goodsNm,
         orderOrd: index + 1,
-        orderCnt: item.quantity,
-        orderAmt: item.menuItem.goodsAmt,
-        orderTake: 'N',
+        orderCnt: item.orderCnt,
+        orderAmt: item.orderAmt,
+        orderTake: item.orderTake ?? 'N',
         createdDt: '',
         modifiedDt: '',
         orderTime: '00:00',

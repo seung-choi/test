@@ -6,11 +6,11 @@ import Table from '@/components/admin/common/Table';
 import {getSalesTableColumns} from "@/constants";
 import SalesFilterActionBar from "@/components/admin/drawer/setting/SalesInquiryActionBar";
 import { SalesFilter } from '@/types';
-import { exportSalesToExcel } from '@/utils/admin/excel/salesExcelExporter';
+import { exportSalesToExcel } from '@/utils/excel/salesExcelExporter';
 import { formatTime } from '@/utils';
 import LayoutManager from '@/components/admin/drawer/setting/canvas/LayoutManager';
 import { useInfiniteBillList } from '@/hooks/api';
-import type { Bill } from '@/types/bill.type';
+import type { Bill } from '@/types/api/bill.type';
 
 const getBillStatus = (billSt: string) => {
     switch (billSt) {

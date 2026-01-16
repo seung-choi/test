@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import styles from '@/styles/components/admin/drawer/canvas/draggableTableItem.module.scss';
 import { PlacedTable } from '@/types';
 import TableShape from '@/components/common/TableShape';
-import { isPositionValid, getTableDimensions } from '@/utils/tableCollision';
+import { isPositionValid, getTableDimensions } from '@/utils/tableShape/tableCollision';
 import { useClickOutside } from '@/hooks/common/useClickOutside';
 import type { DraggableTableItemProps } from '@/types';
 

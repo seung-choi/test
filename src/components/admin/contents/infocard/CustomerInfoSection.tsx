@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '@/styles/components/admin/contents/InfoCard.module.scss';
 import { CustomerInfo } from '@/types';
-import { getTagAltText, getTagImage } from '@/utils/tagUtils';
+import { getTagAltText, getTagImage } from '@/utils/tag';
 import type { CustomerInfoSectionProps } from '@/types';
 
 const CustomerInfoSection: React.FC<CustomerInfoSectionProps> = ({

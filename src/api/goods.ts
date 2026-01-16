@@ -9,7 +9,7 @@ import type {
   ErpGoodsListResponse,
   PostGoodsRequest,
   PutGoodsRequest,
-} from '@/types/goods.type';
+} from '@/types/api/goods.type';
 
 export type { GoodsChannel, GoodsOption, GoodsStatus, GetGoodsResponse, ErpGoodsListResponse, PostGoodsRequest, PutGoodsRequest };
 

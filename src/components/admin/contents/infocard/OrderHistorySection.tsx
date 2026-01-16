@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '@/styles/components/admin/contents/InfoCard.module.scss';
 import { OrderHistory } from '@/types';
-import { BillOrderStatus } from '@/types/bill.type';
+import { BillOrderStatus } from '@/types/api/bill.type';
 import type { OrderHistorySectionProps } from '@/types';
 
 const getStatusLabel = (status: BillOrderStatus, cancelReason?: string): string => {

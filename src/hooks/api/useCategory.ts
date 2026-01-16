@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getCategoryList, getCategoryErpList, postCategoryList } from '@/api/category';
-import type { CategoryApiType, PostCategoryRequest } from '@/types/category.type';
+import type { CategoryApiType, PostCategoryRequest } from '@/types/api/category.type';
 
 export const useCategoryList = (
   categoryType: CategoryApiType,
@@ -41,6 +41,11 @@ export const usePostCategoryList = () => {
       postCategoryList(categoryType, data),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['categoryList', variables.categoryType] });
+      queryClient.invalidateQueries({ queryKey: ['categoryErpList'] });
+      // 카테고리 변경 시 관련 상품 목록도 갱신
+      if (variables.categoryType === 'CATEGORY') {
+        queryClient.invalidateQueries({ queryKey: ['goodsList'] });
+      }
     },
   });
 };

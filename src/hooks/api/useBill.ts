@@ -19,7 +19,7 @@ import {
   PutBillRequest,
   DeleteBillRequest,
   DeleteBillListRequest,
-} from '@/types/bill.type';
+} from '@/types/api/bill.type';
 
 export const useInfiniteBillList = (params?: Omit<GetBillParams, 'page'>, options?: {
   enabled?: boolean;
@@ -141,6 +141,8 @@ export const usePostBill = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['billList'] });
       queryClient.invalidateQueries({ queryKey: ['billListByStatus'] });
+      queryClient.invalidateQueries({ queryKey: ['infiniteBillList'] });
+      queryClient.invalidateQueries({ queryKey: ['billErpList'] });
     },
   });
 };
@@ -154,6 +156,7 @@ export const usePostBillOrder = () => {
       queryClient.invalidateQueries({ queryKey: ['billList'] });
       queryClient.invalidateQueries({ queryKey: ['billListByStatus'] });
       queryClient.invalidateQueries({ queryKey: ['billOrderList'] });
+      queryClient.invalidateQueries({ queryKey: ['infiniteBillList'] });
     },
   });
 };
@@ -167,6 +170,8 @@ export const usePutBillErp = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['billList'] });
       queryClient.invalidateQueries({ queryKey: ['billListByStatus'] });
+      queryClient.invalidateQueries({ queryKey: ['infiniteBillList'] });
+      queryClient.invalidateQueries({ queryKey: ['billErpList'] });
     },
   });
 };
@@ -180,6 +185,7 @@ export const usePatchBill = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['billList'] });
       queryClient.invalidateQueries({ queryKey: ['billListByStatus'] });
+      queryClient.invalidateQueries({ queryKey: ['infiniteBillList'] });
     },
   });
 };
@@ -192,6 +198,7 @@ export const usePatchBillComplete = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['billList'] });
       queryClient.invalidateQueries({ queryKey: ['billListByStatus'] });
+      queryClient.invalidateQueries({ queryKey: ['infiniteBillList'] });
     },
   });
 };
@@ -205,6 +212,8 @@ export const useDeleteBill = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['billList'] });
       queryClient.invalidateQueries({ queryKey: ['billListByStatus'] });
+      queryClient.invalidateQueries({ queryKey: ['infiniteBillList'] });
+      queryClient.invalidateQueries({ queryKey: ['billErpList'] });
     },
   });
 };
@@ -219,6 +228,7 @@ export const useDeleteBillOrderList = () => {
       queryClient.invalidateQueries({ queryKey: ['billList'] });
       queryClient.invalidateQueries({ queryKey: ['billListByStatus'] });
       queryClient.invalidateQueries({ queryKey: ['billOrderList'] });
+      queryClient.invalidateQueries({ queryKey: ['infiniteBillList'] });
     },
   });
 };

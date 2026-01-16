@@ -1,7 +1,7 @@
 import $axios from '@/api/axios';
 import { getOriginURL } from '@/api/API_URL';
 import { API_ENDPOINTS } from '@/api/endpoints';
-import { EventMessageHistoryItem, PostEventMsgRequest } from '@/types/event.type';
+import { EventMessageHistoryItem, PostEventMsgRequest } from '@/types/api/event.type';
 
 export const postEventMsgSend = async (data: PostEventMsgRequest): Promise<void> => {
   const formData = new FormData();

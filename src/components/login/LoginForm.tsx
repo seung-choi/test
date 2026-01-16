@@ -2,7 +2,7 @@
 
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import styles from '@/styles/pages/login/login.module.scss';
-import { LoginFormData, FormErrors, isFormEmpty } from '@/utils/validation/loginValidation';
+import { LoginFormData, FormErrors, isFormEmpty } from '@/utils/validation';
 import Checkbox from '@/components/common/Checkbox';
 import storage from '@/utils/storage';
 import type { LoginFormProps } from '@/types';

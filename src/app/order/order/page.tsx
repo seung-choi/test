@@ -50,13 +50,15 @@ const OrderPageContent: React.FC = () => {
 
   const tableInfo: TableInfo = useMemo(() => {
     const tableNumberParam = searchParams.get('tableNumber');
-    const groupName = searchParams.get('groupName') || '';
-    const membersParam = searchParams.get('members');
+    const bookingNm = searchParams.get('bookingNm') || '';
+    const bookingsNm = searchParams.get('bookingsNm') || '';
+    const membersParam = searchParams.get('playerList');
 
     return {
       tableNumber: tableNumberParam || '-',
-      groupName,
-      memberNames: isManual ? [] : (membersParam ?? '').split(',').filter(Boolean),
+      bookingNm,
+      bookingsNm,
+      playerList: isManual ? [] : (membersParam ?? '').split(',').filter(Boolean),
     };
   }, [isManual, searchParams]);
 
@@ -94,17 +96,27 @@ const OrderPageContent: React.FC = () => {
 
   const handleMenuClick = useCallback((item: MenuItem) => {
     setOrderItems((prev) => {
-      const existingItem = prev.find((orderItem) => orderItem.menuItem.goodsId === item.goodsId);
+      const existingItem = prev.find((orderItem) => orderItem.goodsId === item.goodsId);
 
       if (existingItem) {
         return prev.map((orderItem) =>
-          orderItem.menuItem.goodsId === item.goodsId
-            ? { ...orderItem, quantity: orderItem.quantity + 1 }
+          orderItem.goodsId === item.goodsId
+            ? { ...orderItem, orderCnt: orderItem.orderCnt + 1 }
             : orderItem
         );
       }
 
-      return [...prev, { menuItem: item, quantity: 1 }];
+      return [
+        ...prev,
+        {
+          goods: item,
+          goodsId: item.goodsId,
+          orderCnt: 1,
+          orderAmt: item.goodsAmt,
+          orderOrd: 0,
+          orderTake: DEFAULT_ORDER_TAKE,
+        },
+      ];
     });
   }, []);
 
@@ -123,17 +135,17 @@ const OrderPageContent: React.FC = () => {
     }
 
     const billIdValue = billId ?? undefined;
-    const payerName = selectedPayer || tableInfo.groupName || '-';
+    const payerName = selectedPayer || tableInfo.bookingsNm || '-';
     const orderAmt = orderItems.reduce(
-      (sum, item) => sum + item.menuItem.goodsAmt * item.quantity,
+      (sum, item) => sum + item.orderAmt * item.orderCnt,
       0
     );
     const orderHisList = orderItems.map((item, index) => ({
-      goodsId: item.menuItem.goodsId,
+      goodsId: item.goodsId,
       orderOrd: index + 1,
-      orderCnt: item.quantity,
-      orderAmt: item.menuItem.goodsAmt,
-      orderTake: DEFAULT_ORDER_TAKE,
+      orderCnt: item.orderCnt,
+      orderAmt: item.orderAmt,
+      orderTake: item.orderTake,
     }));
 
     postBillOrder(
@@ -152,7 +164,7 @@ const OrderPageContent: React.FC = () => {
         },
       }
     );
-  }, [orderItems, selectedPayer, showToast, postBillOrder, tableInfo.groupName, memoText, billId]);
+  }, [orderItems, selectedPayer, showToast, postBillOrder, tableInfo.bookingsNm, memoText, billId]);
 
   const handleDetailClick = useCallback(() => {
     setIsDetailModalOpen(true);
@@ -160,12 +172,12 @@ const OrderPageContent: React.FC = () => {
 
   const handleQuantityChange = useCallback((itemId: number, newQuantity: number) => {
     if (newQuantity <= 0) {
-      setOrderItems((prev) => prev.filter((item) => item.menuItem.goodsId !== itemId));
+      setOrderItems((prev) => prev.filter((item) => item.goodsId !== itemId));
     } else {
       setOrderItems((prev) =>
         prev.map((item) =>
-          item.menuItem.goodsId === itemId
-            ? { ...item, quantity: newQuantity }
+          item.goodsId === itemId
+            ? { ...item, orderCnt: newQuantity }
             : item
         )
       );

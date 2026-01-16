@@ -1,6 +1,8 @@
 import type { CSSProperties, ReactNode, MouseEvent } from 'react';
 import type { TableType } from '@/types/admin/layout.type';
 import type { TableReservation } from '@/utils/tableShape/types';
+import type { Bill } from '@/types/api/bill.type';
+import type { GetTableResponse } from '@/types/api/table.type';
 
 export interface CustomSelectOption {
   value: string;
@@ -48,13 +50,8 @@ export interface ErpToastProps {
 }
 
 export interface TableCardProps {
-  id: string;
-  time?: string;
-  customerName?: string;
-  groupName?: string;
-  members?: string[];
-  tableNumber: string;
-  isEmpty: boolean;
+  table: GetTableResponse;
+  bill?: Bill;
   onClick?: () => void;
   variant?: 'default' | 'compact';
   className?: string;

@@ -2,7 +2,7 @@
 
 import React, {useMemo} from 'react';
 import styles from '@/styles/components/admin/contents/InfoCard.module.scss';
-import {Bill, BillOrderStatus} from '@/types/bill.type';
+import {Bill, BillOrderStatus} from '@/types/api/bill.type';
 import {CustomerInfo, OrderHistory, OrderItemSummary} from '@/types';
 import {useHistoryExpansion} from '@/hooks/admin/useHistoryExpansion';
 import { useTableSelection } from '@/hooks/admin/useTableSelection';

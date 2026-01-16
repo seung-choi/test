@@ -16,18 +16,8 @@ import { getMenuTableColumns } from '@/constants/admin/columns/MenuTable';
 import { drawerState } from '@/lib/recoil';
 import useUnifiedModal from '@/hooks/admin/useUnifiedModal';
 import { MenuTableRow, ProductFormData } from '@/types';
-import { MenuStatus } from '@/constants/admin/menuStatus';
+import type { GoodsStatus } from '@/types/api/goods.type';
 import { useGoodsList, usePatchGoodsOrderList, useDeleteGoodsList, usePatchGoodsStatus } from '@/hooks/api';
-import {
-  mapGoodsStatus,
-  mapGoodsChannels,
-  mapGoodsTypes,
-  mapGoodsTags,
-  mapMenuStatusToGoods,
-  mapMenuChannelsToGoods,
-  mapMenuTypesToGoods,
-  mapMenuTagsToGoods,
-} from '@/utils/mappers/goodsMappers';
 import { useToast } from '@/hooks/common/useToast';
 import type { MenuManagementProps } from '@/types';
 
@@ -47,30 +37,9 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
   const { mutateAsync: patchGoodsStatus } = usePatchGoodsStatus();
   const { showToast } = useToast();
 
-  const mappedMenuData = useMemo<MenuTableRow[]>(
-    () =>
-      goodsList.map((goods) => ({
-        id: goods.goodsId,
-        store: '-',
-        image: goods.goodsImg || '',
-        code: goods.goodsErp || '',
-        categoryId: goods.categoryId,
-        category: goods.categoryNm || '',
-        name: goods.goodsNm || '',
-        price: goods.goodsAmt ?? 0,
-        tags: mapGoodsTags(goods.goodsTag),
-        cookingTime: goods.goodsTm ?? 0,
-        status: mapGoodsStatus(goods.goodsSt),
-        channels: mapGoodsChannels(goods.goodsCh),
-        types: mapGoodsTypes(goods.goodsOp),
-        registerDate: goods.createdDt,
-      })),
-    [goodsList]
-  );
-
   useEffect(() => {
-    setMenuData(mappedMenuData);
-  }, [mappedMenuData]);
+    setMenuData(goodsList.map((goods) => ({ ...goods, id: goods.goodsId })));
+  }, [goodsList]);
 
   useEffect(() => {
     onSelectionChange?.(selectedItems.length > 0);
@@ -115,10 +84,10 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
     const itemsToDelete = menuData
       .filter(item => selectedItems.includes(String(item.id)))
       .map(item => ({
-        code: item.code || '',
-        category: item.category || '',
-        name: item.name || '',
-        price: item.price
+        code: item.goodsErp || '',
+        category: item.categoryNm || '',
+        name: item.goodsNm || '',
+        price: item.goodsAmt
       }));
 
     openDeleteConfirmModal(
@@ -147,7 +116,7 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
     handleCommitReorder: async () => {
       if (menuData.length === 0) return;
       const orderData = menuData.map((item, index) => ({
-        goodsId: item.id,
+        goodsId: item.goodsId,
         goodsOrd: index + 1
       }));
       await patchGoodsOrderList(orderData);
@@ -160,38 +129,37 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
     if (!menuItem) return;
 
     const initialData: ProductFormData = {
-      goodsId: menuItem.id,
+      goodsId: menuItem.goodsId,
       categoryId: menuItem.categoryId ?? 0,
-      categoryNm: menuItem.category || '',
-      goodsNm: menuItem.name || '',
-      goodsAmt: menuItem.price || 0,
-      goodsCnt: '1',
-      goodsCh: mapMenuChannelsToGoods(menuItem.channels),
-      goodsOp: mapMenuTypesToGoods(menuItem.types),
-      goodsTm: menuItem.cookingTime || 0,
-      goodsImg: menuItem.image || '',
-      goodsTag: mapMenuTagsToGoods(menuItem.tags),
-      goodsSt: mapMenuStatusToGoods(menuItem.status as MenuStatus),
-      goodsErp: menuItem.code || '',
-      createdDt: menuItem?.registerDate || '',
+      categoryNm: menuItem.categoryNm || '',
+      goodsNm: menuItem.goodsNm || '',
+      goodsAmt: menuItem.goodsAmt ?? 0,
+      goodsCnt: menuItem.goodsCnt,
+      goodsCh: menuItem.goodsCh,
+      goodsOp: menuItem.goodsOp,
+      goodsTm: menuItem.goodsTm ?? 0,
+      goodsImg: menuItem.goodsImg || '',
+      goodsTag: menuItem.goodsTag || '',
+      goodsSt: menuItem.goodsSt,
+      goodsErp: menuItem.goodsErp || '',
+      createdDt: menuItem?.createdDt || '',
     };
 
     openEditProductModal(initialData);
   };
 
-  const handleStatusChange = async (itemId: string, status: MenuStatus) => {
+  const handleStatusChange = async (itemId: string, status: GoodsStatus) => {
     try {
       const goodsId = Number(itemId);
-      const goodsStatus = mapMenuStatusToGoods(status);
 
-      await patchGoodsStatus({ goodsId, goodsSt: goodsStatus });
+      await patchGoodsStatus({ goodsId, goodsSt: status });
 
       setMenuData(prevData => {
         return prevData.map(item => {
           if (String(item.id) === itemId) {
             return {
               ...item,
-              status: status
+              goodsSt: status
             };
           }
           return item;
@@ -219,8 +187,8 @@ const MenuManagement = forwardRef<MenuManagementRef, MenuManagementProps>(({ onC
     const searchTerm = drawer.menuSearchTerm.toLowerCase();
     return menuData.filter(
       (item) =>
-        item.name?.toLowerCase().includes(searchTerm) ||
-        item.code?.toLowerCase().includes(searchTerm)
+        item.goodsNm?.toLowerCase().includes(searchTerm) ||
+        item.goodsErp?.toLowerCase().includes(searchTerm)
     );
   }, [drawer.menuSearchTerm, menuData]);
 

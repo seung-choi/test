@@ -1,7 +1,7 @@
 import $axios from '@/api/axios';
 import { getOriginURL } from '@/api/API_URL';
 import { API_ENDPOINTS } from '@/api/endpoints';
-import type { LoginFormAPI, LoginResponseAPI } from '@/types/auth.type';
+import type { LoginFormAPI, LoginResponseAPI } from '@/types/api/auth.type';
 
 export type { LoginFormAPI, LoginResponseAPI };
 

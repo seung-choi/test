@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getEventMsgHisList, postEventMsgSend } from '@/api/event';
-import { PostEventMsgRequest } from '@/types/event.type';
+import { PostEventMsgRequest } from '@/types/api/event.type';
 
 export const useEventMsgHisList = (options?: { enabled?: boolean; refetchInterval?: number }) => {
   const { data, isLoading, error, refetch } = useQuery({

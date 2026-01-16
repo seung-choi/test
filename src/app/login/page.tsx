@@ -9,9 +9,9 @@ import {
     FormErrors,
     validateLoginForm,
     hasErrors
-} from '@/utils/validation/loginValidation';
+} from '@/utils/validation';
 import { useLogin, useMenuHisList } from '@/hooks/api';
-import type { LoginResponseAPI } from '@/types/auth.type';
+import type { LoginResponseAPI } from '@/types/api/auth.type';
 import storage from '@/utils/storage';
 
 const LoginPage: React.FC = () => {

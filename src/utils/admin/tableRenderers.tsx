@@ -1,8 +1,11 @@
 import React, {useState} from 'react';
 import styles from '@/styles/components/admin/common/Table.module.scss';
 import { getTagClass } from '@/constants/admin/tags/menuTags';
-import {formatDate, formatPrice} from "@/utils/common/formatDataUtils";
-import { MENU_STATUS_OPTIONS, getMenuStatusStyle, MenuStatus } from '@/constants/admin/menuStatus';
+import {formatDate, formatPrice} from "@/utils/format";
+import { GOODS_STATUS_OPTIONS, GOODS_STATUS_MAP, getMenuStatusStyle, MenuStatus } from '@/constants/admin/menuStatus';
+import { GOODS_CHANNEL_MAP, GOODS_TYPE_MAP } from '@/constants/admin/goodsOptions';
+import type { GoodsChannel, GoodsOption, GoodsStatus } from '@/types/api/goods.type';
+import { mapGoodsTags } from '@/utils/mappers/goodsMappers';
 import CustomSelect from '@/components/common/CustomSelect';
 import type { TableRowData } from '@/types';
 
@@ -44,11 +47,12 @@ export const renderImage = (value: string | number | string[] | boolean | undefi
             );
         }
 
+        const altText = String(row.name || row.goodsNm || '이미지');
         return (
             <div className={styles.menuImage}>
                 <img
                     src={imageUrl}
-                    alt={row.name || '이미지'}
+                    alt={altText}
                     onError={() => setImageError(true)}
                 />
             </div>
@@ -59,7 +63,11 @@ export const renderImage = (value: string | number | string[] | boolean | undefi
 };
 
 export const renderTags = (value: string | number | string[] | boolean | undefined, row: TableRowData) => {
-  const tags = Array.isArray(value) ? value : [];
+  const tags = Array.isArray(value)
+    ? value
+    : typeof value === 'string'
+      ? mapGoodsTags(value)
+      : [];
   return (
     <div className={styles.tagsContainer}>
       {tags.map((tag, index) => (
@@ -72,21 +80,26 @@ export const renderTags = (value: string | number | string[] | boolean | undefin
 };
 
 export const renderStatusSelector = (
-  onStatusChange?: (itemId: string, status: MenuStatus) => void
+  onStatusChange?: (itemId: string, status: GoodsStatus) => void
 ) => (value: string | number | string[] | boolean | undefined, row: TableRowData) => {
-  const status = (typeof value === 'string' ? value : 'TEMP') as MenuStatus;
+  const goodsStatus = (typeof value === 'string' ? value : 'N') as GoodsStatus;
+  const statusLabel = GOODS_STATUS_MAP[goodsStatus] ?? GOODS_STATUS_MAP.N;
   return (
     <CustomSelect
-      value={status}
-      onChange={(newValue) => onStatusChange?.(String(row.id), newValue as MenuStatus)}
-      options={MENU_STATUS_OPTIONS.map((status) => ({ value: status, label: status }))}
-      className={`${styles.statusSelector} ${styles[getMenuStatusStyle(status)]}`}
+      value={goodsStatus}
+      onChange={(newValue) => onStatusChange?.(String(row.id), newValue as GoodsStatus)}
+      options={GOODS_STATUS_OPTIONS.map((option) => ({ value: option.value, label: option.label }))}
+      className={`${styles.statusSelector} ${styles[getMenuStatusStyle(statusLabel)]}`}
     />
   );
 };
 
 export const renderChannelTags = (value: string | number | string[] | boolean | undefined, row: TableRowData) => {
-  const items = Array.isArray(value) ? value : [];
+  const items = Array.isArray(value)
+    ? value
+    : typeof value === 'string'
+      ? (GOODS_CHANNEL_MAP[value as GoodsChannel] ?? GOODS_TYPE_MAP[value as GoodsOption] ?? [value])
+      : [];
   return (
     <div className={styles.channelTags}>
       {items.map((item, index) => (

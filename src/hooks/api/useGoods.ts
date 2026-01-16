@@ -9,7 +9,7 @@ import {
   patchGoodsOrderList,
   deleteGoodsList,
 } from '@/api/goods';
-import type { PostGoodsRequest, PutGoodsRequest, GoodsStatus } from '@/types/goods.type';
+import type { PostGoodsRequest, PutGoodsRequest, GoodsStatus } from '@/types/api/goods.type';
 
 export const useGoodsList = (options?: {
   refetchInterval?: number;
@@ -46,6 +46,7 @@ export const usePostGoods = () => {
     mutationFn: (data: PostGoodsRequest) => postGoodsInfo(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['goodsList'] });
+      queryClient.invalidateQueries({ queryKey: ['goodsErpList'] });
     },
   });
 };
@@ -58,6 +59,7 @@ export const usePutGoods = () => {
       putGoodsInfo(goodsId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['goodsList'] });
+      queryClient.invalidateQueries({ queryKey: ['goodsErpList'] });
     },
   });
 };
@@ -82,6 +84,7 @@ export const usePatchGoodsStatus = () => {
       patchGoodsStatusInfo(goodsId, goodsSt),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['goodsList'] });
+      queryClient.invalidateQueries({ queryKey: ['goodsErpList'] });
     },
   });
 };
@@ -94,6 +97,7 @@ export const usePatchGoodsOrderList = () => {
       patchGoodsOrderList(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['goodsList'] });
+      queryClient.invalidateQueries({ queryKey: ['goodsErpList'] });
     },
   });
 };
@@ -105,6 +109,7 @@ export const useDeleteGoodsList = () => {
     mutationFn: (goodsIdList: number[]) => deleteGoodsList(goodsIdList),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['goodsList'] });
+      queryClient.invalidateQueries({ queryKey: ['goodsErpList'] });
     },
   });
 };

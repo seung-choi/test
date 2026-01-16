@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import CommonModalLayout from '@/components/admin/modal/CommonModalLayout';
 import commonStyles from '@/styles/components/admin/modal/CommonModal.module.scss';
 import styles from '@/styles/components/admin/modal/ErpSearchModal.module.scss';
-import { ErpProduct, ErpSearchType } from '@/types/erp.type';
+import { ErpProduct, ErpSearchType } from '@/types/api/erp.type';
 import CustomSelect from '@/components/common/CustomSelect';
 import { formatPrice } from '@/utils';
 import { useGoodsErpList, usePutGoodsErpList } from '@/hooks/api';

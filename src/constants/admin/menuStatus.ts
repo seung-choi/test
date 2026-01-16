@@ -1,4 +1,4 @@
-import type { GoodsStatus } from '@/types/goods.type';
+import type { GoodsStatus } from '@/types/api/goods.type';
 
 export const MENU_STATUS = {
     ON_SALE: '판매',

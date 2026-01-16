@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { postLogin, patchLogin, getMenuHisList } from '@/api/auth';
-import type { LoginFormAPI } from '@/types/auth.type';
+import type { LoginFormAPI } from '@/types/api/auth.type';
 
 export const useLogin = () => {
   return useMutation({

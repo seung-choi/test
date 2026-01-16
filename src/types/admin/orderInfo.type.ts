@@ -1,4 +1,4 @@
-import { BillOrderStatus, OrderTake } from '@/types/bill.type';
+import { BillOrderStatus, OrderTake } from '@/types/api/bill.type';
 
 export interface OrderItemSummary {
   name: string;

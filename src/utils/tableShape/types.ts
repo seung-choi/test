@@ -2,8 +2,8 @@ import { TableType } from '@/types';
 
 export interface TableReservation {
   time: string;
-  name?: string;
-  group?: string;
+  bookingNm?: string;
+  bookingsNm?: string;
 }
 
 export interface TableDimensions {

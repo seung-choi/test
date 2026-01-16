@@ -1,4 +1,4 @@
-import type { GoodsChannel, GoodsOption } from '@/types/goods.type';
+import type { GoodsChannel, GoodsOption } from '@/types/api/goods.type';
 
 export const GOODS_CHANNEL = {
     COS: 'COS',

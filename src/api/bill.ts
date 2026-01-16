@@ -13,7 +13,7 @@ import {
   GetOrderResponse,
   ErpBookingResponse,
   Bill,
-} from '@/types/bill.type';
+} from '@/types/api/bill.type';
 
 export const getBillList = async (params?: GetBillParams): Promise<GetBillResponse> => {
   const res = await $axios({

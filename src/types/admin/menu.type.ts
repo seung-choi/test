@@ -1,19 +1,6 @@
-import { MenuStatus } from '@/constants/admin/menuStatus';
+import type { GetGoodsResponse } from '@/types/api/goods.type';
 
-export interface MenuTableRow {
+export type MenuTableRow = GetGoodsResponse & {
   id: number;
-  store: string;
-  image?: string;
-  code?: string;
-  categoryId?: number;
-  category?: string;
-  name?: string;
-  price: number;
-  tags?: string[];
-  cookingTime: number;
-  status: MenuStatus;
-  channels?: string[];
-  types?: string[];
-  registerDate: string;
-  [key: string]: string | number | string[] | boolean | undefined | MenuStatus;
-}
+  [key: string]: string | number | string[] | boolean | undefined;
+};

@@ -7,7 +7,7 @@ import {
   patchTableOrder,
   deleteTableInfo,
 } from '@/api/table';
-import type { PostTableRequest, PutTableRequest, PatchTableRequest } from '@/types/table.type';
+import type { PostTableRequest, PutTableRequest, PatchTableRequest } from '@/types/api/table.type';
 
 export const useTableList = (options?: {
   refetchInterval?: number;
@@ -44,6 +44,7 @@ export const usePostTable = () => {
     mutationFn: (data: PostTableRequest) => postTableInfo(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tableList'] });
+      queryClient.invalidateQueries({ queryKey: ['tableErpList'] });
     },
   });
 };
@@ -55,6 +56,7 @@ export const usePutTableList = () => {
     mutationFn: (data: PutTableRequest[]) => putTableList(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tableList'] });
+      queryClient.invalidateQueries({ queryKey: ['tableErpList'] });
     },
   });
 };
@@ -66,6 +68,7 @@ export const usePatchTableOrder = () => {
     mutationFn: (data: PatchTableRequest[]) => patchTableOrder(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tableList'] });
+      queryClient.invalidateQueries({ queryKey: ['tableErpList'] });
     },
   });
 };
@@ -77,6 +80,7 @@ export const useDeleteTable = () => {
     mutationFn: (tableId: number) => deleteTableInfo(tableId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tableList'] });
+      queryClient.invalidateQueries({ queryKey: ['tableErpList'] });
     },
   });
 };

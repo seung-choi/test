@@ -1,19 +1,19 @@
 import type { CSSProperties, ReactNode, RefObject } from 'react';
-import type { Bill, BillOrder } from '@/types/bill.type';
-import type { GpsBookingType } from '@/types/booking.type';
+import type { Bill, BillOrder } from '@/types/api/bill.type';
+import type { GpsBookingType } from '@/types/api/booking.type';
 import type { CustomerInfo, OrderHistory, OrderItemSummary, OrderCounts } from '@/types/admin/orderInfo.type';
 import type { TableOption } from '@/types/admin/tableSelection.type';
 import type { SalesFilter, SalesStats } from '@/types/admin/setting.types';
 import type { CancelReason, DeleteItem } from '@/types/admin/modal.type';
-import type { ErpProduct } from '@/types/erp.type';
+import type { ErpProduct } from '@/types/api/erp.type';
 import type { TableRowData } from '@/types';
 import type { PlacedTable, TableType } from '@/types/admin/layout.type';
 import type { GetTableResponse } from '@/api/table';
-import type { BillOrderStatus } from '@/types/bill.type';
+import type { BillOrderStatus } from '@/types/api/bill.type';
 import type { ProductFormData } from '@/types/admin/modal.type';
 import type { ErpLinkSelection } from '@/types/admin/modal.type';
 import type { NotificationOption } from '@/hooks/common/useNotificationStorage';
-import type { MessageFormData } from '@/types/message.type';
+import type { MessageFormData } from '@/types/api/message.type';
 
 export interface InfoCardProps {
   bill: Bill;
