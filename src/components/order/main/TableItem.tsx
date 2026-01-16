@@ -11,7 +11,7 @@ interface TableItemProps {
 
 const TableItem: React.FC<TableItemProps> = ({ table }) => {
   const router = useRouter();
-  const { id, type, position, reservation, status, rotation, scale } = table;
+  const { id, tableId, type, position, reservation, status, rotation, scale } = table;
   const displayScale = (scale ?? 1) * 1.06;
 
   const handleTableClick = useCallback(() => {
@@ -21,6 +21,9 @@ const TableItem: React.FC<TableItemProps> = ({ table }) => {
       customerName: reservation?.name || '',
       time: reservation?.time || ''
     });
+    if (typeof tableId === 'number') {
+      params.set('tableId', String(tableId));
+    }
 
     if (status === 'empty') {
       router.push(`/order/assign?${params.toString()}`);
@@ -28,7 +31,7 @@ const TableItem: React.FC<TableItemProps> = ({ table }) => {
     }
 
     router.push(`/order/order?${params.toString()}`);
-  }, [status, id, reservation, router]);
+  }, [status, id, reservation, router, tableId]);
 
   return (
     <TableShape

@@ -6,11 +6,13 @@ import storage from '@/utils/storage';
 
 interface MessageButtonProps {
   hasNotification?: boolean;
+  isTablet?: boolean;
   onNotificationClear?: () => void;
 }
 
 const MessageButton: React.FC<MessageButtonProps> = ({
   hasNotification = false,
+  isTablet = false,
   onNotificationClear,
 }) => {
   const [showPopover, setShowPopover] = useState(false);
@@ -53,7 +55,7 @@ const MessageButton: React.FC<MessageButtonProps> = ({
 
   const getButtonStyle = () => {
     const baseStyle = {
-      height: '2.5rem',
+      height: isTablet ? '1.825rem' : '2.5rem',
       alignItems: 'center' as const,
     };
 

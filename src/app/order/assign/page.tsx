@@ -3,7 +3,10 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from '@/styles/pages/order/assign.module.scss';
-import { useBillErpList } from '@/hooks/api';
+import OrderHeaderShell from '@/components/order/common/OrderHeaderShell';
+import ManualRegisterModal from '@/components/order/modal/ManualRegisterModal';
+import { useBillErpList, usePostBill } from '@/hooks/api';
+import { useToast } from '@/hooks/common/useToast';
 
 const formatTime = (value?: string | null): string => {
   if (!value) return '-';
@@ -18,8 +21,14 @@ const OrderAssignPage: React.FC = () => {
   const isClient = typeof window !== 'undefined';
   const router = useRouter();
   const [tableNumber, setTableNumber] = useState('-');
+  const [tableId, setTableId] = useState<number | null>(null);
   const { erpBookingList = [] } = useBillErpList({ enabled: isClient });
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [isManualModalOpen, setIsManualModalOpen] = useState(false);
+  const [manualName, setManualName] = useState('');
+  const [manualError, setManualError] = useState(false);
+  const { showToast } = useToast();
+  const { mutate: postBill, isPending: isPosting } = usePostBill();
 
   useEffect(() => {
     if (!isClient) {
@@ -27,6 +36,13 @@ const OrderAssignPage: React.FC = () => {
     }
     const params = new URLSearchParams(window.location.search);
     setTableNumber(params.get('tableNumber') || '-');
+    const tableIdParam = params.get('tableId');
+    if (tableIdParam) {
+      const parsed = Number(tableIdParam);
+      setTableId(Number.isFinite(parsed) ? parsed : null);
+    } else {
+      setTableId(null);
+    }
   }, [isClient]);
 
   const rows = useMemo(() => {
@@ -42,16 +58,67 @@ const OrderAssignPage: React.FC = () => {
     router.push('/order/main');
   };
 
+  const handleManualOpen = () => {
+    setManualName('');
+    setManualError(false);
+    setIsManualModalOpen(true);
+  };
+
+  const handleManualClose = () => {
+    setIsManualModalOpen(false);
+  };
+
+  const handleManualSubmit = () => {
+    const trimmed = manualName.trim();
+    if (!trimmed) {
+      setManualError(true);
+      showToast('테이블명을 입력해주세요.', 'error');
+      return;
+    }
+    if (!tableId) {
+      showToast('테이블 정보가 없습니다.', 'error');
+      return;
+    }
+
+    postBill(
+      {
+        tableId,
+        bookingNm: trimmed,
+        bookingId: null,
+        bookingTm: null,
+        bookingsNm: null,
+        bookingErp: null,
+        playerList: null,
+      },
+      {
+        onSuccess: () => {
+          const params = new URLSearchParams({
+            tableNumber,
+            groupName: trimmed,
+            members: '',
+          });
+          setIsManualModalOpen(false);
+          router.push(`/order/order?${params.toString()}`);
+        },
+      }
+    );
+  };
+
   return (
     <div className={styles.assignPage}>
-      <header className={styles.header}>
-        <button type="button" className={styles.backButton} onClick={handleBack} aria-label="뒤로가기">
-          <img src='/assets/image/global/arrow/arrow-back.svg' alt={'뒤로가기'}/>
-        </button>
-        <div className={styles.title}>테이블 지정</div>
-        <div className={styles.tableNumber}>{tableNumber}</div>
-        <button type="button" className={styles.secondaryButton}>별도 등록</button>
-      </header>
+      <OrderHeaderShell
+        variant="assign"
+        left={(
+          <>
+            <button type="button" className={styles.backButton} onClick={handleBack} aria-label="뒤로가기">
+              <img src='/assets/image/global/arrow/arrow-back.svg' alt={'뒤로가기'}/>
+            </button>
+            <div className={styles.title}>테이블 지정</div>
+          </>
+        )}
+        center={<div className={styles.tableNumber}>{tableNumber}</div>}
+        right={<button type="button" className={styles.secondaryButton} onClick={handleManualOpen}>별도 등록</button>}
+      />
 
       <div className={styles.content}>
         <div className={styles.tableHeader}>
@@ -91,6 +158,19 @@ const OrderAssignPage: React.FC = () => {
       <div className={styles.footer}>
         <button type="button" className={styles.primaryButton}>등록</button>
       </div>
+
+      <ManualRegisterModal
+        isOpen={isManualModalOpen}
+        value={manualName}
+        onChange={(value) => {
+          setManualName(value);
+          if (manualError) setManualError(false);
+        }}
+        onClose={handleManualClose}
+        onSubmit={handleManualSubmit}
+        isSubmitting={isPosting}
+        hasError={manualError}
+      />
     </div>
   );
 };

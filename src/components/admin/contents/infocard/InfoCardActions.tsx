@@ -24,7 +24,7 @@ const InfoCardActions: React.FC<InfoCardActionsProps> = ({
 }) => {
   const handleAcceptOrder = () => {
     if (onAcceptOrder) {
-      onAcceptOrder(selectedTableId ?? null);
+      onAcceptOrder(selectedTableId ?? 0);
     }
   };
   const isCompleteStatus = status === 'Y';

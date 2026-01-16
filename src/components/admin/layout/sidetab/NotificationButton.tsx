@@ -4,11 +4,13 @@ import { NotificationOption } from '@/hooks/common/useNotificationStorage';
 
 interface NotificationButtonProps {
   notificationOption: NotificationOption;
+  isTablet?: boolean;
   onOptionChange: (option: NotificationOption) => void;
 }
 
 const NotificationButton: React.FC<NotificationButtonProps> = ({
   notificationOption,
+  isTablet = false,
   onOptionChange,
 }) => {
   const [showPopover, setShowPopover] = useState(false);
@@ -57,7 +59,7 @@ const NotificationButton: React.FC<NotificationButtonProps> = ({
       className={styles.menuItem}
       ref={buttonRef}
       onClick={handleClick}
-      style={{ height: '2.5rem', alignItems: 'center' }}
+      style={{ height: isTablet ? '1.825rem' : '2.5rem', alignItems: 'center' }}
     >
       <div className={styles.menuIcon}>
         <img src="/assets/image/admin/layout/side-bar/notification.svg" alt="logo" />

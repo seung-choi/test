@@ -67,13 +67,13 @@ export interface GetBillParams {
 }
 
 export interface PostBillRequest {
-  bookingId?: number;
+  bookingId?: number | null;
   tableId: number;
   bookingNm: string;
-  bookingTm?: string;
-  bookingsNm?: string;
-  bookingErp?: string;
-  playerList?: string;
+  bookingTm?: string | null;
+  bookingsNm?: string | null;
+  bookingErp?: string | null;
+  playerList?: string | null;
 }
 
 export interface PostBillResponse {

@@ -7,6 +7,7 @@ import styles from '@/styles/components/order/main/tableSeat.module.scss';
 
 interface SeatData {
   id: string;
+  tableId?: number;
   time: string;
   customerName?: string;
   groupName?: string;
@@ -28,6 +29,9 @@ const TableSeat: React.FC<TableSeatProps> = ({ seats }) => {
       groupName: seat.groupName || '',
       members: seat.members?.join(',') || ''
     });
+    if (typeof seat.tableId === 'number') {
+      params.set('tableId', String(seat.tableId));
+    }
     if (seat.isEmpty) {
       router.push(`/order/assign?${params.toString()}`);
       return;

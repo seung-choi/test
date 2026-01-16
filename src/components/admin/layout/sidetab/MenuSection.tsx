@@ -57,11 +57,13 @@ const MenuSection: React.FC<MenuSectionProps> = ({
 
       <MessageButton
         hasNotification={hasMenuNotification}
+        isTablet={isTablet}
         onNotificationClear={onMessageNotificationClear}
       />
 
       <NotificationButton
         notificationOption={notificationOption}
+        isTablet={isTablet}
         onOptionChange={onNotificationChange}
       />
 

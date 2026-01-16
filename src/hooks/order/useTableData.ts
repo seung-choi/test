@@ -64,6 +64,7 @@ export const useTableData = ({
 
         return {
           id: table.tableNo || String(table.tableId ?? ''),
+          tableId: table.tableId ?? undefined,
           type: table.tableCd as TableType,
           position: {
             left: x + pageOffsetX,

@@ -20,6 +20,7 @@
     transition: outline 0.2s;
     @include tablet {
       height: 40px;
+      padding: 0 10px;
     }
 
     &:hover {
@@ -31,7 +32,7 @@
       font-size: 22px;
       font-weight: 400;
       @include tablet {
-        font-size: 18px;
+        font-size: 16px;
       }
     }
 

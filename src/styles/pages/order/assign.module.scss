@@ -10,38 +10,25 @@
   flex-direction: column;
 }
 
-.header {
-  height: 137px;
-  background: #3A3C56;
-  display: flex;
-  align-items: center;
-  padding: 0 40px;
-  position: relative;
-  color: white;
-}
-
 .backButton {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   background: transparent;
   border: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  margin-right: 24px;
+  margin-right: 16px;
 }
 
 .title {
-  font-size: 45px;
+  font-size: 38px;
   font-weight: 600;
 }
 
 .tableNumber {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 50px;
+  font-size: 40px;
   font-weight: 600;
 }
 
@@ -51,8 +38,8 @@
   color: white;
   border: none;
   border-radius: 50px;
-  padding: 7px 22px;
-  font-size: 27px;
+  padding: 6px 20px;
+  font-size: 24px;
   font-weight: 600;
   cursor: pointer;
 }

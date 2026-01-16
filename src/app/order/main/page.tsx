@@ -121,6 +121,7 @@ const OrderMainPage: React.FC = () => {
 
       return {
         id: `seat-${table.tableId}`,
+        tableId: table.tableId ?? undefined,
         time: formatTime(bill?.bookingTm),
         customerName: bill?.bookingNm || undefined,
         groupName: bill?.bookingsNm || undefined,

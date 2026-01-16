@@ -1,0 +1,165 @@
+@import '@/styles/common/mixins.scss';
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes modalSlideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.96);
+  }
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 30;
+  backdrop-filter: blur(2px);
+  animation: fadeIn 0.2s ease-out;
+
+  &.closing {
+    animation: fadeOut 0.2s ease-out;
+  }
+
+  .modalContainer {
+    animation: modalSlideIn 0.25s ease-out;
+  }
+
+  &.closing .modalContainer {
+    animation: modalSlideOut 0.2s ease-out;
+  }
+}
+
+.modalContainer {
+  width: 1000px;
+  max-width: 92vw;
+  background: white;
+  border-radius: 40px;
+  padding: 0 0 40px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.titleBar {
+  width: 520px;
+  height: 82px;
+  margin: 0 auto;
+  background: #6600FF;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 15px 10px;
+}
+
+.title {
+  color: white;
+  font-size: 40px;
+  font-weight: 800;
+}
+
+.body {
+  padding: 64px 54px 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.nameInput {
+  width: 100%;
+  max-width: 901px;
+  height: 118px;
+  border-radius: 10px;
+  background: #F3F3F3;
+  border: 1px solid transparent;
+  text-align: center;
+  font-size: 32px;
+  font-weight: 400;
+  color: #1F1F1F;
+  padding: 0 24px;
+
+  &::placeholder {
+    color: #969595;
+  }
+}
+
+.nameInputError {
+  border-color: #FF6B6B;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 0 60px;
+}
+
+.closeButton {
+  height: 81px;
+  min-width: 260px;
+  padding: 18px 60px;
+  background: #D9D9D9;
+  border-radius: 20px;
+  border: none;
+  font-size: 35px;
+  font-weight: 800;
+  color: #666666;
+  cursor: pointer;
+}
+
+.submitButton {
+  height: 81px;
+  min-width: 380px;
+  padding: 18px 60px;
+  background: #D5C3ED;
+  border-radius: 30px;
+  border: none;
+  font-size: 35px;
+  font-weight: 800;
+  color: #9081D8;
+  cursor: pointer;
+}
+
+.submitButtonActive {
+  background: #6600FF;
+  color: white;
+}
+
+.submitButton:disabled {
+  cursor: not-allowed;
+}
