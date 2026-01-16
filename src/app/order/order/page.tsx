@@ -9,7 +9,6 @@ import OrderSidebar from '@/components/order/order/OrderSidebar';
 import MemoModal from '@/components/order/modal/MemoModal';
 import OrderDetailModal from '@/components/order/modal/OrderDetailModal';
 import { CategoryType, MenuItem, OrderItem, TableInfo } from '@/types';
-import { mockTableInfo, mockOrderItems } from '@/data/mockOrderData';
 import { useScrollToTop } from '@/hooks/common/useScrollManagement';
 import { useToast } from '@/hooks/common/useToast';
 import { useGoodsList, useCategoryList, usePostBillOrder } from '@/hooks/api';
@@ -54,20 +53,20 @@ const OrderPageContent: React.FC = () => {
   }, [goodsList]);
 
   const tableInfo: TableInfo = useMemo(() => {
-    const tableNumber = searchParams.get('tableNumber');
-    const groupName = searchParams.get('groupName');
+    const tableNumberParam = searchParams.get('tableNumber');
+    const groupName = searchParams.get('groupName') || '';
     const membersParam = searchParams.get('members');
     const isManual = searchParams.get('manual') === '1';
 
-    if (tableNumber && groupName && (membersParam || isManual)) {
-      return {
-        tableNumber: parseInt(tableNumber.replace('T', '')) || mockTableInfo.tableNumber,
-        groupName: groupName,
-        memberNames: isManual ? [] : (membersParam ?? '').split(',').filter(Boolean),
-      };
-    }
+    const numericTableNumber = tableNumberParam
+      ? Number(tableNumberParam.replace('T', ''))
+      : 0;
 
-    return mockTableInfo;
+    return {
+      tableNumber: Number.isFinite(numericTableNumber) ? numericTableNumber : 0,
+      groupName,
+      memberNames: isManual ? [] : (membersParam ?? '').split(',').filter(Boolean),
+    };
   }, [searchParams]);
 
   const handleCategoryChange = useCallback((category: CategoryType) => {
@@ -165,11 +164,6 @@ const OrderPageContent: React.FC = () => {
     setIsDetailModalOpen(true);
   }, []);
 
-  const handleOrderModify = useCallback(() => {
-    // TODO: 주문 수정 로직
-    setIsDetailModalOpen(false);
-  }, []);
-
   const handleQuantityChange = useCallback((itemId: string, newQuantity: number) => {
     if (newQuantity <= 0) {
       setOrderItems((prev) => prev.filter((item) => item.menuItem.id !== itemId));
@@ -247,7 +241,6 @@ const OrderPageContent: React.FC = () => {
         onClose={() => setIsDetailModalOpen(false)}
         orderItems={orderItems}
         onQuantityChange={handleQuantityChange}
-        onOrderModify={handleOrderModify}
       />
     </div>
   );

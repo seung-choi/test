@@ -32,6 +32,13 @@ const MenuSection: React.FC<MenuSectionProps> = ({
         router.push('/order/main');
     };
 
+    const getButtonStyle = () => {
+        return {
+            height: isTablet ? '1.825rem' : '2.5rem',
+            alignItems: 'center' as const,
+        };
+    };
+
     return (
     <div className={styles.menuSection}>
       <div className={`${styles.menuItem} ${styles.activeMenuItem}`} onClick={handleRouterClick}>
@@ -68,7 +75,7 @@ const MenuSection: React.FC<MenuSectionProps> = ({
       />
 
       {!isTablet && (
-        <div className={styles.menuItem} onClick={onFullscreenToggle} style={{ height: '2.5rem', alignItems: 'center' }}>
+        <div className={styles.menuItem} onClick={onFullscreenToggle} style={getButtonStyle()}>
           <div className={styles.menuIcon}>
             <img src="/assets/image/admin/layout/side-bar/view.svg" alt="logo" />
           </div>

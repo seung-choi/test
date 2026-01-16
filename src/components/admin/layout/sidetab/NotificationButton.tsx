@@ -54,12 +54,19 @@ const NotificationButton: React.FC<NotificationButtonProps> = ({
     setShowPopover(false);
   };
 
+  const getButtonStyle = () => {
+    return {
+      height: isTablet ? '1.825rem' : '2.5rem',
+      alignItems: 'center' as const,
+    };
+  };
+
   return (
     <div
       className={styles.menuItem}
       ref={buttonRef}
       onClick={handleClick}
-      style={{ height: isTablet ? '1.825rem' : '2.5rem', alignItems: 'center' }}
+      style={getButtonStyle()}
     >
       <div className={styles.menuIcon}>
         <img src="/assets/image/admin/layout/side-bar/notification.svg" alt="logo" />

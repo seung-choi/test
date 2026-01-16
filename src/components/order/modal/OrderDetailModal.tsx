@@ -12,7 +12,6 @@ interface OrderDetailModalProps {
   onClose: () => void;
   orderItems: OrderItem[];
   onQuantityChange: (itemId: string, newQuantity: number) => void;
-  onOrderModify: () => void;
 }
 
 interface OrderItemWithTime extends OrderItem {
@@ -27,7 +26,6 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
   onClose,
   orderItems,
   onQuantityChange,
-  onOrderModify,
 }) => {
   const [selectedTime, setSelectedTime] = useState('전체');
   const [deletedItems, setDeletedItems] = useState<Set<string>>(new Set());
@@ -105,13 +103,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
 
   const footer = (
     <>
-      <button
-        className={styles.modifyButton}
-        onClick={onOrderModify}
-        disabled={!hasChanges}
-      >
-        주문 수정
-      </button>
+      <div/>
       <div className={styles.totalInfo}>
         <span className={styles.totalCount}>총 {totalItems}개</span>
         <span className={styles.totalAmount}>
