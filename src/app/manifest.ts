@@ -10,6 +10,7 @@ export default function manifest(): MetadataRoute.Manifest {
     scope: "/",
     id: "/",
     display: "fullscreen",
+    display_override: ["fullscreen", "standalone"],
     background_color: "#F2F8FF",
     theme_color: "#6600FF",
     icons: [
@@ -22,6 +23,7 @@ export default function manifest(): MetadataRoute.Manifest {
         src: "/icons/icon-180.png",
         sizes: "180x180",
         type: "image/png",
+        purpose: "any maskable",
       },
     ],
   };

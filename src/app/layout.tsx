@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   themeColor: "#6600FF",
   appleWebApp: {
     capable: true,
-    statusBarStyle: "default",
+    statusBarStyle: "black-translucent",
     title: "Vgolf FNB",
   },
   icons: {
