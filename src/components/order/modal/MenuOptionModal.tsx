@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import BaseModal from './BaseModal';
 import styles from '@/styles/components/order/modal/MenuOptionModal.module.scss';
-import { MenuItem, MenuOption } from '@/types';
 import QuantityControl from '@/components/order/common/QuantityControl';
 import type { MenuOptionModalProps } from '@/types';
 
@@ -63,7 +62,7 @@ const MenuOptionModal: React.FC<MenuOptionModalProps> = ({
   );
 
   return (
-    <BaseModal isOpen={isOpen} onClose={onClose} title={menuItem.name} footer={footer}>
+    <BaseModal isOpen={isOpen} onClose={onClose} title={menuItem.goodsNm} footer={footer}>
       <div className={styles.optionContent}>
         <div className={styles.topGradient} />
         <div className={styles.optionsGrid}>

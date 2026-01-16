@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import type { CategoryType, MenuItem, MenuOption, OrderItem, TableInfo } from '@/types/order/order.type';
+import type { CategoryType, MenuItem, MenuItemWithOptions, MenuOption, OrderItem, TableInfo } from '@/types/order/order.type';
 import type { TableData } from '@/types/order/tableSeat.type';
 
 export interface OrderHeaderProps {
@@ -67,7 +67,7 @@ export interface OrderSidebarProps {
   onMemoClick: () => void;
   onOrderClick: () => void;
   onDetailClick: () => void;
-  onQuantityChange: (itemId: string, newQuantity: number) => void;
+  onQuantityChange: (itemId: number, newQuantity: number) => void;
   selectedPayer?: string;
   onPayerSelect?: (payerName: string) => void;
   hidePayerSection?: boolean;
@@ -87,15 +87,15 @@ export interface ManualRegisterModalProps {
 export interface MenuOptionModalProps {
   isOpen: boolean;
   onClose: () => void;
-  menuItem: MenuItem | null;
-  onAddToOrder: (menuItem: MenuItem, selectedOptions: { option: MenuOption; quantity: number }[]) => void;
+  menuItem: MenuItemWithOptions | null;
+  onAddToOrder: (menuItem: MenuItemWithOptions, selectedOptions: { option: MenuOption; quantity: number }[]) => void;
 }
 
 export interface OrderDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
   orderItems: OrderItem[];
-  onQuantityChange: (itemId: string, newQuantity: number) => void;
+  onQuantityChange: (itemId: number, newQuantity: number) => void;
   billId?: number | null;
 }
 

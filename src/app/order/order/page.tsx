@@ -8,11 +8,13 @@ import MenuGrid from '@/components/order/order/MenuGrid';
 import OrderSidebar from '@/components/order/order/OrderSidebar';
 import MemoModal from '@/components/order/modal/MemoModal';
 import OrderDetailModal from '@/components/order/modal/OrderDetailModal';
-import type { OrderTake } from '@/types';
 import { CategoryType, MenuItem, OrderItem, TableInfo } from '@/types';
+import type { OrderTake } from '@/types';
 import { useScrollToTop } from '@/hooks/common/useScrollManagement';
 import { useToast } from '@/hooks/common/useToast';
 import { useGoodsList, useCategoryList, usePostBillOrder } from '@/hooks/api';
+
+const DEFAULT_ORDER_TAKE: OrderTake = 'N';
 
 const OrderPageContent: React.FC = () => {
   const router = useRouter();
@@ -29,6 +31,7 @@ const OrderPageContent: React.FC = () => {
 
   const { data: goodsList = [], isLoading: isGoodsLoading } = useGoodsList();
   const { data: categoryList = [], isLoading: isCategoryLoading } = useCategoryList('CATEGORY');
+  const isManual = useMemo(() => searchParams.get('manual') === '1', [searchParams]);
 
   useScrollToTop();
 
@@ -42,29 +45,20 @@ const OrderPageContent: React.FC = () => {
   const menuItems = useMemo<MenuItem[]>(() => {
     return goodsList
       .filter(goods => goods.goodsSt !== 'N')
-      .sort((a, b) => a.goodsOrd - b.goodsOrd)
-      .map(goods => ({
-        id: String(goods.goodsId),
-        name: goods.goodsNm,
-        price: goods.goodsAmt,
-        imageUrl: goods.goodsImg || '/assets/image/order/fallback.svg',
-        category: goods.categoryNm,
-        goodsSt: goods.goodsSt,
-      }));
+      .sort((a, b) => a.goodsOrd - b.goodsOrd);
   }, [goodsList]);
 
   const tableInfo: TableInfo = useMemo(() => {
     const tableNumberParam = searchParams.get('tableNumber');
     const groupName = searchParams.get('groupName') || '';
     const membersParam = searchParams.get('members');
-    const isManual = searchParams.get('manual') === '1';
 
     return {
       tableNumber: tableNumberParam || '-',
       groupName,
       memberNames: isManual ? [] : (membersParam ?? '').split(',').filter(Boolean),
     };
-  }, [searchParams]);
+  }, [isManual, searchParams]);
 
   const billId = useMemo(() => {
     const billIdParam = searchParams.get('billId');
@@ -76,19 +70,21 @@ const OrderPageContent: React.FC = () => {
   const handleCategoryChange = useCallback((category: CategoryType) => {
     setActiveCategory(category);
 
-    if (category === '전체메뉴') {
-      if (menuGridRef.current) {
-        menuGridRef.current.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-    } else {
-      const categoryElement = document.getElementById(`category-${category}`);
-      if (categoryElement && menuGridRef.current) {
-        const containerTop = menuGridRef.current.getBoundingClientRect().top;
-        const elementTop = categoryElement.getBoundingClientRect().top;
-        const scrollOffset = elementTop - containerTop + menuGridRef.current.scrollTop - 30;
+    const container = menuGridRef.current;
+    if (!container) return;
 
-        menuGridRef.current.scrollTo({ top: scrollOffset, behavior: 'smooth' });
-      }
+    if (category === '전체메뉴') {
+      container.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    const categoryElement = document.getElementById(`category-${category}`);
+    if (categoryElement) {
+      const containerTop = container.getBoundingClientRect().top;
+      const elementTop = categoryElement.getBoundingClientRect().top;
+      const scrollOffset = elementTop - containerTop + container.scrollTop - 30;
+
+      container.scrollTo({ top: scrollOffset, behavior: 'smooth' });
     }
   }, []);
 
@@ -97,19 +93,19 @@ const OrderPageContent: React.FC = () => {
   }, []);
 
   const handleMenuClick = useCallback((item: MenuItem) => {
-      setOrderItems((prev) => {
-        const existingItem = prev.find((orderItem) => orderItem.menuItem.id === item.id);
+    setOrderItems((prev) => {
+      const existingItem = prev.find((orderItem) => orderItem.menuItem.goodsId === item.goodsId);
 
-        if (existingItem) {
-          return prev.map((orderItem) =>
-            orderItem.menuItem.id === item.id
-              ? { ...orderItem, quantity: orderItem.quantity + 1 }
-              : orderItem
-          );
-        } else {
-          return [...prev, { menuItem: item, quantity: 1 }];
-        }
-      });
+      if (existingItem) {
+        return prev.map((orderItem) =>
+          orderItem.menuItem.goodsId === item.goodsId
+            ? { ...orderItem, quantity: orderItem.quantity + 1 }
+            : orderItem
+        );
+      }
+
+      return [...prev, { menuItem: item, quantity: 1 }];
+    });
   }, []);
 
   const handleMemoClick = useCallback(() => {
@@ -129,30 +125,23 @@ const OrderPageContent: React.FC = () => {
     const billIdValue = billId ?? undefined;
     const payerName = selectedPayer || tableInfo.groupName || '-';
     const orderAmt = orderItems.reduce(
-      (sum, item) => sum + item.menuItem.price * item.quantity,
+      (sum, item) => sum + item.menuItem.goodsAmt * item.quantity,
       0
     );
-    const defaultOrderTake: OrderTake = 'N';
-    const orderHisList = orderItems
-      .map((item, index) => {
-        const goodsId = Number(item.menuItem.id);
-        if (!Number.isFinite(goodsId)) return null;
-        return {
-          goodsId,
-          orderOrd: index + 1,
-          orderCnt: item.quantity,
-          orderAmt: item.menuItem.price,
-          orderTake: defaultOrderTake
-        };
-      })
-      .filter((item): item is NonNullable<typeof item> => item !== null);
+    const orderHisList = orderItems.map((item, index) => ({
+      goodsId: item.menuItem.goodsId,
+      orderOrd: index + 1,
+      orderCnt: item.quantity,
+      orderAmt: item.menuItem.goodsAmt,
+      orderTake: DEFAULT_ORDER_TAKE,
+    }));
 
     postBillOrder(
       {
         billId: billIdValue,
         playerNm: payerName,
         playerErp: payerName,
-        orderAmt,
+          orderAmt,
         orderReq: memoText || undefined,
         orderHisList,
       },
@@ -169,13 +158,13 @@ const OrderPageContent: React.FC = () => {
     setIsDetailModalOpen(true);
   }, []);
 
-  const handleQuantityChange = useCallback((itemId: string, newQuantity: number) => {
+  const handleQuantityChange = useCallback((itemId: number, newQuantity: number) => {
     if (newQuantity <= 0) {
-      setOrderItems((prev) => prev.filter((item) => item.menuItem.id !== itemId));
+      setOrderItems((prev) => prev.filter((item) => item.menuItem.goodsId !== itemId));
     } else {
       setOrderItems((prev) =>
         prev.map((item) =>
-          item.menuItem.id === itemId
+          item.menuItem.goodsId === itemId
             ? { ...item, quantity: newQuantity }
             : item
         )
@@ -230,8 +219,8 @@ const OrderPageContent: React.FC = () => {
           onOrderClick={handleOrderClick}
           onDetailClick={handleDetailClick}
           onQuantityChange={handleQuantityChange}
-          hidePayerSection={searchParams.get('manual') === '1'}
-          hideMemberNames={searchParams.get('manual') === '1'}
+          hidePayerSection={isManual}
+          hideMemberNames={isManual}
         />
       </div>
 

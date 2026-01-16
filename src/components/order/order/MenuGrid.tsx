@@ -10,7 +10,7 @@ const MenuGrid = forwardRef<HTMLDivElement, MenuGridProps>(
     const groupedItems = useMemo(() => {
       const groups: Record<string, MenuItem[]> = {};
       items.forEach((item) => {
-        const category = item.category;
+        const category = item.categoryNm;
         if (!groups[category]) {
           groups[category] = [];
         }
@@ -36,7 +36,7 @@ const MenuGrid = forwardRef<HTMLDivElement, MenuGridProps>(
               ) : (
                 categoryItems.map((item) => (
                 <div
-                  key={item.id}
+                  key={item.goodsId}
                   className={`${styles.menuCard} ${item.goodsSt === 'S' ? styles.menuCardSoldOut : ''}`}
                   onClick={() => {
                     if (item.goodsSt !== 'S') {
@@ -46,8 +46,8 @@ const MenuGrid = forwardRef<HTMLDivElement, MenuGridProps>(
                 >
                   <div className={styles.imageWrapper}>
                     <img
-                      src={item.imageUrl}
-                      alt={item.name}
+                      src={item.goodsImg || '/assets/image/order/fallback.svg'}
+                      alt={item.goodsNm}
                       className={styles.menuImage}
                       onError={(e) => {
                         e.currentTarget.src = '/assets/image/order/fallback.svg';
@@ -56,9 +56,9 @@ const MenuGrid = forwardRef<HTMLDivElement, MenuGridProps>(
                     <div className={styles.gradientOverlay} />
                   </div>
                   <div className={styles.menuInfo}>
-                    <div className={styles.menuName}>{item.name}</div>
+                    <div className={styles.menuName}>{item.goodsNm}</div>
                     <div className={styles.menuPrice}>
-                      ₩{item.price.toLocaleString('ko-KR')}
+                      ₩{item.goodsAmt.toLocaleString('ko-KR')}
                     </div>
                   </div>
                   {item.goodsSt === 'S' && (

@@ -115,6 +115,7 @@ export interface DeleteBillListRequest {
 
 export interface GetOrderHisResponse {
   orderNo: number;
+  goodsId: number;
   goodsNm: string;
   orderOrd: number;
   orderCnt: number;

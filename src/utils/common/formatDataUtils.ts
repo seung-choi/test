@@ -22,7 +22,11 @@ export const formatTime = (
   }
   const parsed = new Date(value);
   if (!Number.isNaN(parsed.getTime())) {
-    return parsed.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+    return parsed.toLocaleTimeString('ko-KR', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    });
   }
   return value;
 };

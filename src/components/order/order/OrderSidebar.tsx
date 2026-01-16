@@ -22,7 +22,7 @@ const OrderSidebar: React.FC<OrderSidebarProps> = ({
     
     const totalItems = orderItems.reduce((sum, item) => sum + item.quantity, 0);
     const totalAmount = orderItems.reduce(
-        (sum, item) => sum + item.menuItem.price * item.quantity,
+        (sum, item) => sum + item.menuItem.goodsAmt * item.quantity,
         0
     );
 
@@ -115,22 +115,22 @@ const OrderSidebar: React.FC<OrderSidebarProps> = ({
                                     <div className={styles.itemContent}>
                                         <button
                                             className={styles.deleteButton}
-                                            onClick={() => onQuantityChange(item.menuItem.id, 0)}
+                                            onClick={() => onQuantityChange(item.menuItem.goodsId, 0)}
                                             aria-label="삭제"
                                         >
                                             <img src="/assets/image/global/x/x-sm.svg" alt="삭제"/>
                                         </button>
                                         <div className={styles.itemDetails}>
                                             <div className={styles.itemHeader}>
-                                                <div className={styles.itemName}>{item.menuItem.name}</div>
+                                                <div className={styles.itemName}>{item.menuItem.goodsNm}</div>
                                                 <div className={styles.itemPrice}>
-                                                    {(item.menuItem.price * item.quantity).toLocaleString('ko-KR')}원
+                                                    {(item.menuItem.goodsAmt * item.quantity).toLocaleString('ko-KR')}원
                                                 </div>
                                             </div>
                                             <QuantityControl
                                                 quantity={item.quantity}
-                                                onIncrease={() => onQuantityChange(item.menuItem.id, item.quantity + 1)}
-                                                onDecrease={() => onQuantityChange(item.menuItem.id, item.quantity - 1)}
+                                                onIncrease={() => onQuantityChange(item.menuItem.goodsId, item.quantity + 1)}
+                                                onDecrease={() => onQuantityChange(item.menuItem.goodsId, item.quantity - 1)}
                                                 variant="sidebar"/>
                                         </div>
                                     </div>

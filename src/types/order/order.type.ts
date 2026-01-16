@@ -1,3 +1,6 @@
+import type { GetGoodsResponse } from '@/types/goods.type';
+import type { GetOrderHisResponse } from '@/types/bill.type';
+
 export type CategoryType = string;
 
 export interface MenuOption {
@@ -7,15 +10,9 @@ export interface MenuOption {
   imageUrl: string;
 }
 
-import { GoodsStatus } from '@/types/goods.type';
+export type MenuItem = GetGoodsResponse;
 
-export interface MenuItem {
-  id: string;
-  name: string;
-  price: number;
-  imageUrl: string;
-  category: string;
-  goodsSt: GoodsStatus;
+export interface MenuItemWithOptions extends MenuItem {
   options?: MenuOption[];
 }
 
@@ -25,10 +22,9 @@ export interface OrderItem {
   selectedOptions?: { option: MenuOption; quantity: number }[];
 }
 
-export interface OrderItemWithTime extends OrderItem {
+export interface OrderDetailItem extends GetOrderHisResponse {
   orderTime: string;
   payer?: string;
-  options?: string;
   memo?: string;
 }
 

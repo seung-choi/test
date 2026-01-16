@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState, useMemo, useEffect, useRef } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import BaseModal from './BaseModal';
 import styles from '@/styles/components/order/modal/OrderDetailModal.module.scss';
-import { OrderItem, OrderItemWithTime } from '@/types';
+import { OrderDetailItem } from '@/types';
 import QuantityControl from '@/components/order/common/QuantityControl';
 import type { OrderDetailModalProps } from '@/types';
 import { useBillOrderList } from '@/hooks/api';
@@ -17,39 +17,37 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
   billId,
 }) => {
   const [selectedTime, setSelectedTime] = useState('전체');
-  const [deletedItems, setDeletedItems] = useState<Set<string>>(new Set());
-  const initialOrderItemsRef = useRef<OrderItem[]>([]);
-
+  const [deletedItems, setDeletedItems] = useState<Set<number>>(new Set());
   const { orderList = [] } = useBillOrderList(billId ?? 0, {
     enabled: isOpen && Boolean(billId),
   });
+  const isHistoryView = orderList.length > 0;
 
   useEffect(() => {
     if (isOpen) {
-      initialOrderItemsRef.current = JSON.parse(JSON.stringify(orderItems));
       setDeletedItems(new Set());
     }
   }, [isOpen]);
 
-  const orderItemsWithTime: OrderItemWithTime[] = useMemo(() => {
+  const orderItemsWithTime: OrderDetailItem[] = useMemo(() => {
     if (orderList.length === 0) {
-      return orderItems.map((item) => ({
-        ...item,
+      return orderItems.map((item, index) => ({
+        orderNo: item.menuItem.goodsId,
+        goodsId: item.menuItem.goodsId,
+        goodsNm: item.menuItem.goodsNm,
+        orderOrd: index + 1,
+        orderCnt: item.quantity,
+        orderAmt: item.menuItem.goodsAmt,
+        orderTake: 'N',
+        createdDt: '',
+        modifiedDt: '',
         orderTime: '00:00',
       }));
     }
 
     return orderList.flatMap((order) =>
       (order.orderHisList ?? []).map((item) => ({
-        menuItem: {
-          id: String(item.orderNo),
-          name: item.goodsNm,
-          price: item.orderAmt,
-          imageUrl: '',
-          category: '',
-          goodsSt: 'Y',
-        },
-        quantity: item.orderCnt,
+        ...item,
         orderTime: formatTime(order.createdDt),
         payer: order.playerNm || undefined,
         memo: order.orderReq || undefined,
@@ -57,7 +55,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
     );
   }, [orderItems, orderList]);
 
-  const handleDelete = (itemId: string) => {
+  const handleDelete = (itemId: number) => {
     setDeletedItems(prev => {
       const newSet = new Set(prev);
       if (newSet.has(itemId)) {
@@ -70,7 +68,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
   };
 
   const groupedByTime = useMemo(() => {
-    const groups: Record<string, OrderItemWithTime[]> = {};
+    const groups: Record<string, OrderDetailItem[]> = {};
     orderItemsWithTime.forEach((item) => {
       if (!groups[item.orderTime]) {
         groups[item.orderTime] = [];
@@ -87,9 +85,9 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
       ? orderItemsWithTime
       : groupedByTime[selectedTime] || [];
 
-  const totalItems = orderItemsWithTime.reduce((sum, item) => sum + item.quantity, 0);
+  const totalItems = orderItemsWithTime.reduce((sum, item) => sum + item.orderCnt, 0);
   const totalAmount = orderItemsWithTime.reduce(
-    (sum, item) => sum + item.menuItem.price * item.quantity,
+    (sum, item) => sum + item.orderAmt * item.orderCnt,
     0
   );
 
@@ -146,7 +144,8 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
             </thead>
             <tbody>
               {filteredItems.map((item, index) => {
-                const isDeleted = deletedItems.has(item.menuItem.id);
+                const rowKey = isHistoryView ? item.orderNo : item.goodsId;
+                const isDeleted = deletedItems.has(rowKey);
                 const deletedStyle = isDeleted ? {
                   color: '#6600FF',
                   fontWeight: '600',
@@ -155,19 +154,19 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
 
                 return (
                   <tr
-                    key={index}
+                    key={rowKey}
                     className={`${index > 0 && filteredItems[index - 1].orderTime !== item.orderTime ? styles.borderTop : ''}`}
                   >
                     <td className={styles.columnCheck}>
                       <img
                         src='/assets/image/global/x/x-sm.svg'
                         alt="삭제"
-                        onClick={() => handleDelete(item.menuItem.id)}
+                        onClick={() => handleDelete(rowKey)}
                         style={{ cursor: 'pointer' }}
                       />
                     </td>
                     <td className={styles.columnTime} style={deletedStyle}>{item.orderTime}</td>
-                    <td className={styles.columnMenu} style={deletedStyle}>{item.menuItem.name}</td>
+                    <td className={styles.columnMenu} style={deletedStyle}>{item.goodsNm}</td>
                     <td className={styles.columnMemo}>
                       {item.memo && <span className={styles.memoText} style={deletedStyle}>{item.memo}</span>}
                     </td>
@@ -176,15 +175,23 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                     </td>
                     <td className={styles.columnQuantity}>
                       <QuantityControl
-                        quantity={item.quantity}
-                        onIncrease={() => onQuantityChange(item.menuItem.id, item.quantity + 1)}
-                        onDecrease={() => onQuantityChange(item.menuItem.id, item.quantity - 1)}
-                        disabled={isDeleted}
+                        quantity={item.orderCnt}
+                        onIncrease={() => {
+                          if (!isHistoryView) {
+                            onQuantityChange(item.goodsId, item.orderCnt + 1);
+                          }
+                        }}
+                        onDecrease={() => {
+                          if (!isHistoryView) {
+                            onQuantityChange(item.goodsId, item.orderCnt - 1);
+                          }
+                        }}
+                        disabled={isDeleted || isHistoryView}
                         variant="default"
                       />
                     </td>
                     <td className={styles.columnPrice} style={deletedStyle}>
-                      {(item.menuItem.price * item.quantity).toLocaleString('ko-KR')} 원
+                      {(item.orderAmt * item.orderCnt).toLocaleString('ko-KR')} 원
                     </td>
                   </tr>
                 );
