@@ -4,19 +4,7 @@ import React, { useRef } from 'react';
 import styles from '@/styles/components/admin/drawer/canvas/layoutCanvas.module.scss';
 import { PlacedTable, TableType, DragData } from '@/types';
 import DraggableTableItem from './DraggableTableItem';
-
-interface LayoutCanvasProps {
-    pageId?: string;
-    placedTables: PlacedTable[];
-    onAddTable: (type: TableType, position: { x: number; y: number }, pageId?: string) => void;
-    onMoveTable: (tableId: string, position: { x: number; y: number }, sourcePageId?: string, targetPageId?: string) => void;
-    onRemoveTable: (tableId: string, pageId?: string) => void;
-    onSetTableNumber: (tableId: string, tableNumber: string, pageId?: string) => void;
-    onRotateTable: (tableId: string, pageId?: string) => void;
-    availableTableNumbers: string[];
-    onSelect?: (pageId?: string) => void;
-    getPlacedTablesByPageId?: (pageId?: string) => PlacedTable[];
-}
+import type { LayoutCanvasProps } from '@/types';
 
 const LayoutCanvas: React.FC<LayoutCanvasProps> = ({
     pageId,

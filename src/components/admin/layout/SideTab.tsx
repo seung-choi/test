@@ -11,13 +11,7 @@ import { BillOrderStatus, OrderCounts } from '@/types';
 import { useNotificationStorage } from '@/hooks/common/useNotificationStorage';
 import { useDeviceType } from '@/hooks/common/useDeviceType';
 import { useFullscreen } from '@/hooks/common/useFullscreen';
-
-interface SideTabProps {
-  orderCounts: OrderCounts;
-  onFilterChange: (filter: BillOrderStatus) => void;
-  hasNotification?: boolean;
-  onMessageNotificationClear?: () => void;
-}
+import type { SideTabProps } from '@/types';
 
 const SideTab: React.FC<SideTabProps> = ({
   orderCounts,

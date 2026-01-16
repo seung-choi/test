@@ -4,17 +4,7 @@ import styles from '@/styles/components/admin/layout/SideTab.module.scss';
 import NotificationButton from './NotificationButton';
 import MessageButton from './MessageButton';
 import { NotificationOption } from '@/hooks/common/useNotificationStorage';
-
-interface MenuSectionProps {
-  notificationOption: NotificationOption;
-  isTablet: boolean;
-  hasMenuNotification?: boolean;
-  onMenuClick: () => void;
-  onSettingClick: () => void;
-  onNotificationChange: (option: NotificationOption) => void;
-  onFullscreenToggle: () => void;
-  onMessageNotificationClear?: () => void;
-}
+import type { MenuSectionProps } from '@/types';
 
 const MenuSection: React.FC<MenuSectionProps> = ({
   notificationOption,

@@ -1,10 +1,5 @@
 import React from 'react';
-
-interface MessageIconProps {
-  hasNotification?: boolean;
-  isActive?: boolean;
-  size?: number;
-}
+import type { MessageIconProps } from '@/types';
 
 const MessageIcon: React.FC<MessageIconProps> = ({
   hasNotification = false,

@@ -2,16 +2,12 @@
 
 import React, { memo, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { TableData } from '@/types';
 import TableShape from '@/components/common/TableShape';
-
-interface TableItemProps {
-  table: TableData;
-}
+import type { TableItemProps } from '@/types';
 
 const TableItem: React.FC<TableItemProps> = ({ table }) => {
   const router = useRouter();
-  const { id, tableId, type, position, reservation, status, rotation, scale } = table;
+  const { id, tableId, billId, members, type, position, reservation, status, rotation, scale } = table;
   const displayScale = (scale ?? 1) * 1.06;
 
   const handleTableClick = useCallback(() => {
@@ -24,6 +20,12 @@ const TableItem: React.FC<TableItemProps> = ({ table }) => {
     if (typeof tableId === 'number') {
       params.set('tableId', String(tableId));
     }
+    if (typeof billId === 'number') {
+      params.set('billId', String(billId));
+    }
+    if (members && members.length > 0) {
+      params.set('members', members.join(','));
+    }
 
     if (status === 'empty') {
       router.push(`/order/assign?${params.toString()}`);
@@ -31,7 +33,7 @@ const TableItem: React.FC<TableItemProps> = ({ table }) => {
     }
 
     router.push(`/order/order?${params.toString()}`);
-  }, [status, id, reservation, router, tableId]);
+  }, [status, id, reservation, router, tableId, billId]);
 
   return (
     <TableShape

@@ -2,16 +2,7 @@
 
 import React from 'react';
 import styles from '@/styles/components/order/common/QuantityControl.module.scss';
-
-interface QuantityControlProps {
-  quantity: number;
-  onIncrease: () => void;
-  onDecrease: () => void;
-  disabled?: boolean;
-  minQuantity?: number;
-  className?: string;
-  variant?: 'default' | 'modal' | 'sidebar';
-}
+import type { QuantityControlProps } from '@/types';
 
 const QuantityControl: React.FC<QuantityControlProps> = ({
   quantity,

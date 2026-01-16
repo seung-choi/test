@@ -2,15 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import styles from '@/styles/components/admin/common/DateRangePicker.module.scss';
-
-interface DateRangePickerProps {
-  startDate: string;
-  endDate: string;
-  onDateChange: (startDate: string, endDate: string) => void;
-  isOpen: boolean;
-  onClose: () => void;
-  triggerRef: React.RefObject<HTMLDivElement>;
-}
+import type { DateRangePickerProps } from '@/types';
 
 const DateRangePicker: React.FC<DateRangePickerProps> = ({
   startDate,

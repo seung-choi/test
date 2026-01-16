@@ -20,13 +20,7 @@ import TimeControl from './product/TimeControl';
 import TagSelector from './product/TagSelector';
 import { useToast } from '@/hooks/common/useToast';
 import storage from '@/utils/storage';
-
-interface ProductModalContentProps {
-  mode: 'create' | 'edit';
-  initialData?: ProductFormData;
-  onSubmit: (data: ProductFormData) => void;
-  onClose: () => void;
-}
+import type { ProductModalContentProps } from '@/types';
 
 const ProductModalContent: React.FC<ProductModalContentProps> = ({
   mode,

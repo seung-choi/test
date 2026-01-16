@@ -3,12 +3,7 @@
 import React, { useState } from 'react';
 import BaseModal from './BaseModal';
 import styles from '@/styles/components/order/modal/MemoModal.module.scss';
-
-interface MemoModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSave: (memo: string) => void;
-}
+import type { MemoModalProps } from '@/types';
 
 const MemoModal: React.FC<MemoModalProps> = ({ isOpen, onClose, onSave }) => {
   const [memo, setMemo] = useState('');

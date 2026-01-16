@@ -4,21 +4,7 @@ import React, { memo, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import TableCard from '@/components/common/TableCard';
 import styles from '@/styles/components/order/main/tableSeat.module.scss';
-
-interface SeatData {
-  id: string;
-  tableId?: number;
-  time: string;
-  customerName?: string;
-  groupName?: string;
-  members?: string[];
-  tableNumber: string;
-  isEmpty: boolean;
-}
-
-interface TableSeatProps {
-  seats: SeatData[];
-}
+import type { SeatData, TableSeatProps } from '@/types';
 
 const TableSeat: React.FC<TableSeatProps> = ({ seats }) => {
   const router = useRouter();
@@ -31,6 +17,9 @@ const TableSeat: React.FC<TableSeatProps> = ({ seats }) => {
     });
     if (typeof seat.tableId === 'number') {
       params.set('tableId', String(seat.tableId));
+    }
+    if (typeof seat.billId === 'number') {
+      params.set('billId', String(seat.billId));
     }
     if (seat.isEmpty) {
       router.push(`/order/assign?${params.toString()}`);

@@ -3,15 +3,7 @@
 import React, { useState, useRef } from 'react';
 import styles from '@/styles/components/common/CustomSelect.module.scss';
 import { useClickOutside } from '@/hooks/common/useClickOutside';
-
-interface CustomSelectProps {
-  value: string;
-  onChange: (value: string) => void;
-  options: { value: string; label: string }[];
-  placeholder?: string;
-  className?: string;
-  style?: React.CSSProperties;
-}
+import type { CustomSelectProps } from '@/types';
 
 const CustomSelect: React.FC<CustomSelectProps> = ({
   value,

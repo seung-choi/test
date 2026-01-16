@@ -2,7 +2,7 @@ import { OrderItem, TableInfo } from '@/types';
 import { mockMenuItems } from './mockMenuData';
 
 export const mockTableInfo: TableInfo = {
-  tableNumber: 5,
+  tableNumber: 'T5',
   groupName: '개발팀 회식',
   memberNames: ['홍길동', '김철수', '이영희', '박민수'],
 };

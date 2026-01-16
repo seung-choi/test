@@ -17,17 +17,9 @@ import CommonModalLayout from '@/components/admin/modal/CommonModalLayout';
 import commonStyles from '@/styles/components/admin/modal/CommonModal.module.scss';
 import styles from '@/styles/components/admin/modal/CategoryModal.module.scss';
 import { useCategoryList, usePostCategoryList } from '@/hooks/api/useCategory';
-import type { GetCategoryResponse, PostCategoryRequest } from '@/types/category.type';
+import type { PostCategoryRequest } from '@/types/category.type';
 import { useToast } from '@/hooks/common/useToast';
-
-interface CategoryModalContentProps {
-  onClose: () => void;
-}
-
-interface CategoryItem extends GetCategoryResponse {
-  isNew?: boolean;
-  isDeleted?: boolean;
-}
+import type { CategoryItem, CategoryModalContentProps, SortableCategoryRowProps } from '@/types';
 
 const CategoryModalContent: React.FC<CategoryModalContentProps> = ({ onClose }) => {
   const { data: categoryList = [], isLoading } = useCategoryList('CATEGORY');
@@ -206,11 +198,6 @@ const CategoryModalContent: React.FC<CategoryModalContentProps> = ({ onClose }) 
     </CommonModalLayout>
   );
 };
-
-interface SortableCategoryRowProps {
-  category: CategoryItem;
-  onDelete: (categoryId: number) => void;
-}
 
 const SortableCategoryRow: React.FC<SortableCategoryRowProps> = ({ category, onDelete }) => {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({

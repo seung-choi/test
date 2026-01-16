@@ -3,14 +3,7 @@
 import React from 'react';
 import styles from '@/styles/components/admin/drawer/canvas/pageNavigation.module.scss';
 import { LayoutPage } from '@/types';
-
-interface PageNavigationProps {
-    pages: LayoutPage[];
-    currentPageId: string;
-    onPageSelect: (pageId: string) => void;
-    onPageAdd: () => void;
-    onPageDelete: (pageId: string) => void;
-}
+import type { PageNavigationProps } from '@/types';
 
 const PageNavigation: React.FC<PageNavigationProps> = ({
     pages,

@@ -7,14 +7,8 @@ import styles from '@/styles/components/admin/modal/CancelReasonModal.module.scs
 import { useCategoryList } from '@/hooks/api';
 import { useToast } from '@/hooks/common/useToast';
 import { BillOrder } from '@/types/bill.type';
-import { formatPrice } from '@/utils';
-
-interface CancelReasonModalContentProps {
-  onConfirm: (payload: { reason: string; orderIdList: number[] }) => void;
-  onClose: () => void;
-  orderList?: BillOrder[];
-  isOrderSelectionRequired?: boolean;
-}
+import { formatPrice, formatTime } from '@/utils';
+import type { CancelReasonModalContentProps } from '@/types';
 
 const CancelReasonModalContent: React.FC<CancelReasonModalContentProps> = ({
   onConfirm,
@@ -26,19 +20,6 @@ const CancelReasonModalContent: React.FC<CancelReasonModalContentProps> = ({
   const [selectedOrderIds, setSelectedOrderIds] = useState<number[]>([]);
   const { data: categoryReasons = [] } = useCategoryList('REASON');
   const { showToast } = useToast();
-
-  const formatTime = (value?: string | null): string => {
-    if (!value) return '-';
-    const match = value.match(/^(\d{2}):(\d{2})(?::\d{2})?$/);
-    if (match) {
-      return `${match[1]}:${match[2]}`;
-    }
-    const parsed = new Date(value);
-    if (!Number.isNaN(parsed.getTime())) {
-      return parsed.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
-    }
-    return value;
-  };
 
   const orderRows = useMemo(() => {
     return orderList.map((order) => {

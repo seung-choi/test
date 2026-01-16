@@ -5,13 +5,7 @@ import BaseModal from './BaseModal';
 import styles from '@/styles/components/order/modal/MenuOptionModal.module.scss';
 import { MenuItem, MenuOption } from '@/types';
 import QuantityControl from '@/components/order/common/QuantityControl';
-
-interface MenuOptionModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  menuItem: MenuItem | null;
-  onAddToOrder: (menuItem: MenuItem, selectedOptions: { option: MenuOption; quantity: number }[]) => void;
-}
+import type { MenuOptionModalProps } from '@/types';
 
 const MenuOptionModal: React.FC<MenuOptionModalProps> = ({
   isOpen,

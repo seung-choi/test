@@ -7,21 +7,8 @@ import styles from '@/styles/components/admin/modal/ErpLinkModal.module.scss';
 import { useBillErpList } from '@/hooks/api';
 import { ErpBookingResponse, ErpPlayerResponse } from '@/types/bill.type';
 import { ErpLinkSelection } from '@/types';
-
-interface ErpLinkModalContentProps {
-  onLinkErp: (selection: ErpLinkSelection) => void;
-  onManual: () => void;
-  onClose: () => void;
-}
-
-const formatTime = (value?: string | null): string => {
-  if (!value) return '-';
-  const match = value.match(/^(\d{2}):(\d{2})(?::\d{2})?$/);
-  if (match) {
-    return `${match[1]}:${match[2]}`;
-  }
-  return value;
-};
+import { formatTime } from '@/utils';
+import type { ErpLinkModalContentProps } from '@/types';
 
 const ErpLinkModalContent: React.FC<ErpLinkModalContentProps> = ({
   onLinkErp,

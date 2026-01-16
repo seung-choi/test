@@ -2,12 +2,7 @@ import React from 'react';
 import styles from '@/styles/components/admin/contents/InfoCard.module.scss';
 import { CustomerInfo } from '@/types';
 import { getTagAltText, getTagImage } from '@/utils/tagUtils';
-
-interface CustomerInfoSectionProps {
-  customerInfo: CustomerInfo;
-  tags: string[];
-  onMessageClick?: () => void;
-}
+import type { CustomerInfoSectionProps } from '@/types';
 
 const CustomerInfoSection: React.FC<CustomerInfoSectionProps> = ({
   customerInfo,

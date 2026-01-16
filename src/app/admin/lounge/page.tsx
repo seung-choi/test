@@ -33,7 +33,7 @@ const Lounge = () => {
   const { mutate: patchBillComplete } = usePatchBillComplete();
   const { mutate: putBillErp } = usePutBillErp();
   const { data: tableList = [] } = useTableList();
-  const { data: bookingList = [] } = useBookingList({ refetchInterval: 5000 });
+  const { bookingList = [] } = useBookingList({ refetchInterval: 5000 });
 
   const billStatus = activeFilter;
   const { billList = [], isLoading } = useBillListByStatus(billStatus, {

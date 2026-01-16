@@ -1,12 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from '@/styles/components/admin/layout/SideTab.module.scss';
 import { NotificationOption } from '@/hooks/common/useNotificationStorage';
-
-interface NotificationButtonProps {
-  notificationOption: NotificationOption;
-  isTablet?: boolean;
-  onOptionChange: (option: NotificationOption) => void;
-}
+import type { NotificationButtonProps } from '@/types';
 
 const NotificationButton: React.FC<NotificationButtonProps> = ({
   notificationOption,

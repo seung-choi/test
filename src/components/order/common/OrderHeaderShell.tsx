@@ -1,14 +1,6 @@
 import React from 'react';
 import styles from '@/styles/components/order/common/orderHeaderShell.module.scss';
-
-type OrderHeaderVariant = 'main' | 'assign';
-
-interface OrderHeaderShellProps {
-  variant?: OrderHeaderVariant;
-  left?: React.ReactNode;
-  center?: React.ReactNode;
-  right?: React.ReactNode;
-}
+import type { OrderHeaderShellProps } from '@/types';
 
 const OrderHeaderShell: React.FC<OrderHeaderShellProps> = ({
   variant = 'main',

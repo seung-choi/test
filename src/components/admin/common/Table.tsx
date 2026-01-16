@@ -4,31 +4,7 @@ import React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import styles from '@/styles/components/admin/common/Table.module.scss';
-import { TableRowData } from '@/utils/admin/tableRenderers';
-
-export interface TableColumn {
-  key: string;
-  label: string;
-  width?: string;
-  sortable?: boolean;
-  style?: React.CSSProperties;
-  render?: (value: string | number | string[] | boolean | undefined, row: TableRowData) => React.ReactNode;
-}
-
-export interface TableProps {
-  columns: TableColumn[];
-  data: TableRowData[];
-  variant?: 'default' | 'menu' | 'sales';
-  onSort?: (key: string) => void;
-  className?: string;
-  isReorderMode?: boolean;
-}
-
-interface SortableRowProps {
-  row: TableRowData;
-  columns: TableColumn[];
-  isReorderMode?: boolean;
-}
+import type { SortableRowProps, TableProps } from '@/types';
 
 const SortableRow: React.FC<SortableRowProps> = ({ row, columns, isReorderMode }) => {
   const {

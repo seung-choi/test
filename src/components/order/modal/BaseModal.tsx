@@ -2,15 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import styles from '@/styles/components/order/modal/BaseModal.module.scss';
-
-interface BaseModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  title: string;
-  children: React.ReactNode;
-  footer?: React.ReactNode;
-  width?: number;
-}
+import type { BaseModalProps } from '@/types';
 
 const BaseModal: React.FC<BaseModalProps> = ({
   isOpen,

@@ -2,12 +2,7 @@ import React from 'react';
 import styles from '@/styles/components/admin/contents/InfoCard.module.scss';
 import { OrderHistory } from '@/types';
 import { BillOrderStatus } from '@/types/bill.type';
-
-interface OrderHistorySectionProps {
-  orderHistory: OrderHistory[];
-  isExpanded: (historyId: string) => boolean;
-  onToggleExpansion: (historyId: string) => void;
-}
+import type { OrderHistorySectionProps } from '@/types';
 
 const getStatusLabel = (status: BillOrderStatus, cancelReason?: string): string => {
   switch (status) {

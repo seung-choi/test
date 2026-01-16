@@ -2,15 +2,7 @@
 
 import React from 'react';
 import styles from '@/styles/components/admin/modal/CommonModal.module.scss';
-
-interface CommonModalLayoutProps {
-  title: string;
-  children: React.ReactNode;
-  buttons?: React.ReactNode;
-  className?: string;
-  contentClassName?: string;
-  headerRight?: React.ReactNode;
-}
+import type { CommonModalLayoutProps } from '@/types';
 
 const CommonModalLayout: React.FC<CommonModalLayoutProps> = ({
   title,

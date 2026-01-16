@@ -74,3 +74,17 @@ export interface GpsBookingType {
 }
 
 export type GpsBookingListType = GpsBookingType[];
+
+export interface GolferPositionData {
+  bookingId: number;
+  bookingNm: string;
+  bookingTm: string | null;
+  holeNo: number | null;
+  course: string;
+  outCourse: string;
+  position: {
+    left: string;
+  };
+  isGroup: boolean;
+  bookingsCol: string | null;
+}

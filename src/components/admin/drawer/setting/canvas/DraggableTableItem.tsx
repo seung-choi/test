@@ -6,18 +6,7 @@ import { PlacedTable } from '@/types';
 import TableShape from '@/components/common/TableShape';
 import { isPositionValid, getTableDimensions } from '@/utils/tableCollision';
 import { useClickOutside } from '@/hooks/common/useClickOutside';
-
-interface DraggableTableItemProps {
-    table: PlacedTable;
-    onMove: (tableId: string, position: { x: number; y: number }, targetPageId?: string) => void;
-    onRemove: (tableId: string) => void;
-    onSetTableNumber: (tableId: string, tableNumber: string) => void;
-    onRotate: (tableId: string) => void;
-    placedTables: PlacedTable[];
-    pageId?: string;
-    getPlacedTablesByPageId?: (pageId?: string) => PlacedTable[];
-    availableTableNumbers: string[];
-}
+import type { DraggableTableItemProps } from '@/types';
 
 const DraggableTableItem: React.FC<DraggableTableItemProps> = ({
     table,

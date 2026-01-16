@@ -1,14 +1,8 @@
 import React from 'react';
 import styles from '@/styles/components/order/main/header.module.scss';
 import OrderHeaderShell from '@/components/order/common/OrderHeaderShell';
-
-interface OrderHeaderProps {
-    isTableMode: boolean;
-    onModeChange: (isTableMode: boolean) => void;
-    storeName?: string;
-    currentTime?: string;
-    batteryLevel?: number;
-}
+import type { OrderHeaderProps } from '@/types';
+import { getBatteryColor, getBatteryWidth } from '@/utils';
 
 const OrderHeader: React.FC<OrderHeaderProps> = ({
                                                      isTableMode,
@@ -17,17 +11,6 @@ const OrderHeader: React.FC<OrderHeaderProps> = ({
                                                      currentTime = 'PM 01:45',
                                                      batteryLevel = 100
                                                  }) => {
-    const getBatteryColor = (level: number) => {
-        if (level <= 20) return '#FF1212';
-        if (level <= 50) return '#FFA500';
-        return '#00FF00';
-    };
-
-    const getBatteryWidth = (level: number) => {
-        const maxWidth = 18;
-        return Math.max(0, Math.min(maxWidth, (level / 100) * maxWidth));
-    };
-
     const batteryColor = getBatteryColor(batteryLevel);
     const batteryWidth = getBatteryWidth(batteryLevel);
 

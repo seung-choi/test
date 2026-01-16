@@ -6,14 +6,7 @@ import commonStyles from '@/styles/components/admin/modal/CommonModal.module.scs
 import styles from '@/styles/components/admin/modal/MessageModal.module.scss';
 import { EventMessageHistoryItem, MessageFormData } from '@/types';
 import { useEventMsgHisList } from '@/hooks/api';
-
-interface MessageModalContentProps {
-  title: string;
-  recipients?: string[];
-  bookingId?: number | null;
-  onSubmit: (data: MessageFormData) => void;
-  onClose: () => void;
-}
+import type { MessageModalContentProps } from '@/types';
 
 const MessageModalContent: React.FC<MessageModalContentProps> = ({
   title,

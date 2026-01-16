@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import TableSeat from '@/components/order/main/TableSeat';
 import TableItem from '@/components/order/main/TableItem';
 import styles from '@/styles/pages/order/main.module.scss';
@@ -8,28 +8,28 @@ import OrderHeader from '@/components/order/main/Header';
 import { useBillListByStatus, useTableList } from '@/hooks/api';
 import { useContainerSize } from '@/hooks/order/useContainerSize';
 import { useTableData } from '@/hooks/order/useTableData';
+import { usePanZoom } from '@/hooks/tableCanvas/usePanZoom';
 import { TableData } from '@/types';
 import { Bill } from '@/types/bill.type';
-
-const formatTime = (value?: string | null): string => {
-  if (!value) return '00:00';
-  const match = value.match(/^(\d{2}):(\d{2})(?::\d{2})?$/);
-  if (match) {
-    return `${match[1]}:${match[2]}`;
-  }
-  const parsed = new Date(value);
-  if (!Number.isNaN(parsed.getTime())) {
-    return parsed.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
-  }
-  return value;
-};
+import { formatTime } from '@/utils';
 
 const OrderMainPage: React.FC = () => {
   const [isTableMode, setIsTableMode] = useState(true);
   const { data: tableList = [] } = useTableList();
-  const containerRef = useRef<HTMLDivElement>(null);
+  const { pan, isPanning, containerRef, handleMouseDown, setPan } = usePanZoom({
+    enabled: isTableMode,
+    enableWheel: false,
+    enableZoom: false,
+    allowMiddleButton: false,
+  });
   const containerSize = useContainerSize(containerRef, isTableMode);
   const { billList = [] } = useBillListByStatus('P', { refetchInterval: 5000 });
+
+  useEffect(() => {
+    if (!isTableMode) {
+      setPan({ x: 0, y: 0 });
+    }
+  }, [isTableMode, setPan]);
 
   const billByTableId = useMemo(() => {
     const map = new Map<number, Bill>();
@@ -74,13 +74,19 @@ const OrderMainPage: React.FC = () => {
         return table;
       }
 
+      const members = bill.playerList
+        ? bill.playerList.split(',').map((member) => member.trim()).filter(Boolean)
+        : undefined;
+
       return {
         ...table,
         reservation: {
-          time: formatTime(bill.bookingTm),
+          time: formatTime(bill.bookingTm, { emptyValue: '00:00' }),
           name: bill.bookingNm || undefined,
-          group: bill.bookingsNm || undefined,
+          group: bill.bookingsNm || bill.bookingNm || undefined,
         },
+        members,
+        billId: bill.billId,
         status: 'occupied' as const,
       };
     });
@@ -122,7 +128,8 @@ const OrderMainPage: React.FC = () => {
       return {
         id: `seat-${table.tableId}`,
         tableId: table.tableId ?? undefined,
-        time: formatTime(bill?.bookingTm),
+        billId: bill?.billId,
+        time: formatTime(bill?.bookingTm, { emptyValue: '00:00' }),
         customerName: bill?.bookingNm || undefined,
         groupName: bill?.bookingsNm || undefined,
         members,
@@ -143,14 +150,24 @@ const OrderMainPage: React.FC = () => {
       />
       <div className={styles.contentArea}>
         {isTableMode ? (
-          <div className={styles.tableLayoutContainer} ref={containerRef}>
+          <div
+            className={styles.tableLayoutContainer}
+            ref={containerRef}
+            onMouseDown={handleMouseDown}
+            style={{ cursor: isPanning ? 'grabbing' : 'grab' }}
+          >
             <div
-              className={styles.layoutSpacer}
-              style={{ width: layoutSize.width, height: layoutSize.height }}
-            />
-            {mappedTableData.map((table, index) => (
-              <TableItem key={`${table.id}-${index}`} table={table} />
-            ))}
+              className={styles.canvasWrapper}
+              style={{
+                transform: `translate(${pan.x}px, ${pan.y}px)`,
+                width: layoutSize.width,
+                height: layoutSize.height,
+              }}
+            >
+              {mappedTableData.map((table, index) => (
+                <TableItem key={`${table.id}-${index}`} table={table} />
+              ))}
+            </div>
           </div>
         ) : (
           <TableSeat seats={seatData} />

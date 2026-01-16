@@ -3,12 +3,10 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import styles from '@/styles/components/admin/layout/HeaderBar.module.scss';
 import { useHorizontalScroll } from '@/hooks/common/useScrollManagement';
-import { useGolferPositions, type GolferPositionData } from '@/hooks/api/useBookingList';
+import { useGolferPositions } from '@/hooks/api/useBookingList';
+import type { GolferPositionData } from '@/types';
 import { useShopInfo } from '@/hooks/api/useShopInfo';
-
-interface HeaderBarProps {
-  onExpandedChange?: (isExpanded: boolean) => void;
-}
+import type { HeaderBarProps } from '@/types';
 
 const HeaderBar: React.FC<HeaderBarProps> = ({ onExpandedChange }) => {
   const [isExpanded, setIsExpanded] = useState(true);

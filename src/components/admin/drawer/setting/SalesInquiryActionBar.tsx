@@ -5,13 +5,7 @@ import styles from '@/styles/components/admin/drawer/SalesManagement.module.scss
 import { SalesFilter, SalesStats } from '@/types';
 import DateRangePicker from '@/components/admin/common/DateRangePicker';
 import ExcelDownloadButton from "@/components/admin/drawer/setting/ExcelDownloadButton";
-
-interface SalesFilterActionBarProps {
-  filter: SalesFilter;
-  onFilterChange: (filter: SalesFilter) => void;
-  stats: SalesStats;
-  onExportExcel: () => void;
-}
+import type { SalesFilterActionBarProps } from '@/types';
 
 const SalesFilterActionBar: React.FC<SalesFilterActionBarProps> = ({
                                                                      filter,

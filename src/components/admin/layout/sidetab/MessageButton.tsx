@@ -3,12 +3,7 @@ import styles from '@/styles/components/admin/layout/SideTab.module.scss';
 import MessageIcon from './MessageIcon';
 import { useEventMsgHisList } from '@/hooks/api';
 import storage from '@/utils/storage';
-
-interface MessageButtonProps {
-  hasNotification?: boolean;
-  isTablet?: boolean;
-  onNotificationClear?: () => void;
-}
+import type { MessageButtonProps } from '@/types';
 
 const MessageButton: React.FC<MessageButtonProps> = ({
   hasNotification = false,

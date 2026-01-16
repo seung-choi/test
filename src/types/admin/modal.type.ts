@@ -1,4 +1,5 @@
 import { MessageFormData, ErpProduct } from '@/types';
+import type { GetCategoryResponse } from '@/types/category.type';
 import { BillOrder } from '@/types/bill.type';
 import type { GoodsChannel, GoodsOption, GoodsStatus } from '@/types/goods.type';
 
@@ -114,4 +115,27 @@ export interface ErpLinkModalState {
   onLinkErp?: (selection: ErpLinkSelection) => void;
   onManual?: () => void;
   onCancel?: () => void;
+}
+
+export interface CategoryItem extends GetCategoryResponse {
+  isNew?: boolean;
+  isDeleted?: boolean;
+}
+
+export interface SortableCategoryRowProps {
+  category: CategoryItem;
+  onDelete: (categoryId: number) => void;
+}
+
+export interface CancelReasonRow {
+  rowId: string;
+  categoryId: number | null;
+  categoryNm: string;
+  categoryOrd: number;
+  categoryErp: string;
+}
+
+export interface SortableCancelReasonRowProps {
+  reason: CancelReasonRow;
+  onDelete: (rowId: string) => void;
 }

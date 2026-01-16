@@ -8,20 +8,7 @@ import { useScrollLock } from '@/hooks/common/useScrollManagement';
 import { usePutGoodsErpList } from '@/hooks/api';
 import ErpToast from '@/components/common/ErpToast';
 import storage from '@/utils/storage';
-
-type DrawerMode = 'setting' | 'menu';
-
-interface DrawerProps {
-  isOpen: boolean;
-  onClose: () => void;
-  title: string;
-  children: React.ReactNode;
-  hasBackgroundImage?: boolean;
-  mode?: DrawerMode;
-  hasSelectedItems?: boolean;
-  onDelete?: () => void;
-  onReorderCommit?: () => void;
-}
+import type { DrawerProps } from '@/types';
 
 const Drawer: React.FC<DrawerProps> = ({
                                          isOpen,

@@ -3,38 +3,16 @@
 import React, {useMemo} from 'react';
 import styles from '@/styles/components/admin/contents/InfoCard.module.scss';
 import {Bill, BillOrderStatus} from '@/types/bill.type';
-import {GpsBookingType} from '@/types/booking.type';
 import {CustomerInfo, OrderHistory, OrderItemSummary} from '@/types';
 import {useHistoryExpansion} from '@/hooks/admin/useHistoryExpansion';
-import {TableOption, useTableSelection} from '@/hooks/admin/useTableSelection';
+import { useTableSelection } from '@/hooks/admin/useTableSelection';
 import InfoCardHeader from './infocard/InfoCardHeader';
 import CustomerInfoSection from './infocard/CustomerInfoSection';
 import OrderItemsList from './infocard/OrderItemsList';
 import OrderHistorySection from './infocard/OrderHistorySection';
 import InfoCardActions from './infocard/InfoCardActions';
-
-export interface InfoCardProps {
-  bill: Bill;
-  booking?: GpsBookingType;
-  onAcceptOrder?: (tableId: number | null) => void;
-  onCancelOrder?: () => void;
-  onCompleteOrder?: () => void;
-  onMessageOrder?: () => void;
-  availableTables?: TableOption[];
-}
-
-const formatTime = (value?: string | null): string => {
-  if (!value) return '-';
-  const match = value.match(/^(\d{2}):(\d{2})(?::\d{2})?$/);
-  if (match) {
-    return `${match[1]}:${match[2]}`;
-  }
-  const parsed = new Date(value);
-  if (!Number.isNaN(parsed.getTime())) {
-    return parsed.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
-  }
-  return value;
-};
+import { formatTime } from '@/utils';
+import type { InfoCardProps } from '@/types';
 
 const InfoCard: React.FC<InfoCardProps> = ({
   bill,

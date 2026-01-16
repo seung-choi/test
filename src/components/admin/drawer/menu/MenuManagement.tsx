@@ -29,12 +29,7 @@ import {
   mapMenuTagsToGoods,
 } from '@/utils/mappers/goodsMappers';
 import { useToast } from '@/hooks/common/useToast';
-
-interface MenuManagementProps {
-  onClose: () => void;
-  onDelete?: (selectedItems: string[]) => void;
-  onSelectionChange?: (hasSelection: boolean) => void;
-}
+import type { MenuManagementProps } from '@/types';
 
 export interface MenuManagementRef {
   handleDelete: () => void;

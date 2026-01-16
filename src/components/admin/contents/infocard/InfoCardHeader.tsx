@@ -1,17 +1,6 @@
 import React from 'react';
 import styles from '@/styles/components/admin/contents/InfoCard.module.scss';
-import { TableOption } from '@/hooks/admin/useTableSelection';
-
-interface InfoCardHeaderProps {
-  tableNumber: string;
-  realTimeLocation: string;
-  selectedTable: string | null;
-  isDropdownOpen: boolean;
-  isDisabledStatus: boolean;
-  availableTables: TableOption[];
-  onToggleDropdown: () => void;
-  onSelectTable: (table: TableOption) => void;
-}
+import type { InfoCardHeaderProps } from '@/types';
 
 const InfoCardHeader: React.FC<InfoCardHeaderProps> = ({
   tableNumber,

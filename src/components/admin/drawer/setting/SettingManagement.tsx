@@ -7,22 +7,10 @@ import {getSalesTableColumns} from "@/constants";
 import SalesFilterActionBar from "@/components/admin/drawer/setting/SalesInquiryActionBar";
 import { SalesFilter } from '@/types';
 import { exportSalesToExcel } from '@/utils/admin/excel/salesExcelExporter';
+import { formatTime } from '@/utils';
 import LayoutManager from '@/components/admin/drawer/setting/canvas/LayoutManager';
 import { useInfiniteBillList } from '@/hooks/api';
 import type { Bill } from '@/types/bill.type';
-
-const formatTime = (value?: string | null) => {
-    if (!value) return '-';
-    const match = value.match(/^(\d{2}):(\d{2})(?::\d{2})?$/);
-    if (match) {
-        return `${match[1]}:${match[2]}`;
-    }
-    const parsed = new Date(value);
-    if (!Number.isNaN(parsed.getTime())) {
-        return parsed.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
-    }
-    return value;
-};
 
 const getBillStatus = (billSt: string) => {
     switch (billSt) {

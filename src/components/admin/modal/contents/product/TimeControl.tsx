@@ -1,11 +1,6 @@
 import React from 'react';
 import styles from '@/styles/components/admin/modal/ProductModal.module.scss';
-
-interface TimeControlProps {
-  value: number;
-  onChange: (value: number) => void;
-  step?: number;
-}
+import type { TimeControlProps } from '@/types';
 
 const TimeControl: React.FC<TimeControlProps> = ({ value, onChange, step = 10 }) => {
   const handleIncrease = () => {

@@ -6,6 +6,8 @@ export type { TableReservation };
 export interface TableData {
   id: string;
   tableId?: number;
+  billId?: number;
+  members?: string[];
   type: TableType;
   position: {
     left: number;

@@ -4,12 +4,7 @@ import React, { useRef } from 'react';
 import styles from '@/styles/components/order/order/CategoryTabs.module.scss';
 import { CategoryType } from '@/types';
 import { useHorizontalScroll } from '@/hooks/common/useScrollManagement';
-
-interface CategoryTabsProps {
-  categories: CategoryType[];
-  activeCategory: CategoryType;
-  onCategoryChange: (category: CategoryType) => void;
-}
+import type { CategoryTabsProps } from '@/types';
 
 /**
  * 카테고리 탭 컴포넌트

@@ -2,21 +2,8 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import styles from '@/styles/components/order/order/OrderSidebar.module.scss';
-import {OrderItem, TableInfo} from '@/types';
 import QuantityControl from '@/components/order/common/QuantityControl';
-
-interface OrderSidebarProps {
-    tableInfo: TableInfo;
-    orderItems: OrderItem[];
-    onMemoClick: () => void;
-    onOrderClick: () => void;
-    onDetailClick: () => void;
-    onQuantityChange: (itemId: string, newQuantity: number) => void;
-    selectedPayer?: string;
-    onPayerSelect?: (payerName: string) => void;
-    hidePayerSection?: boolean;
-    hideMemberNames?: boolean;
-}
+import type { OrderSidebarProps } from '@/types';
 
 const OrderSidebar: React.FC<OrderSidebarProps> = ({
                                                        tableInfo,

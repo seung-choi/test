@@ -2,19 +2,7 @@
 
 import React from 'react';
 import styles from '@/styles/components/common/tableCard.module.scss';
-
-interface TableCardProps {
-    id: string;
-    time?: string;
-    customerName?: string;
-    groupName?: string;
-    members?: string[];
-    tableNumber: string;
-    isEmpty: boolean;
-    onClick?: () => void;
-    variant?: 'default' | 'compact';
-    className?: string;
-}
+import type { TableCardProps } from '@/types';
 
 const TableCard: React.FC<TableCardProps> = ({
     time,

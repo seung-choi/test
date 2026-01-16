@@ -2,18 +2,9 @@
 
 import React, { useMemo, useState } from 'react';
 import styles from '@/styles/components/admin/drawer/canvas/tableListView.module.scss';
-import type { GetTableResponse, PlacedTable, TableType } from '@/types';
-
-interface TableWithPage extends PlacedTable {
-    pageName?: string;
-}
-
-interface TableListViewProps {
-    placedTables: TableWithPage[];
-    tableList?: GetTableResponse[];
-    onReorderPlacedTables?: (reorderedTables: PlacedTable[]) => void;
-    onReorderTableList?: (reorderedTables: GetTableResponse[]) => void;
-}
+import type { PlacedTable, TableType } from '@/types';
+import type { TableListViewProps, TableWithPage } from '@/types';
+import type { GetTableResponse } from '@/api/table';
 
 const TableListView: React.FC<TableListViewProps> = ({
     placedTables,

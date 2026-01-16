@@ -3,18 +3,7 @@ import styles from '@/styles/components/admin/contents/InfoCard.module.scss';
 import { OrderItemSummary } from '@/types';
 import { BillOrderStatus } from '@/types/bill.type';
 import { formatPrice } from '@/utils';
-
-interface OrderItemsListProps {
-  totalItems: number;
-  orderTime: string;
-  orderLocation: string;
-  orderItems: OrderItemSummary[];
-  orderPlayerName?: string | null;
-  orderCourseName?: string | null;
-  orderHoleNo?: number | null;
-  specialRequest?: string;
-  status: BillOrderStatus;
-}
+import type { OrderItemsListProps } from '@/types';
 
 const OrderItemsList: React.FC<OrderItemsListProps> = ({
   totalItems,

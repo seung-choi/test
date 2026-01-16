@@ -1,12 +1,7 @@
 import React from 'react';
 import styles from '@/styles/components/admin/modal/ProductModal.module.scss';
 import { MENU_TAGS, getTagClass } from '@/constants/admin/tags/menuTags';
-
-interface TagSelectorProps {
-  selectedTags: string[];
-  onToggle: (tag: string) => void;
-  maxTags?: number;
-}
+import type { TagSelectorProps } from '@/types';
 
 const TagSelector: React.FC<TagSelectorProps> = ({ selectedTags, onToggle, maxTags = 2 }) => {
   const getTagClassName = (tag: string) => {

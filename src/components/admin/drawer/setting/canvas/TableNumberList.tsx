@@ -5,10 +5,7 @@ import styles from '@/styles/components/admin/drawer/canvas/tableNumberList.modu
 import { useDeleteTable, usePostTable, useTableErpList, useTableList } from '@/hooks/api';
 import { useQueryClient } from '@tanstack/react-query';
 import storage from '@/utils/storage';
-
-interface TableNumberListProps {
-    linkedNumbers?: string[];
-}
+import type { TableNumberListProps } from '@/types';
 
 const TableNumberList: React.FC<TableNumberListProps> = ({ linkedNumbers = [] }) => {
     const queryClient = useQueryClient();

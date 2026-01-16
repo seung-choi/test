@@ -25,27 +25,9 @@ import { CancelReason } from '@/types';
 import { useCategoryList, usePostCategoryList } from '@/hooks/api';
 import type { PostCategoryRequest } from '@/types/category.type';
 import { useToast } from '@/hooks/common/useToast';
+import type { CancelReasonManagementModalContentProps, CancelReasonRow, SortableCancelReasonRowProps } from '@/types';
 
-interface CancelReasonManagementModalContentProps {
-  initialReasons?: CancelReason[];
-  onSubmit: (reasons: CancelReason[]) => void;
-  onClose: () => void;
-}
-
-interface SortableRowProps {
-  reason: CancelReasonRow;
-  onDelete: (rowId: string) => void;
-}
-
-interface CancelReasonRow {
-  rowId: string;
-  categoryId: number | null;
-  categoryNm: string;
-  categoryOrd: number;
-  categoryErp: string;
-}
-
-const SortableRow: React.FC<SortableRowProps> = ({ reason, onDelete }) => {
+const SortableRow: React.FC<SortableCancelReasonRowProps> = ({ reason, onDelete }) => {
   const {
     attributes,
     listeners,

@@ -2,16 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import styles from '@/styles/components/order/modal/ManualRegisterModal.module.scss';
-
-interface ManualRegisterModalProps {
-  isOpen: boolean;
-  value: string;
-  onChange: (value: string) => void;
-  onClose: () => void;
-  onSubmit: () => void;
-  isSubmitting?: boolean;
-  hasError?: boolean;
-}
+import type { ManualRegisterModalProps } from '@/types';
 
 const ManualRegisterModal: React.FC<ManualRegisterModalProps> = ({
   isOpen,

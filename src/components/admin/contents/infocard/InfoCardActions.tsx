@@ -2,16 +2,7 @@ import React from 'react';
 import styles from '@/styles/components/admin/contents/InfoCard.module.scss';
 import { BillOrderStatus } from '@/types/bill.type';
 import { formatPrice } from '@/utils';
-
-interface InfoCardActionsProps {
-  status: BillOrderStatus;
-  cancelReason?: string;
-  totalAmount?: number;
-  selectedTableId?: number | null;
-  onAcceptOrder?: (tableId: number | null) => void;
-  onCancelOrder?: () => void;
-  onCompleteOrder?: () => void;
-}
+import type { InfoCardActionsProps } from '@/types';
 
 const InfoCardActions: React.FC<InfoCardActionsProps> = ({
   status,

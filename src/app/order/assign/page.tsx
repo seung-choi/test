@@ -7,15 +7,7 @@ import OrderHeaderShell from '@/components/order/common/OrderHeaderShell';
 import ManualRegisterModal from '@/components/order/modal/ManualRegisterModal';
 import { useBillErpList, usePostBill } from '@/hooks/api';
 import { useToast } from '@/hooks/common/useToast';
-
-const formatTime = (value?: string | null): string => {
-  if (!value) return '-';
-  const match = value.match(/^(\d{2}):(\d{2})(?::\d{2})?$/);
-  if (match) {
-    return `${match[1]}:${match[2]}`;
-  }
-  return value;
-};
+import { formatTime } from '@/utils';
 
 const OrderAssignPage: React.FC = () => {
   const isClient = typeof window !== 'undefined';

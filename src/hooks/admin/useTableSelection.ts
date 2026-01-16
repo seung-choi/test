@@ -1,9 +1,5 @@
 import { useEffect, useState } from 'react';
-
-export interface TableOption {
-  id: number;
-  label: string;
-}
+import type { TableOption } from '@/types/admin/tableSelection.type';
 
 export const useTableSelection = (initial?: { tableId?: number | null; tableLabel?: string | null }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);

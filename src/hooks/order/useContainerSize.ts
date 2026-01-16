@@ -1,9 +1,5 @@
 import { useState, useLayoutEffect, useEffect, RefObject } from 'react';
-
-interface ContainerSize {
-  width: number;
-  height: number;
-}
+import type { ContainerSize } from '@/types';
 
 export const useContainerSize = (
   containerRef: RefObject<HTMLDivElement>,

@@ -21,27 +21,6 @@ import {
   DeleteBillListRequest,
 } from '@/types/bill.type';
 
-export const useBillList = (params?: GetBillParams, options?: {
-  refetchInterval?: number;
-  enabled?: boolean;
-}) => {
-  const { data, isLoading, error, refetch } = useQuery({
-    queryKey: ['billList', params],
-    queryFn: () => getBillList(params),
-    refetchInterval: options?.refetchInterval,
-    enabled: options?.enabled ?? true,
-    retry: 2,
-    staleTime: 30000,
-  });
-
-  return {
-    billData: data,
-    isLoading,
-    error,
-    refetch,
-  };
-};
-
 export const useInfiniteBillList = (params?: Omit<GetBillParams, 'page'>, options?: {
   enabled?: boolean;
 }) => {

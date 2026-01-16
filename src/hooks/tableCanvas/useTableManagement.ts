@@ -1,11 +1,5 @@
 import { useCallback } from 'react';
-import { PlacedTable, TableType, LayoutPage } from '@/types';
-
-interface UseTableManagementProps {
-    pages: LayoutPage[];
-    setPages: React.Dispatch<React.SetStateAction<LayoutPage[]>>;
-    currentPageId: string;
-}
+import { PlacedTable, TableType, UseTableManagementProps } from '@/types';
 
 export const useTableManagement = ({ pages, setPages, currentPageId }: UseTableManagementProps) => {
     const updatePageTables = useCallback((pageId: string, updater: (tables: PlacedTable[]) => PlacedTable[]) => {

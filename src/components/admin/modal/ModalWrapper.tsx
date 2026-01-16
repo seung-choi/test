@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from '@/styles/components/admin/modal/Modal.module.scss';
 import { useScrollLock } from '@/hooks/common/useScrollManagement';
-
-interface ModalWrapperProps {
-  isShow: boolean;
-  onClose: () => void;
-  enableOverlayClick?: boolean;
-  children: React.ReactNode;
-}
+import type { ModalWrapperProps } from '@/types';
 
 const ModalWrapper: React.FC<ModalWrapperProps> = ({
   isShow,

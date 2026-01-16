@@ -8,6 +8,7 @@ import MenuGrid from '@/components/order/order/MenuGrid';
 import OrderSidebar from '@/components/order/order/OrderSidebar';
 import MemoModal from '@/components/order/modal/MemoModal';
 import OrderDetailModal from '@/components/order/modal/OrderDetailModal';
+import type { OrderTake } from '@/types';
 import { CategoryType, MenuItem, OrderItem, TableInfo } from '@/types';
 import { useScrollToTop } from '@/hooks/common/useScrollManagement';
 import { useToast } from '@/hooks/common/useToast';
@@ -58,15 +59,18 @@ const OrderPageContent: React.FC = () => {
     const membersParam = searchParams.get('members');
     const isManual = searchParams.get('manual') === '1';
 
-    const numericTableNumber = tableNumberParam
-      ? Number(tableNumberParam.replace('T', ''))
-      : 0;
-
     return {
-      tableNumber: Number.isFinite(numericTableNumber) ? numericTableNumber : 0,
+      tableNumber: tableNumberParam || '-',
       groupName,
       memberNames: isManual ? [] : (membersParam ?? '').split(',').filter(Boolean),
     };
+  }, [searchParams]);
+
+  const billId = useMemo(() => {
+    const billIdParam = searchParams.get('billId');
+    if (!billIdParam) return null;
+    const parsed = Number(billIdParam);
+    return Number.isFinite(parsed) ? parsed : null;
   }, [searchParams]);
 
   const handleCategoryChange = useCallback((category: CategoryType) => {
@@ -122,13 +126,13 @@ const OrderPageContent: React.FC = () => {
       return;
     }
 
-    const billIdParam = searchParams.get('billId');
-    const billId = billIdParam ? Number(billIdParam) : undefined;
+    const billIdValue = billId ?? undefined;
     const payerName = selectedPayer || tableInfo.groupName || '-';
     const orderAmt = orderItems.reduce(
       (sum, item) => sum + item.menuItem.price * item.quantity,
       0
     );
+    const defaultOrderTake: OrderTake = 'N';
     const orderHisList = orderItems
       .map((item, index) => {
         const goodsId = Number(item.menuItem.id);
@@ -138,13 +142,14 @@ const OrderPageContent: React.FC = () => {
           orderOrd: index + 1,
           orderCnt: item.quantity,
           orderAmt: item.menuItem.price,
+          orderTake: defaultOrderTake
         };
       })
       .filter((item): item is NonNullable<typeof item> => item !== null);
 
     postBillOrder(
       {
-        billId: Number.isFinite(billId) ? billId : undefined,
+        billId: billIdValue,
         playerNm: payerName,
         playerErp: payerName,
         orderAmt,
@@ -158,7 +163,7 @@ const OrderPageContent: React.FC = () => {
         },
       }
     );
-  }, [orderItems, selectedPayer, showToast, postBillOrder, searchParams, tableInfo.groupName, memoText]);
+  }, [orderItems, selectedPayer, showToast, postBillOrder, tableInfo.groupName, memoText, billId]);
 
   const handleDetailClick = useCallback(() => {
     setIsDetailModalOpen(true);
@@ -241,6 +246,7 @@ const OrderPageContent: React.FC = () => {
         onClose={() => setIsDetailModalOpen(false)}
         orderItems={orderItems}
         onQuantityChange={handleQuantityChange}
+        billId={billId}
       />
     </div>
   );

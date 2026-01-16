@@ -2,12 +2,7 @@
 
 import React from 'react';
 import styles from '@/styles/components/admin/drawer/canvas/layoutTabs.module.scss';
-
-interface LayoutTabsProps {
-    activeTab: 'table' | 'list';
-    onTabChange: (tab: 'table' | 'list') => void;
-    onSave?: () => void;
-}
+import type { LayoutTabsProps } from '@/types';
 
 const LayoutTabs: React.FC<LayoutTabsProps> = ({ activeTab, onTabChange, onSave }) => {
     return (

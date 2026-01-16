@@ -8,11 +8,7 @@ import { ErpProduct, ErpSearchType } from '@/types/erp.type';
 import CustomSelect from '@/components/common/CustomSelect';
 import { formatPrice } from '@/utils';
 import { useGoodsErpList, usePutGoodsErpList } from '@/hooks/api';
-
-interface ErpSearchModalContentProps {
-  onSelect: (product: ErpProduct) => void;
-  onClose: () => void;
-}
+import type { ErpSearchModalContentProps } from '@/types';
 
 const ErpSearchModalContent: React.FC<ErpSearchModalContentProps> = ({
   onSelect,

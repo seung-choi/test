@@ -1,11 +1,25 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
+import type { PanPosition, PanZoomOptions } from '@/types';
 
-interface PanPosition {
-    x: number;
-    y: number;
-}
+const DEFAULT_IGNORE_SELECTORS = [
+    'button',
+    '[draggable]',
+    'input',
+    'select',
+    'textarea',
+    'a',
+    '[data-table-item]',
+    '[data-no-pan]'
+];
 
-export const usePanZoom = () => {
+export const usePanZoom = (options: PanZoomOptions = {}) => {
+    const {
+        enabled = true,
+        enableWheel = true,
+        enableZoom = true,
+        allowMiddleButton = true,
+        ignoreSelectors = DEFAULT_IGNORE_SELECTORS,
+    } = options;
     const [zoom, setZoom] = useState(1);
     const [pan, setPan] = useState<PanPosition>({ x: 0, y: 0 });
     const [isPanning, setIsPanning] = useState(false);
@@ -13,43 +27,44 @@ export const usePanZoom = () => {
     const containerRef = useRef<HTMLDivElement>(null);
 
     const handleZoomIn = useCallback(() => {
+        if (!enableZoom) return;
         setZoom(prev => Math.min(prev + 0.1, 3));
-    }, []);
+    }, [enableZoom]);
 
     const handleZoomOut = useCallback(() => {
+        if (!enableZoom) return;
         setZoom(prev => Math.max(prev - 0.1, 0.3));
-    }, []);
+    }, [enableZoom]);
 
     const handleZoomReset = useCallback(() => {
-        setZoom(1);
+        if (enableZoom) {
+            setZoom(1);
+        }
         setPan({ x: 0, y: 0 });
-    }, []);
+    }, [enableZoom]);
 
     const handleWheel = useCallback((e: WheelEvent) => {
+        if (!enableWheel || !enableZoom) return;
         e.preventDefault();
         const delta = e.deltaY > 0 ? -0.1 : 0.1;
         setZoom(prev => Math.max(0.3, Math.min(3, prev + delta)));
-    }, []);
+    }, [enableWheel, enableZoom]);
 
     const handleMouseDown = useCallback((e: React.MouseEvent) => {
+        if (!enabled) return;
         const target = e.target as HTMLElement;
-
-        const isInteractiveElement = target.closest('button') ||
-                                     target.closest('[draggable]') ||
-                                     target.closest('input') ||
-                                     target.closest('select') ||
-                                     target.hasAttribute('data-table-item');
+        const isInteractiveElement = ignoreSelectors.some((selector) => Boolean(target.closest(selector)));
 
         if (!isInteractiveElement && e.button === 0) {
             e.preventDefault();
             setIsPanning(true);
             setStartPan({ x: e.clientX - pan.x, y: e.clientY - pan.y });
-        } else if (e.button === 1) {
+        } else if (allowMiddleButton && e.button === 1) {
             e.preventDefault();
             setIsPanning(true);
             setStartPan({ x: e.clientX - pan.x, y: e.clientY - pan.y });
         }
-    }, [pan]);
+    }, [enabled, ignoreSelectors, allowMiddleButton, pan]);
 
     const handleMouseMove = useCallback((e: MouseEvent) => {
         if (isPanning) {
@@ -68,25 +83,31 @@ export const usePanZoom = () => {
     }, []);
 
     useEffect(() => {
+        if (!enabled) return;
         const container = containerRef.current;
         if (!container) return;
 
-        container.addEventListener('wheel', handleWheel, { passive: false });
+        if (enableWheel && enableZoom) {
+            container.addEventListener('wheel', handleWheel, { passive: false });
+        }
         window.addEventListener('mousemove', handleMouseMove);
         window.addEventListener('mouseup', handleMouseUp);
 
         return () => {
-            container.removeEventListener('wheel', handleWheel);
+            if (enableWheel && enableZoom) {
+                container.removeEventListener('wheel', handleWheel);
+            }
             window.removeEventListener('mousemove', handleMouseMove);
             window.removeEventListener('mouseup', handleMouseUp);
         };
-    }, [handleWheel, handleMouseMove, handleMouseUp]);
+    }, [enabled, enableWheel, enableZoom, handleWheel, handleMouseMove, handleMouseUp]);
 
     return {
         zoom,
         pan,
         isPanning,
         containerRef,
+        setPan,
         handleZoomIn,
         handleZoomOut,
         handleZoomReset,

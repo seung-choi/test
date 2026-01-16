@@ -4,15 +4,7 @@ import React from 'react';
 import CommonModalLayout from '@/components/admin/modal/CommonModalLayout';
 import commonStyles from '@/styles/components/admin/modal/CommonModal.module.scss';
 import styles from '@/styles/components/admin/modal/Modal.module.scss';
-
-interface ConfirmModalContentProps {
-  title?: string;
-  desc: string;
-  okBtnLabel?: string;
-  cancelBtnLabel?: string;
-  onConfirm: () => void;
-  onCancel: () => void;
-}
+import type { ConfirmModalContentProps } from '@/types';
 
 const ConfirmModalContent: React.FC<ConfirmModalContentProps> = ({
   title = '확인',

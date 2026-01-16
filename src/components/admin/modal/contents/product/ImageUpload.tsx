@@ -1,10 +1,6 @@
 import React, { useRef } from 'react';
 import styles from '@/styles/components/admin/modal/ProductModal.module.scss';
-
-interface ImageUploadProps {
-  image?: File | string;
-  onChange: (file: File) => void;
-}
+import type { ImageUploadProps } from '@/types';
 
 const ImageUpload: React.FC<ImageUploadProps> = ({ image, onChange }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);

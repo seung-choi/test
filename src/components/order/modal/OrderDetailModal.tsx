@@ -3,33 +3,26 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import BaseModal from './BaseModal';
 import styles from '@/styles/components/order/modal/OrderDetailModal.module.scss';
-import { OrderItem } from '@/types';
-import { mockOrderItemDetails } from '@/data/mockOrderData';
+import { OrderItem, OrderItemWithTime } from '@/types';
 import QuantityControl from '@/components/order/common/QuantityControl';
-
-interface OrderDetailModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  orderItems: OrderItem[];
-  onQuantityChange: (itemId: string, newQuantity: number) => void;
-}
-
-interface OrderItemWithTime extends OrderItem {
-  orderTime: string;
-  payer?: string;
-  options?: string;
-  memo?: string;
-}
+import type { OrderDetailModalProps } from '@/types';
+import { useBillOrderList } from '@/hooks/api';
+import { formatTime } from '@/utils';
 
 const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
   isOpen,
   onClose,
   orderItems,
   onQuantityChange,
+  billId,
 }) => {
   const [selectedTime, setSelectedTime] = useState('전체');
   const [deletedItems, setDeletedItems] = useState<Set<string>>(new Set());
   const initialOrderItemsRef = useRef<OrderItem[]>([]);
+
+  const { orderList = [] } = useBillOrderList(billId ?? 0, {
+    enabled: isOpen && Boolean(billId),
+  });
 
   useEffect(() => {
     if (isOpen) {
@@ -39,31 +32,30 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
   }, [isOpen]);
 
   const orderItemsWithTime: OrderItemWithTime[] = useMemo(() => {
-    return orderItems.map((item, index) => ({
-      ...item,
-      orderTime: mockOrderItemDetails[index]?.orderTime || '00:00',
-      payer: mockOrderItemDetails[index]?.payer,
-      options: mockOrderItemDetails[index]?.options,
-      memo: mockOrderItemDetails[index]?.memo,
-    }));
-  }, [orderItems]);
-
-  const hasChanges = useMemo(() => {
-    if (deletedItems.size > 0) {
-      return true;
+    if (orderList.length === 0) {
+      return orderItems.map((item) => ({
+        ...item,
+        orderTime: '00:00',
+      }));
     }
 
-    if (initialOrderItemsRef.current.length !== orderItems.length) {
-      return true;
-    }
-
-    return orderItems.some((item, index) => {
-      const initialItem = initialOrderItemsRef.current[index];
-      return !initialItem ||
-             item.menuItem.id !== initialItem.menuItem.id ||
-             item.quantity !== initialItem.quantity;
-    });
-  }, [orderItems, deletedItems]);
+    return orderList.flatMap((order) =>
+      (order.orderHisList ?? []).map((item) => ({
+        menuItem: {
+          id: String(item.orderNo),
+          name: item.goodsNm,
+          price: item.orderAmt,
+          imageUrl: '',
+          category: '',
+          goodsSt: 'Y',
+        },
+        quantity: item.orderCnt,
+        orderTime: formatTime(order.createdDt),
+        payer: order.playerNm || undefined,
+        memo: order.orderReq || undefined,
+      }))
+    );
+  }, [orderItems, orderList]);
 
   const handleDelete = (itemId: string) => {
     setDeletedItems(prev => {
@@ -95,8 +87,8 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
       ? orderItemsWithTime
       : groupedByTime[selectedTime] || [];
 
-  const totalItems = orderItems.reduce((sum, item) => sum + item.quantity, 0);
-  const totalAmount = orderItems.reduce(
+  const totalItems = orderItemsWithTime.reduce((sum, item) => sum + item.quantity, 0);
+  const totalAmount = orderItemsWithTime.reduce(
     (sum, item) => sum + item.menuItem.price * item.quantity,
     0
   );

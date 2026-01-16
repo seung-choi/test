@@ -3,12 +3,7 @@
 import React from 'react';
 import styles from '@/styles/components/admin/drawer/canvas/controlPanel.module.scss';
 import { LayoutPage } from '@/types';
-
-interface ControlPanelProps {
-    pages: LayoutPage[];
-    onPageAdd: () => void;
-    onPageDelete: () => void;
-}
+import type { ControlPanelProps } from '@/types';
 
 const ControlPanel: React.FC<ControlPanelProps> = ({
     pages,

@@ -2,13 +2,7 @@ import React from 'react';
 import styles from '@/styles/components/admin/layout/SideTab.module.scss';
 import { OrderCounts } from '@/types';
 import { BillOrderStatus } from '@/types/bill.type';
-
-interface FilterSectionProps {
-  activeFilter: BillOrderStatus;
-  orderCounts: OrderCounts;
-  hasNotification: boolean;
-  onFilterChange: (filter: BillOrderStatus) => void;
-}
+import type { FilterSectionProps } from '@/types';
 
 const FilterSection: React.FC<FilterSectionProps> = ({
   activeFilter,

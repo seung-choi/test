@@ -2,25 +2,9 @@
 
 import React, { useMemo } from 'react';
 import styles from '@/styles/components/common/tableShape.module.scss';
-import { TableType } from '@/types';
-import { BASE_DIMENSIONS, SIZE_SCALE, CONTENT_PADDING, TableReservation } from '@/utils/tableShape/types';
+import { BASE_DIMENSIONS, SIZE_SCALE, CONTENT_PADDING } from '@/utils/tableShape/types';
 import { calculateBorderPositions } from '@/utils/tableShape/borderCalculator';
-
-interface TableShapeProps {
-  type: TableType;
-  scale?: number;
-  borderColor?: string;
-  rotation?: number;
-  children?: React.ReactNode;
-  className?: string;
-  style?: React.CSSProperties;
-  onClick?: () => void;
-  variant?: 'order' | 'admin';
-  reservation?: TableReservation;
-  status?: 'empty' | 'occupied';
-  tableNumber?: string;
-  tableId?: string;
-}
+import type { TableShapeProps } from '@/types';
 
 const TableShape: React.FC<TableShapeProps> = ({
   type,
@@ -141,6 +125,7 @@ const TableShape: React.FC<TableShapeProps> = ({
   return (
     <div
       className={`${styles.tableShape} ${variant === 'order' ? styles.orderVariant : ''} ${className}`}
+      data-no-pan="true"
       style={{
         width: displayWidth,
         height: displayHeight,

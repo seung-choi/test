@@ -1,19 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from '@/styles/components/admin/common/Button.module.scss';
-
-interface ButtonType {
-  type: 'button' | 'submit' | 'reset';
-  label: string;
-  size?: 'small' | 'medium' | 'large';
-  primary?: boolean;
-  disabled?: boolean;
-  readonly?: string;
-  id?: string;
-  block?: boolean;
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  style?: React.CSSProperties;
-}
+import type { ButtonProps } from '@/types';
 
 export const Button = ({
   type = 'submit',
@@ -25,7 +13,7 @@ export const Button = ({
   size = 'medium',
   block,
   ...props
-}: ButtonType) => {
+}: ButtonProps) => {
   return (
     <button
       type={type}

@@ -1,4 +1,4 @@
-import {TableColumn} from "@/components/admin/common/Table";
+import type { TableColumn } from '@/types';
 import {
     renderCustomers,
     renderDate,

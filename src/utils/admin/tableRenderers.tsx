@@ -4,14 +4,7 @@ import { getTagClass } from '@/constants/admin/tags/menuTags';
 import {formatDate, formatPrice} from "@/utils/common/formatDataUtils";
 import { MENU_STATUS_OPTIONS, getMenuStatusStyle, MenuStatus } from '@/constants/admin/menuStatus';
 import CustomSelect from '@/components/common/CustomSelect';
-
-export interface TableRowData {
-  id: string | number;
-  name?: string;
-  customerNames?: string;
-  groupName?: string;
-  [key: string]: string | number | string[] | boolean | undefined;
-}
+import type { TableRowData } from '@/types';
 
 export const renderCheckbox = (
   selectedItems: string[],

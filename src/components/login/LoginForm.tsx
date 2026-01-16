@@ -5,12 +5,7 @@ import styles from '@/styles/pages/login/login.module.scss';
 import { LoginFormData, FormErrors, isFormEmpty } from '@/utils/validation/loginValidation';
 import Checkbox from '@/components/common/Checkbox';
 import storage from '@/utils/storage';
-
-interface LoginFormProps {
-    onSubmit: (data: LoginFormData) => Promise<void>;
-    errors?: FormErrors;
-    isLoading?: boolean;
-}
+import type { LoginFormProps } from '@/types';
 
 const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, errors = {}, isLoading = false }) => {
     const [showClubCodeInput, setShowClubCodeInput] = useState(false);

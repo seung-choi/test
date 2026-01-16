@@ -25,8 +25,15 @@ export interface OrderItem {
   selectedOptions?: { option: MenuOption; quantity: number }[];
 }
 
+export interface OrderItemWithTime extends OrderItem {
+  orderTime: string;
+  payer?: string;
+  options?: string;
+  memo?: string;
+}
+
 export interface TableInfo {
-  tableNumber: number;
+  tableNumber: string;
   groupName: string;
   memberNames: string[];
 }
