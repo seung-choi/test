@@ -91,12 +91,15 @@ const OrderAssignPage: React.FC = () => {
         playerList: null,
       },
       {
-        onSuccess: () => {
+        onSuccess: (data) => {
           const params = new URLSearchParams({
             tableNumber,
             groupName: trimmed,
-            members: '',
+            manual: '1',
           });
+          if (data?.billId) {
+            params.set('billId', String(data.billId));
+          }
           setIsManualModalOpen(false);
           router.push(`/order/order?${params.toString()}`);
         },

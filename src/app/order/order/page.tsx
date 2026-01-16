@@ -12,7 +12,7 @@ import { CategoryType, MenuItem, OrderItem, TableInfo } from '@/types';
 import { mockTableInfo, mockOrderItems } from '@/data/mockOrderData';
 import { useScrollToTop } from '@/hooks/common/useScrollManagement';
 import { useToast } from '@/hooks/common/useToast';
-import { useGoodsList, useCategoryList } from '@/hooks/api';
+import { useGoodsList, useCategoryList, usePostBillOrder } from '@/hooks/api';
 
 const OrderPageContent: React.FC = () => {
   const router = useRouter();
@@ -23,14 +23,15 @@ const OrderPageContent: React.FC = () => {
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
   const [isMemoModalOpen, setIsMemoModalOpen] = useState(false);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [memoText, setMemoText] = useState('');
   const menuGridRef = useRef<HTMLDivElement>(null);
+  const { mutate: postBillOrder } = usePostBillOrder();
 
   const { data: goodsList = [], isLoading: isGoodsLoading } = useGoodsList();
   const { data: categoryList = [], isLoading: isCategoryLoading } = useCategoryList('CATEGORY');
 
   useScrollToTop();
 
-  // 카테고리 목록 생성 (전체메뉴 + API 카테고리)
   const categories = useMemo<CategoryType[]>(() => {
     const apiCategories = categoryList
       .sort((a, b) => a.categoryOrd - b.categoryOrd)
@@ -38,10 +39,9 @@ const OrderPageContent: React.FC = () => {
     return ['전체메뉴', ...apiCategories];
   }, [categoryList]);
 
-  // goods 데이터를 MenuItem 형식으로 변환
   const menuItems = useMemo<MenuItem[]>(() => {
     return goodsList
-      .filter(goods => goods.goodsSt === 'Y') // 판매중인 상품만
+      .filter(goods => goods.goodsSt !== 'N')
       .sort((a, b) => a.goodsOrd - b.goodsOrd)
       .map(goods => ({
         id: String(goods.goodsId),
@@ -49,27 +49,21 @@ const OrderPageContent: React.FC = () => {
         price: goods.goodsAmt,
         imageUrl: goods.goodsImg || '/assets/image/order/fallback.svg',
         category: goods.categoryNm,
+        goodsSt: goods.goodsSt,
       }));
   }, [goodsList]);
-
-  // 선택된 카테고리에 따른 메뉴 필터링
-  const filteredMenuItems = useMemo(() => {
-    if (activeCategory === '전체메뉴') {
-      return menuItems;
-    }
-    return menuItems.filter(item => item.category === activeCategory);
-  }, [menuItems, activeCategory]);
 
   const tableInfo: TableInfo = useMemo(() => {
     const tableNumber = searchParams.get('tableNumber');
     const groupName = searchParams.get('groupName');
     const membersParam = searchParams.get('members');
+    const isManual = searchParams.get('manual') === '1';
 
-    if (tableNumber && groupName && membersParam) {
+    if (tableNumber && groupName && (membersParam || isManual)) {
       return {
         tableNumber: parseInt(tableNumber.replace('T', '')) || mockTableInfo.tableNumber,
         groupName: groupName,
-        memberNames: membersParam.split(',').filter(Boolean),
+        memberNames: isManual ? [] : (membersParam ?? '').split(',').filter(Boolean),
       };
     }
 
@@ -120,14 +114,52 @@ const OrderPageContent: React.FC = () => {
   }, []);
 
   const handleMemoSave = useCallback((memo: string) => {
-    // TODO: 메모 저장 API 호출
+    setMemoText(memo);
   }, []);
 
   const handleOrderClick = useCallback(() => {
-    // TODO: 주문 API 호출
-    showToast(`결제자: ${selectedPayer || '미선택'} - 주문이 완료되었습니다!`, 'success');
-    setOrderItems([]);
-  }, [orderItems, selectedPayer, showToast]);
+    if (orderItems.length === 0) {
+      showToast('주문할 메뉴가 없습니다.', 'error');
+      return;
+    }
+
+    const billIdParam = searchParams.get('billId');
+    const billId = billIdParam ? Number(billIdParam) : undefined;
+    const payerName = selectedPayer || tableInfo.groupName || '-';
+    const orderAmt = orderItems.reduce(
+      (sum, item) => sum + item.menuItem.price * item.quantity,
+      0
+    );
+    const orderHisList = orderItems
+      .map((item, index) => {
+        const goodsId = Number(item.menuItem.id);
+        if (!Number.isFinite(goodsId)) return null;
+        return {
+          goodsId,
+          orderOrd: index + 1,
+          orderCnt: item.quantity,
+          orderAmt: item.menuItem.price,
+        };
+      })
+      .filter((item): item is NonNullable<typeof item> => item !== null);
+
+    postBillOrder(
+      {
+        billId: Number.isFinite(billId) ? billId : undefined,
+        playerNm: payerName,
+        playerErp: payerName,
+        orderAmt,
+        orderReq: memoText || undefined,
+        orderHisList,
+      },
+      {
+        onSuccess: () => {
+          showToast(`결제자: ${payerName} - 주문이 완료되었습니다!`, 'success');
+          setOrderItems([]);
+        },
+      }
+    );
+  }, [orderItems, selectedPayer, showToast, postBillOrder, searchParams, tableInfo.groupName, memoText]);
 
   const handleDetailClick = useCallback(() => {
     setIsDetailModalOpen(true);
@@ -184,7 +216,12 @@ const OrderPageContent: React.FC = () => {
       </header>
 
       <div className={styles.mainContent}>
-        <MenuGrid items={filteredMenuItems} onMenuClick={handleMenuClick} ref={menuGridRef} />
+        <MenuGrid
+          items={menuItems}
+          categories={categories}
+          onMenuClick={handleMenuClick}
+          ref={menuGridRef}
+        />
         <OrderSidebar
           tableInfo={tableInfo}
           orderItems={orderItems}
@@ -194,6 +231,8 @@ const OrderPageContent: React.FC = () => {
           onOrderClick={handleOrderClick}
           onDetailClick={handleDetailClick}
           onQuantityChange={handleQuantityChange}
+          hidePayerSection={searchParams.get('manual') === '1'}
+          hideMemberNames={searchParams.get('manual') === '1'}
         />
       </div>
 

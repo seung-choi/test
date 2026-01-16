@@ -7,12 +7,15 @@ export interface MenuOption {
   imageUrl: string;
 }
 
+import { GoodsStatus } from '@/types/goods.type';
+
 export interface MenuItem {
   id: string;
   name: string;
   price: number;
   imageUrl: string;
   category: string;
+  goodsSt: GoodsStatus;
   options?: MenuOption[];
 }
 

@@ -9,6 +9,7 @@ export const mockMenuItems: MenuItem[] = [
     price: 8000,
     imageUrl: '/images/menu/placeholder.jpg',
     category: '식사',
+    goodsSt: 'Y',
   },
   {
     id: 'meal-2',
@@ -16,6 +17,7 @@ export const mockMenuItems: MenuItem[] = [
     price: 12000,
     imageUrl: '/images/menu/placeholder.jpg',
     category: '식사',
+    goodsSt: 'Y',
   },
   {
     id: 'meal-3',
@@ -23,6 +25,7 @@ export const mockMenuItems: MenuItem[] = [
     price: 10000,
     imageUrl: '/images/menu/placeholder.jpg',
     category: '식사',
+    goodsSt: 'Y',
   },
   {
     id: 'meal-4',
@@ -30,6 +33,7 @@ export const mockMenuItems: MenuItem[] = [
     price: 11000,
     imageUrl: '/images/menu/placeholder.jpg',
     category: '식사',
+    goodsSt: 'Y',
   },
   {
     id: 'meal-5',
@@ -37,6 +41,7 @@ export const mockMenuItems: MenuItem[] = [
     price: 13000,
     imageUrl: '/images/menu/placeholder.jpg',
     category: '식사',
+    goodsSt: 'Y',
   },
   {
     id: 'meal-6',
@@ -44,6 +49,7 @@ export const mockMenuItems: MenuItem[] = [
     price: 9000,
     imageUrl: '/images/menu/placeholder.jpg',
     category: '식사',
+    goodsSt: 'Y',
   },
   // 주류
   {
@@ -52,6 +58,7 @@ export const mockMenuItems: MenuItem[] = [
     price: 4500,
     imageUrl: '/images/menu/placeholder.jpg',
     category: '주류',
+    goodsSt: 'Y',
   },
   {
     id: 'drink-2',
@@ -59,6 +66,7 @@ export const mockMenuItems: MenuItem[] = [
     price: 4500,
     imageUrl: '/images/menu/placeholder.jpg',
     category: '주류',
+    goodsSt: 'Y',
   },
   {
     id: 'drink-3',
@@ -66,6 +74,7 @@ export const mockMenuItems: MenuItem[] = [
     price: 5000,
     imageUrl: '/images/menu/placeholder.jpg',
     category: '주류',
+    goodsSt: 'Y',
   },
   {
     id: 'drink-4',
@@ -73,6 +82,7 @@ export const mockMenuItems: MenuItem[] = [
     price: 5000,
     imageUrl: '/images/menu/placeholder.jpg',
     category: '주류',
+    goodsSt: 'Y',
   },
   {
     id: 'drink-5',
@@ -80,6 +90,7 @@ export const mockMenuItems: MenuItem[] = [
     price: 5000,
     imageUrl: '/images/menu/placeholder.jpg',
     category: '주류',
+    goodsSt: 'Y',
   },
   {
     id: 'drink-6',
@@ -87,6 +98,7 @@ export const mockMenuItems: MenuItem[] = [
     price: 6000,
     imageUrl: '/images/menu/placeholder.jpg',
     category: '주류',
+    goodsSt: 'Y',
   },
   {
     id: 'snack-1',
@@ -94,6 +106,7 @@ export const mockMenuItems: MenuItem[] = [
     price: 18000,
     imageUrl: '/images/menu/placeholder.jpg',
     category: '안주',
+    goodsSt: 'Y',
   },
   {
     id: 'snack-2',
@@ -101,6 +114,7 @@ export const mockMenuItems: MenuItem[] = [
     price: 12000,
     imageUrl: '/images/menu/placeholder.jpg',
     category: '안주',
+    goodsSt: 'Y',
   },
   {
     id: 'snack-3',
@@ -108,6 +122,7 @@ export const mockMenuItems: MenuItem[] = [
     price: 8000,
     imageUrl: '/images/menu/placeholder.jpg',
     category: '안주',
+    goodsSt: 'Y',
   },
   {
     id: 'snack-4',
@@ -115,6 +130,7 @@ export const mockMenuItems: MenuItem[] = [
     price: 35000,
     imageUrl: '/images/menu/placeholder.jpg',
     category: '안주',
+    goodsSt: 'Y',
   },
   {
     id: 'snack-5',
@@ -122,6 +138,7 @@ export const mockMenuItems: MenuItem[] = [
     price: 9000,
     imageUrl: '/images/menu/placeholder.jpg',
     category: '안주',
+    goodsSt: 'Y',
   },
   {
     id: 'snack-6',
@@ -129,6 +146,7 @@ export const mockMenuItems: MenuItem[] = [
     price: 15000,
     imageUrl: '/images/menu/placeholder.jpg',
     category: '안주',
+    goodsSt: 'Y',
   },
   {
     id: 'side-1',
@@ -136,6 +154,7 @@ export const mockMenuItems: MenuItem[] = [
     price: 6000,
     imageUrl: '/images/menu/placeholder.jpg',
     category: '사이드',
+    goodsSt: 'Y',
   },
   {
     id: 'side-2',
@@ -143,6 +162,7 @@ export const mockMenuItems: MenuItem[] = [
     price: 5000,
     imageUrl: '/images/menu/placeholder.jpg',
     category: '사이드',
+    goodsSt: 'Y',
   },
   {
     id: 'side-3',
@@ -150,6 +170,7 @@ export const mockMenuItems: MenuItem[] = [
     price: 3000,
     imageUrl: '/images/menu/placeholder.jpg',
     category: '사이드',
+    goodsSt: 'Y',
   },
   {
     id: 'side-4',
@@ -157,6 +178,7 @@ export const mockMenuItems: MenuItem[] = [
     price: 7000,
     imageUrl: '/images/menu/placeholder.jpg',
     category: '사이드',
+    goodsSt: 'Y',
   },
   {
     id: 'side-5',
@@ -164,6 +186,7 @@ export const mockMenuItems: MenuItem[] = [
     price: 8000,
     imageUrl: '/images/menu/placeholder.jpg',
     category: '사이드',
+    goodsSt: 'Y',
   },
   {
     id: 'side-6',
@@ -171,5 +194,6 @@ export const mockMenuItems: MenuItem[] = [
     price: 4000,
     imageUrl: '/images/menu/placeholder.jpg',
     category: '사이드',
+    goodsSt: 'Y',
   },
 ];

@@ -14,6 +14,8 @@ interface OrderSidebarProps {
     onQuantityChange: (itemId: string, newQuantity: number) => void;
     selectedPayer?: string;
     onPayerSelect?: (payerName: string) => void;
+    hidePayerSection?: boolean;
+    hideMemberNames?: boolean;
 }
 
 const OrderSidebar: React.FC<OrderSidebarProps> = ({
@@ -25,6 +27,8 @@ const OrderSidebar: React.FC<OrderSidebarProps> = ({
                                                        onQuantityChange,
                                                        selectedPayer,
                                                        onPayerSelect,
+                                                       hidePayerSection = false,
+                                                       hideMemberNames = false,
                                                    }) => {
     const [isPayerDropdownOpen, setIsPayerDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -79,34 +83,38 @@ const OrderSidebar: React.FC<OrderSidebarProps> = ({
                     <div className={styles.orderInfo}>
                         <div className={styles.groupHeader}>
                             <div className={styles.groupName}>{tableInfo.groupName}</div>
-                            <div className={styles.payerSection} ref={dropdownRef}>
-                                <button
-                                    className={`${styles.payerBadge} ${isPayerDropdownOpen ? styles.active : ''}`}
-                                    onClick={handlePayerBadgeClick}
-                                >
-                                    <span>{displayedPayer || '결제자'}</span>
-                                    <div
-                                        className={`${styles.arrowDown} ${isPayerDropdownOpen ? styles.rotated : ''}`}/>
-                                </button>
+                            {!hidePayerSection && (
+                                <div className={styles.payerSection} ref={dropdownRef}>
+                                    <button
+                                        className={`${styles.payerBadge} ${isPayerDropdownOpen ? styles.active : ''}`}
+                                        onClick={handlePayerBadgeClick}
+                                    >
+                                        <span>{displayedPayer || '결제자'}</span>
+                                        <div
+                                            className={`${styles.arrowDown} ${isPayerDropdownOpen ? styles.rotated : ''}`}/>
+                                    </button>
 
-                                {isPayerDropdownOpen && (
-                                    <div className={styles.payerDropdown}>
-                                        {tableInfo.memberNames.map((memberName, index) => (
-                                            <button
-                                                key={index}
-                                                className={`${styles.payerOption} ${selectedPayer === memberName ? styles.selected : ''}`}
-                                                onClick={() => handlePayerSelect(memberName)}
-                                            >
-                                                {memberName}
-                                            </button>
-                                        ))}
-                                    </div>
-                                )}
+                                    {isPayerDropdownOpen && (
+                                        <div className={styles.payerDropdown}>
+                                            {tableInfo.memberNames.map((memberName, index) => (
+                                                <button
+                                                    key={index}
+                                                    className={`${styles.payerOption} ${selectedPayer === memberName ? styles.selected : ''}`}
+                                                    onClick={() => handlePayerSelect(memberName)}
+                                                >
+                                                    {memberName}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                        {!hideMemberNames && (
+                            <div className={styles.memberNames}>
+                                {tableInfo.memberNames.join(', ')}
                             </div>
-                        </div>
-                        <div className={styles.memberNames}>
-                            {tableInfo.memberNames.join(', ')}
-                        </div>
+                        )}
                     </div>
 
                     <div className={styles.orderCount}>총 {totalItems}개</div>

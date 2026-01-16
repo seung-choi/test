@@ -52,6 +52,19 @@
   }
 }
 
+.emptyCategory {
+  grid-column: 1 / -1;
+  height: 120px;
+  border-radius: 20px;
+  background: #F3F3F3;
+  color: #969595;
+  font-size: 26px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .menuCard {
   width: 100%;
   height: 245px;
@@ -72,6 +85,19 @@
 
   &:active {
     transform: translateY(-2px);
+  }
+}
+
+.menuCardSoldOut {
+  cursor: default;
+
+  &:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  &:active {
+    transform: none;
   }
 }
 
@@ -157,4 +183,24 @@
   @include tablet {
     font-size: 16px;
   }
+}
+
+.soldOutOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @include tablet {
+    border-radius: 18px;
+  }
+}
+
+.soldOutText {
+  color: white;
+  font-size: 30px;
+  font-weight: 800;
 }

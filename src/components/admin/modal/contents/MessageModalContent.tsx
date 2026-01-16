@@ -22,6 +22,7 @@ const MessageModalContent: React.FC<MessageModalContentProps> = ({
   onSubmit,
   onClose,
 }) => {
+  const isClient = typeof window !== 'undefined';
   const [formData, setFormData] = useState<MessageFormData>({
     content: '',
     image: undefined,
@@ -37,14 +38,53 @@ const MessageModalContent: React.FC<MessageModalContentProps> = ({
     enabled: Boolean(bookingId),
   });
 
+  const storageKey = useMemo(
+    () => `messageDraft:${bookingId ?? 'default'}`,
+    [bookingId]
+  );
+
   const filteredHistory = useMemo(() => {
     if (!bookingId) return [] as EventMessageHistoryItem[];
     return eventMsgHistory.filter((item) => item.toId === String(bookingId));
   }, [eventMsgHistory, bookingId]);
 
   useEffect(() => {
+    if (!isClient) return;
+    const stored = window.sessionStorage.getItem(storageKey);
+    if (!stored) {
+      setFormData({ content: '', image: undefined });
+      setSelectedRecipient('');
+      return;
+    }
+    try {
+      const parsed = JSON.parse(stored) as { content?: string; recipient?: string };
+      setFormData((prev) => ({
+        ...prev,
+        content: parsed.content ?? '',
+        image: undefined,
+      }));
+      setSelectedRecipient(parsed.recipient ?? '');
+    } catch {
+      setFormData({ content: '', image: undefined });
+      setSelectedRecipient('');
+    }
+  }, [isClient, storageKey]);
+
+  useEffect(() => {
+    if (!isClient) return;
+    const payload = JSON.stringify({
+      content: formData.content,
+      recipient: selectedRecipient,
+    });
+    window.sessionStorage.setItem(storageKey, payload);
+  }, [isClient, storageKey, formData.content, selectedRecipient]);
+
+  useEffect(() => {
     if (!selectedRecipient && recipientOptions.length > 0) {
       setSelectedRecipient(recipientOptions[0]);
+    }
+    if (selectedRecipient && !recipientOptions.includes(selectedRecipient)) {
+      setSelectedRecipient(recipientOptions[0] ?? '');
     }
   }, [recipientOptions, selectedRecipient]);
 
@@ -71,6 +111,11 @@ const MessageModalContent: React.FC<MessageModalContentProps> = ({
       ...formData,
       recipient: selectedRecipient,
     });
+    if (isClient) {
+      window.sessionStorage.removeItem(storageKey);
+    }
+    setFormData({ content: '', image: undefined });
+    setSelectedRecipient(recipientOptions[0] ?? '');
   };
 
   const buttons = (
