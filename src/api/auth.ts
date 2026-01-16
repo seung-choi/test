@@ -1,22 +1,9 @@
 import $axios from '@/api/axios';
 import { getOriginURL } from '@/api/API_URL';
 import { API_ENDPOINTS } from '@/api/endpoints';
+import type { LoginFormAPI, LoginResponseAPI } from '@/types/auth.type';
 
-export interface LoginFormAPI {
-    username: string;
-    password: string;
-}
-
-export interface LoginResponseAPI {
-    groupId: number;
-    groupNm: string;
-    groupType: string;
-    userId: string;
-    userNm: string;
-    initSt: string;
-    clubId: string;
-    clubLogo: string;
-}
+export type { LoginFormAPI, LoginResponseAPI };
 
 export const postLogin = async (data: LoginFormAPI): Promise<LoginResponseAPI> => {
     const res = await $axios({

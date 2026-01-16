@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
-import { TableData, TableType } from '@/types';
-import { GetTableResponse } from '@/api/table';
+import { TableData, TableType, GetTableResponse } from '@/types';
 
 interface TableXYR {
   x: number;

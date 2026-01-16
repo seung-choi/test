@@ -13,8 +13,7 @@ import { usePageManagement } from '@/hooks/tableCanvas/usePageManagement';
 import { useTableManagement } from '@/hooks/tableCanvas/useTableManagement';
 import { usePatchTableOrder, usePutTableList, useTableList } from '@/hooks/api';
 import { useToast } from '@/hooks/common/useToast';
-import type { GetTableResponse } from '@/api/table';
-import type { PlacedTable, TableType } from '@/types';
+import type { GetTableResponse, PlacedTable, TableType } from '@/types';
 
 const LayoutManager: React.FC = () => {
     const [activeTab, setActiveTab] = useState<'table' | 'list'>('table');

@@ -1,4 +1,4 @@
-export type CategoryType = '전체메뉴' | '식사' | '주류' | '안주' | '사이드';
+export type CategoryType = string;
 
 export interface MenuOption {
   id: string;

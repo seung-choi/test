@@ -17,7 +17,7 @@ import CommonModalLayout from '@/components/admin/modal/CommonModalLayout';
 import commonStyles from '@/styles/components/admin/modal/CommonModal.module.scss';
 import styles from '@/styles/components/admin/modal/CategoryModal.module.scss';
 import { useCategoryList, usePostCategoryList } from '@/hooks/api/useCategory';
-import { GetCategoryResponse, PostCategoryRequest } from '@/api/category';
+import type { GetCategoryResponse, PostCategoryRequest } from '@/types/category.type';
 import { useToast } from '@/hooks/common/useToast';
 
 interface CategoryModalContentProps {

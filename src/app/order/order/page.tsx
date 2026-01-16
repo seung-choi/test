@@ -8,11 +8,11 @@ import MenuGrid from '@/components/order/order/MenuGrid';
 import OrderSidebar from '@/components/order/order/OrderSidebar';
 import MemoModal from '@/components/order/modal/MemoModal';
 import OrderDetailModal from '@/components/order/modal/OrderDetailModal';
-import { CategoryType, MenuItem, OrderItem, TableInfo, MenuOption } from '@/types';
-import { mockMenuItems, categories } from '@/data/mockMenuData';
+import { CategoryType, MenuItem, OrderItem, TableInfo } from '@/types';
 import { mockTableInfo, mockOrderItems } from '@/data/mockOrderData';
 import { useScrollToTop } from '@/hooks/common/useScrollManagement';
 import { useToast } from '@/hooks/common/useToast';
+import { useGoodsList, useCategoryList } from '@/hooks/api';
 
 const OrderPageContent: React.FC = () => {
   const router = useRouter();
@@ -20,12 +20,45 @@ const OrderPageContent: React.FC = () => {
   const { showToast } = useToast();
   const [activeCategory, setActiveCategory] = useState<CategoryType>('전체메뉴');
   const [selectedPayer, setSelectedPayer] = useState<string>('');
-  const [orderItems, setOrderItems] = useState<OrderItem[]>(mockOrderItems);
+  const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
   const [isMemoModalOpen, setIsMemoModalOpen] = useState(false);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const menuGridRef = useRef<HTMLDivElement>(null);
 
+  const { data: goodsList = [], isLoading: isGoodsLoading } = useGoodsList();
+  const { data: categoryList = [], isLoading: isCategoryLoading } = useCategoryList('CATEGORY');
+
   useScrollToTop();
+
+  // 카테고리 목록 생성 (전체메뉴 + API 카테고리)
+  const categories = useMemo<CategoryType[]>(() => {
+    const apiCategories = categoryList
+      .sort((a, b) => a.categoryOrd - b.categoryOrd)
+      .map(cat => cat.categoryNm);
+    return ['전체메뉴', ...apiCategories];
+  }, [categoryList]);
+
+  // goods 데이터를 MenuItem 형식으로 변환
+  const menuItems = useMemo<MenuItem[]>(() => {
+    return goodsList
+      .filter(goods => goods.goodsSt === 'Y') // 판매중인 상품만
+      .sort((a, b) => a.goodsOrd - b.goodsOrd)
+      .map(goods => ({
+        id: String(goods.goodsId),
+        name: goods.goodsNm,
+        price: goods.goodsAmt,
+        imageUrl: goods.goodsImg || '/assets/image/order/fallback.svg',
+        category: goods.categoryNm,
+      }));
+  }, [goodsList]);
+
+  // 선택된 카테고리에 따른 메뉴 필터링
+  const filteredMenuItems = useMemo(() => {
+    if (activeCategory === '전체메뉴') {
+      return menuItems;
+    }
+    return menuItems.filter(item => item.category === activeCategory);
+  }, [menuItems, activeCategory]);
 
   const tableInfo: TableInfo = useMemo(() => {
     const tableNumber = searchParams.get('tableNumber');
@@ -46,7 +79,7 @@ const OrderPageContent: React.FC = () => {
   const handleCategoryChange = useCallback((category: CategoryType) => {
     setActiveCategory(category);
 
-    if (category === '전체메뉴' || category === categories[1]) {
+    if (category === '전체메뉴') {
       if (menuGridRef.current) {
         menuGridRef.current.scrollTo({ top: 0, behavior: 'smooth' });
       }
@@ -123,6 +156,18 @@ const OrderPageContent: React.FC = () => {
     router.push('/order/main');
   }, [router]);
 
+  const isLoading = isGoodsLoading || isCategoryLoading;
+
+  if (isLoading) {
+    return (
+      <div className={styles.pageContainer}>
+        <div className={styles.loadingContainer}>
+          <p>메뉴를 불러오는 중...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.pageContainer}>
       <header className={styles.header}>
@@ -139,7 +184,7 @@ const OrderPageContent: React.FC = () => {
       </header>
 
       <div className={styles.mainContent}>
-        <MenuGrid items={mockMenuItems} onMenuClick={handleMenuClick} ref={menuGridRef} />
+        <MenuGrid items={filteredMenuItems} onMenuClick={handleMenuClick} ref={menuGridRef} />
         <OrderSidebar
           tableInfo={tableInfo}
           orderItems={orderItems}

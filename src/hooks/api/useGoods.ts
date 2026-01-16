@@ -8,10 +8,8 @@ import {
   patchGoodsStatusInfo,
   patchGoodsOrderList,
   deleteGoodsList,
-  PostGoodsRequest,
-  PutGoodsRequest,
-  GoodsStatus,
 } from '@/api/goods';
+import type { PostGoodsRequest, PutGoodsRequest, GoodsStatus } from '@/types/goods.type';
 
 export const useGoodsList = (options?: {
   refetchInterval?: number;

@@ -2,8 +2,7 @@
 
 import React, { useMemo, useState } from 'react';
 import styles from '@/styles/components/admin/drawer/canvas/tableListView.module.scss';
-import { PlacedTable, TableType } from '@/types';
-import type { GetTableResponse } from '@/api/table';
+import type { GetTableResponse, PlacedTable, TableType } from '@/types';
 
 interface TableWithPage extends PlacedTable {
     pageName?: string;

@@ -1,14 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import {
-  getCategoryList,
-  getCategoryErpList,
-  postCategoryList,
-  CategoryType,
-  PostCategoryRequest,
-} from '@/api/category';
+import { getCategoryList, getCategoryErpList, postCategoryList } from '@/api/category';
+import type { CategoryApiType, PostCategoryRequest } from '@/types/category.type';
 
 export const useCategoryList = (
-  categoryType: CategoryType,
+  categoryType: CategoryApiType,
   options?: {
     refetchInterval?: number;
     enabled?: boolean;
@@ -42,7 +37,7 @@ export const usePostCategoryList = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ categoryType, data }: { categoryType: CategoryType; data: PostCategoryRequest[] }) =>
+    mutationFn: ({ categoryType, data }: { categoryType: CategoryApiType; data: PostCategoryRequest[] }) =>
       postCategoryList(categoryType, data),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['categoryList', variables.categoryType] });

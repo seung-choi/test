@@ -23,7 +23,7 @@ import commonStyles from '@/styles/components/admin/modal/CommonModal.module.scs
 import styles from '@/styles/components/admin/modal/CancelReasonManagementModal.module.scss';
 import { CancelReason } from '@/types';
 import { useCategoryList, usePostCategoryList } from '@/hooks/api';
-import type { PostCategoryRequest } from '@/api/category';
+import type { PostCategoryRequest } from '@/types/category.type';
 import { useToast } from '@/hooks/common/useToast';
 
 interface CancelReasonManagementModalContentProps {

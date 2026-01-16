@@ -1,4 +1,4 @@
-import type { GoodsChannel, GoodsOption, GoodsStatus } from '@/api/goods';
+import type { GoodsChannel, GoodsOption, GoodsStatus } from '@/types/goods.type';
 import type { MenuStatus } from '@/constants/admin/menuStatus';
 import { GOODS_STATUS_MAP, MENU_STATUS_TO_GOODS_MAP, MENU_STATUS } from '@/constants/admin/menuStatus';
 import { GOODS_CHANNEL_MAP, GOODS_TYPE_MAP, getGoodsChannelFromLabels, getGoodsTypeFromLabels } from '@/constants/admin/goodsOptions';

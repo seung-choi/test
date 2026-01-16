@@ -6,10 +6,8 @@ import {
   putTableList,
   patchTableOrder,
   deleteTableInfo,
-  PostTableRequest,
-  PutTableRequest,
-  PatchTableRequest,
 } from '@/api/table';
+import type { PostTableRequest, PutTableRequest, PatchTableRequest } from '@/types/table.type';
 
 export const useTableList = (options?: {
   refetchInterval?: number;

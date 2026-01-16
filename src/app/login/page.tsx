@@ -11,7 +11,7 @@ import {
     hasErrors
 } from '@/utils/validation/loginValidation';
 import { useLogin, useMenuHisList } from '@/hooks/api';
-import { LoginResponseAPI } from '@/api/auth';
+import type { LoginResponseAPI } from '@/types/auth.type';
 import storage from '@/utils/storage';
 
 const LoginPage: React.FC = () => {

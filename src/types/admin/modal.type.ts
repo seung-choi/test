@@ -1,6 +1,6 @@
 import { MessageFormData, ErpProduct } from '@/types';
 import { BillOrder } from '@/types/bill.type';
-import type { GoodsChannel, GoodsOption, GoodsStatus } from '@/api/goods';
+import type { GoodsChannel, GoodsOption, GoodsStatus } from '@/types/goods.type';
 
 export interface CancelModalState {
   isShow: boolean;

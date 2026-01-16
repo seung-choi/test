@@ -1,24 +1,11 @@
 import $axios from '@/api/axios';
 import { getOriginURL } from '@/api/API_URL';
 import { API_ENDPOINTS } from '@/api/endpoints';
+import type { CategoryApiType, GetCategoryResponse, PostCategoryRequest } from '@/types/category.type';
 
-export type CategoryType = 'REASON' | 'CATEGORY';
+export type { CategoryApiType, GetCategoryResponse, PostCategoryRequest };
 
-export interface GetCategoryResponse {
-  categoryId: number;
-  categoryNm: string;
-  categoryOrd: number;
-  categoryErp: string;
-}
-
-export interface PostCategoryRequest {
-  categoryId?: number | null;
-  categoryNm: string;
-  categoryOrd: number;
-  categoryErp?: string;
-}
-
-export const getCategoryList = async (categoryType: CategoryType): Promise<GetCategoryResponse[]> => {
+export const getCategoryList = async (categoryType: CategoryApiType): Promise<GetCategoryResponse[]> => {
   const res = await $axios({
     url: `${getOriginURL('api')}${API_ENDPOINTS.CATEGORY.LIST(categoryType)}`,
     method: 'get',
@@ -35,7 +22,7 @@ export const getCategoryErpList = async (): Promise<GetCategoryResponse[]> => {
 };
 
 export const postCategoryList = async (
-  categoryType: CategoryType,
+  categoryType: CategoryApiType,
   data: PostCategoryRequest[]
 ): Promise<void> => {
   const res = await $axios({

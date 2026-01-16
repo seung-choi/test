@@ -1,11 +1,6 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import { getOriginURL } from '@/api/API_URL';
-
-interface ErrorResponse {
-  status: number;
-  code: string;
-  message: string;
-}
+import type { ErrorResponse } from '@/types/error.type';
 
 const isClient = typeof window !== 'undefined';
 let errorCount = 0;
