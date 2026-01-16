@@ -9,7 +9,7 @@ export default function manifest(): MetadataRoute.Manifest {
     start_url: "/",
     scope: "/",
     id: "/",
-    display: "standalone",
+    display: "fullscreen",
     background_color: "#F2F8FF",
     theme_color: "#6600FF",
     icons: [
@@ -22,7 +22,6 @@ export default function manifest(): MetadataRoute.Manifest {
         src: "/icons/icon-180.png",
         sizes: "180x180",
         type: "image/png",
-        purpose: "any maskable",
       },
     ],
   };
