@@ -7,7 +7,7 @@ export const useEventMsgHisList = (options?: { enabled?: boolean; refetchInterva
     queryKey: ['eventMsgHisList'],
     queryFn: getEventMsgHisList,
     enabled: options?.enabled ?? true,
-    refetchInterval: options?.refetchInterval,
+    refetchInterval: 5000,
     retry: 2,
   });
 

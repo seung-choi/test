@@ -66,3 +66,64 @@
     color: #6b7280;
   }
 }
+
+.orderSuccessOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(18, 18, 18, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 30;
+}
+
+.orderSuccessModal {
+  width: min(1009px, 90vw);
+  height: min(462px, 70vh);
+  background: white;
+  border-radius: 40px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  padding: 80px 40px 40px;
+}
+
+.orderSuccessHeader {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(504px, 70vw);
+  height: 82px;
+  background: #6600FF;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 40px;
+  font-weight: 800;
+}
+
+.orderSuccessMessage {
+  color: black;
+  font-size: 50px;
+  font-weight: 400;
+  text-align: center;
+}
+
+.orderSuccessClose {
+  width: 281px;
+  height: 72px;
+  border-radius: 20px;
+  background: #D9D9D9;
+  border: none;
+  color: #666666;
+  font-size: 35px;
+  font-weight: 800;
+  cursor: pointer;
+}

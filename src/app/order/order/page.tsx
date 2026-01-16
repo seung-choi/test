@@ -25,6 +25,7 @@ const OrderPageContent: React.FC = () => {
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
   const [isMemoModalOpen, setIsMemoModalOpen] = useState(false);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [isOrderSuccessOpen, setIsOrderSuccessOpen] = useState(false);
   const [memoText, setMemoText] = useState('');
   const menuGridRef = useRef<HTMLDivElement>(null);
   const { mutate: postBillOrder } = usePostBillOrder();
@@ -159,7 +160,7 @@ const OrderPageContent: React.FC = () => {
       },
       {
         onSuccess: () => {
-          showToast(`결제자: ${payerName} - 주문이 완료되었습니다!`, 'success');
+          setIsOrderSuccessOpen(true);
           setOrderItems([]);
         },
       }
@@ -249,6 +250,29 @@ const OrderPageContent: React.FC = () => {
         onQuantityChange={handleQuantityChange}
         billId={billId}
       />
+
+      {isOrderSuccessOpen && (
+        <div
+          className={styles.orderSuccessOverlay}
+          onClick={() => setIsOrderSuccessOpen(false)}
+        >
+          <div
+            className={styles.orderSuccessModal}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className={styles.orderSuccessHeader}>주문 접수</div>
+            <div className={styles.orderSuccessMessage}>
+              주문이 접수 되었습니다.
+            </div>
+            <button
+              className={styles.orderSuccessClose}
+              onClick={() => setIsOrderSuccessOpen(false)}
+            >
+              닫기
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

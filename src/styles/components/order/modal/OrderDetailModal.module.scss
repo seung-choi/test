@@ -60,6 +60,15 @@
   }
 }
 
+.canceledTab {
+  color: #666666;
+  text-decoration: line-through;
+
+  &.active {
+    background: #B4B4B4;
+  }
+}
+
 .tableWrapper {
   overflow-x: auto;
   margin-bottom: 20px;
@@ -194,6 +203,13 @@
   }
 }
 
+.quantityText {
+  display: inline-block;
+  font-size: 20px;
+  font-weight: 600;
+  color: inherit;
+}
+
 .quantityControl {
   width: 100px;
   height: 40px;
@@ -300,4 +316,124 @@
 .totalAmount {
   font-size: 32px;
   font-weight: 600;
+}
+
+.cancelButton {
+  width: 180px;
+  height: 55px;
+  font-size: 22px;
+  border-radius: 22px;
+  background: #6600FF;
+  border: none;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  &:disabled {
+    background: #D9D9D9;
+    color: #666666;
+    cursor: not-allowed;
+  }
+}
+
+.cancelComplete {
+  background: #6600FF;
+  color: #9081D8;
+  cursor: default;
+
+  &:disabled {
+    background: #6600FF;
+    color: #9081D8;
+  }
+}
+
+.cancelOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(18, 18, 18, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 30;
+}
+
+.cancelModal {
+  width: min(1009px, 90vw);
+  height: min(462px, 70vh);
+  background: white;
+  border-radius: 40px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  padding: 80px 40px 40px;
+}
+
+.cancelHeader {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(504px, 70vw);
+  height: 82px;
+  background: #6600FF;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 40px;
+  font-weight: 800;
+}
+
+.cancelMessage {
+  color: black;
+  font-size: 40px;
+  font-weight: 400;
+  text-align: center;
+}
+
+.cancelActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cancelCloseButton {
+  width: 257px;
+  height: 81px;
+  border-radius: 20px;
+  background: #D9D9D9;
+  border: none;
+  color: #666666;
+  font-size: 35px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.cancelConfirmButton {
+  width: 626px;
+  height: 81px;
+  border-radius: 20px;
+  background: #9148FF;
+  border: none;
+  color: white;
+  font-size: 35px;
+  font-weight: 800;
+  cursor: pointer;
+
+  &:disabled {
+    background: #D5C3ED;
+    color: #9081D8;
+    cursor: not-allowed;
+  }
 }

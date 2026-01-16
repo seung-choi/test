@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import BaseModal from './BaseModal';
 import styles from '@/styles/components/order/modal/OrderDetailModal.module.scss';
 import { OrderDetailItem } from '@/types';
 import QuantityControl from '@/components/order/common/QuantityControl';
 import type { OrderDetailModalProps } from '@/types';
-import { useBillOrderList } from '@/hooks/api';
+import { useBillOrderList, useDeleteBillOrderList } from '@/hooks/api';
 import { formatTime } from '@/utils';
 
 const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
@@ -17,17 +17,12 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
   billId,
 }) => {
   const [selectedTime, setSelectedTime] = useState('전체');
-  const [deletedItems, setDeletedItems] = useState<Set<number>>(new Set());
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const { orderList = [] } = useBillOrderList(billId ?? 0, {
     enabled: isOpen && Boolean(billId),
   });
+  const { mutateAsync: deleteBillOrderList, isPending: isCanceling } = useDeleteBillOrderList();
   const isHistoryView = orderList.length > 0;
-
-  useEffect(() => {
-    if (isOpen) {
-      setDeletedItems(new Set());
-    }
-  }, [isOpen]);
 
   const orderItemsWithTime: OrderDetailItem[] = useMemo(() => {
     if (orderList.length === 0) {
@@ -51,21 +46,11 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
         orderTime: formatTime(order.createdDt),
         payer: order.playerNm || undefined,
         memo: order.orderReq || undefined,
+        orderSt: order.orderSt,
+        orderId: order.orderId,
       }))
     );
   }, [orderItems, orderList]);
-
-  const handleDelete = (itemId: number) => {
-    setDeletedItems(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(itemId)) {
-        newSet.delete(itemId);
-      } else {
-        newSet.add(itemId);
-      }
-      return newSet;
-    });
-  };
 
   const groupedByTime = useMemo(() => {
     const groups: Record<string, OrderDetailItem[]> = {};
@@ -77,6 +62,46 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
     });
     return groups;
   }, [orderItemsWithTime]);
+
+  const timeSlotStatus = useMemo(() => {
+    const statusMap: Record<string, { isCanceled: boolean; hasCancelable: boolean }> = {};
+    Object.entries(groupedByTime).forEach(([time, items]) => {
+      if (items.length === 0) return;
+      const isCanceled = items.every((item) => item.orderSt === 'N');
+      const hasCancelable = items.some((item) => item.orderSt !== 'N');
+      statusMap[time] = { isCanceled, hasCancelable };
+    });
+    return statusMap;
+  }, [groupedByTime]);
+
+  const isFilteredTab = selectedTime !== '전체';
+  const selectedTabStatus = isFilteredTab ? timeSlotStatus[selectedTime] : undefined;
+  const hasCancelableOrders = Boolean(selectedTabStatus?.hasCancelable);
+
+  const handleCancelConfirm = async () => {
+    if (!billId || orderList.length === 0 || !isFilteredTab) {
+      setIsCancelModalOpen(false);
+      return;
+    }
+
+    const orderIdList = orderList
+      .filter((order) => formatTime(order.createdDt) === selectedTime)
+      .filter((order) => order.orderSt !== 'N')
+      .map((order) => order.orderId);
+
+    if (orderIdList.length === 0) {
+      setIsCancelModalOpen(false);
+      return;
+    }
+
+    await deleteBillOrderList({
+      billId,
+      data: {
+        orderIdList,
+      },
+    });
+    setIsCancelModalOpen(false);
+  };
 
   const timeSlots = Object.keys(groupedByTime).sort();
 
@@ -93,7 +118,17 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
 
   const footer = (
     <>
-      <div/>
+      {isHistoryView && isFilteredTab ? (
+        <button
+          className={`${styles.cancelButton} ${!hasCancelableOrders ? styles.cancelComplete : ''}`}
+          onClick={() => setIsCancelModalOpen(true)}
+          disabled={!hasCancelableOrders || isCanceling}
+        >
+          {hasCancelableOrders ? '주문 취소' : '취소 완료'}
+        </button>
+      ) : (
+        <div />
+      )}
       <div className={styles.totalInfo}>
         <span className={styles.totalCount}>총 {totalItems}개</span>
         <span className={styles.totalAmount}>
@@ -121,7 +156,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
           {timeSlots.map((time) => (
             <button
               key={time}
-              className={`${styles.timeTab} ${selectedTime === time ? styles.active : ''}`}
+              className={`${styles.timeTab} ${selectedTime === time ? styles.active : ''} ${timeSlotStatus[time]?.isCanceled ? styles.canceledTab : ''}`}
               onClick={() => setSelectedTime(time)}
             >
               {time} (주문 {groupedByTime[time].length}건)
@@ -133,7 +168,6 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
           <table className={styles.orderTable}>
             <thead>
               <tr>
-                <th className={styles.columnCheck}></th>
                 <th className={styles.columnTime}>시간</th>
                 <th className={styles.columnMenu}>메뉴</th>
                 <th className={styles.columnMemo}>메모</th>
@@ -145,9 +179,9 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
             <tbody>
               {filteredItems.map((item, index) => {
                 const rowKey = isHistoryView ? item.orderNo : item.goodsId;
-                const isDeleted = deletedItems.has(rowKey);
-                const deletedStyle = isDeleted ? {
-                  color: '#6600FF',
+                const isCanceled = item.orderSt === 'N';
+                const deletedStyle = isCanceled ? {
+                  color: '#666666',
                   fontWeight: '600',
                   textDecoration: 'line-through'
                 } : {};
@@ -157,14 +191,6 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                     key={rowKey}
                     className={`${index > 0 && filteredItems[index - 1].orderTime !== item.orderTime ? styles.borderTop : ''}`}
                   >
-                    <td className={styles.columnCheck}>
-                      <img
-                        src='/assets/image/global/x/x-sm.svg'
-                        alt="삭제"
-                        onClick={() => handleDelete(rowKey)}
-                        style={{ cursor: 'pointer' }}
-                      />
-                    </td>
                     <td className={styles.columnTime} style={deletedStyle}>{item.orderTime}</td>
                     <td className={styles.columnMenu} style={deletedStyle}>{item.goodsNm}</td>
                     <td className={styles.columnMemo}>
@@ -174,21 +200,27 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                       {item.payer || '-'}
                     </td>
                     <td className={styles.columnQuantity}>
-                      <QuantityControl
-                        quantity={item.orderCnt}
-                        onIncrease={() => {
-                          if (!isHistoryView) {
-                            onQuantityChange(item.goodsId, item.orderCnt + 1);
-                          }
-                        }}
-                        onDecrease={() => {
-                          if (!isHistoryView) {
-                            onQuantityChange(item.goodsId, item.orderCnt - 1);
-                          }
-                        }}
-                        disabled={isDeleted || isHistoryView}
-                        variant="default"
-                      />
+                      {isHistoryView ? (
+                        <span className={styles.quantityText} style={deletedStyle}>
+                          {item.orderCnt}
+                        </span>
+                      ) : (
+                        <QuantityControl
+                          quantity={item.orderCnt}
+                          onIncrease={() => {
+                            if (!isHistoryView) {
+                              onQuantityChange(item.goodsId, item.orderCnt + 1);
+                            }
+                          }}
+                          onDecrease={() => {
+                            if (!isHistoryView) {
+                              onQuantityChange(item.goodsId, item.orderCnt - 1);
+                            }
+                          }}
+                          disabled={isCanceled || isHistoryView}
+                          variant="default"
+                        />
+                      )}
                     </td>
                     <td className={styles.columnPrice} style={deletedStyle}>
                       {(item.orderAmt * item.orderCnt).toLocaleString('ko-KR')} 원
@@ -200,6 +232,31 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
           </table>
         </div>
       </div>
+
+      {isCancelModalOpen && (
+        <div className={styles.cancelOverlay}>
+          <div className={styles.cancelModal}>
+            <div className={styles.cancelHeader}>주문 취소</div>
+            <div className={styles.cancelMessage}>주문을 취소 하시겠습니까?</div>
+            <div className={styles.cancelActions}>
+              <button
+                className={styles.cancelCloseButton}
+                onClick={() => setIsCancelModalOpen(false)}
+                disabled={isCanceling}
+              >
+                닫기
+              </button>
+              <button
+                className={styles.cancelConfirmButton}
+                onClick={handleCancelConfirm}
+                disabled={!hasCancelableOrders || isCanceling}
+              >
+                취소
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </BaseModal>
   );
 };

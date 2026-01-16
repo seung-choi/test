@@ -13,6 +13,21 @@ const lexendExa = Lexend_Exa({
 export const metadata: Metadata = {
   title: "Vgolf",
   description: "Vgolf Admin Site",
+  applicationName: "Vgolf FNB",
+  manifest: "/manifest.webmanifest",
+  themeColor: "#6600FF",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Vgolf FNB",
+  },
+  icons: {
+    icon: [
+      { url: "/icons/icon.svg", type: "image/svg+xml" },
+      { url: "/icons/icon-180.png", sizes: "180x180", type: "image/png" },
+    ],
+    apple: [{ url: "/icons/icon-180.png", sizes: "180x180" }],
+  },
 };
 
 export const viewport = {

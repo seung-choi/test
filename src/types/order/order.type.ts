@@ -1,5 +1,5 @@
 import type { GetGoodsResponse } from '@/types/api/goods.type';
-import type { GetOrderHisResponse, OrderHisRequest } from '@/types/api/bill.type';
+import type { BillOrderStatus, GetOrderHisResponse, OrderHisRequest } from '@/types/api/bill.type';
 
 export type CategoryType = string;
 
@@ -25,6 +25,8 @@ export interface OrderDetailItem extends GetOrderHisResponse {
   orderTime: string;
   payer?: string;
   memo?: string;
+  orderSt?: BillOrderStatus;
+  orderId?: number;
 }
 
 export interface TableInfo {
