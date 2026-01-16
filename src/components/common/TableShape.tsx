@@ -91,18 +91,18 @@ const TableShape: React.FC<TableShapeProps> = ({
         >
           {reservation?.time || '00:00'}
         </div>
-        {reservation?.name && (
+        {reservation?.bookingNm && (
           <div
             className={`${styles.name} ${styles[`name${type}`]}`}
           >
-            {reservation.name}
+            {reservation.bookingNm}
           </div>
         )}
-        {reservation?.group && (
+        {reservation?.bookingsNm && (
           <div
             className={`${styles.group} ${styles[`group${type}`]}`}
           >
-            {reservation.group}
+            {reservation.bookingsNm}
           </div>
         )}
         <div
